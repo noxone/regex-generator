@@ -14,6 +14,8 @@ public class Recognizer {
 
 	private final Optional<String> searchRegex = Optional.empty();
 
+	boolean active = true;
+
 	@JsonCreator
 	public Recognizer() {
 	}
@@ -27,7 +29,9 @@ public class Recognizer {
 	}
 
 	public String getSearchRegex() {
-		return searchRegex.orElseGet(() -> String.format("(?<%s>%s)", Configuration.get().getMainGroupName(), getOutputRegex()));
+		return searchRegex
+			.map(regex -> String.format(regex, getOutputRegex()))
+			.orElseGet(() -> String.format("(?<%s>%s)", Configuration.get().getMainGroupName(), getOutputRegex()));
 	}
 
 	public Optional<String> getDescription() {
@@ -36,5 +40,9 @@ public class Recognizer {
 
 	public Pattern getPattern() {
 		return Patterns.getPattern(getSearchRegex());
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 }

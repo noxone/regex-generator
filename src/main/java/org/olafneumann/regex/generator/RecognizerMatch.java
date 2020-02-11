@@ -43,7 +43,6 @@ public class RecognizerMatch {
 
 	@Override
 	public String toString() {
-		return String
-			.format("[%s/%s] (%s: %s) %s", start, start + length, recognizer.getName(), recognizer.getOutputRegex(), inputPart);
+		return String.format("[%s+%s] (%s: %s) %s", start, length, recognizer.getName(), recognizer.getOutputRegex(), inputPart);
 	}
 }

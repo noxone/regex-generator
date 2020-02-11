@@ -24,16 +24,18 @@ public class RegexGenerator {
 	private Collection<Object> recognize(final Collection<Recognizer> recognizers, final String input) {
 		final Map<Recognizer, List<RecognizerMatch>> map = recognizers
 			.stream()
+			.filter(Recognizer::isActive)
 			.collect(toMap(Function.identity(), r -> findPatternProposals(r, input)));
 
 		return map.values().stream().flatMap(Collection::stream).sorted(RecognizerMatch.COMPARATOR).collect(toList());
 	}
 
 	private List<RecognizerMatch> findPatternProposals(final Recognizer recognizer, final String input) {
+		final List<RecognizerMatch> proposals = new ArrayList<>();
 		final Matcher matcher = recognizer.getPattern().matcher(input);
 
-		final List<RecognizerMatch> proposals = new ArrayList<>();
-		while (matcher.find()) {
+		int start = 0;
+		while (matcher.find(start)) {
 			proposals
 				.add(
 					new RecognizerMatch(
@@ -41,6 +43,7 @@ public class RegexGenerator {
 						matcher.end(configuration.getMainGroupName()) - matcher.start(configuration.getMainGroupName()),
 						matcher.group(configuration.getMainGroupName()),
 						recognizer));
+			start = matcher.end(configuration.getMainGroupName());
 		}
 
 		return proposals;
