@@ -13,8 +13,6 @@ import java.util.regex.Matcher;
 public class RegexGenerator {
 	private final Configuration configuration;
 
-	static final String MAIN_GROUP = "main";
-
 	public RegexGenerator(final Configuration configuration) {
 		this.configuration = configuration;
 	}
@@ -39,9 +37,9 @@ public class RegexGenerator {
 			proposals
 				.add(
 					new RecognizerMatch(
-						matcher.start(MAIN_GROUP),
-						matcher.end(MAIN_GROUP) - matcher.start(MAIN_GROUP),
-						matcher.group(MAIN_GROUP),
+						matcher.start(configuration.getMainGroupName()),
+						matcher.end(configuration.getMainGroupName()) - matcher.start(configuration.getMainGroupName()),
+						matcher.group(configuration.getMainGroupName()),
 						recognizer));
 		}
 

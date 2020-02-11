@@ -1,4 +1,7 @@
 {
+	"groups": {
+		"main": "main"
+	},
 	"recognizers": [
 		{
 			"name": "number",

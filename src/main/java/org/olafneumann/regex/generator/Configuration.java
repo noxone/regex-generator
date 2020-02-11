@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -21,12 +23,7 @@ public class Configuration {
 	private static final Configuration INSTANCE = readConfiguration();
 
 	private static ObjectMapper createObjectMapper() {
-//		final SimpleModule module = new SimpleModule("Oversigt-API");
-//		module.addSerializer(Duration.class, serializer(Duration.class, Duration::toString));
-//		module.addDeserializer(Duration.class, deserializer(Duration.class, Duration::parse));
-
 		final ObjectMapper objectMapper = new ObjectMapper();
-		// objectMapper.registerModule(module);
 		objectMapper.registerModule(new Jdk8Module());
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		objectMapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
@@ -51,6 +48,8 @@ public class Configuration {
 	@JsonProperty
 	private List<Recognizer> recognizers = new ArrayList<>();
 
+	private Map<String, String> groups;
+
 	@JsonCreator
 	private Configuration() {
 		// fields will be filled by jackson
@@ -63,5 +62,9 @@ public class Configuration {
 	@SuppressWarnings("unused")
 	private void setRecognizers(final List<Recognizer> recognizers) {
 		this.recognizers = recognizers;
+	}
+
+	public String getMainGroupName() {
+		return Objects.requireNonNull(groups.get("main"));
 	}
 }

@@ -27,7 +27,7 @@ public class Recognizer {
 	}
 
 	public String getSearchRegex() {
-		return searchRegex.orElseGet(() -> String.format("(?<%s>%s)", RegexGenerator.MAIN_GROUP, getOutputRegex()));
+		return searchRegex.orElseGet(() -> String.format("(?<%s>%s)", Configuration.get().getMainGroupName(), getOutputRegex()));
 	}
 
 	public Optional<String> getDescription() {
