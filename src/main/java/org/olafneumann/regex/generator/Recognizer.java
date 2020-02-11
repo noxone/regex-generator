@@ -8,19 +8,26 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class Recognizer {
 	private String name;
 
-	private String regex;
+	private String outputRegex;
 
 	private Optional<String> description;
 
+	private final Optional<String> searchRegex = Optional.empty();
+
 	@JsonCreator
-	public Recognizer() {}
+	public Recognizer() {
+	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getRegex() {
-		return regex;
+	public String getOutputRegex() {
+		return outputRegex;
+	}
+
+	public String getSearchRegex() {
+		return searchRegex.orElse(getOutputRegex());
 	}
 
 	public Optional<String> getDescription() {
@@ -28,6 +35,6 @@ public class Recognizer {
 	}
 
 	public Pattern getPattern() {
-		return Patterns.getPattern(getRegex());
+		return Patterns.getPattern(getSearchRegex());
 	}
 }

@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Matcher;
+
+import com.google.common.base.Strings;
 
 public class RegexGenerator {
 	private final Configuration configuration;
@@ -22,8 +25,9 @@ public class RegexGenerator {
 	}
 
 	private Collection<Object> recognize(final Collection<Recognizer> recognizers, final String input) {
-		final Map<Recognizer, List<RecognizerMatch>> map = recognizers.stream()
-				.collect(toMap(Function.identity(), r -> findPatternProposals(r, input)));
+		final Map<Recognizer, List<RecognizerMatch>> map = recognizers
+			.stream()
+			.collect(toMap(Function.identity(), r -> findPatternProposals(r, input)));
 
 		return map.values().stream().flatMap(Collection::stream).sorted(RecognizerMatch.COMPARATOR).collect(toList());
 	}
@@ -33,10 +37,17 @@ public class RegexGenerator {
 
 		final List<RecognizerMatch> proposals = new ArrayList<>();
 		while (matcher.find()) {
-			proposals.add(
-					new RecognizerMatch(matcher.start(), matcher.end() - matcher.start(), matcher.group(), recognizer));
+			proposals.add(new RecognizerMatch(matcher.start(), matcher.end() - matcher.start(), getMatch(matcher), recognizer));
 		}
 
 		return proposals;
+	}
+
+	private String getMatch(final Matcher matcher) {
+		try {
+			return Optional.ofNullable(Strings.emptyToNull(matcher.group("main"))).orElse(matcher.group());
+		} catch (final IllegalArgumentException e) {
+			return matcher.group();
+		}
 	}
 }

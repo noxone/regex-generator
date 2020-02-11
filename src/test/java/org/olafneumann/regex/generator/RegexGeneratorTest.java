@@ -17,7 +17,7 @@ public class RegexGeneratorTest {
 
 		actual.forEach(System.out::println);
 
-		assertThat(actual).size().isEqualTo(10);
+		assertThat(actual).size().isEqualTo(14);
 	}
 
 }
