@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
@@ -26,7 +27,7 @@ public class Configuration {
 
 		final ObjectMapper objectMapper = new ObjectMapper();
 		// objectMapper.registerModule(module);
-		// objectMapper.registerModule(new Jdk8Module());
+		objectMapper.registerModule(new Jdk8Module());
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		objectMapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
 		objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);

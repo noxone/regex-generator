@@ -123,6 +123,11 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.10.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+			<version>2.10.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>de.lars-sh</groupId>
