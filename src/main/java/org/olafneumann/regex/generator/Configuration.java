@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,10 +38,15 @@ public class Configuration {
 		try {
 			final URL configUrl = Resources.getResource(SETTINGS_FILE_NAME);
 			final String configString = Resources.toString(configUrl, Charsets.UTF_8);
-			return createObjectMapper().readValue(configString, Configuration.class);
+			return check(createObjectMapper().readValue(configString, Configuration.class));
 		} catch (final IOException e) {
 			throw new IllegalStateException("Unable to read configuration", e);
 		}
+	}
+
+	private static Configuration check(final Configuration configuration) {
+		configuration.getRecognizers().stream().map(Recognizer::getName).collect(toList());
+		return configuration;
 	}
 
 	public static Configuration get() {

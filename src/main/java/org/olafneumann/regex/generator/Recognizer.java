@@ -7,21 +7,44 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class Recognizer {
 	private String name;
+	private Optional<String> shortName;
 
 	private String outputRegex;
 
 	private Optional<String> description;
 
-	private final Optional<String> searchRegex = Optional.empty();
+	private Optional<String> searchRegex;
 
-	boolean active = true;
+	boolean active;
 
 	@JsonCreator
 	public Recognizer() {
 	}
 
+	Recognizer(final String name,
+			final Optional<String> shortName,
+			final boolean active,
+			final String outputRegex,
+			final Optional<String> searchRegex,
+			final Optional<String> description) {
+		this.name = name;
+		this.shortName = shortName;
+		this.outputRegex = outputRegex;
+		this.description = description;
+		this.searchRegex = searchRegex;
+		this.active = active;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public Optional<String> getShortName() {
+		return shortName;
+	}
+
+	public String getDisplayName() {
+		return getShortName().orElse(getName());
 	}
 
 	public String getOutputRegex() {
