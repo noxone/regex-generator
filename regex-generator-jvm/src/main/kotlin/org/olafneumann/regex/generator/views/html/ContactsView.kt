@@ -1,7 +1,7 @@
-package org.olafneumann.views.html
+package org.olafneumann.regex.generator.views.html
 
-import org.olafneumann.models.Contact
-import org.olafneumann.views.javafx.HTML5View
+import org.olafneumann.regex.generator.models.Contact
+import org.olafneumann.regex.generator.views.javafx.HTML5View
 
 fun contactsView(contacts: List<Contact>) =
 """

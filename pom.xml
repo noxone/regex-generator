@@ -8,6 +8,9 @@
     <artifactId>regex-generator</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <name>RegexGenerator</name>
+
     <modules>
         <module>regex-generator-web</module>
         <module>regex-generator-jvm</module>

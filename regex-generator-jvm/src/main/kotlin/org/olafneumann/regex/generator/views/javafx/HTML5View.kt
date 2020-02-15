@@ -1,7 +1,7 @@
-package org.olafneumann.views.javafx
+package org.olafneumann.regex.generator.views.javafx
 
-import org.olafneumann.models.Contact
-import org.olafneumann.views.html.contactsView
+import org.olafneumann.regex.generator.models.Contact
+import org.olafneumann.regex.generator.views.html.contactsView
 import javafx.scene.web.WebView
 import tornadofx.View
 

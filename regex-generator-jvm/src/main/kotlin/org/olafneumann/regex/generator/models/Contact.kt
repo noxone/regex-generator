@@ -1,4 +1,4 @@
-package org.olafneumann.models
+package org.olafneumann.regex.generator.models
 
 data class Contact(val name: String, val phone: String, val email: String, val address: String) {
     companion object {
