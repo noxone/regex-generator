@@ -7,5 +7,5 @@ data  class Recognizer(
     var searchPattern: String? = null,
     var active: Boolean = true
 ) {
-    public fun getFinalSearchPattern() = Regex(searchPattern ?: "(?<main>${outputPattern})")
+    public fun getFinalSearchPattern() = Regex(searchPattern ?: "(?<main>$outputPattern)")
 }
