@@ -1,4 +1,4 @@
-package org.olafneumann
+package org.olafneumann.regex.generator
 
 import kotlin.browser.window
 

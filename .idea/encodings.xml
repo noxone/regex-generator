@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/regex-generator-jvm/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/regex-generator-jvm/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/regex-generator-web/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/regex-generator-web/src/main/resources" charset="UTF-8" />
   </component>
 </project>
