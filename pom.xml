@@ -11,10 +11,14 @@
 
     <name>RegexGenerator</name>
 
+    <properties>
+        <kotlin.code.style>official</kotlin.code.style>
+        <kotlin.version>1.3.61</kotlin.version>
+    </properties>
+
     <modules>
         <module>regex-generator-web</module>
         <module>regex-generator-jvm</module>
     </modules>
-
 
 </project>
