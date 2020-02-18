@@ -34,7 +34,7 @@ class RegexGenerator {
 
 fun main() {
     val generator = RegexGenerator()
-    val findings = generator.recognize("2020-12-24 INFO abg.def.h: Dies ist nur ein #beispiel! Und 3!")
+    val findings = generator.recognize("2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text")
     val map = generator.organize(findings)
 
     findings.forEach { console.info(it) }
