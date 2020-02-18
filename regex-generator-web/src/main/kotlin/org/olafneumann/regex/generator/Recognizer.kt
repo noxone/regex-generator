@@ -7,5 +7,5 @@ data  class Recognizer(
     var searchPattern: String? = null,
     var active: Boolean = true
 ) {
-    val searchRegex by lazy { Regex(searchPattern ?: "(?<main>$outputPattern)") }
+    val searchRegex by lazy { Regex(searchPattern ?: "($outputPattern)") }
 }
