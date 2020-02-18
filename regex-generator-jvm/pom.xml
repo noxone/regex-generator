@@ -36,6 +36,7 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!-- Test -->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit</artifactId>
