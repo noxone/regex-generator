@@ -15,22 +15,20 @@ class RegexGenerator {
             else -> matchResult.value
         }
 
-    fun organize(findings: List<RecognizerMatch>): Map<RecognizerMatch, Int> {
+    fun organize(findings: List<RecognizerMatch>): List<MatchDisplay> {
         val lines = mutableListOf<Int>()
-        fun getNextFreeLineAt(pos: Int) : Int {
-            var index = lines.indexOfFirst { it < pos }
-            if (index == -1) {
-                index = lines.size
-                lines.add(-1)
-            }
-            return index
+        return findings.map { finding ->
+            val indexOfFreeLine = lines.indexOfFirst { it < finding.range.first }
+            val line = if (indexOfFreeLine >= 0) indexOfFreeLine else { lines.add(0); lines.size - 1 }
+            lines[line] = finding.range.last
+            MatchDisplay(line, finding)
         }
-        fun enter(line: Int, end: Int): Int {
-            lines[line] = end
-            return line
-        }
-        return findings.map { it to enter(getNextFreeLineAt(it.range.first), it.range.last) }.toMap()
     }
+
+    data class MatchDisplay(
+        val line: Int,
+        val match: RecognizerMatch
+    )
 }
 
 fun main() {
@@ -58,8 +56,7 @@ fun runGenerator(config: Configuration, input: String) {
     val findings = generator.recognize(config = config, input = input)
     val map = generator.organize(findings)
 
-    findings.forEach { console.info(it) }
-    map.forEach { console.info( "${it.key} -> ${it.value}") }
+    map.forEach { console.info( "(${it.line}/${it.match.range.first}-${it.match.range.last}) ${it.match.inputPart} -> ${it.match.recognizer.name}") }
 }
 
 
