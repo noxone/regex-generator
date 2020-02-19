@@ -1,17 +1,93 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-    <meta charset='utf-8'>
-    <title>Test page</title>
-    
-    <!-- include kotlin runtime (run mvn package to get it there) -->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <script type="text/javascript" src="lib/kotlin.js"></script>
-    
-    <!-- your compiled script (run mvn compile to get it up to date) -->
     <script type="text/javascript" src="regex-generator-web.js"></script>
+    <title>Regex Generator</title>
 </head>
 
-<body>
+<body class="bg-dark">
+    <div class="container-fluid py-3" id="mainContainer">
+        <div class="jumbotron bg-warning">
+            <h1 class="display-4">Regex Generator</h1>
+            <p class="lead d-none d-sm-block">Creating <em>regular expressions</em> is easy again!</p>
+        </div>
+
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="input_container">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block">
+                <h3 class="display-3 text-secondary">1</h3>
+            </div>
+            <div class="col-12 col-md-11 py-4 pl-4">
+                <h5>Paste an example</h5>
+                <small id="raw_text_input_help" class="form-text text-muted">Give us an example of the text you want to
+                    match using your <em>regex</em>. We will provide you with some ideas how to build a regular
+                    expression.</small>
+                <input type="text" class="form-control" id="raw_text_input" aria-describedby="raw_text_input_help"
+                    placeholder="Text here...">
+            </div>
+        </div>
+
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="outer_result_container">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block">
+                <h3 class="display-3 text-secondary">2</h3>
+            </div>
+            <div class="col-12 col-md-11 py-4 pl-4">
+                <h5>Select from suggestions</h5>
+                <small class="form-text text-muted">Click on the suggestions to select them for further
+                    processing.</small>
+                <div class="row no-gutters bg-white border rounded p-2 position-relative" id="result_container">
+                    <div style="overflow: auto;">
+                        <pre
+                            class="mb-0">2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text</pre>
+                        <div style="width:1ex;background-color: blue;float:left;">&nbsp;</div>
+                        <div style="width:1ex;background-color: red;float:left;">&nbsp;</div>
+                    </div>
+                    <div style="overflow: auto;">
+                        <div style="font-family: Consolas, monospace;font-size: 0.884em;">
+                            <div id="text-display" style="white-space: pre;">2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text</div>
+                            <div style="clear: left;">
+                                <div style="float:left;background-color:green;width: 19ch; height: 1ex;"></div>
+                            </div>
+                            <div style="clear: left;">
+                                <div style="float:left;background-color:red;width: 10ch; height: 1ex;"></div>
+                                <div style="float:left;background-color:blue;margin-left:1ex;width: 8ch; height: 1ex;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="regex_container">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block">
+                <h3 class="display-3 text-secondary">3</h3>
+            </div>
+            <div class="col-12 col-md-11 py-4 pl-4">
+                <h5>Regular Expression</h5>
+                <small class="form-text text-muted">Find your generated regular expression here.</small>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
