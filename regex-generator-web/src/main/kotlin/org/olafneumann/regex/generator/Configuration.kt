@@ -20,5 +20,19 @@ data class Configuration(
             Recognizer("Hashtag","\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
             Recognizer("loglevel","(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)")
         ))
+
+        fun fromCopy(configuration: dynamic) : Configuration {
+            return Configuration(
+                recognizers = (configuration.recognizers as Array<Recognizer>).map { Recognizer(
+                    name = it.name,
+                    outputPattern = it.outputPattern,
+                    searchPattern = it.searchPattern,
+                    description = it.description,
+                    active = it.active
+                ) },
+                mainGroupIndex = configuration.mainGroupIndex as Int?,
+                mainGroupName = configuration.mainGroupName as String?
+            )
+        }
     }
 }

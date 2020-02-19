@@ -1,7 +1,6 @@
 {
-    "groups": {
-        "main": "main"
-    },
+    "mainGroupName": null,
+    "mainGroupIndex": 1,
     "recognizers": [
         {
             "name": "character",

@@ -1,7 +1,8 @@
 package org.olafneumann.regex.generator
+import org.w3c.xhr.XMLHttpRequest
 
 class RegexGenerator {
-    fun recognize(input: String, config: Configuration = Configuration.default) =
+    fun recognize(config: Configuration = Configuration.default, input: String) =
         config.recognizers
             .filter { it.active }
             .flatMap { it.searchRegex.findAll(input).map { mr -> RecognizerMatch(mr.range, extractMainGroup(mr, config), it) }.toList() }
@@ -33,8 +34,28 @@ class RegexGenerator {
 }
 
 fun main() {
+//    loadFile("settings.json") {
+//        val config = JSON.parse<Configuration>(it)
+    val config = Configuration.default
+    val input = "2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text"
+    runGenerator(config, input)
+//    }
+}
+
+private fun loadFile(url: String, callback: (String) -> Unit) {
+    val xmlHttp = XMLHttpRequest()
+    xmlHttp.open("GET", url)
+    xmlHttp.onload = {
+        if (xmlHttp.readyState == 4.toShort() && xmlHttp.status == 200.toShort()) {
+            callback.invoke(xmlHttp.responseText)
+        }
+    }
+    xmlHttp.send()
+}
+
+fun runGenerator(config: Configuration, input: String) {
     val generator = RegexGenerator()
-    val findings = generator.recognize("2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text")
+    val findings = generator.recognize(config = config, input = input)
     val map = generator.organize(findings)
 
     findings.forEach { console.info(it) }
