@@ -11,7 +11,6 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <script type="text/javascript" src="lib/kotlin.js"></script>
-    <script type="text/javascript" src="regex-generator-web.js"></script>
     <title>Regex Generator</title>
 
     <style>
@@ -19,31 +18,46 @@
             white-space: pre;
         }
 
-        .rg-match-row {
-            font-size: 0;
+        .rg-match-container {
+            font-family: Consolas, monospace;
+            overflow-x: auto;
+            width: 100%;
         }
 
-        .rg-match-row *,
-        .rg-text-display {
-            font-size: 11pt;
+        .rg-match-row {
+            position: relative;
+            height: 0.7rem;
+            white-space: nowrap;
         }
 
         .rg-match-item {
-            position: relative;
-            display: inline-block;
-            height: 1ch;
+            position: absolute;
+            height: 0.7rem;
         }
 
         .rg-match-item-red {
             background-color: red;
+            border: 1px solid red;
         }
 
         .rg-match-item-blue {
             background-color: blue;
+            border: 1px solid blue;
         }
 
         .rg-match-item-green {
             background-color: green;
+            border: 1px solid green;
+        }
+
+        .rg-item-selected {
+            background-color: white;
+        }
+
+        .rg-item-not-available {
+            background-color: lightgray;
+            border: none;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -61,61 +75,96 @@
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <h5>Paste a text sample</h5>
+                <!--<div class="input-group">-->
+                <input type="text" id="rg_raw_input_text" class="form-control" aria-label="Example text"
+                    aria-describedby="rg_raw_text_input_help" placeholder="Text here...">
+                <!--<div class="input-group-append d-none d-sm-inline-block">
+                        <button class="btn btn-outline-primary" type="button">Go</button>
+                    </div>
+                </div>-->
                 <small id="rg_raw_text_input_help" class="form-text text-muted">Give us an example of the text you want
                     to
                     match using your <em>regex</em>. We will provide you with some ideas how to build a regular
                     expression.</small>
-                <!--<div class="input-group">-->
-                    <input type="text" id="rg_raw_input_text" class="form-control" aria-label="Example text"
-                        aria-describedby="rg_raw_text_input_help" placeholder="Text here...">
-                    <!--<div class="input-group-append d-none d-sm-inline-block">
-                        <button class="btn btn-outline-primary" type="button">Go</button>
-                    </div>
-                </div>-->
-                <div class="mt-2">
-                    <button type="button" class="btn btn-primary d-sm-none">Start generator</button>
-                </div>
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="rg_outer_result_container">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_outer_result_container">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">2</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <h5>Select from suggestions</h5>
-                <small class="form-text text-muted">Click on the suggestions to select them for further
-                    processing.</small>
-                <div class="row no-gutters bg-white border rounded p-2 position-relative" id="rg_result_container">
-                    <div style="overflow: auto;">
-                        <div style="font-family: Consolas, monospace;font-size: 0.884em;">
-                            <div id="rg_text_display" class="rg-text-display"></div>
-                            <div id="rg_row_container">
-                                <!--<div class="rg-match-row">
-                                    <div class="rg-match-item rg-match-item-green d-inline-block" style="width: 19ch;"></div>
-                                </div>
-                                <div class="rg-match-row">
-                                    <div class="rg-match-item rg-match-item-blue" style="width: 10ch;"></div>
-                                    <div class="rg-match-item rg-match-item-red" style="margin-left:1ch;width: 8ch;">
-                                    </div>
-                                </div>-->
+                <div class="row no-gutters bg-white border rounded p-2" id="rg_result_container">
+                    <div class="rg-match-container">
+                        <div id="rg_text_display" class="rg-text-display">Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.</div>
+                        <div id="rg_row_container">
+                            <div class="rg-match-row">
+                                <div class="rg-match-item rg-match-item-red" style="width: 23ch; left: 0ch;"
+                                    title="ISO8601 (2020-03-12T13:34:56.123)"></div>
+                                <div class="rg-match-item rg-match-item-blue" style="width: 1ch; left: 24ch;"
+                                    title="number (1)"></div>
+                                <div class="rg-match-item rg-match-item-red" style="width: 4ch; left: 26ch;"
+                                    title="loglevel (WARN)"></div>
+                                <div class="rg-match-item rg-match-item-green" style="width: 7ch; left: 69ch;"
+                                    title="Hashtag (#simple)"></div>
+                                <div class="rg-match-item rg-match-item-blue" style="width: 8ch; left: 92ch;"
+                                    title="String 1 ('string')"></div>
+                            </div>
+                            <div class="rg-match-row">
+                                <div class="rg-match-item rg-match-item-green" style="width: 10ch; left: 0ch;"
+                                    title="date (2020-03-12)"></div>
+                                <div class="rg-match-item rg-match-item-blue" style="width: 12ch; left: 11ch;"
+                                    title="time (13:34:56.123)"></div>
+                            </div>
+                            <div class="rg-match-row">
+                                <div class="rg-match-item rg-match-item-blue rg-item-selected" style="width: 4ch; left: 0ch;"
+                                    title="number (2020)"></div>
+                                <div class="rg-match-item rg-match-item-red" style="width: 2ch; left: 5ch;"
+                                    title="number (03)"></div>
+                                <div class="rg-match-item rg-match-item-green" style="width: 2ch; left: 8ch;"
+                                    title="number (12)"></div>
+                                <div class="rg-match-item rg-match-item-red" style="width: 2ch; left: 11ch;"
+                                    title="number (13)"></div>
+                                <div class="rg-match-item rg-match-item-green" style="width: 2ch; left: 14ch;"
+                                    title="number (34)"></div>
+                                <div class="rg-match-item rg-match-item-blue rg-item-selected"
+                                    style="width: 6ch; left: 17ch;"
+                                    title="real (56.123)"></div>
+                            </div>
+                            <div class="rg-match-row">
+                                <div class="rg-match-item rg-match-item-red rg-item-not-available" style="width: 2ch; left: 17ch;"
+                                    title="number (56)"></div>
+                                <div class="rg-match-item rg-match-item-green rg-item-not-available" style="width: 3ch; left: 20ch;"
+                                    title="number (123)"></div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <small class="form-text text-muted">Click on the marked suggestions to select them for your regular
+                    expression.</small>
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="rg_regex_result_container">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_regex_detail_container">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">3</h3>
+            </div>
+            <div class="col-12 col-md-11 py-4 pl-4">
+                <h5>Some details...</h5>
+                <small class="form-text text-muted">For the items you selected there may be some more options available. Please check and fill your choice.</small>
+            </div>
+        </div>
+
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_regex_result_container">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
+                <h3 class="display-3 text-secondary">4</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <h5>Regular Expression</h5>
                 <small class="form-text text-muted">Find your generated regular expression here.</small>
             </div>
         </div>
-
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -128,10 +177,8 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 
-    <script type="text/javascript">
-        // initialize the main regex generator
-        window['regex-generator-web'].org.olafneumann.regex.generator.initRegexGenerator()
-    </script>
+
+    <script type="text/javascript" src="regex-generator-web.js"></script>
 </body>
 
 </html>
