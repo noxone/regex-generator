@@ -13,60 +13,88 @@
     <script type="text/javascript" src="lib/kotlin.js"></script>
     <script type="text/javascript" src="regex-generator-web.js"></script>
     <title>Regex Generator</title>
+
+    <style>
+        .rg-text-display {
+            white-space: pre;
+        }
+
+        .rg-match-row {
+            font-size: 0;
+        }
+
+        .rg-match-row *, .rg-text-display {
+            font-size: 11pt;
+        }
+
+        .rg-match-item {
+            position: relative;
+            display: inline-block;
+            height: 1ch;
+        }
+
+        .rg-match-item-red {
+            background-color: red;
+        }
+
+        .rg-match-item-blue {
+            background-color: blue;
+        }
+
+        .rg-match-item-green {
+            background-color: green;
+        }
+    </style>
 </head>
 
 <body class="bg-dark">
-    <div class="container-fluid py-3" id="mainContainer">
+    <div class="container-fluid py-3" id="rg_mainContainer">
         <div class="jumbotron bg-warning">
             <h1 class="display-4">Regex Generator</h1>
             <p class="lead d-none d-sm-block">Creating <em>regular expressions</em> is easy again!</p>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="input_container">
-            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="rg_input_container">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">1</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <h5>Paste an example</h5>
-                <small id="raw_text_input_help" class="form-text text-muted">Give us an example of the text you want to
+                <small id="rg_raw_text_input_help" class="form-text text-muted">Give us an example of the text you want to
                     match using your <em>regex</em>. We will provide you with some ideas how to build a regular
                     expression.</small>
                 <div class="input-group mb-3">
-                    <input type="text" id="raw_input_text" class="form-control" id="raw_text_input" aria-label="Example text" aria-describedby="raw_text_input_help"
-                    placeholder="Text here...">
+                    <input type="text" id="rg_raw_input_text" class="form-control"
+                        aria-label="Example text" aria-describedby="rg_raw_text_input_help" placeholder="Text here...">
                     <!--<div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button">Go</button>
                       </div>-->
                 </div>
-                
+
 
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="outer_result_container">
-            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="rg_outer_result_container">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">2</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <h5>Select from suggestions</h5>
                 <small class="form-text text-muted">Click on the suggestions to select them for further
                     processing.</small>
-                <div class="row no-gutters bg-white border rounded p-2 position-relative" id="result_container">
-                    <div style="overflow: auto;">
-                        <pre
-                            class="mb-0">2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text</pre>
-                        <div style="width:1ex;background-color: blue;float:left;">&nbsp;</div>
-                        <div style="width:1ex;background-color: red;float:left;">&nbsp;</div>
-                    </div>
+                <div class="row no-gutters bg-white border rounded p-2 position-relative" id="rg_result_container">
                     <div style="overflow: auto;">
                         <div style="font-family: Consolas, monospace;font-size: 0.884em;">
-                            <div id="text-display" style="white-space: pre;">2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text</div>
-                            <div style="clear: left;">
-                                <div style="float:left;background-color:green;width: 19ch; height: 1ex;"></div>
-                            </div>
-                            <div style="clear: left;">
-                                <div style="float:left;background-color:red;width: 10ch; height: 1ex;"></div>
-                                <div style="float:left;background-color:blue;margin-left:1ex;width: 8ch; height: 1ex;">
+                            <div id="rg_text_display" class="rg-text-display">2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text</div>
+                            <div id="rg_row_container">
+                                <div class="rg-match-row">
+                                    <div class="rg-match-item rg-match-item-green d-inline-block" style="width: 19ch;"></div>
+                                </div>
+                                <div class="rg-match-row">
+                                    <div class="rg-match-item rg-match-item-blue" style="width: 10ch;"></div>
+                                    <div class="rg-match-item rg-match-item-red" style="margin-left:1ch;width: 8ch;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -75,8 +103,8 @@
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="regex_container">
-            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="rg_regex_container">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">3</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
@@ -87,10 +115,6 @@
 
     </div>
 
-    <script type="text/javascript">
-        window['regex-generator-web'].org.olafneumann.regex.generator.initRegexGenerator()
-    </script>
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -100,6 +124,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        // initialize the main regex generator
+        window['regex-generator-web'].org.olafneumann.regex.generator.initRegexGenerator()
+    </script>
 </body>
 
 </html>

@@ -1,34 +1,20 @@
 package org.olafneumann.regex.generator
 import org.w3c.xhr.XMLHttpRequest
 import kotlin.browser.document
-
-data class MatchDisplay(
-    val line: Int,
-    val match: RecognizerMatch
-)
+import kotlin.browser.window
 
 const val LOAD_CONFIG = false
 const val TEST_INPUT = "2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text"
 
 fun main() {
-    // TODO: Change main behaviour...
-    fun runTest(config: Configuration) = runGenerator(TEST_INPUT, config)
-
-    if (LOAD_CONFIG) {
-        loadFile("settings.json") {
-            // TODO: correctly parse into kotlin objects
-            val config = JSON.parse<Configuration>(it)
-            runTest(config)
-        }
-    } else {
-        runGenerator(TEST_INPUT)
-    }
-
-    document.addEventListener("onload", { _ -> initRegexGenerator() })
 }
 
 fun initRegexGenerator() {
-    SimplePresenter()
+    try {
+        SimplePresenter()
+    } catch (exception: Exception) {
+        window.alert("Unable to initialize RegexGenerator: ${exception.message}")
+    }
 }
 
 private fun loadFile(url: String, callback: (String) -> Unit) {
