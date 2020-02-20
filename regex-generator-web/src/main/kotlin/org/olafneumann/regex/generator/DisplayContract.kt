@@ -41,12 +41,14 @@ interface DisplayContract {
 
     interface Presenter {
         fun onInputChanges(newInput: String)
+        fun onSuggestionSelection(match: RecognizerMatch, selected: Boolean)
     }
 }
 
 data class MatchDisplay(
     val line: Int,
-    val match: RecognizerMatch
+    val match: RecognizerMatch,
+    var selected: Boolean = false
 )
 
 class DisplayPage(
@@ -60,6 +62,8 @@ class DisplayPage(
     private val regexDetailContainer = document.getElementById(ID_DETAIL_RESULT_CONTAINER) as HTMLDivElement
     private val regexResultContainer = document.getElementById(ID_REGEX_RESULT_CONTAINER) as HTMLDivElement
 
+    private val recognizerMatchElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
+
     init {
         input.addEventListener("input", { _ -> presenter.onInputChanges(getTextInput()) })
     }
@@ -72,19 +76,32 @@ class DisplayPage(
 
     override fun showResults(matchDisplays: List<MatchDisplay>) {
         rowContainer.clear()
+        recognizerMatchElements.clear()
 
         var index = 0;
         val classes = listOf<String>("red", "green", "blue")
 
         val rows = (0..(matchDisplays.map { it.line }.max()?:0)).map { createRowElement() }.toList()
-        matchDisplays.forEach { match ->
-            val row = rows[match.line]
+        matchDisplays.forEach { display ->
+            val row = rows[display.line]
             val element = createMatchElement(row)
             element.addClass("rg-match-item-${classes[index++%classes.size]}")
-            element.style.width = "${match.match.inputPart.length}ch"
-            element.style.left = "${match.match.range.first}ch"
-            element.title = "${match.match.recognizer.name} (${match.match.inputPart})"
+            element.style.width = "${display.match.inputPart.length}ch"
+            element.style.left = "${display.match.range.first}ch"
+            element.title = "${display.match.recognizer.name} (${display.match.inputPart})"
+            recognizerMatchElements[display.match] = element
+            element.addEventListener("click", { _ -> clickMatchElement(display)})
         }
+    }
+
+    private fun clickMatchElement(display: MatchDisplay) {
+        display.selected = !display.selected
+        if (display.selected) {
+            recognizerMatchElements[display.match]?.let { it.addClass("rg-item-selected") }
+        } else {
+            recognizerMatchElements[display.match]?.let { it.removeClass("rg-item-selected") }
+        }
+        presenter.onSuggestionSelection(display.match, display.selected)
     }
 
     private fun createRowElement(): HTMLDivElement = createDivElement(rowContainer, "rg-match-row")
@@ -126,6 +143,10 @@ class SimplePresenter() : DisplayContract.Presenter {
 
             view.showMatchResultContainer()
         }
+    }
+
+    override fun onSuggestionSelection(match: RecognizerMatch, selected: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun recognizeMatches() {
