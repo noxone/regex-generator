@@ -5,10 +5,13 @@ import org.w3c.dom.HTMLInputElement
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
+import kotlin.dom.removeClass
 
 const val ID_INPUT_ELEMENT = "rg_raw_input_text"
 const val ID_TEXT_DISPLAY = "rg_text_display"
 const val ID_ROW_CONTAINER = "rg_row_container"
+const val ID_OUTER_RESULT_CONTAINER = "rg_outer_result_container"
+const val ID_REGEX_RESULT_CONTAINER = "rg_regex_result_container"
 
 interface DisplayContract {
     companion object {
@@ -25,8 +28,13 @@ interface DisplayContract {
     }
 
     interface View {
+        fun getTextInput(): String
         fun showText(text: String)
         fun showResults(matchDisplays: List<MatchDisplay>)
+        fun hideMatchResultContainer()
+        fun showMatchResultContainer()
+        fun hideRegexResultContainer()
+        fun showRegexResultContainer()
     }
 
     interface Presenter {
@@ -47,10 +55,14 @@ class DisplayPage(
     private val input = document.getElementById(ID_INPUT_ELEMENT) as HTMLInputElement
     private val textDisplay = document.getElementById(ID_TEXT_DISPLAY) as HTMLDivElement
     private val rowContainer = document.getElementById(ID_ROW_CONTAINER) as HTMLDivElement
+    private val matchResultContainer = document.getElementById(ID_OUTER_RESULT_CONTAINER) as HTMLDivElement
+    private val regexResultContainer = document.getElementById(ID_REGEX_RESULT_CONTAINER) as HTMLDivElement
 
     init {
-        input.addEventListener("input", {_->presenter.onInputChanges(input.value)})
+        input.addEventListener("input", { _ -> presenter.onInputChanges(getTextInput()) })
     }
+
+    override fun getTextInput() = input.value
 
     override fun showText(text: String) {
         textDisplay.innerHTML = text
@@ -83,18 +95,38 @@ class DisplayPage(
         parent.appendChild(element)
         return element
     }
+
+    override fun showMatchResultContainer() = showElement(matchResultContainer)
+    override fun hideMatchResultContainer() = hideElement(matchResultContainer)
+    override fun showRegexResultContainer() = showElement(regexResultContainer)
+    override fun hideRegexResultContainer() = hideElement(regexResultContainer)
+    private fun showElement(element: HTMLDivElement) { element.removeClass("invisible") }
+    private fun hideElement(element: HTMLDivElement) { element.addClass("invisible") }
 }
 
 class SimplePresenter() : DisplayContract.Presenter {
     private val view: DisplayContract.View = DisplayPage(this)
 
     override fun onInputChanges(newInput: String) {
-        view.showText(newInput)
+        if (newInput.isBlank()) {
+            view.hideMatchResultContainer()
+            view.hideRegexResultContainer()
+        } else {
+            view.showText(newInput)
 
-        val findings = RecognizerMatch.recognize(input = newInput)
-        val matchResults = DisplayContract.organize(findings)
-        // matchResults.forEach { console.info(it) }
+            val findings = RecognizerMatch.recognize(input = newInput)
+            val matchResults = DisplayContract.organize(findings)
+            // matchResults.forEach { console.info(it) }
 
-        view.showResults(matchResults)
+            view.showResults(matchResults)
+
+            view.showMatchResultContainer()
+        }
+    }
+
+    fun recognizeMatches() {
+        onInputChanges(view.getTextInput())
+        view.hideMatchResultContainer()
+        view.hideRegexResultContainer()
     }
 }

@@ -11,7 +11,7 @@ fun main() {
 
 fun initRegexGenerator() {
     try {
-        SimplePresenter()
+        SimplePresenter().recognizeMatches()
     } catch (exception: Exception) {
         window.alert("Unable to initialize RegexGenerator: ${exception.message}")
     }

@@ -23,7 +23,8 @@
             font-size: 0;
         }
 
-        .rg-match-row *, .rg-text-display {
+        .rg-match-row *,
+        .rg-text-display {
             font-size: 11pt;
         }
 
@@ -59,19 +60,21 @@
                 <h3 class="display-3 text-secondary">1</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
-                <h5>Paste an example</h5>
-                <small id="rg_raw_text_input_help" class="form-text text-muted">Give us an example of the text you want to
+                <h5>Paste a text sample</h5>
+                <small id="rg_raw_text_input_help" class="form-text text-muted">Give us an example of the text you want
+                    to
                     match using your <em>regex</em>. We will provide you with some ideas how to build a regular
                     expression.</small>
-                <div class="input-group mb-3">
-                    <input type="text" id="rg_raw_input_text" class="form-control"
-                        aria-label="Example text" aria-describedby="rg_raw_text_input_help" placeholder="Text here...">
-                    <!--<div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button">Go</button>
-                      </div>-->
+                <!--<div class="input-group">-->
+                    <input type="text" id="rg_raw_input_text" class="form-control" aria-label="Example text"
+                        aria-describedby="rg_raw_text_input_help" placeholder="Text here...">
+                    <!--<div class="input-group-append d-none d-sm-inline-block">
+                        <button class="btn btn-outline-primary" type="button">Go</button>
+                    </div>
+                </div>-->
+                <div class="mt-2">
+                    <button type="button" class="btn btn-primary d-sm-none">Start generator</button>
                 </div>
-
-
             </div>
         </div>
 
@@ -86,16 +89,16 @@
                 <div class="row no-gutters bg-white border rounded p-2 position-relative" id="rg_result_container">
                     <div style="overflow: auto;">
                         <div style="font-family: Consolas, monospace;font-size: 0.884em;">
-                            <div id="rg_text_display" class="rg-text-display">2020-03-12T13:34:56.123+1 WARN  [org.olafneumann.test.Test]: This is #simple. A line with a 'string' in the text</div>
+                            <div id="rg_text_display" class="rg-text-display"></div>
                             <div id="rg_row_container">
-                                <div class="rg-match-row">
+                                <!--<div class="rg-match-row">
                                     <div class="rg-match-item rg-match-item-green d-inline-block" style="width: 19ch;"></div>
                                 </div>
                                 <div class="rg-match-row">
                                     <div class="rg-match-item rg-match-item-blue" style="width: 10ch;"></div>
                                     <div class="rg-match-item rg-match-item-red" style="margin-left:1ch;width: 8ch;">
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -103,7 +106,7 @@
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="rg_regex_container">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded position-relative" id="rg_regex_result_container">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">3</h3>
             </div>
