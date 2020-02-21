@@ -10,6 +10,7 @@ private fun initRegexGenerator() {
     try {
         SimplePresenter().recognizeMatches()
     } catch (exception: Exception) {
+        console.error(exception)
         window.alert("Unable to initialize RegexGenerator: ${exception.message}")
     }
 }

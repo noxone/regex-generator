@@ -14,6 +14,10 @@
     <title>Regex Generator</title>
 
     <style>
+        .rg-hidden {
+            display: none;
+        }
+
         .rg-text-display {
             white-space: pre;
         }
@@ -33,6 +37,7 @@
         .rg-match-item {
             position: absolute;
             height: 0.7rem;
+            cursor: pointer;
         }
 
         .rg-match-item-red {
@@ -74,14 +79,12 @@
                 <h3 class="display-3 text-secondary">1</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
-                <h5>Paste a text sample</h5>
-                <!--<div class="input-group">-->
+                <div class="d-flex justify-content-between">
+                    <h5>Paste a text sample</h5>
+                    <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
+                </div>
                 <input type="text" id="rg_raw_input_text" class="form-control" aria-label="Example text"
-                    aria-describedby="rg_raw_text_input_help" placeholder="Text here...">
-                <!--<div class="input-group-append d-none d-sm-inline-block">
-                        <button class="btn btn-outline-primary" type="button">Go</button>
-                    </div>
-                </div>-->
+                    aria-describedby="rg_raw_text_input_help" placeholder="Text here..." autofocus="autofocus">
                 <small id="rg_raw_text_input_help" class="form-text text-muted">Give us an example of the text you want
                     to
                     match using your <em>regex</em>. We will provide you with some ideas how to build a regular
@@ -94,7 +97,10 @@
                 <h3 class="display-3 text-secondary">2</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
-                <h5>Select from suggestions</h5>
+                <div class="d-flex justify-content-between">
+                    <h5>Select from suggestions</h5>
+                    <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
+                </div>
                 <div class="row no-gutters bg-white border rounded p-2" id="rg_result_container">
                     <div class="rg-match-container">
                         <div id="rg_text_display" class="rg-text-display">Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.</div>
@@ -151,7 +157,10 @@
                 <h3 class="display-3 text-secondary">3</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
-                <h5>Some details...</h5>
+                <div class="d-flex justify-content-between">
+                    <h5>Some details</h5>
+                    <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
+                </div>
                 <small class="form-text text-muted">For the items you selected there may be some more options available. Please check and fill your choice.</small>
             </div>
         </div>
@@ -161,7 +170,10 @@
                 <h3 class="display-3 text-secondary">4</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
-                <h5>Regular Expression</h5>
+                <div class="d-flex justify-content-between">
+                    <h5>Regular expression</h5>
+                    <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
+                </div>
                 <small class="form-text text-muted">Find your generated regular expression here.</small>
             </div>
         </div>
@@ -176,7 +188,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
 
     <script type="text/javascript" src="regex-generator-web.js"></script>
 </body>
