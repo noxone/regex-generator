@@ -22,8 +22,12 @@
             white-space: pre;
         }
 
+        .rg-code,
         .rg-match-container {
             font-family: Consolas, monospace;
+        }
+
+        .rg-match-container {
             overflow-x: auto;
             width: 100%;
         }
@@ -65,6 +69,18 @@
             border: none;
             cursor: not-allowed;
         }
+
+        .rg-check-row {
+            margin-left: 1.4em;
+        }
+
+        .rg-check-row .custom-checkbox {
+            padding-left: 0;
+        }
+
+        .rg-check-row .custom-checkbox .custom-control-input {
+            margin-left: -2em;
+        }
     </style>
 </head>
 
@@ -104,7 +120,8 @@
                 </div>
                 <div class="row no-gutters bg-white border rounded p-2" id="rg_result_container">
                     <div class="rg-match-container">
-                        <div id="rg_text_display" class="rg-text-display">Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.Find your generated regular expression here.</div>
+                        <div id="rg_text_display" class="rg-text-display">This just an #example text with "some
+                            strings".</div>
                         <div id="rg_row_container">
                             <div class="rg-match-row">
                                 <div class="rg-match-item rg-match-item-red" style="width: 23ch; left: 0ch;"
@@ -125,8 +142,8 @@
                                     title="time (13:34:56.123)"></div>
                             </div>
                             <div class="rg-match-row">
-                                <div class="rg-match-item rg-match-item-blue rg-item-selected" style="width: 4ch; left: 0ch;"
-                                    title="number (2020)"></div>
+                                <div class="rg-match-item rg-match-item-blue rg-item-selected"
+                                    style="width: 4ch; left: 0ch;" title="number (2020)"></div>
                                 <div class="rg-match-item rg-match-item-red" style="width: 2ch; left: 5ch;"
                                     title="number (03)"></div>
                                 <div class="rg-match-item rg-match-item-green" style="width: 2ch; left: 8ch;"
@@ -136,14 +153,13 @@
                                 <div class="rg-match-item rg-match-item-green" style="width: 2ch; left: 14ch;"
                                     title="number (34)"></div>
                                 <div class="rg-match-item rg-match-item-blue rg-item-selected"
-                                    style="width: 6ch; left: 17ch;"
-                                    title="real (56.123)"></div>
+                                    style="width: 6ch; left: 17ch;" title="real (56.123)"></div>
                             </div>
                             <div class="rg-match-row">
-                                <div class="rg-match-item rg-match-item-red rg-item-not-available" style="width: 2ch; left: 17ch;"
-                                    title="number (56)"></div>
-                                <div class="rg-match-item rg-match-item-green rg-item-not-available" style="width: 3ch; left: 20ch;"
-                                    title="number (123)"></div>
+                                <div class="rg-match-item rg-match-item-red rg-item-not-available"
+                                    style="width: 2ch; left: 17ch;" title="number (56)"></div>
+                                <div class="rg-match-item rg-match-item-green rg-item-not-available"
+                                    style="width: 3ch; left: 20ch;" title="number (123)"></div>
                             </div>
                         </div>
                     </div>
@@ -153,63 +169,153 @@
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_regex_detail_container">
-            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
-                <h3 class="display-3 text-secondary">3</h3>
-            </div>
-            <div class="col-12 col-md-11 py-4 pl-4">
-                <div class="d-flex justify-content-between">
-                    <h5>Set some details.</h5>
-                    <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
-                </div>
-                <small class="form-text text-muted mb-2">You have chosen <span id="rg_regex_count">2</span> patterns. Some of the patterns you selected might require some more configuration. Please adjust the settings for your needs.</small>
-                <div class="d-flex flex-wrap">
-                    <div class="card mr-2 mb-2" style="width: 18rem;">
-                        <div class="card-header">
-                            Featured
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                        </ul>
-                    </div>
-                    <div class="card mr-2 mb-2" style="width: 18rem;">
-                        <div class="card-header">
-                            Featured
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                        </ul>
-                    </div>
-                    <div class="card mr-2 mb-2" style="width: 18rem;">
-                        <div class="card-header">
-                            Featured
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_regex_result_container">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
-                <h3 class="display-3 text-secondary">4</h3>
+                <h3 class="display-3 text-secondary">3</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <div class="d-flex justify-content-between">
                     <h5>Regular expression</h5>
                     <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
                 </div>
-                <small class="form-text text-muted">Find your generated regular expression here.</small>
+                <div class="rg-match-container mb-3 rounded border p-2 bg-white">
+                    <div class="rg-match-container">
+                        <div id="rg_text_display" class="rg-text-display">This is the generated regular expression.
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-primary">Copy regex</button>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary">Java</button>
+                        <button type="button" class="btn btn-secondary">JavaScript</button>
+                        <button type="button" class="btn btn-secondary">PCRE</button>
+                    </div>
+                    <button class="btn btn-warning float-right" data-toggle="collapse"
+                        data-target="#rg_regexOptionsExpandable" aria-expanded="true"
+                        aria-controls="rg_regexOptionsExpandable">Options</button>
+                </div>
+                <div class="collapse show mt-3" id="rg_regexOptionsExpandable">
+                    <div class="card card-body bg-light">
+                        <form>
+                            <div class="form-group row">
+                                <div class="col-sm-12 rg-check-row">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="rg_onlymatches"
+                                            aria-describedby="rg_onlymatches_help">
+                                        <label class="custom-control-label" for="rg_onlymatches">Generate only
+                                            patterns</label>
+                                    </div>
+                                    <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
+                                        When checked then generated regular expression will only contain the
+                                        patterns you chose in step 2. Otherwise all the characters between the
+                                        patterns will be copied.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12 rg-check-row">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="rg_caseinsensitive"
+                                            aria-describedby="rg_caseinsensitive_help">
+                                        <label class="custom-control-label" for="rg_caseinsensitive">Case
+                                            Insensitive</label>
+                                    </div>
+                                    <small id="rg_caseinsensitive_help" class="form-text text-muted mt-0">
+                                        By default, all major regex engines match in case-sensitive mode. If you want
+                                        patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
+                                        to match in
+                                        case-insensitive fashion, we need to turn that feature on.<sup><a
+                                                href="https://www.rexegg.com/regex-modifiers.html#i" target="_blank">*</a></sup>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12 rg-check-row">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="rg_dotmatcheslinebreakes"
+                                            aria-describedby="rg_dotmatcheslinebreakes_help">
+                                        <label class="custom-control-label" for="rg_dotmatcheslinebreakes">Dot Matches
+                                            Line Breaks</label>
+                                    </div>
+                                    <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
+                                        By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
+                                        match line break characters such as line feeds and
+                                        carriage returns. If you want patterns such as <span
+                                            class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
+                                        lines, we need to turn that feature on.
+                                        <sup><a href="https://www.rexegg.com/regex-modifiers.html#dotall" target="_blank">*</a></sup> </small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12 rg-check-row">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="rg_multiline"
+                                            aria-describedby="rg_multiline_help">
+                                        <label class="custom-control-label" for="rg_multiline">Multiline</label>
+                                    </div>
+                                    <small id="rg_multiline_help" class="form-text text-muted mt-0">
+                                        By default, most major engines (except Ruby), the anchors <span
+                                        class="border rg-code p-1 bg-white">^</span> and <span
+                                        class="border rg-code p-1 bg-white">$</span> only match
+                                        (respectively) at the beginning and the end of the string.
+
+                                        In other engines, if you want patterns such as <span
+                                        class="border rg-code p-1 bg-white">^Define</span> and <span
+                                        class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
+                                        (respectively) at the beginning and the end of each line, we need to turn that
+                                        feature on.
+                                        <sup><a href="https://www.rexegg.com/regex-modifiers.html#multiline" target="_blank">*</a></sup> </small>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Footer -->
+        <footer
+            class="page-footer font-small row no-gutters bg-dark text-muted border border-secondary mt-3 p-4 rounded">
+            <div class="text-center text-md-left">
+                <div class="row">
+                    <div class="col-md-6 mt-md-0 mt-3">
+                        <h5 class="text-uppercase">Regex Generator</h5>
+                        <p>The idea for this page comes from <a
+                                href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/">txt2re</a>,
+                            which is obviously not being further developed.</p>
+                        <p>The goal of this page is to give as many people as possible the opportunity to develop and
+                            use regular expressions. Hopefully nobody has to call <span
+                                class="rg-code">substring()</span> anymore.</p>
+                        <p>Find the project source code at <a
+                                href="https://github.com/noxone/regex-generator">Github</a></p>
+                    </div>
+                    <hr class="clearfix w-100 d-md-none pb-3 border-secondary">
+                    <div class="col-md-3 mb-md-0 mb-3">
+                        <h5>Useful Regex Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="https://regex101.com/">Regular Expressions 101</a></li>
+                            <li><a href="https://regexr.com/">Regexr</a></li>
+                            <li><a href="https://www.regexplanet.com">RegexPlanet</a></li>
+                            <li><a href="https://www.rexegg.com">RexEgg</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 mb-md-0 mb-3">
+                        <h5>This project is based on</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="https://kotlinlang.org/">Kotlin</a></li>
+                            <li><a href="https://getbootstrap.com">Bootstrap</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="text-center pt-3">
+                &copy; 2020 Copyright <a href="https://github.com/noxone/">Olaf Neumann</a>
+            </div>
+        </footer>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator
 
-data  class Recognizer(
+data class Recognizer(
     var name: String,
     var outputPattern: String,
     var description: String? = null,
