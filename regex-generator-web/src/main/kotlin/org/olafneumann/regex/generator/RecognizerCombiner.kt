@@ -12,14 +12,17 @@ class RecognizerCombiner {
             val staticValues = (0 until indices.size step 2)
                 .map { indices[it] to indices[it + 1] }
                 .map { inputText.substring(it.first, it.second) }
+                .map { escapeRegex(it) }
                 .map { if (options.onlyPatterns && !it.isBlank()) ".*" else it }
 
             val pattern = staticValues.reduceIndexed { index, acc, s -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${s}" }
 
                 //.reduceIndexed { index, acc, item -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${item}"}
 
-            return RegularExpression(pattern)
+            return RegularExpression("^${pattern}$")
         }
+
+        private fun escapeRegex(input: String) = input.replace(Regex("([.\\\\^$\\[\\]{}()*?+])"),"\\$1")
     }
 
     data class Options(

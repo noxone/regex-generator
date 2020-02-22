@@ -1,8 +1,7 @@
 package org.olafneumann.regex.generator
 
-import org.w3c.dom.HTMLDivElement
-import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.Node
+import org.w3c.dom.*
+import org.w3c.dom.clipboard.Clipboard
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
@@ -31,8 +30,10 @@ const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
 const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
 const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
 const val ID_CHECK_MULTILINE = "rg_dotmatcheslinebreakes"
+const val ID_BUTTON_COPY = "rg_button_copy"
 
 private val Int.characterUnits: String get() = "${this}ch"
+external fun copyTextToClipboard(string: String)
 
 interface DisplayContract {
     interface View {
@@ -51,6 +52,7 @@ interface DisplayContract {
     }
 
     interface Presenter {
+        fun onButtonCopyClick()
         fun onInputChanges(newInput: String)
         fun onSuggestionClick(match: RecognizerMatch)
         fun onOptionsChange(options: RecognizerCombiner.Options)
@@ -70,6 +72,7 @@ class DisplayPage(
     private val patternSelectionContainer = getDivById(ID_CONTAINER_PATTERN_SELECTION)
     private val resultContainer = getDivById(ID_CONTAINER_RESULT)
     private val resultDisplay = getDivById(ID_RESULT_DISPLAY)
+    private val buttonCopy = getButtonById(ID_BUTTON_COPY)
     private val checkOnlyMatches = getInputById(ID_CHECK_ONLY_MATCHES)
     private val checkCaseInsensitive = getInputById(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
@@ -80,6 +83,7 @@ class DisplayPage(
 
     init {
         textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(getTextInput()) })
+        buttonCopy.addEventListener(EVENT_CLICK, { presenter.onButtonCopyClick() })
         checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
@@ -99,6 +103,14 @@ class DisplayPage(
             return document.getElementById(id) as HTMLInputElement
         } catch (e: ClassCastException) {
             throw RuntimeException("Unable to find input with id '$id'.", e)
+        }
+    }
+
+    private fun getButtonById(id: String): HTMLButtonElement {
+        try {
+            return document.getElementById(id) as HTMLButtonElement
+        } catch (e: ClassCastException) {
+            throw RuntimeException("Unable to find button with id '$id'.", e)
         }
     }
 
@@ -144,7 +156,7 @@ class DisplayPage(
     private fun distributeToRows(matches: Collection<RecognizerMatch>): Map<RecognizerMatch, Int> {
         val lines = mutableListOf<Int>()
         return matches.map { match ->
-            val indexOfFreeLine = lines.indexOfFirst { it < match.range.first }
+            val indexOfFreeLine = lines.indexOfFirst { it <= match.range.first }
             val line = if (indexOfFreeLine >= 0) indexOfFreeLine else { lines.add(0); lines.size - 1 }
             lines[line] = match.range.last + 1
             match to line
@@ -192,14 +204,18 @@ class DisplayPage(
 
 class SimplePresenter : DisplayContract.Presenter {
     private val view: DisplayContract.View = DisplayPage(this)
-
     private val matches = mutableMapOf<RecognizerMatch, Boolean>()
+
 
     fun recognizeMatches() {
         view.patternSelectionContainerVisible = false
         view.resultVisible = false
         view.resultText = ""
         onInputChanges(view.getTextInput())
+    }
+
+    override fun onButtonCopyClick() {
+        copyTextToClipboard(view.resultText)
     }
 
     override fun onInputChanges(newInput: String) {
@@ -216,6 +232,7 @@ class SimplePresenter : DisplayContract.Presenter {
             view.showText(newInput)
             view.showResults(matches.keys)
             view.patternSelectionContainerVisible = true
+            view.resultText = ""
         }
     }
 
