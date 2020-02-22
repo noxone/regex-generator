@@ -6,6 +6,7 @@ import org.w3c.dom.Node
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
+import kotlin.dom.hasClass
 import kotlin.dom.removeClass
 
 const val CLASS_HIDDEN = "rg-hidden"
@@ -36,12 +37,9 @@ interface DisplayContract {
         fun select(match: RecognizerMatch, selected: Boolean)
         fun disable(match: RecognizerMatch, disabled: Boolean)
 
-        fun hideMatchResultContainer()
-        fun showMatchResultContainer()
-        fun hideRegexDetailContainer()
-        fun showRegexDetailContainer()
-        fun hideRegexResultContainer()
-        fun showRegexResultContainer()
+        var matchResultsVisible: Boolean
+        var regexDetailsVisible: Boolean
+        var resultVisible: Boolean
     }
 
     interface Presenter {
@@ -79,8 +77,8 @@ class DisplayPage(
     override fun showResults(matches: Collection<RecognizerMatch>) {
         // TODO remove CSS class iterator
         var index = 0
-        val classes = listOf("red", "green", "blue")
-        fun getCssClass() = "${CLASS_MATCH_ITEM}-${classes[index++%classes.size]}"
+        val classes = listOf("primary", "success", "danger", "warning")
+        fun getCssClass() = "bg-${classes[index++%classes.size]}"
 
         fun getElementTitle(match: RecognizerMatch) = "${match.recognizer.name} (${match.inputPart})"
 
@@ -126,17 +124,18 @@ class DisplayPage(
         return element
     }
 
-    override fun showMatchResultContainer() = showElement(matchResultContainer)
-    override fun hideMatchResultContainer() = hideElement(matchResultContainer)
-    override fun showRegexResultContainer() = showElement(regexResultContainer)
-    override fun hideRegexResultContainer() = hideElement(regexResultContainer)
-    override fun showRegexDetailContainer() = showElement(regexDetailContainer)
-    override fun hideRegexDetailContainer() = hideElement(regexDetailContainer)
-    private fun showElement(element: HTMLDivElement) { element.removeClass(CLASS_HIDDEN) }
-    private fun hideElement(element: HTMLDivElement) { element.addClass(CLASS_HIDDEN) }
-
+    override var matchResultsVisible: Boolean
+        get() = matchResultContainer.hasClass(CLASS_HIDDEN)
+        set(value) { toggleClass(matchResultContainer, !value, CLASS_HIDDEN) }
+    override var regexDetailsVisible: Boolean
+        get() = regexResultContainer.hasClass(CLASS_HIDDEN)
+        set(value) { toggleClass(regexDetailContainer, !value, CLASS_HIDDEN) }
+    override var resultVisible: Boolean
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) { toggleClass(regexResultContainer, !value, CLASS_HIDDEN) }
     override fun select(match: RecognizerMatch, selected: Boolean) = match.div?.let { toggleClass(it, selected, CLASS_ITEM_SELECTED) }!!
     override fun disable(match: RecognizerMatch, disabled: Boolean) = match.div?.let { toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }!!
+
     private fun toggleClass(element: HTMLDivElement, selected: Boolean, className: String) {
         if (selected)
             element.addClass(className)
@@ -151,25 +150,26 @@ class SimplePresenter : DisplayContract.Presenter {
     private val matches = mutableMapOf<RecognizerMatch, Boolean>()
 
     fun recognizeMatches() {
-        view.hideMatchResultContainer()
-        view.hideRegexDetailContainer()
-        view.hideRegexResultContainer()
+        view.matchResultsVisible = false
+        view.regexDetailsVisible = false
+        view.resultVisible = false
         onInputChanges(view.getTextInput())
     }
 
     override fun onInputChanges(newInput: String) {
         matches.clear()
         if (newInput.isBlank()) {
-            view.hideMatchResultContainer()
-            view.hideRegexResultContainer()
+            view.matchResultsVisible = false
+            view.regexDetailsVisible = false
+            view.resultVisible = false
         } else {
-            matches.putAll(RecognizerMatch.recognize(input = newInput)
+            matches.putAll(RecognizerMatch.recognize(newInput)
                 .map { it to false }
                 .toMap())
 
             view.showText(newInput)
             view.showResults(matches.keys)
-            view.showMatchResultContainer()
+            view.matchResultsVisible = true
         }
     }
 
@@ -186,11 +186,7 @@ class SimplePresenter : DisplayContract.Presenter {
         // disable matches in UI
         matches.keys.forEach { view.disable(it, disabledMatches.contains(it)) }
 
-        if (matches.values.any { it }) {
-            view.showRegexDetailContainer()
-        } else {
-            view.hideRegexDetailContainer()
-        }
+        view.regexDetailsVisible = matches.values.any { it }
     }
 
     private val deactivatedMatches: Collection<RecognizerMatch> get() {

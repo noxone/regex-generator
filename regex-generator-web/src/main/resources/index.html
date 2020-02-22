@@ -57,10 +57,11 @@
 
         .rg-item-selected {
             background-color: white;
+            border: 1px solid gray;
         }
 
         .rg-item-not-available {
-            background-color: lightgray;
+            background-color: lightgray !important;
             border: none;
             cursor: not-allowed;
         }
@@ -80,7 +81,7 @@
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <div class="d-flex justify-content-between">
-                    <h5>Paste a text sample</h5>
+                    <h5>Paste a text sample.</h5>
                     <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
                 </div>
                 <input type="text" id="rg_raw_input_text" class="form-control" aria-label="Example text"
@@ -98,7 +99,7 @@
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <div class="d-flex justify-content-between">
-                    <h5>Select from suggestions</h5>
+                    <h5>Which parts of the text are interesting for you?</h5>
                     <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
                 </div>
                 <div class="row no-gutters bg-white border rounded p-2" id="rg_result_container">
@@ -158,10 +159,42 @@
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <div class="d-flex justify-content-between">
-                    <h5>Some details</h5>
+                    <h5>Set some details.</h5>
                     <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
                 </div>
-                <small class="form-text text-muted">For the items you selected there may be some more options available. Please check and fill your choice.</small>
+                <small class="form-text text-muted mb-2">You have chosen <span id="rg_regex_count">2</span> patterns. Some of the patterns you selected might require some more configuration. Please adjust the settings for your needs.</small>
+                <div class="d-flex flex-wrap">
+                    <div class="card mr-2 mb-2" style="width: 18rem;">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
+                        </ul>
+                    </div>
+                    <div class="card mr-2 mb-2" style="width: 18rem;">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
+                        </ul>
+                    </div>
+                    <div class="card mr-2 mb-2" style="width: 18rem;">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
