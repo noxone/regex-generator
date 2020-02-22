@@ -13,7 +13,7 @@ class RecognizerCombiner {
                 .map { indices[it] to indices[it + 1] }
                 .map { inputText.substring(it.first, it.second) }
                 .map { escapeRegex(it) }
-                .map { if (options.onlyPatterns && !it.isBlank()) ".*" else it }
+                .map { if (options.onlyPatterns && it.isNotEmpty()) ".*" else it }
 
             val pattern = staticValues.reduceIndexed { index, acc, s -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${s}" }
 
