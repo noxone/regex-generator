@@ -69,7 +69,36 @@
                             <includeArtifactIds>kotlin-stdlib-js</includeArtifactIds>
                             <outputDirectory>${project.build.outputDirectory}/lib</outputDirectory>
                             <includes>**\/*.js</includes>
-                            <excludes>**\/*.meta.js</excludes> <!-- we don't need meta.js files in runtime -->
+                            <excludes>**\/*.meta.js</excludes>                            <!-- we don't need meta.js files in runtime -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-docs</id>
+                        <!-- here the phase you need -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/../docs/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/target/classes</directory>
+                                    <includes>
+										<include>index.html</include>
+                                        <include>regex-generator-web.js</include>
+                                        <include>regex-generator-web.js.map</include>
+										<include>lib/**/*</include>
+									</includes>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>

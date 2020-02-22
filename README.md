@@ -1,6 +1,6 @@
 # Regex Generator [![Build Status](https://travis-ci.com/noxone/regex-generator.svg?branch=master)](https://travis-ci.com/noxone/regex-generator)
 
-The ``regex-generator`` is a tool to produce regular expressions without needing too much knowledge.
+The ``Regex Generator`` is a tool to produce regular expressions without needing too much knowledge.
 
 ## Introduction
 
@@ -8,10 +8,10 @@ Regex Generator tries to help you to create a first version of a regular express
 
 Hopefully nobody will need to use ``substring()`` anymore.
 
-## Try it!
+## Try out
 
 Try the one [Regex Generator](https://noxone.github.io/regex-generator/) online.
 
-## More ideas?
+## More ideas
 
-If you have more ideas, please let me know via [issues](./issues).
+More ideas for new features or how to improve the application are very welcome. Please add them to the Github [issues](https://github.com/noxone/regex-generator/issues).

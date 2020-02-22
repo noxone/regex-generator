@@ -184,17 +184,22 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button class="btn btn-primary" id="rg_button_copy">Copy regex</button>
-                    <!-- TODO: make visible again -->
-                    <!-- <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-secondary">Java</button>
-                        <button type="button" class="btn btn-secondary">JavaScript</button>
-                        <button type="button" class="btn btn-secondary">PCRE</button>
-                    </div> -->
-                    <button class="btn btn-warning float-right" data-toggle="collapse"
+                <div class="d-flex justify-content-between">
+                    <div>
+                        
+                        <button class="btn btn-primary" id="rg_button_copy">Copy regex</button>
+                        <!-- TODO: make visible again -->
+                        <!-- <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary">Java</button>
+                            <button type="button" class="btn btn-secondary">JavaScript</button>
+                            <button type="button" class="btn btn-secondary">PCRE</button>
+                        </div> -->
+                    </div>
+                    <div>
+                        <button class="btn btn-warning" data-toggle="collapse"
                         data-target="#rg_regexOptionsExpandable" aria-expanded="true"
                         aria-controls="rg_regexOptionsExpandable">Options</button>
+                    </div>
                 </div>
                 <div class="collapse mt-3" id="rg_regexOptionsExpandable">
                     <div class="card card-body bg-light">
