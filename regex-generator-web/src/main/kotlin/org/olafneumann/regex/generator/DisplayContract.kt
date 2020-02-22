@@ -22,10 +22,15 @@ const val EVENT_INPUT = "input"
 
 const val ID_INPUT_ELEMENT = "rg_raw_input_text"
 const val ID_TEXT_DISPLAY = "rg_text_display"
+const val ID_RESULT_DISPLAY = "rg_result_display"
 const val ID_ROW_CONTAINER = "rg_row_container"
 const val ID_CONTAINER_INPUT = "rg_input_container"
 const val ID_CONTAINER_PATTERN_SELECTION = "rg_pattern_selection_container"
 const val ID_CONTAINER_RESULT = "rg_regex_result_container"
+const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
+const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
+const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
+const val ID_CHECK_MULTILINE = "rg_dotmatcheslinebreakes"
 
 private val Int.characterUnits: String get() = "${this}ch"
 
@@ -40,11 +45,15 @@ interface DisplayContract {
         var inputContainerVisible: Boolean
         var patternSelectionContainerVisible: Boolean
         var resultVisible: Boolean
+        var resultText: String
+
+        val options: RecognizerCombiner.Options
     }
 
     interface Presenter {
         fun onInputChanges(newInput: String)
         fun onSuggestionClick(match: RecognizerMatch)
+        fun onOptionsChange(options: RecognizerCombiner.Options)
     }
 }
 
@@ -54,25 +63,54 @@ class DisplayPage(
     private val RecognizerMatch.row: Int? get() = recognizerMatchToRow[this]
     private val RecognizerMatch.div: HTMLDivElement? get() = recognizerMatchToElements[this]
 
-    private val input = document.getElementById(ID_INPUT_ELEMENT) as HTMLInputElement
-    private val textDisplay = document.getElementById(ID_TEXT_DISPLAY) as HTMLDivElement
-    private val rowContainer = document.getElementById(ID_ROW_CONTAINER) as HTMLDivElement
-    private val inputContainer = document.getElementById(ID_CONTAINER_INPUT) as HTMLDivElement
-    private val patternSelectionContainer = document.getElementById(ID_CONTAINER_PATTERN_SELECTION) as HTMLDivElement
-    private val resultContainer = document.getElementById(ID_CONTAINER_RESULT) as HTMLDivElement
+    private val textInput = getInputById(ID_INPUT_ELEMENT)
+    private val textDisplay = getDivById(ID_TEXT_DISPLAY)
+    private val rowContainer = getDivById(ID_ROW_CONTAINER)
+    private val inputContainer = getDivById(ID_CONTAINER_INPUT)
+    private val patternSelectionContainer = getDivById(ID_CONTAINER_PATTERN_SELECTION)
+    private val resultContainer = getDivById(ID_CONTAINER_RESULT)
+    private val resultDisplay = getDivById(ID_RESULT_DISPLAY)
+    private val checkOnlyMatches = getInputById(ID_CHECK_ONLY_MATCHES)
+    private val checkCaseInsensitive = getInputById(ID_CHECK_CASE_INSENSITIVE)
+    private val checkDotAll = getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
+    private val checkMultiline = getInputById(ID_CHECK_MULTILINE)
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
 
     init {
-        input.addEventListener(EVENT_INPUT, { presenter.onInputChanges(getTextInput()) })
+        textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(getTextInput()) })
+        checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+        checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+        checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+        checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
     }
 
-    override fun getTextInput() = input.value
+    private fun getDivById(id: String): HTMLDivElement {
+        try {
+            return document.getElementById(id) as HTMLDivElement
+        } catch (e: ClassCastException) {
+            throw RuntimeException("Unable to find div with id '$id'.", e)
+        }
+    }
+
+    private fun getInputById(id: String): HTMLInputElement {
+        try {
+            return document.getElementById(id) as HTMLInputElement
+        } catch (e: ClassCastException) {
+            throw RuntimeException("Unable to find input with id '$id'.", e)
+        }
+    }
+
+    override fun getTextInput() = textInput.value
 
     override fun showText(text: String) {
         textDisplay.innerText = text
     }
+
+    override var resultText: String
+        get() = resultDisplay.innerText
+        set(value) { resultDisplay.innerText = value }
 
     override fun showResults(matches: Collection<RecognizerMatch>) {
         // TODO remove CSS class iterator
@@ -142,6 +180,14 @@ class DisplayPage(
         else
             element.removeClass(className)
     }
+
+    override val options: RecognizerCombiner.Options
+        get() = RecognizerCombiner.Options(
+            onlyPatterns = checkOnlyMatches.checked,
+            caseSensitive = checkCaseInsensitive.checked,
+            dotMatchesLineBreaks = checkDotAll.checked,
+            multiline = checkMultiline.checked
+        )
 }
 
 class SimplePresenter : DisplayContract.Presenter {
@@ -152,6 +198,7 @@ class SimplePresenter : DisplayContract.Presenter {
     fun recognizeMatches() {
         view.patternSelectionContainerVisible = false
         view.resultVisible = false
+        view.resultText = ""
         onInputChanges(view.getTextInput())
     }
 
@@ -160,6 +207,7 @@ class SimplePresenter : DisplayContract.Presenter {
         if (newInput.isBlank()) {
             view.patternSelectionContainerVisible = false
             view.resultVisible = false
+            view.resultText = ""
         } else {
             matches.putAll(RecognizerMatch.recognize(newInput)
                 .map { it to false }
@@ -184,7 +232,18 @@ class SimplePresenter : DisplayContract.Presenter {
         // disable matches in UI
         matches.keys.forEach { view.disable(it, disabledMatches.contains(it)) }
 
+        computeOutputPattern()
+    }
+
+    override fun onOptionsChange(options: RecognizerCombiner.Options) {
+        computeOutputPattern()
+    }
+
+    private fun computeOutputPattern() {
         view.resultVisible = matches.values.any { it }
+
+        val result = RecognizerCombiner.combine(view.getTextInput(), matches.filter { it.value }.map { it.key }.toList(), view.options)
+        view.resultText = result.pattern
     }
 
     private val deactivatedMatches: Collection<RecognizerMatch> get() {

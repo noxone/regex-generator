@@ -60,7 +60,7 @@
         }
 
         .rg-item-selected {
-            background-color: white;
+            background-color: white !important;
             border: 1px solid gray;
         }
 
@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_outer_result_container">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_pattern_selection_container">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">2</h3>
             </div>
@@ -180,7 +180,7 @@
                 </div>
                 <div class="rg-match-container mb-3 rounded border p-2 bg-white">
                     <div class="rg-match-container">
-                        <div id="rg_text_display" class="rg-text-display">This is the generated regular expression.
+                        <div id="rg_result_display" class="rg-text-display">This is the generated regular expression.
                         </div>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
                         data-target="#rg_regexOptionsExpandable" aria-expanded="true"
                         aria-controls="rg_regexOptionsExpandable">Options</button>
                 </div>
-                <div class="collapse show mt-3" id="rg_regexOptionsExpandable">
+                <div class="collapse mt-3" id="rg_regexOptionsExpandable">
                     <div class="card card-body bg-light">
                         <form>
                             <div class="form-group row">
@@ -278,13 +278,16 @@
         <!-- Footer -->
         <footer
             class="page-footer font-small row no-gutters bg-dark text-muted border border-secondary mt-3 p-4 rounded">
-            <div class="text-center text-md-left">
+            <div class="col-12 text-center text-md-left d-flex justify-content-between">
+                <h5 class="text-uppercase">Regex Generator</h5>
+                <a data-toggle="collapse" href="#footerContent" role="button" aria-expanded="false" aria-controls="footerContent">+</a>
+            </div>
+            <div class="text-center text-md-left collapse" id="footerContent">
                 <div class="row">
                     <div class="col-md-6 mt-md-0 mt-3">
-                        <h5 class="text-uppercase">Regex Generator</h5>
                         <p>The idea for this page comes from <a
                                 href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/">txt2re</a>,
-                            which is obviously not being further developed.</p>
+                            which has obviously been discontinued.</p>
                         <p>The goal of this page is to give as many people as possible the opportunity to develop and
                             use regular expressions. Hopefully nobody has to call <span
                                 class="rg-code">substring()</span> anymore.</p>
