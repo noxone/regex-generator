@@ -23,9 +23,9 @@ const val EVENT_INPUT = "input"
 const val ID_INPUT_ELEMENT = "rg_raw_input_text"
 const val ID_TEXT_DISPLAY = "rg_text_display"
 const val ID_ROW_CONTAINER = "rg_row_container"
-const val ID_OUTER_RESULT_CONTAINER = "rg_outer_result_container"
-const val ID_DETAIL_RESULT_CONTAINER = "rg_regex_detail_container"
-const val ID_REGEX_RESULT_CONTAINER = "rg_regex_result_container"
+const val ID_CONTAINER_INPUT = "rg_input_container"
+const val ID_CONTAINER_PATTERN_SELECTION = "rg_pattern_selection_container"
+const val ID_CONTAINER_RESULT = "rg_regex_result_container"
 
 private val Int.characterUnits: String get() = "${this}ch"
 
@@ -37,8 +37,8 @@ interface DisplayContract {
         fun select(match: RecognizerMatch, selected: Boolean)
         fun disable(match: RecognizerMatch, disabled: Boolean)
 
-        var matchResultsVisible: Boolean
-        var regexDetailsVisible: Boolean
+        var inputContainerVisible: Boolean
+        var patternSelectionContainerVisible: Boolean
         var resultVisible: Boolean
     }
 
@@ -57,9 +57,9 @@ class DisplayPage(
     private val input = document.getElementById(ID_INPUT_ELEMENT) as HTMLInputElement
     private val textDisplay = document.getElementById(ID_TEXT_DISPLAY) as HTMLDivElement
     private val rowContainer = document.getElementById(ID_ROW_CONTAINER) as HTMLDivElement
-    private val matchResultContainer = document.getElementById(ID_OUTER_RESULT_CONTAINER) as HTMLDivElement
-    private val regexDetailContainer = document.getElementById(ID_DETAIL_RESULT_CONTAINER) as HTMLDivElement
-    private val regexResultContainer = document.getElementById(ID_REGEX_RESULT_CONTAINER) as HTMLDivElement
+    private val inputContainer = document.getElementById(ID_CONTAINER_INPUT) as HTMLDivElement
+    private val patternSelectionContainer = document.getElementById(ID_CONTAINER_PATTERN_SELECTION) as HTMLDivElement
+    private val resultContainer = document.getElementById(ID_CONTAINER_RESULT) as HTMLDivElement
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
@@ -124,15 +124,15 @@ class DisplayPage(
         return element
     }
 
-    override var matchResultsVisible: Boolean
-        get() = matchResultContainer.hasClass(CLASS_HIDDEN)
-        set(value) { toggleClass(matchResultContainer, !value, CLASS_HIDDEN) }
-    override var regexDetailsVisible: Boolean
-        get() = regexResultContainer.hasClass(CLASS_HIDDEN)
-        set(value) { toggleClass(regexDetailContainer, !value, CLASS_HIDDEN) }
+    override var inputContainerVisible: Boolean
+        get() = inputContainer.hasClass(CLASS_HIDDEN)
+        set(value) { toggleClass(inputContainer, !value, CLASS_HIDDEN) }
+    override var patternSelectionContainerVisible: Boolean
+        get() = patternSelectionContainer.hasClass(CLASS_HIDDEN)
+        set(value) { toggleClass(patternSelectionContainer, !value, CLASS_HIDDEN) }
     override var resultVisible: Boolean
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) { toggleClass(regexResultContainer, !value, CLASS_HIDDEN) }
+        get() = resultContainer.hasClass(CLASS_HIDDEN)
+        set(value) { toggleClass(resultContainer, !value, CLASS_HIDDEN) }
     override fun select(match: RecognizerMatch, selected: Boolean) = match.div?.let { toggleClass(it, selected, CLASS_ITEM_SELECTED) }!!
     override fun disable(match: RecognizerMatch, disabled: Boolean) = match.div?.let { toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }!!
 
@@ -150,8 +150,7 @@ class SimplePresenter : DisplayContract.Presenter {
     private val matches = mutableMapOf<RecognizerMatch, Boolean>()
 
     fun recognizeMatches() {
-        view.matchResultsVisible = false
-        view.regexDetailsVisible = false
+        view.patternSelectionContainerVisible = false
         view.resultVisible = false
         onInputChanges(view.getTextInput())
     }
@@ -159,8 +158,7 @@ class SimplePresenter : DisplayContract.Presenter {
     override fun onInputChanges(newInput: String) {
         matches.clear()
         if (newInput.isBlank()) {
-            view.matchResultsVisible = false
-            view.regexDetailsVisible = false
+            view.patternSelectionContainerVisible = false
             view.resultVisible = false
         } else {
             matches.putAll(RecognizerMatch.recognize(newInput)
@@ -169,7 +167,7 @@ class SimplePresenter : DisplayContract.Presenter {
 
             view.showText(newInput)
             view.showResults(matches.keys)
-            view.matchResultsVisible = true
+            view.patternSelectionContainerVisible = true
         }
     }
 
@@ -186,7 +184,7 @@ class SimplePresenter : DisplayContract.Presenter {
         // disable matches in UI
         matches.keys.forEach { view.disable(it, disabledMatches.contains(it)) }
 
-        view.regexDetailsVisible = matches.values.any { it }
+        view.resultVisible = matches.values.any { it }
     }
 
     private val deactivatedMatches: Collection<RecognizerMatch> get() {
