@@ -29,6 +29,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
   var collectionSizeOrDefault = Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$;
   var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_287e2$;
   var Collection = Kotlin.kotlin.collections.Collection;
+  var replace = Kotlin.kotlin.text.replace_680rmw$;
   var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
   var lazy = Kotlin.kotlin.lazy_klfg04$;
   var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
@@ -59,7 +60,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
   }
   function Configuration$Companion() {
     Configuration$Companion_instance = this;
-    this.default = new Configuration(listOf([new Recognizer('number', '[0-9]+'), new Recognizer('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new Recognizer('real', '[0-9]*\\.[0-9]+'), new Recognizer('day', '(0?[1-9]|[12][0-9]|3[01])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('month', '(0?[1-9]|[1][0-2])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new Recognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new Recognizer('String 1', "'([^']|\\\\')*'"), new Recognizer('String 2', '"([^"]|\\\\\')*"'), new Recognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new Recognizer('loglevel', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)')]));
+    this.default = new Configuration(listOf([new Recognizer('number', '[0-9]+'), new Recognizer('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new Recognizer('real', '[0-9]*\\.[0-9]+'), new Recognizer('day', '(0?[1-9]|[12][0-9]|3[01])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('month', '(0?[1-9]|[1][0-2])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new Recognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new Recognizer('String 1', "'([^']|\\\\')*'"), new Recognizer('String 2', '"([^"]|\\\\\')*"'), new Recognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new Recognizer('loglevel', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new Recognizer('Characters', '[a-zA-Z]+')]));
   }
   Configuration$Companion.prototype.fromCopy_za3rmp$ = function (configuration) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2;
@@ -625,8 +626,8 @@ this['regex-generator-web'] = function (_, Kotlin) {
   });
   function Recognizer$searchRegex$lambda(this$Recognizer) {
     return function () {
-      var tmp$;
-      return Regex_init((tmp$ = this$Recognizer.searchPattern) != null ? tmp$ : '(' + this$Recognizer.outputPattern + ')');
+      var tmp$, tmp$_0;
+      return Regex_init((tmp$_0 = (tmp$ = this$Recognizer.searchPattern) != null ? replace(tmp$, '%s', this$Recognizer.outputPattern) : null) != null ? tmp$_0 : '(' + this$Recognizer.outputPattern + ')');
     };
   }
   Recognizer.$metadata$ = {

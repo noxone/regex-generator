@@ -18,7 +18,8 @@ data class Configuration(
             Recognizer("String 1","'([^']|\\\\')*'"),
             Recognizer("String 2","\"([^\"]|\\\\')*\""),
             Recognizer("Hashtag","\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
-            Recognizer("loglevel","(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)")
+            Recognizer("loglevel","(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)"),
+            Recognizer("Characters","[a-zA-Z]+")
         ))
 
         fun fromCopy(configuration: dynamic) : Configuration {
