@@ -377,8 +377,7 @@
         $('.toast').toast()
 
         if (!navigator.clipboard) {
-            let copyButton = document.getElementById('rg_button_copy')
-            copyButton.parentNode.removeChild(copyButton)
+            $('#rg_button_copy').hide()
         }
     </script>
 
