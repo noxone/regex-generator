@@ -232,6 +232,7 @@ class SimplePresenter : DisplayContract.Presenter {
             view.showText(newInput)
             view.showResults(matches.keys)
             view.patternSelectionContainerVisible = true
+            view.resultVisible = false
             view.resultText = ""
         }
     }

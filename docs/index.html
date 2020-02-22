@@ -300,8 +300,8 @@
                         <p>The goal of this page is to give as many people as possible the opportunity to develop and
                             use regular expressions. Hopefully nobody has to call <span
                                 class="rg-code">substring()</span> anymore.</p>
-                        <p>Find the project source code at <a
-                                href="https://github.com/noxone/regex-generator">Github</a></p>
+                        <p>Find the project sources at <a href="https://github.com/noxone/regex-generator">Github</a>
+                        </p>
                     </div>
                     <hr class="clearfix w-100 d-md-none pb-3 border-secondary">
                     <div class="col-md-3 mb-md-0 mb-3">
@@ -328,6 +328,24 @@
                 &copy; 2020 Copyright <a href="https://github.com/noxone/">Olaf Neumann</a>
             </div>
         </footer>
+    </div>
+
+    <div aria-live="polite" aria-atomic="true">
+        <div style="position: absolute; top: 3rem; right: 3em;">
+            <div class="toast" id="rg_copy_toast" role="alert" aria-live="assertive" aria-atomic="true"
+                data-delay="2500">
+                <!--<div class="toast-header">
+                    <strong class="mr-auto" id="rg_toast_title">Regex Generator</strong>
+                    <small>just now</small>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>-->
+                <div class="toast-body" id="rg_toast_message">
+                    The regular expression has been copied to your clipboard.
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -357,26 +375,15 @@
             });
         }
         $('.toast').toast()
+
+        if (!navigator.clipboard) {
+            let copyButton = document.getElementById('rg_button_copy')
+            copyButton.parentNode.removeChild(copyButton)
+        }
     </script>
 
-    <div aria-live="polite" aria-atomic="true">
-        <div style="position: absolute; top: 3rem; right: 3em;">
-            <div class="toast" id="rg_copy_toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500">
-                <!--<div class="toast-header">
-                    <strong class="mr-auto" id="rg_toast_title">Regex Generator</strong>
-                    <small>just now</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>-->
-                <div class="toast-body" id="rg_toast_message">
-                    The regular expression has been copied to your clipboard.
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script type="text/javascript" src="regex-generator-web.js"></script>
+
 </body>
 
 </html>

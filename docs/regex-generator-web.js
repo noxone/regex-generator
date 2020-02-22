@@ -472,6 +472,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
       this.view_0.showText_61zpoe$(newInput);
       this.view_0.showResults_7xv3ay$(this.matches_0.keys);
       this.view_0.patternSelectionContainerVisible = true;
+      this.view_0.resultVisible = false;
       this.view_0.resultText = '';
     }
   };
@@ -736,17 +737,22 @@ this['regex-generator-web'] = function (_, Kotlin) {
     tmp$_4 = destination_2.iterator();
     while (tmp$_4.hasNext()) {
       var item_2 = tmp$_4.next();
-      destination_3.add_11rb$(options.onlyPatterns && !isBlank(item_2) ? '.*' : item_2);
+      var tmp$_5 = destination_3.add_11rb$;
+      var tmp$_6 = options.onlyPatterns;
+      if (tmp$_6) {
+        tmp$_6 = item_2.length > 0;
+      }
+      tmp$_5.call(destination_3, tmp$_6 ? '.*' : item_2);
     }
     var staticValues = destination_3;
-    var tmp$_5;
+    var tmp$_7;
     var iterator = staticValues.iterator();
     if (!iterator.hasNext())
       throw UnsupportedOperationException_init("Empty collection can't be reduced.");
     var index = 1;
     var accumulator = iterator.next();
     while (iterator.hasNext()) {
-      var index_0 = checkIndexOverflow((tmp$_5 = index, index = tmp$_5 + 1 | 0, tmp$_5));
+      var index_0 = checkIndexOverflow((tmp$_7 = index, index = tmp$_7 + 1 | 0, tmp$_7));
       var acc = accumulator;
       var s = iterator.next();
       accumulator = acc + ((index_0 - 1 | 0) < orderedMatches.size ? orderedMatches.get_za3lpa$(index_0 - 1 | 0).recognizer.outputPattern : '') + s;
