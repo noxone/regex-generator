@@ -370,67 +370,6 @@
 
     </script>
 
-    <script type="text/javascript">
-        // initialize driver
-        const driver = new Driver();
-
-        // Define the steps for introduction
-        driver.defineSteps([
-            {
-                element: '#rg-title',
-                popover: {
-                    className: 'first-step-popover-class',
-                    title: 'New to Regex Generator',
-                    description: 'Hi! It looks like you\'re new to <em>Regex Generator</em>. Let us show you how to use this tool.',
-                    position: 'right'
-                }
-            },
-            {
-                element: '#rg_input_container',
-                popover: {
-                    title: 'Sample',
-                    description: 'In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.',
-                    position: 'bottom-center'
-                }
-            },
-            {
-                element: '#rg_result_container',
-                popover: {
-                    title: 'Recognition',
-                    description: 'Regex Generator will immediately analyze your text and suggest common patterns you may use.',
-                    position: 'top-center'
-                }
-            },
-            {
-                element: '#rg_row_container',
-                popover: {
-                    title: 'Suggestions',
-                    description: 'Click one or more of suggested patterns...',
-                    position: 'top'
-                }
-            },
-            {
-                element: '#rg_regex_result_container',
-                popover: {
-                    title: 'Result',
-                    description: '... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.',
-                    position: 'top-center'
-                }
-            },
-            {
-                element: '#rg_options_button',
-                popover: {
-                    title: 'Options',
-                    description: 'Have a look at the options to customize your <em>regex</em>.',
-                    position: 'left'
-                }
-            },
-        ]);
-
-        // Start the introduction
-        driver.start();
-    </script>
-
     <script type="text/javascript" src="regex-generator-web.js"></script>
 
 </body>

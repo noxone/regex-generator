@@ -341,24 +341,6 @@
         </footer>
     </div>
 
-    <div aria-live="polite" aria-atomic="true">
-        <div style="position: absolute; top: 3rem; right: 3em;">
-            <div class="toast" id="rg_copy_toast" role="alert" aria-live="assertive" aria-atomic="true"
-                data-delay="2500">
-                <!--<div class="toast-header">
-                    <strong class="mr-auto" id="rg_toast_title">Regex Generator</strong>
-                    <small>just now</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>-->
-                <div class="toast-body" id="rg_toast_message">
-                    The regular expression has been copied to your clipboard.
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -370,10 +352,6 @@
         crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-        function showCopyToast() {
-            let regex = document.getElementById('rg_result_display').innerText;
-            copyTextToClipboard(text);
-        }
         function copyTextToClipboard(text) {
             if (!navigator.clipboard) {
                 alert('Copy is not available in your browser.')
@@ -385,73 +363,11 @@
                 alert('Could not copy text: ', err);
             });
         }
-        $('.toast').toast()
 
         if (!navigator.clipboard) {
             $('#rg_button_copy').hide()
         }
 
-    </script>
-
-    <script type="text/javascript">
-        // initialize driver
-        const driver = new Driver();
-
-        // Define the steps for introduction
-        driver.defineSteps([
-            {
-                element: '#rg-title',
-                popover: {
-                    className: 'first-step-popover-class',
-                    title: 'New to Regex Generator',
-                    description: 'Hi! It looks like you\'re new to <em>Regex Generator</em>. Let us show you how to use this tool.',
-                    position: 'right'
-                }
-            },
-            {
-                element: '#rg_input_container',
-                popover: {
-                    title: 'Sample',
-                    description: 'In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.',
-                    position: 'bottom-center'
-                }
-            },
-            {
-                element: '#rg_result_container',
-                popover: {
-                    title: 'Recognition',
-                    description: 'Regex Generator will immediately analyze your text and suggest common patterns you may use.',
-                    position: 'top-center'
-                }
-            },
-            {
-                element: '#rg_row_container',
-                popover: {
-                    title: 'Suggestions',
-                    description: 'Click one or more of suggested patterns...',
-                    position: 'top'
-                }
-            },
-            {
-                element: '#rg_regex_result_container',
-                popover: {
-                    title: 'Result',
-                    description: '... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.',
-                    position: 'top-center'
-                }
-            },
-            {
-                element: '#rg_options_button',
-                popover: {
-                    title: 'Options',
-                    description: 'Have a look at the options to customize your <em>regex</em>.',
-                    position: 'left'
-                }
-            },
-        ]);
-
-        // Start the introduction
-        driver.start();
     </script>
 
     <script type="text/javascript" src="regex-generator-web.js"></script>

@@ -16,15 +16,16 @@ fun main() = initRegexGenerator()
 
 private fun initRegexGenerator() {
     try {
-        SimplePresenter().recognizeMatches()
+        val presenter = SimplePresenter()
+        presenter.recognizeMatches()
 
         // store information, that we were already here
         val showGuide = isNewUser()
         storeUserLastInfo()
 
-        if (showGuide) {
-            // TODO show guide
-        }
+        // if (showGuide) {
+            presenter.showUserGuide()
+        // }
     } catch (exception: Exception) {
         console.error(exception)
         window.alert("Unable to initialize RegexGenerator: ${exception.message}")
@@ -36,3 +37,5 @@ private fun storeUserLastInfo() {
     localStorage[KEY_LAST_VISIT] = Date().toISOString()
     localStorage[KEY_LAST_VERSION] = VAL_VERSION
 }
+
+
