@@ -193,7 +193,6 @@ class SimplePresenter : DisplayContract.Presenter {
 
 
     fun recognizeMatches() {
-        view.resultText = ""
         onInputChanges(view.getTextInput())
     }
 
@@ -203,17 +202,13 @@ class SimplePresenter : DisplayContract.Presenter {
 
     override fun onInputChanges(newInput: String) {
         matches.clear()
-        if (newInput.isBlank()) {
-            view.resultText = ""
-        } else {
-            matches.putAll(RecognizerMatch.recognize(newInput)
-                .map { it to false }
-                .toMap())
+        matches.putAll(RecognizerMatch.recognize(newInput)
+            .map { it to false }
+            .toMap())
 
-            view.showText(newInput)
-            view.showResults(matches.keys)
-            view.resultText = ""
-        }
+        view.showText(newInput)
+        view.showResults(matches.keys)
+        computeOutputPattern()
     }
 
     override fun onSuggestionClick(match: RecognizerMatch) {
@@ -234,6 +229,21 @@ class SimplePresenter : DisplayContract.Presenter {
 
     override fun onOptionsChange(options: RecognizerCombiner.Options) {
         computeOutputPattern()
+    }
+
+    private fun computeOutputPattern() {
+        val result = RecognizerCombiner.combine(view.getTextInput(), matches.filter { it.value }.map { it.key }.toList(), view.options)
+        view.resultText = result.pattern
+    }
+
+    private val deactivatedMatches: Collection<RecognizerMatch> get() {
+        val selectedMatches = matches.filter { it.value }.map { it.key }.toList()
+        return matches.keys
+            .filter { !selectedMatches.contains(it) }
+            .filter { match ->
+                selectedMatches.any { selectedMatch ->
+                    selectedMatch.range.intersect(match.range).isNotEmpty() } }
+            .toSet()
     }
 
     fun showUserGuide() {
@@ -272,20 +282,5 @@ class SimplePresenter : DisplayContract.Presenter {
                 "left")
         ))
         driver.start()
-    }
-
-    private fun computeOutputPattern() {
-        val result = RecognizerCombiner.combine(view.getTextInput(), matches.filter { it.value }.map { it.key }.toList(), view.options)
-        view.resultText = result.pattern
-    }
-
-    private val deactivatedMatches: Collection<RecognizerMatch> get() {
-        val selectedMatches = matches.filter { it.value }.map { it.key }.toList()
-        return matches.keys
-            .filter { !selectedMatches.contains(it) }
-            .filter { match ->
-                selectedMatches.any { selectedMatch ->
-                    selectedMatch.range.intersect(match.range).isNotEmpty() } }
-            .toSet()
     }
 }
