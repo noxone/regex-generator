@@ -341,24 +341,6 @@
         </footer>
     </div>
 
-    <div aria-live="polite" aria-atomic="true">
-        <div style="position: absolute; top: 3rem; right: 3em;">
-            <div class="toast" id="rg_copy_toast" role="alert" aria-live="assertive" aria-atomic="true"
-                data-delay="2500">
-                <!--<div class="toast-header">
-                    <strong class="mr-auto" id="rg_toast_title">Regex Generator</strong>
-                    <small>just now</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>-->
-                <div class="toast-body" id="rg_toast_message">
-                    The regular expression has been copied to your clipboard.
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -370,10 +352,6 @@
         crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-        function showCopyToast() {
-            let regex = document.getElementById('rg_result_display').innerText;
-            copyTextToClipboard(text);
-        }
         function copyTextToClipboard(text) {
             if (!navigator.clipboard) {
                 alert('Copy is not available in your browser.')
@@ -385,7 +363,6 @@
                 alert('Could not copy text: ', err);
             });
         }
-        $('.toast').toast()
 
         if (!navigator.clipboard) {
             $('#rg_button_copy').hide()
