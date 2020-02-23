@@ -5,19 +5,20 @@ import kotlin.browser.localStorage
 import kotlin.browser.window
 import kotlin.js.Date
 
-const val TEST_INPUT = "2020-03-12T13:34:56.123+1 WARN  [org.somepackage.test.Test]: This is #simple. A line with a 'string' in the text"
 
 const val KEY_LAST_VERSION = "user.lastVersion"
 const val KEY_LAST_VISIT = "user.lastVisit"
 
-const val VAL_VERSION = 1
+const val VAL_VERSION = 2
+const val VAL_EXAMPLE_INPUT = "2020-03-12T13:34:56.123Z INFO  [org.example.Class]: This is a #simple #logline containing a 'value'."
 
 fun main() = initRegexGenerator()
 
 private fun initRegexGenerator() {
     try {
         val presenter = SimplePresenter()
-        presenter.recognizeMatches()
+        val input = if (presenter.currentTextInput.isBlank()) VAL_EXAMPLE_INPUT else presenter.currentTextInput
+        presenter.recognizeMatches(input)
 
         // store information, that we were already here
         val showGuide = isNewUser()

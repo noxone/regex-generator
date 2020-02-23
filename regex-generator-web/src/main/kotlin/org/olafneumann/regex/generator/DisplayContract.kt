@@ -37,15 +37,16 @@ external fun copyTextToClipboard(string: String)
 
 interface DisplayContract {
     interface View {
-        fun getTextInput(): String
-        fun showText(text: String)
-        fun showResults(matches: Collection<RecognizerMatch>)
-        fun select(match: RecognizerMatch, selected: Boolean)
-        fun disable(match: RecognizerMatch, disabled: Boolean)
-
+        var inputText: String
+        var displayText: String
         var resultText: String
 
         val options: RecognizerCombiner.Options
+
+        fun showResults(matches: Collection<RecognizerMatch>)
+        fun select(match: RecognizerMatch, selected: Boolean)
+        fun disable(match: RecognizerMatch, disabled: Boolean)
+        fun selectInputText()
     }
 
     interface Presenter {
@@ -76,7 +77,7 @@ class DisplayPage(
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
 
     init {
-        textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(getTextInput()) })
+        textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
         buttonCopy.addEventListener(EVENT_CLICK, { presenter.onButtonCopyClick() })
         checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
@@ -108,11 +109,17 @@ class DisplayPage(
         }
     }
 
-    override fun getTextInput() = textInput.value
-
-    override fun showText(text: String) {
-        textDisplay.innerText = text
+    override fun selectInputText() {
+        textInput.select()
     }
+
+    override var inputText: String
+        get() = textInput.value
+        set(value) { textInput.value = value}
+
+    override var displayText: String
+        get() = textDisplay.innerText
+        set(value) { textDisplay.innerText = value }
 
     override var resultText: String
         get() = resultDisplay.innerText
@@ -191,9 +198,12 @@ class SimplePresenter : DisplayContract.Presenter {
     private val view: DisplayContract.View = DisplayPage(this)
     private val matches = mutableMapOf<RecognizerMatch, Boolean>()
 
+    val currentTextInput: String get() = view.inputText
 
-    fun recognizeMatches() {
-        onInputChanges(view.getTextInput())
+    fun recognizeMatches(input: String = currentTextInput) {
+        view.inputText = input
+        onInputChanges(input)
+        view.selectInputText()
     }
 
     override fun onButtonCopyClick() {
@@ -206,7 +216,7 @@ class SimplePresenter : DisplayContract.Presenter {
             .map { it to false }
             .toMap())
 
-        view.showText(newInput)
+        view.displayText = newInput
         view.showResults(matches.keys)
         computeOutputPattern()
     }
@@ -232,7 +242,7 @@ class SimplePresenter : DisplayContract.Presenter {
     }
 
     private fun computeOutputPattern() {
-        val result = RecognizerCombiner.combine(view.getTextInput(), matches.filter { it.value }.map { it.key }.toList(), view.options)
+        val result = RecognizerCombiner.combine(view.inputText, matches.filter { it.value }.map { it.key }.toList(), view.options)
         view.resultText = result.pattern
     }
 
@@ -271,7 +281,7 @@ class SimplePresenter : DisplayContract.Presenter {
                 "Click one or more of suggested patterns...",
                 "top"),
             createStepDefinition(
-                "#$ID_CONTAINER_RESULT",
+                "#rg_result_display_box",
                 "Result",
                 "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
                 "top-center"),
