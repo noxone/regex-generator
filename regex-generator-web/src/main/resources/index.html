@@ -10,9 +10,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
+    <!-- kotlin stuff -->
     <script type="text/javascript" src="lib/kotlin.js"></script>
-    <title>Regex Generator</title>
 
+    <!-- driver.js -->
+    <script src="https://unpkg.com/driver.js/dist/driver.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/driver.js/dist/driver.min.css">
+
+    <!-- now for our page -->
+    <title>Regex Generator</title>
     <style>
         .rg-hidden {
             display: none;
@@ -87,7 +93,7 @@
 <body class="bg-dark">
     <div class="container-fluid py-3" id="rg_mainContainer">
         <div class="jumbotron bg-warning">
-            <h1 class="display-4">Regex Generator</h1>
+            <h1 class="display-4"><span id="rg-title">Regex Generator</span></h1>
             <p class="lead d-none d-sm-block">Creating <em>regular expressions</em> is easy again!</p>
         </div>
 
@@ -186,7 +192,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <div>
-                        
+
                         <button class="btn btn-primary" id="rg_button_copy">Copy regex</button>
                         <!-- TODO: make visible again -->
                         <!-- <div class="btn-group" role="group">
@@ -196,9 +202,8 @@
                         </div> -->
                     </div>
                     <div>
-                        <button class="btn btn-warning" data-toggle="collapse"
-                        data-target="#rg_regexOptionsExpandable" aria-expanded="true"
-                        aria-controls="rg_regexOptionsExpandable">Options</button>
+                        <button class="btn btn-warning" id="rg_options_button" data-toggle="collapse" data-target="#rg_regexOptionsExpandable"
+                            aria-expanded="true" aria-controls="rg_regexOptionsExpandable">Options</button>
                     </div>
                 </div>
                 <div class="collapse mt-3" id="rg_regexOptionsExpandable">
@@ -292,7 +297,8 @@
             class="page-footer font-small row no-gutters bg-dark text-muted border border-secondary mt-4 p-4 rounded">
             <div class="col-12 text-center text-md-left d-flex justify-content-between">
                 <h5 class="text-uppercase" style="width: 100%">Regex Generator</h5>
-                <a data-toggle="collapse" href="#footerContent" role="button" aria-expanded="false" aria-controls="footerContent">&times;</a>
+                <a data-toggle="collapse" href="#footerContent" role="button" aria-expanded="false"
+                    aria-controls="footerContent">&times;</a>
                 <!--<button type="button" class="ml-2 mb-1 close" data-toggle="collapse" data-target="#footerContent" aria-label="Toggle">
                     <span aria-hidden="true">&times;</span>-->
             </div>
@@ -335,24 +341,6 @@
         </footer>
     </div>
 
-    <div aria-live="polite" aria-atomic="true">
-        <div style="position: absolute; top: 3rem; right: 3em;">
-            <div class="toast" id="rg_copy_toast" role="alert" aria-live="assertive" aria-atomic="true"
-                data-delay="2500">
-                <!--<div class="toast-header">
-                    <strong class="mr-auto" id="rg_toast_title">Regex Generator</strong>
-                    <small>just now</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>-->
-                <div class="toast-body" id="rg_toast_message">
-                    The regular expression has been copied to your clipboard.
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -364,10 +352,6 @@
         crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-        function showCopyToast() {
-            let regex = document.getElementById('rg_result_display').innerText;
-            copyTextToClipboard(text);
-        }
         function copyTextToClipboard(text) {
             if (!navigator.clipboard) {
                 alert('Copy is not available in your browser.')
@@ -379,11 +363,11 @@
                 alert('Could not copy text: ', err);
             });
         }
-        $('.toast').toast()
 
         if (!navigator.clipboard) {
             $('#rg_button_copy').hide()
         }
+
     </script>
 
     <script type="text/javascript" src="regex-generator-web.js"></script>

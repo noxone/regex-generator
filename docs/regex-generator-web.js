@@ -20,9 +20,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
   var Unit = Kotlin.kotlin.Unit;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
-  var hasClass = Kotlin.kotlin.dom.hasClass_46n0ku$;
   var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
-  var isBlank = Kotlin.kotlin.text.isBlank_gw00vp$;
   var intersect = Kotlin.kotlin.collections.intersect_q4559j$;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
   var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
@@ -47,6 +45,8 @@ this['regex-generator-web'] = function (_, Kotlin) {
   var toString = Kotlin.toString;
   var Exception_init = Kotlin.kotlin.Exception_init_pdl1vj$;
   var Exception = Kotlin.kotlin.Exception;
+  var toBoolean = Kotlin.kotlin.text.toBoolean_pdl1vz$;
+  var toIntOrNull = Kotlin.kotlin.text.toIntOrNull_pdl1vz$;
   function Configuration(recognizers, mainGroupName, mainGroupIndex) {
     Configuration$Companion_getInstance();
     if (mainGroupName === void 0)
@@ -164,9 +164,6 @@ this['regex-generator-web'] = function (_, Kotlin) {
     this.textInput_0 = this.getInputById_0(ID_INPUT_ELEMENT);
     this.textDisplay_0 = this.getDivById_0(ID_TEXT_DISPLAY);
     this.rowContainer_0 = this.getDivById_0(ID_ROW_CONTAINER);
-    this.inputContainer_0 = this.getDivById_0(ID_CONTAINER_INPUT);
-    this.patternSelectionContainer_0 = this.getDivById_0(ID_CONTAINER_PATTERN_SELECTION);
-    this.resultContainer_0 = this.getDivById_0(ID_CONTAINER_RESULT);
     this.resultDisplay_0 = this.getDivById_0(ID_RESULT_DISPLAY);
     this.buttonCopy_0 = this.getButtonById_0(ID_BUTTON_COPY);
     this.checkOnlyMatches_0 = this.getInputById_0(ID_CHECK_ONLY_MATCHES);
@@ -340,30 +337,6 @@ this['regex-generator-web'] = function (_, Kotlin) {
     parent.appendChild(element);
     return element;
   };
-  Object.defineProperty(DisplayPage.prototype, 'inputContainerVisible', {
-    get: function () {
-      return hasClass(this.inputContainer_0, CLASS_HIDDEN);
-    },
-    set: function (value) {
-      this.toggleClass_0(this.inputContainer_0, !value, CLASS_HIDDEN);
-    }
-  });
-  Object.defineProperty(DisplayPage.prototype, 'patternSelectionContainerVisible', {
-    get: function () {
-      return hasClass(this.patternSelectionContainer_0, CLASS_HIDDEN);
-    },
-    set: function (value) {
-      this.toggleClass_0(this.patternSelectionContainer_0, !value, CLASS_HIDDEN);
-    }
-  });
-  Object.defineProperty(DisplayPage.prototype, 'resultVisible', {
-    get: function () {
-      return hasClass(this.resultContainer_0, CLASS_HIDDEN);
-    },
-    set: function (value) {
-      this.toggleClass_0(this.resultContainer_0, !value, CLASS_HIDDEN);
-    }
-  });
   DisplayPage.prototype.select_svqy28$ = function (match, selected) {
     var tmp$;
     var tmp$_0;
@@ -443,9 +416,6 @@ this['regex-generator-web'] = function (_, Kotlin) {
     this.matches_0 = LinkedHashMap_init();
   }
   SimplePresenter.prototype.recognizeMatches = function () {
-    this.view_0.patternSelectionContainerVisible = false;
-    this.view_0.resultVisible = false;
-    this.view_0.resultText = '';
     this.onInputChanges_61zpoe$(this.view_0.getTextInput());
   };
   SimplePresenter.prototype.onButtonCopyClick = function () {
@@ -453,28 +423,19 @@ this['regex-generator-web'] = function (_, Kotlin) {
   };
   SimplePresenter.prototype.onInputChanges_61zpoe$ = function (newInput) {
     this.matches_0.clear();
-    if (isBlank(newInput)) {
-      this.view_0.patternSelectionContainerVisible = false;
-      this.view_0.resultVisible = false;
-      this.view_0.resultText = '';
+    var tmp$ = this.matches_0;
+    var $receiver = RecognizerMatch$Companion_getInstance().recognize_sjii3m$(newInput);
+    var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
+    var tmp$_0;
+    tmp$_0 = $receiver.iterator();
+    while (tmp$_0.hasNext()) {
+      var item = tmp$_0.next();
+      destination.add_11rb$(to(item, false));
     }
-     else {
-      var tmp$ = this.matches_0;
-      var $receiver = RecognizerMatch$Companion_getInstance().recognize_sjii3m$(newInput);
-      var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
-      var tmp$_0;
-      tmp$_0 = $receiver.iterator();
-      while (tmp$_0.hasNext()) {
-        var item = tmp$_0.next();
-        destination.add_11rb$(to(item, false));
-      }
-      tmp$.putAll_a2k3zr$(toMap(destination));
-      this.view_0.showText_61zpoe$(newInput);
-      this.view_0.showResults_7xv3ay$(this.matches_0.keys);
-      this.view_0.patternSelectionContainerVisible = true;
-      this.view_0.resultVisible = false;
-      this.view_0.resultText = '';
-    }
+    tmp$.putAll_a2k3zr$(toMap(destination));
+    this.view_0.showText_61zpoe$(newInput);
+    this.view_0.showResults_7xv3ay$(this.matches_0.keys);
+    this.computeOutputPattern_0();
   };
   SimplePresenter.prototype.onSuggestionClick_bjzz55$ = function (match) {
     var tmp$, tmp$_0;
@@ -498,47 +459,26 @@ this['regex-generator-web'] = function (_, Kotlin) {
     this.computeOutputPattern_0();
   };
   SimplePresenter.prototype.computeOutputPattern_0 = function () {
-    var tmp$ = this.view_0;
-    var $receiver = this.matches_0.values;
-    var any$result;
-    any$break: do {
-      var tmp$_0;
-      if (Kotlin.isType($receiver, Collection) && $receiver.isEmpty()) {
-        any$result = false;
-        break any$break;
-      }
-      tmp$_0 = $receiver.iterator();
-      while (tmp$_0.hasNext()) {
-        var element = tmp$_0.next();
-        if (element) {
-          any$result = true;
-          break any$break;
-        }
-      }
-      any$result = false;
-    }
-     while (false);
-    tmp$.resultVisible = any$result;
-    var tmp$_1 = RecognizerCombiner$Companion_getInstance();
-    var tmp$_2 = this.view_0.getTextInput();
-    var $receiver_0 = this.matches_0;
+    var tmp$ = RecognizerCombiner$Companion_getInstance();
+    var tmp$_0 = this.view_0.getTextInput();
+    var $receiver = this.matches_0;
     var destination = LinkedHashMap_init();
-    var tmp$_3;
-    tmp$_3 = $receiver_0.entries.iterator();
-    while (tmp$_3.hasNext()) {
-      var element_0 = tmp$_3.next();
-      if (element_0.value) {
-        destination.put_xwzc9p$(element_0.key, element_0.value);
+    var tmp$_1;
+    tmp$_1 = $receiver.entries.iterator();
+    while (tmp$_1.hasNext()) {
+      var element = tmp$_1.next();
+      if (element.value) {
+        destination.put_xwzc9p$(element.key, element.value);
       }
     }
     var destination_0 = ArrayList_init(destination.size);
-    var tmp$_4;
-    tmp$_4 = destination.entries.iterator();
-    while (tmp$_4.hasNext()) {
-      var item = tmp$_4.next();
+    var tmp$_2;
+    tmp$_2 = destination.entries.iterator();
+    while (tmp$_2.hasNext()) {
+      var item = tmp$_2.next();
       destination_0.add_11rb$(item.key);
     }
-    var result = tmp$_1.combine_t86t5b$(tmp$_2, toList(destination_0), this.view_0.options);
+    var result = tmp$.combine_t86t5b$(tmp$_0, toList(destination_0), this.view_0.options);
     this.view_0.resultText = result.pattern;
   };
   Object.defineProperty(SimplePresenter.prototype, 'deactivatedMatches_0', {
@@ -599,11 +539,26 @@ this['regex-generator-web'] = function (_, Kotlin) {
       return toSet(destination_2);
     }
   });
+  SimplePresenter.prototype.showUserGuide = function () {
+    var driver = new Driver();
+    driver.reset();
+    driver.defineSteps([createStepDefinition('#rg-title', 'New to Regex Generator', "Hi! It looks like you're new to <em>Regex Generator<\/em>. Let us show you how to use this tool.", 'right'), createStepDefinition('#rg_input_container', 'Sample', 'In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.', 'bottom-center'), createStepDefinition('#rg_result_container', 'Recognition', 'Regex Generator will immediately analyze your text and suggest common patterns you may use.', 'top-center'), createStepDefinition('#rg_row_container', 'Suggestions', 'Click one or more of suggested patterns...', 'top'), createStepDefinition('#rg_regex_result_container', 'Result', '... and we will generate a first <em>regular expression<\/em> for you. It should be able to match your input text.', 'top-center'), createStepDefinition('#rg_options_button', 'Options', 'Have a look at the options to customize your <em>regex<\/em>.', 'left')]);
+    driver.start();
+  };
   SimplePresenter.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'SimplePresenter',
     interfaces: [DisplayContract$Presenter]
   };
+  function createStepDefinition(element, title, description, position) {
+    var stepDefinition = {};
+    stepDefinition.element = element;
+    stepDefinition.popover = {};
+    stepDefinition.popover.title = title;
+    stepDefinition.popover.description = description;
+    stepDefinition.popover.position = position;
+    return stepDefinition;
+  }
   function Recognizer(name, outputPattern, description, searchPattern, active) {
     if (description === void 0)
       description = null;
@@ -971,12 +926,21 @@ this['regex-generator-web'] = function (_, Kotlin) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.range, other.range) && Kotlin.equals(this.inputPart, other.inputPart) && Kotlin.equals(this.recognizer, other.recognizer)))));
   };
   var TEST_INPUT;
+  var KEY_LAST_VERSION;
+  var KEY_LAST_VISIT;
+  var VAL_VERSION;
   function main() {
     initRegexGenerator();
   }
   function initRegexGenerator() {
     try {
-      (new SimplePresenter()).recognizeMatches();
+      var presenter = new SimplePresenter();
+      presenter.recognizeMatches();
+      var showGuide = isNewUser();
+      storeUserLastInfo();
+      if (showGuide) {
+        presenter.showUserGuide();
+      }
     }
      catch (exception) {
       if (Kotlin.isType(exception, Exception)) {
@@ -986,6 +950,14 @@ this['regex-generator-web'] = function (_, Kotlin) {
        else
         throw exception;
     }
+  }
+  function isNewUser() {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2;
+    return ((tmp$_0 = (tmp$ = localStorage.getItem(KEY_LAST_VISIT)) != null ? toBoolean(tmp$) : null) != null ? tmp$_0 : true) || ((tmp$_2 = (tmp$_1 = localStorage.getItem(KEY_LAST_VERSION)) != null ? toIntOrNull(tmp$_1) : null) != null ? tmp$_2 : 1) < 1;
+  }
+  function storeUserLastInfo() {
+    localStorage[KEY_LAST_VISIT] = (new Date()).toISOString();
+    localStorage[KEY_LAST_VERSION] = (1).toString();
   }
   Object.defineProperty(Configuration, 'Companion', {
     get: Configuration$Companion_getInstance
@@ -1100,6 +1072,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
   package$generator.DisplayContract = DisplayContract;
   package$generator.DisplayPage = DisplayPage;
   package$generator.SimplePresenter = SimplePresenter;
+  package$generator.createStepDefinition_w74nik$ = createStepDefinition;
   package$generator.Recognizer = Recognizer;
   Object.defineProperty(RecognizerCombiner, 'Companion', {
     get: RecognizerCombiner$Companion_getInstance
@@ -1114,6 +1087,21 @@ this['regex-generator-web'] = function (_, Kotlin) {
   Object.defineProperty(package$generator, 'TEST_INPUT', {
     get: function () {
       return TEST_INPUT;
+    }
+  });
+  Object.defineProperty(package$generator, 'KEY_LAST_VERSION', {
+    get: function () {
+      return KEY_LAST_VERSION;
+    }
+  });
+  Object.defineProperty(package$generator, 'KEY_LAST_VISIT', {
+    get: function () {
+      return KEY_LAST_VISIT;
+    }
+  });
+  Object.defineProperty(package$generator, 'VAL_VERSION', {
+    get: function () {
+      return VAL_VERSION;
     }
   });
   package$generator.main = main;
@@ -1138,6 +1126,9 @@ this['regex-generator-web'] = function (_, Kotlin) {
   ID_CHECK_MULTILINE = 'rg_dotmatcheslinebreakes';
   ID_BUTTON_COPY = 'rg_button_copy';
   TEST_INPUT = "2020-03-12T13:34:56.123+1 WARN  [org.somepackage.test.Test]: This is #simple. A line with a 'string' in the text";
+  KEY_LAST_VERSION = 'user.lastVersion';
+  KEY_LAST_VISIT = 'user.lastVisit';
+  VAL_VERSION = 1;
   main();
   Kotlin.defineModule('regex-generator-web', _);
   return _;
