@@ -10,7 +10,7 @@ const val TEST_INPUT = "2020-03-12T13:34:56.123+1 WARN  [org.somepackage.test.Te
 const val KEY_LAST_VERSION = "user.lastVersion"
 const val KEY_LAST_VISIT = "user.lastVisit"
 
-const val VAL_VERSION = "1.0"
+const val VAL_VERSION = 1
 
 fun main() = initRegexGenerator()
 
@@ -23,19 +23,22 @@ private fun initRegexGenerator() {
         val showGuide = isNewUser()
         storeUserLastInfo()
 
-        // if (showGuide) {
+        // show guide for new users
+        if (showGuide) {
             presenter.showUserGuide()
-        // }
+        }
     } catch (exception: Exception) {
         console.error(exception)
         window.alert("Unable to initialize RegexGenerator: ${exception.message}")
     }
 }
 
-private fun isNewUser(): Boolean = localStorage.getItem(KEY_LAST_VISIT)?.toBoolean() ?: true
+private fun isNewUser(): Boolean =
+    localStorage.getItem(KEY_LAST_VISIT)?.toBoolean() ?: true
+            || localStorage.getItem(KEY_LAST_VERSION)?.toIntOrNull() ?: VAL_VERSION < VAL_VERSION
 private fun storeUserLastInfo() {
     localStorage[KEY_LAST_VISIT] = Date().toISOString()
-    localStorage[KEY_LAST_VERSION] = VAL_VERSION
+    localStorage[KEY_LAST_VERSION] = VAL_VERSION.toString()
 }
 
 
