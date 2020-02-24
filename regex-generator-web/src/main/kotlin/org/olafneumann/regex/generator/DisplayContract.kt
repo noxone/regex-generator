@@ -37,18 +37,16 @@ external fun copyTextToClipboard(string: String)
 
 interface DisplayContract {
     interface View {
-        fun getTextInput(): String
-        fun showText(text: String)
-        fun showResults(matches: Collection<RecognizerMatch>)
-        fun select(match: RecognizerMatch, selected: Boolean)
-        fun disable(match: RecognizerMatch, disabled: Boolean)
-
-        var inputContainerVisible: Boolean
-        var patternSelectionContainerVisible: Boolean
-        var resultVisible: Boolean
+        var inputText: String
+        var displayText: String
         var resultText: String
 
         val options: RecognizerCombiner.Options
+
+        fun showResults(matches: Collection<RecognizerMatch>)
+        fun select(match: RecognizerMatch, selected: Boolean)
+        fun disable(match: RecognizerMatch, disabled: Boolean)
+        fun selectInputText()
     }
 
     interface Presenter {
@@ -68,9 +66,6 @@ class DisplayPage(
     private val textInput = getInputById(ID_INPUT_ELEMENT)
     private val textDisplay = getDivById(ID_TEXT_DISPLAY)
     private val rowContainer = getDivById(ID_ROW_CONTAINER)
-    private val inputContainer = getDivById(ID_CONTAINER_INPUT)
-    private val patternSelectionContainer = getDivById(ID_CONTAINER_PATTERN_SELECTION)
-    private val resultContainer = getDivById(ID_CONTAINER_RESULT)
     private val resultDisplay = getDivById(ID_RESULT_DISPLAY)
     private val buttonCopy = getButtonById(ID_BUTTON_COPY)
     private val checkOnlyMatches = getInputById(ID_CHECK_ONLY_MATCHES)
@@ -82,7 +77,7 @@ class DisplayPage(
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
 
     init {
-        textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(getTextInput()) })
+        textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
         buttonCopy.addEventListener(EVENT_CLICK, { presenter.onButtonCopyClick() })
         checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
@@ -114,11 +109,17 @@ class DisplayPage(
         }
     }
 
-    override fun getTextInput() = textInput.value
-
-    override fun showText(text: String) {
-        textDisplay.innerText = text
+    override fun selectInputText() {
+        textInput.select()
     }
+
+    override var inputText: String
+        get() = textInput.value
+        set(value) { textInput.value = value}
+
+    override var displayText: String
+        get() = textDisplay.innerText
+        set(value) { textDisplay.innerText = value }
 
     override var resultText: String
         get() = resultDisplay.innerText
@@ -174,15 +175,6 @@ class DisplayPage(
         return element
     }
 
-    override var inputContainerVisible: Boolean
-        get() = inputContainer.hasClass(CLASS_HIDDEN)
-        set(value) { toggleClass(inputContainer, !value, CLASS_HIDDEN) }
-    override var patternSelectionContainerVisible: Boolean
-        get() = patternSelectionContainer.hasClass(CLASS_HIDDEN)
-        set(value) { toggleClass(patternSelectionContainer, !value, CLASS_HIDDEN) }
-    override var resultVisible: Boolean
-        get() = resultContainer.hasClass(CLASS_HIDDEN)
-        set(value) { toggleClass(resultContainer, !value, CLASS_HIDDEN) }
     override fun select(match: RecognizerMatch, selected: Boolean) = match.div?.let { toggleClass(it, selected, CLASS_ITEM_SELECTED) }!!
     override fun disable(match: RecognizerMatch, disabled: Boolean) = match.div?.let { toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }!!
 
@@ -206,12 +198,12 @@ class SimplePresenter : DisplayContract.Presenter {
     private val view: DisplayContract.View = DisplayPage(this)
     private val matches = mutableMapOf<RecognizerMatch, Boolean>()
 
+    val currentTextInput: String get() = view.inputText
 
-    fun recognizeMatches() {
-        view.patternSelectionContainerVisible = false
-        view.resultVisible = false
-        view.resultText = ""
-        onInputChanges(view.getTextInput())
+    fun recognizeMatches(input: String = currentTextInput) {
+        view.inputText = input
+        onInputChanges(input)
+        view.selectInputText()
     }
 
     override fun onButtonCopyClick() {
@@ -220,21 +212,13 @@ class SimplePresenter : DisplayContract.Presenter {
 
     override fun onInputChanges(newInput: String) {
         matches.clear()
-        if (newInput.isBlank()) {
-            view.patternSelectionContainerVisible = false
-            view.resultVisible = false
-            view.resultText = ""
-        } else {
-            matches.putAll(RecognizerMatch.recognize(newInput)
-                .map { it to false }
-                .toMap())
+        matches.putAll(RecognizerMatch.recognize(newInput)
+            .map { it to false }
+            .toMap())
 
-            view.showText(newInput)
-            view.showResults(matches.keys)
-            view.patternSelectionContainerVisible = true
-            view.resultVisible = false
-            view.resultText = ""
-        }
+        view.displayText = newInput
+        view.showResults(matches.keys)
+        computeOutputPattern()
     }
 
     override fun onSuggestionClick(match: RecognizerMatch) {
@@ -258,9 +242,7 @@ class SimplePresenter : DisplayContract.Presenter {
     }
 
     private fun computeOutputPattern() {
-        view.resultVisible = matches.values.any { it }
-
-        val result = RecognizerCombiner.combine(view.getTextInput(), matches.filter { it.value }.map { it.key }.toList(), view.options)
+        val result = RecognizerCombiner.combine(view.inputText, matches.filter { it.value }.map { it.key }.toList(), view.options)
         view.resultText = result.pattern
     }
 
@@ -272,5 +254,43 @@ class SimplePresenter : DisplayContract.Presenter {
                 selectedMatches.any { selectedMatch ->
                     selectedMatch.range.intersect(match.range).isNotEmpty() } }
             .toSet()
+    }
+
+    fun showUserGuide() {
+        val driver = Driver()
+        driver.reset()
+        driver.defineSteps(arrayOf(
+            createStepDefinition(
+                "#rg-title",
+                "New to Regex Generator",
+                "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
+                "right"),
+            createStepDefinition(
+                "#$ID_CONTAINER_INPUT",
+                "Sample",
+                "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
+                "bottom-center"),
+            createStepDefinition(
+                "#rg_result_container",
+                "Recognition",
+                "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
+                "top-center"),
+            createStepDefinition(
+                "#$ID_ROW_CONTAINER",
+                "Suggestions",
+                "Click one or more of suggested patterns...",
+                "top"),
+            createStepDefinition(
+                "#rg_result_display_box",
+                "Result",
+                "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
+                "top-center"),
+            createStepDefinition(
+                "#rg_options_button",
+                "Options",
+                "Have a look at the options to customize your <em>regex</em>.",
+                "left")
+        ))
+        driver.start()
     }
 }
