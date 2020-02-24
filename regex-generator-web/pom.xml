@@ -94,7 +94,6 @@
                                     <includes>
 										<include>index.html</include>
                                         <include>regex-generator-web.js</include>
-                                        <include>regex-generator-web.js.map</include>
 										<include>lib/**/*</include>
 									</includes>
                                 </resource>

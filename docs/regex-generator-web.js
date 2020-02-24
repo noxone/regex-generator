@@ -27,6 +27,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
   var collectionSizeOrDefault = Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$;
   var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_287e2$;
   var Collection = Kotlin.kotlin.collections.Collection;
+  var replace = Kotlin.kotlin.text.replace_680rmw$;
   var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
   var lazy = Kotlin.kotlin.lazy_klfg04$;
   var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
@@ -44,6 +45,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
   var MatchNamedGroupCollection = Kotlin.kotlin.text.MatchNamedGroupCollection;
   var toString = Kotlin.toString;
   var Exception_init = Kotlin.kotlin.Exception_init_pdl1vj$;
+  var indexOf = Kotlin.kotlin.text.indexOf_l5u8uk$;
   var isBlank = Kotlin.kotlin.text.isBlank_gw00vp$;
   var Exception = Kotlin.kotlin.Exception;
   var toBoolean = Kotlin.kotlin.text.toBoolean_pdl1vz$;
@@ -60,7 +62,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
   }
   function Configuration$Companion() {
     Configuration$Companion_instance = this;
-    this.default = new Configuration(listOf([new Recognizer('number', '[0-9]+'), new Recognizer('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new Recognizer('real', '[0-9]*\\.[0-9]+'), new Recognizer('day', '(0?[1-9]|[12][0-9]|3[01])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('month', '(0?[1-9]|[1][0-2])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new Recognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new Recognizer('String 1', "'([^']|\\\\')*'"), new Recognizer('String 2', '"([^"]|\\\\\')*"'), new Recognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new Recognizer('loglevel', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)')]));
+    this.default = new Configuration(listOf([new Recognizer('number', '[0-9]+'), new Recognizer('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new Recognizer('real', '[0-9]*\\.[0-9]+'), new Recognizer('day', '(0?[1-9]|[12][0-9]|3[01])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('month', '(0?[1-9]|[1][0-2])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new Recognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new Recognizer('String 1', "'([^']|\\\\')*'"), new Recognizer('String 2', '"([^"]|\\\\\')*"'), new Recognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new Recognizer('loglevel', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new Recognizer('Characters', '[a-zA-Z]+')]));
   }
   Configuration$Companion.prototype.fromCopy_za3rmp$ = function (configuration) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2;
@@ -603,8 +605,8 @@ this['regex-generator-web'] = function (_, Kotlin) {
   });
   function Recognizer$searchRegex$lambda(this$Recognizer) {
     return function () {
-      var tmp$;
-      return Regex_init((tmp$ = this$Recognizer.searchPattern) != null ? tmp$ : '(' + this$Recognizer.outputPattern + ')');
+      var tmp$, tmp$_0;
+      return Regex_init((tmp$_0 = (tmp$ = this$Recognizer.searchPattern) != null ? replace(tmp$, '%s', this$Recognizer.outputPattern) : null) != null ? tmp$_0 : '(' + this$Recognizer.outputPattern + ')');
     };
   }
   Recognizer.$metadata$ = {
@@ -852,8 +854,8 @@ this['regex-generator-web'] = function (_, Kotlin) {
     RecognizerMatch$Companion_instance = this;
   }
   function RecognizerMatch$Companion$recognize$lambda$lambda(closure$config, this$RecognizerMatch$, closure$recognizer) {
-    return function (mr) {
-      return new RecognizerMatch(mr.range, this$RecognizerMatch$.getMainGroup_0(mr, closure$config), closure$recognizer);
+    return function (result) {
+      return new RecognizerMatch(this$RecognizerMatch$.getMainGroupRange_0(result, closure$config), this$RecognizerMatch$.getMainGroupValue_0(result, closure$config), closure$recognizer);
     };
   }
   function RecognizerMatch$Companion$recognize$lambda(it) {
@@ -887,24 +889,28 @@ this['regex-generator-web'] = function (_, Kotlin) {
     }
     return sortedWith(destination_0, compareBy([RecognizerMatch$Companion$recognize$lambda, RecognizerMatch$Companion$recognize$lambda_0, RecognizerMatch$Companion$recognize$lambda_1]));
   };
-  RecognizerMatch$Companion.prototype.getMainGroup_0 = function ($receiver, config) {
+  RecognizerMatch$Companion.prototype.getMainGroupValue_0 = function (result, config) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3;
     if (config.mainGroupName != null) {
-      tmp$_1 = (tmp$_0 = (Kotlin.isType(tmp$ = $receiver.groups, MatchNamedGroupCollection) ? tmp$ : throwCCE()).get_61zpoe$(config.mainGroupName)) != null ? tmp$_0.value : null;
+      tmp$_1 = (tmp$_0 = (Kotlin.isType(tmp$ = result.groups, MatchNamedGroupCollection) ? tmp$ : throwCCE()).get_61zpoe$(config.mainGroupName)) != null ? tmp$_0.value : null;
       if (tmp$_1 == null) {
         throw Exception_init("Unable to find group '" + toString(config.mainGroupName) + "'");
       }
       return tmp$_1;
     }
      else if (config.mainGroupIndex != null) {
-      tmp$_3 = (tmp$_2 = $receiver.groups.get_za3lpa$(config.mainGroupIndex)) != null ? tmp$_2.value : null;
+      tmp$_3 = (tmp$_2 = result.groups.get_za3lpa$(config.mainGroupIndex)) != null ? tmp$_2.value : null;
       if (tmp$_3 == null) {
         throw Exception_init('Unable to find group with index ' + toString(config.mainGroupIndex) + '.');
       }
       return tmp$_3;
     }
      else
-      return $receiver.value;
+      return result.value;
+  };
+  RecognizerMatch$Companion.prototype.getMainGroupRange_0 = function (result, config) {
+    var start = indexOf(result.value, this.getMainGroupValue_0(result, config));
+    return new IntRange(result.range.first + start | 0, result.range.last + start | 0);
   };
   RecognizerMatch$Companion.$metadata$ = {
     kind: Kind_OBJECT,

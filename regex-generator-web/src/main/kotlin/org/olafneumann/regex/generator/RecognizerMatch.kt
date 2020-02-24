@@ -10,15 +10,37 @@ data class RecognizerMatch(
         fun recognize(input: String, config: Configuration = Configuration.default) =
             config.recognizers
                 .filter { it.active }
-                .flatMap { recognizer -> recognizer.searchRegex.findAll(input).map { mr -> RecognizerMatch(mr.range, mr.getMainGroup(config), recognizer) }.toList() }
-                .sortedWith(compareBy( { it.range.first }, { 0 - (it.range.last - it.range.first) }, { it.recognizer.name } ))
+                .flatMap { recognizer ->
+                    recognizer.searchRegex.findAll(input)
+                        .map { result ->
+                            RecognizerMatch(
+                                getMainGroupRange(result, config),
+                                getMainGroupValue(result, config),
+                                recognizer
+                            )
+                        }.toList()
+                }
+                .sortedWith(
+                    compareBy(
+                        { it.range.first },
+                        { 0 - (it.range.last - it.range.first) },
+                        { it.recognizer.name })
+                )
 
-        private fun MatchResult.getMainGroup(config: Configuration)=
+        private fun getMainGroupValue(result: MatchResult, config: Configuration) =
             when {
-                config.mainGroupName != null -> (groups as MatchNamedGroupCollection)[config.mainGroupName]?.value ?: throw Exception("Unable to find group '${config.mainGroupName}'")
-                config.mainGroupIndex != null -> groups[config.mainGroupIndex]?.value ?: throw Exception("Unable to find group with index ${config.mainGroupIndex}.")
-                else -> value
+                config.mainGroupName != null -> (result.groups as MatchNamedGroupCollection)[config.mainGroupName]?.value
+                    ?: throw Exception("Unable to find group '${config.mainGroupName}'")
+                config.mainGroupIndex != null -> result.groups[config.mainGroupIndex]?.value
+                    ?: throw Exception("Unable to find group with index ${config.mainGroupIndex}.")
+                else -> result.value
             }
+
+        // the JS-Regex do not support positions for groups... so we need to use a quite bad work-around (that will not always work)
+        private fun getMainGroupRange(result: MatchResult, config: Configuration): IntRange {
+            val start = result.value.indexOf(getMainGroupValue(result, config))
+            return IntRange(result.range.first + start, result.range.last + start)
+        }
     }
 
     override fun toString() = "[${range.first}+${range.last - range.first}] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
