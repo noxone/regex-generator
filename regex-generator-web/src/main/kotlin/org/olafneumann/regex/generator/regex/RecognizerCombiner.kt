@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator
+package org.olafneumann.regex.generator.regex
 
 class RecognizerCombiner {
     companion object {

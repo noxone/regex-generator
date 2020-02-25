@@ -1,4 +1,6 @@
-package org.olafneumann.regex.generator
+package org.olafneumann.regex.generator.regex
+
+import org.olafneumann.regex.generator.Configuration
 
 data class RecognizerMatch(
     val range: IntRange,

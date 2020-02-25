@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator
 
+import org.olafneumann.regex.generator.regex.Recognizer
+
 data class Configuration(
     val recognizers: List<Recognizer>,
     val mainGroupName: String? = null,
@@ -24,13 +26,15 @@ data class Configuration(
 
         fun fromCopy(configuration: dynamic) : Configuration {
             return Configuration(
-                recognizers = (configuration.recognizers as Array<Recognizer>).map { Recognizer(
-                    name = it.name,
-                    outputPattern = it.outputPattern,
-                    searchPattern = it.searchPattern,
-                    description = it.description,
-                    active = it.active
-                ) },
+                recognizers = (configuration.recognizers as Array<Recognizer>).map {
+                    Recognizer(
+                        name = it.name,
+                        outputPattern = it.outputPattern,
+                        searchPattern = it.searchPattern,
+                        description = it.description,
+                        active = it.active
+                    )
+                },
                 mainGroupIndex = configuration.mainGroupIndex as Int?,
                 mainGroupName = configuration.mainGroupName as String?
             )

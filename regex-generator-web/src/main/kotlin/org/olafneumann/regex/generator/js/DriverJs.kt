@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator
+package org.olafneumann.regex.generator.js
 
 fun createStepDefinition(element: String, title: String, description: String, position: String): dynamic {
     val stepDefinition: dynamic = js("{}")

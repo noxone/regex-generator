@@ -1,11 +1,13 @@
-package org.olafneumann.regex.generator
+package org.olafneumann.regex.generator.ui
 
+import org.olafneumann.regex.generator.js.Driver
+import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.js.createStepDefinition
 import org.w3c.dom.*
-import org.w3c.dom.clipboard.Clipboard
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
-import kotlin.dom.hasClass
 import kotlin.dom.removeClass
 
 const val CLASS_HIDDEN = "rg-hidden"
@@ -242,7 +244,11 @@ class SimplePresenter : DisplayContract.Presenter {
     }
 
     private fun computeOutputPattern() {
-        val result = RecognizerCombiner.combine(view.inputText, matches.filter { it.value }.map { it.key }.toList(), view.options)
+        val result = RecognizerCombiner.combine(
+            view.inputText,
+            matches.filter { it.value }.map { it.key }.toList(),
+            view.options
+        )
         view.resultText = result.pattern
     }
 
@@ -264,22 +270,26 @@ class SimplePresenter : DisplayContract.Presenter {
                 "#rg-title",
                 "New to Regex Generator",
                 "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
-                "right"),
+                "right"
+            ),
             createStepDefinition(
                 "#$ID_CONTAINER_INPUT",
                 "Sample",
                 "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
-                "bottom-center"),
+                "bottom-center"
+            ),
             createStepDefinition(
                 "#rg_result_container",
                 "Recognition",
                 "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
-                "top-center"),
+                "top-center"
+            ),
             createStepDefinition(
                 "#$ID_ROW_CONTAINER",
                 "Suggestions",
                 "Click one or more of suggested patterns...",
-                "top"),
+                "top"
+            ),
             createStepDefinition(
                 "#rg_result_display_box",
                 "Result",
