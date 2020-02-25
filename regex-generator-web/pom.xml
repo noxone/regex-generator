@@ -95,6 +95,7 @@
 										<include>index.html</include>
                                         <include>regex-generator-web.js</include>
 										<include>lib/**/*</include>
+                                        <include>**/*.css</include>
 									</includes>
                                 </resource>
                             </resources>

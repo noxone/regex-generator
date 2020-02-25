@@ -18,76 +18,8 @@
     <link rel="stylesheet" href="https://unpkg.com/driver.js/dist/driver.min.css">
 
     <!-- now for our page -->
+    <link rel="stylesheet" href="regex-generator.css">
     <title>Regex Generator</title>
-    <style>
-        .rg-hidden {
-            display: none;
-        }
-
-        .rg-text-display {
-            white-space: pre;
-        }
-
-        .rg-code,
-        .rg-match-container {
-            font-family: Consolas, monospace;
-        }
-
-        .rg-match-container {
-            overflow-x: auto;
-            width: 100%;
-        }
-
-        .rg-match-row {
-            position: relative;
-            height: 0.7rem;
-            white-space: nowrap;
-        }
-
-        .rg-match-item {
-            position: absolute;
-            height: 0.7rem;
-            cursor: pointer;
-        }
-
-        .rg-match-item-red {
-            background-color: red;
-            border: 1px solid red;
-        }
-
-        .rg-match-item-blue {
-            background-color: blue;
-            border: 1px solid blue;
-        }
-
-        .rg-match-item-green {
-            background-color: green;
-            border: 1px solid green;
-        }
-
-        .rg-item-selected {
-            background-color: white !important;
-            border: 1px solid gray;
-        }
-
-        .rg-item-not-available {
-            background-color: lightgray !important;
-            border: none;
-            cursor: not-allowed;
-        }
-
-        .rg-check-row {
-            margin-left: 1.4em;
-        }
-
-        .rg-check-row .custom-checkbox {
-            padding-left: 0;
-        }
-
-        .rg-check-row .custom-checkbox .custom-control-input {
-            margin-left: -2em;
-        }
-    </style>
 </head>
 
 <body class="bg-dark">
@@ -299,36 +231,34 @@
                 <h5 class="text-uppercase" style="width: 100%">Regex Generator</h5>
                 <a data-toggle="collapse" href="#footerContent" role="button" aria-expanded="false"
                     aria-controls="footerContent">&times;</a>
-                <!--<button type="button" class="ml-2 mb-1 close" data-toggle="collapse" data-target="#footerContent" aria-label="Toggle">
-                    <span aria-hidden="true">&times;</span>-->
             </div>
             <div class="text-center text-md-left collapse show" id="footerContent">
                 <div class="row">
                     <div class="col-md-6 mt-md-0 mt-3">
                         <p>The idea for this page comes from <a
-                                href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/">txt2re</a>,
+                                href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/" target="_blank">txt2re</a>,
                             which has obviously been discontinued.</p>
                         <p>The goal of this page is to give as many people as possible the opportunity to develop and
                             use regular expressions. Hopefully nobody has to call <span
                                 class="rg-code">substring()</span> anymore.</p>
-                        <p>Find the project sources at <a href="https://github.com/noxone/regex-generator">Github</a>
+                        <p>Find the project sources at <a href="https://github.com/noxone/regex-generator" target="_blank">Github</a>
                         </p>
                     </div>
                     <hr class="clearfix w-100 d-md-none pb-3 border-secondary">
                     <div class="col-md-3 mb-md-0 mb-3">
                         <h5>Useful Regex Links</h5>
                         <ul class="list-unstyled">
-                            <li><a href="https://regex101.com/">Regular Expressions 101</a></li>
-                            <li><a href="https://regexr.com/">Regexr</a></li>
-                            <li><a href="https://www.regexplanet.com">RegexPlanet</a></li>
-                            <li><a href="https://www.rexegg.com">RexEgg</a></li>
+                            <li><a href="https://regex101.com/" target="_blank">Regular Expressions 101</a></li>
+                            <li><a href="https://regexr.com/" target="_blank">Regexr</a></li>
+                            <li><a href="https://www.regexplanet.com" target="_blank">RegexPlanet</a></li>
+                            <li><a href="https://www.rexegg.com" target="_blank">RexEgg</a></li>
                         </ul>
                     </div>
                     <div class="col-md-3 mb-md-0 mb-3">
                         <h5>This project is built using</h5>
                         <ul class="list-unstyled">
-                            <li><a href="https://kotlinlang.org/">Kotlin</a></li>
-                            <li><a href="https://getbootstrap.com">Bootstrap</a></li>
+                            <li><a href="https://kotlinlang.org/" target="_blank">Kotlin</a></li>
+                            <li><a href="https://getbootstrap.com" target="_blank">Bootstrap</a></li>
                         </ul>
                     </div>
                 </div>
@@ -336,7 +266,7 @@
 
             <!-- Copyright -->
             <div class="text-center pt-3">
-                &copy; 2020 Copyright <a href="https://github.com/noxone/">Olaf Neumann</a>
+                &copy; 2020 Copyright <a href="https://github.com/noxone/" target="_blank">Olaf Neumann</a>
             </div>
         </footer>
     </div>
