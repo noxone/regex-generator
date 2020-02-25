@@ -284,12 +284,7 @@ class SimplePresenter : DisplayContract.Presenter {
                 "#rg_result_display_box",
                 "Result",
                 "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
-                "top-center"),
-            createStepDefinition(
-                "#rg_options_button",
-                "Options",
-                "Have a look at the options to customize your <em>regex</em>.",
-                "left")
+                "top-center")
         ))
         driver.start()
     }
