@@ -16,7 +16,7 @@ In the current state, only a few snippets are supported and the focus of develop
 
 ## Try out
 
-Try the one [Regex Generator](https://noxone.github.io/regex-generator/) online.
+Try [Regex Generator](https://noxone.github.io/regex-generator/) online.
 
 ## More ideas
 
