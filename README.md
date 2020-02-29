@@ -8,15 +8,32 @@ Regex Generator tries to help you to create a first version of a regular express
 
 Hopefully nobody will need to use ``substring()`` anymore.
 
+## Demo
+
+Try [Regex Generator](https://noxone.github.io/regex-generator/) online.
+
 ## Current Status
 
 ``Regex Generator`` has just been published in February 2020. It is still in an initial state and will hopefully grow over time.
 
 In the current state, only a few snippets are supported and the focus of development is primarily on handling and a good user guidance.
 
-## Try out
+## Functionality
 
-Try [Regex Generator](https://noxone.github.io/regex-generator/) online.
+Hopefully this regex generator continues to grow to eventually support a really wide range of functions and regular expressions.
+
+### Languages
+
+The ``regex generator`` is currently able to generate code snippets in the following languages:
+
+- Kotlin
+- Java
+
+If you're missing a language, just create a generator and open a pull-request or simply open a [new issue](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=New+language&template=add-language.md&title=).
+
+### Patterns
+
+At the current stage there are ~10 patterns integrated in ``regex generator``. It would be great if this number would grow to support a wide range of use cases. Feel free to suggest new patterns via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=add-pattern.md&title=).
 
 ## More ideas
 
