@@ -1069,6 +1069,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
         tmp$_0.code = element.generateCode_wa467u$(pattern, options);
       }
     }
+    Prism.highlightAll();
   };
   HtmlPage.prototype.showUserGuide_6taknv$ = function (initialStep) {
     this.driver_0.reset();
@@ -1132,10 +1133,10 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   Object.defineProperty(LanguageCard.prototype, 'code', {
     get: function () {
-      return this.codeElement_0.innerText;
+      return this.codeElement_0.innerHTML;
     },
     set: function (value) {
-      this.codeElement_0.innerText = value;
+      this.codeElement_0.innerHTML = replace(value, '<', '&lt;');
     }
   });
   Object.defineProperty(LanguageCard.prototype, 'codeElement_0', {
