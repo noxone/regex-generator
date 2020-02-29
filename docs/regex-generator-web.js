@@ -16,8 +16,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var emptyList = Kotlin.kotlin.collections.emptyList_287e2$;
   var replace = Kotlin.kotlin.text.replace_680rmw$;
-  var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
+  var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
   var trimMargin = Kotlin.kotlin.text.trimMargin_rjktp$;
   var listOf_0 = Kotlin.kotlin.collections.listOf_mh5how$;
   var sortedWith = Kotlin.kotlin.collections.sortedWith_eknfly$;
@@ -83,6 +83,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   JavaCodeGenerator.prototype.constructor = JavaCodeGenerator;
   KotlinCodeGenerator.prototype = Object.create(CLikeCodeGenerator.prototype);
   KotlinCodeGenerator.prototype.constructor = KotlinCodeGenerator;
+  PythonCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
+  PythonCodeGenerator.prototype.constructor = PythonCodeGenerator;
   function Configuration(recognizers, mainGroupName, mainGroupIndex) {
     Configuration$Companion_getInstance();
     if (mainGroupName === void 0)
@@ -251,23 +253,12 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   SimpleReplacingCodeGenerator.prototype.generateCode_wa467u$ = function (pattern, options) {
     return new GeneratedSnippet(replace(replace(this.templateCode, '%1$s', this.escapePattern_61zpoe$(pattern)), '%2$s', this.generateOptionsCode_ow7xd4$(options)), this.getWarnings_wa467u$(pattern, options));
   };
-  SimpleReplacingCodeGenerator.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'SimpleReplacingCodeGenerator',
-    interfaces: [CodeGenerator]
-  };
-  function CLikeCodeGenerator() {
-    SimpleReplacingCodeGenerator.call(this);
-  }
-  CLikeCodeGenerator.prototype.escapePattern_61zpoe$ = function (pattern) {
-    return Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
-  };
-  function CLikeCodeGenerator$combineOptions$lambda(closure$mapper) {
+  function SimpleReplacingCodeGenerator$combineOptions$lambda(closure$mapper) {
     return function (s) {
       return closure$mapper(s);
     };
   }
-  CLikeCodeGenerator.prototype.combineOptions_dp1fco$$default = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, prefix, separator, postfix, mapper) {
+  SimpleReplacingCodeGenerator.prototype.combineOptions_v0phl5$$default = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper) {
     var optionList = ArrayList_init_0();
     if (options.caseSensitive) {
       optionList.add_11rb$(valueForCaseInsensitive);
@@ -279,18 +270,31 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       optionList.add_11rb$(valueForMultiline);
     }
     if (optionList.isEmpty()) {
-      return '';
+      return valueIfNone != null ? valueIfNone : '';
     }
-    return joinToString(optionList, separator, prefix, postfix, void 0, void 0, CLikeCodeGenerator$combineOptions$lambda(mapper));
+    return joinToString(optionList, separator, prefix, postfix, void 0, void 0, SimpleReplacingCodeGenerator$combineOptions$lambda(mapper));
   };
-  CLikeCodeGenerator.prototype.combineOptions_dp1fco$ = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, prefix, separator, postfix, mapper, callback$default) {
+  SimpleReplacingCodeGenerator.prototype.combineOptions_v0phl5$ = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper, callback$default) {
+    if (valueIfNone === void 0)
+      valueIfNone = null;
     if (prefix === void 0)
       prefix = '';
     if (separator === void 0)
       separator = '';
     if (postfix === void 0)
       postfix = '';
-    return callback$default ? callback$default(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, prefix, separator, postfix, mapper) : this.combineOptions_dp1fco$$default(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, prefix, separator, postfix, mapper);
+    return callback$default ? callback$default(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper) : this.combineOptions_v0phl5$$default(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper);
+  };
+  SimpleReplacingCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'SimpleReplacingCodeGenerator',
+    interfaces: [CodeGenerator]
+  };
+  function CLikeCodeGenerator() {
+    SimpleReplacingCodeGenerator.call(this);
+  }
+  CLikeCodeGenerator.prototype.escapePattern_61zpoe$ = function (pattern) {
+    return Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
   };
   CLikeCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
@@ -319,7 +323,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return 'Pattern.' + s;
   }
   JavaCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_dp1fco$(options, 'CASE_INSENSITIVE', 'MULTILINE', 'DOTALL', ' ,', ' | ', void 0, JavaCodeGenerator$generateOptionsCode$lambda);
+    return this.combineOptions_v0phl5$(options, 'CASE_INSENSITIVE', 'MULTILINE', 'DOTALL', void 0, ' ,', ' | ', void 0, JavaCodeGenerator$generateOptionsCode$lambda);
   };
   JavaCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
@@ -348,7 +352,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return 'RegexOption.' + s;
   }
   KotlinCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_dp1fco$(options, 'IGNORE_CASE', 'MULTILINE', 'DOT_MATCHES_ALL', ', options = setOf(', ', ', ')', KotlinCodeGenerator$generateOptionsCode$lambda);
+    return this.combineOptions_v0phl5$(options, 'IGNORE_CASE', 'MULTILINE', 'DOT_MATCHES_ALL', void 0, ', options = setOf(', ', ', ')', KotlinCodeGenerator$generateOptionsCode$lambda);
   };
   KotlinCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
     if (options.dotMatchesLineBreaks)
@@ -359,6 +363,38 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     kind: Kind_CLASS,
     simpleName: 'KotlinCodeGenerator',
     interfaces: [CLikeCodeGenerator]
+  };
+  function PythonCodeGenerator() {
+    SimpleReplacingCodeGenerator.call(this);
+  }
+  Object.defineProperty(PythonCodeGenerator.prototype, 'languageName', {
+    get: function () {
+      return 'Python';
+    }
+  });
+  Object.defineProperty(PythonCodeGenerator.prototype, 'highlightLanguage', {
+    get: function () {
+      return 'python';
+    }
+  });
+  PythonCodeGenerator.prototype.escapePattern_61zpoe$ = function (pattern) {
+    return Regex_init("([\\\\'])").replace_x2uqeu$(pattern, '\\$1');
+  };
+  Object.defineProperty(PythonCodeGenerator.prototype, 'templateCode', {
+    get: function () {
+      return 'import re\n\npattern = \'%1$s\'\ntest_string = \'This is a test.\'\nresult = re.match(pattern, test_string, flags = %2$s)\n\nif result:\n  print("Search successful.")\nelse:\n  print("Search unsuccessful.")\t';
+    }
+  });
+  function PythonCodeGenerator$generateOptionsCode$lambda(s) {
+    return 're.' + s;
+  }
+  PythonCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
+    return this.combineOptions_v0phl5$(options, 'I', 'M', 'S', '0', void 0, ' | ', void 0, PythonCodeGenerator$generateOptionsCode$lambda);
+  };
+  PythonCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'PythonCodeGenerator',
+    interfaces: [SimpleReplacingCodeGenerator]
   };
   function Recognizer(name, outputPattern, description, searchPattern, active) {
     if (description === void 0)
@@ -1546,6 +1582,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   package$regex_0.CLikeCodeGenerator = CLikeCodeGenerator;
   package$regex_0.JavaCodeGenerator = JavaCodeGenerator;
   package$regex_0.KotlinCodeGenerator = KotlinCodeGenerator;
+  package$regex_0.PythonCodeGenerator = PythonCodeGenerator;
   package$regex_0.Recognizer = Recognizer;
   Object.defineProperty(RecognizerCombiner, 'Companion', {
     get: RecognizerCombiner$Companion_getInstance

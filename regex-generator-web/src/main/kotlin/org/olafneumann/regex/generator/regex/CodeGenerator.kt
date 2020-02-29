@@ -4,8 +4,9 @@ interface CodeGenerator {
     companion object {
         val list by lazy {
             listOf<CodeGenerator>(
-                JavaCodeGenerator(),
-                KotlinCodeGenerator()
+                JavaCodeGenerator()
+                ,KotlinCodeGenerator()
+                //,PythonCodeGenerator()
             ).sortedBy { it.languageName }
         }
     }
@@ -37,20 +38,16 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
                 .replace("%2${'$'}s", generateOptionsCode(options)),
             getWarnings(pattern, options)
         )
-}
-
-internal abstract class CLikeCodeGenerator() : SimpleReplacingCodeGenerator() {
-    open override fun escapePattern(pattern: String): String =
-        pattern.replace(Regex("([\\\\\"])"), "\\$1")
 
     protected open fun combineOptions(options: RecognizerCombiner.Options,
-                       valueForCaseInsensitive: String,
-                       valueForMultiline: String,
-                       valueForDotAll: String,
-                       prefix: String = "",
-                       separator: String = "",
-                       postfix: String = "",
-                       mapper: (option: String) -> String): String {
+                                      valueForCaseInsensitive: String,
+                                      valueForMultiline: String,
+                                      valueForDotAll: String,
+                                      valueIfNone: String? = null,
+                                      prefix: String = "",
+                                      separator: String = "",
+                                      postfix: String = "",
+                                      mapper: (option: String) -> String): String {
         val optionList = mutableListOf<String>()
         if (options.caseSensitive)
             optionList += valueForCaseInsensitive
@@ -59,9 +56,14 @@ internal abstract class CLikeCodeGenerator() : SimpleReplacingCodeGenerator() {
         if (options.multiline)
             optionList += valueForMultiline
 
-        optionList.ifEmpty { return "" }
+        optionList.ifEmpty { return valueIfNone ?: "" }
         return optionList.joinToString(separator = separator, prefix = prefix, postfix = postfix) { s -> mapper(s) }
     }
+}
+
+internal abstract class CLikeCodeGenerator() : SimpleReplacingCodeGenerator() {
+    open override fun escapePattern(pattern: String): String =
+        pattern.replace(Regex("([\\\\\"])"), "\\$1")
 }
 
 internal class JavaCodeGenerator() : CLikeCodeGenerator() {
@@ -104,4 +106,29 @@ internal class KotlinCodeGenerator() : CLikeCodeGenerator() {
             return listOf("The option 'RegexOption.DOT_MATCHES_ALL' is only supported on JVM runtime.")
         return emptyList()
     }
+}
+
+internal class PythonCodeGenerator() : SimpleReplacingCodeGenerator() {
+    override val languageName: String
+        get() = "Python"
+    override val highlightLanguage: String
+        get() = "python"
+
+    override fun escapePattern(pattern: String): String =
+        pattern.replace(Regex("([\\\\'])"), "\\$1")
+
+    override val templateCode: String
+        get() = """import re
+
+pattern = '%1${'$'}s'
+test_string = 'This is a test.'
+result = re.match(pattern, test_string, flags = %2${'$'}s)
+
+if result:
+  print("Search successful.")
+else:
+  print("Search unsuccessful.")	"""
+
+    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+        combineOptions(options, "I", "M", "S", valueIfNone = "0", separator = " | ") { s -> "re.$s"}
 }
