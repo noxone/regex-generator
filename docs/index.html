@@ -36,7 +36,7 @@
             <div class="col-12 col-md-11 py-4 pl-4">
                 <div class="d-flex justify-content-between">
                     <h5>Paste a text sample.</h5>
-                    <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
+                    <a id="rg_button_show_help" class="btn btn-sm rg-no-focus" title="Show help">&#10068;</a>
                 </div>
                 <input type="text" id="rg_raw_input_text" class="form-control" aria-label="Example text"
                     aria-describedby="rg_raw_text_input_help" placeholder="Text here..." autofocus="autofocus">
@@ -52,10 +52,7 @@
                 <h3 class="display-3 text-secondary">2</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
-                <div class="d-flex justify-content-between">
-                    <h5>Which parts of the text are interesting for you?</h5>
-                    <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
-                </div>
+                <h5>Which parts of the text are interesting for you?</h5>
                 <div class="row no-gutters bg-white border rounded p-2" id="rg_result_container">
                     <div class="rg-match-container">
                         <div id="rg_text_display" class="rg-text-display">This just an #example text with "some
@@ -112,115 +109,107 @@
                 <h3 class="display-3 text-secondary">3</h3>
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
-                <div class="d-flex justify-content-between">
-                    <h5>Regular expression</h5>
-                    <button class="btn btn-sm rg-no-focus" title="Show help">&#10068;</button>
-                </div>
+                <h5>Regular expression</h5>
                 <div class="rg-match-container mb-3 rounded border p-2 bg-white" id="rg_result_display_box">
                     <div class="rg-match-container">
-                        <div id="rg_result_display" class="rg-text-display">This is the generated regular expression.
-                        </div>
+                        <div id="rg_result_display">This is the generated regular expression.</div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div>
-
                         <button class="btn btn-primary" id="rg_button_copy">Copy regex</button>
-                        <!-- TODO: make visible again -->
-                        <!-- <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-secondary">Java</button>
-                            <button type="button" class="btn btn-secondary">JavaScript</button>
-                            <button type="button" class="btn btn-secondary">PCRE</button>
-                        </div> -->
-                    </div>
-                    <div>
-                        <button class="btn btn-warning" id="rg_options_button" data-toggle="collapse" data-target="#rg_regexOptionsExpandable"
-                            aria-expanded="true" aria-controls="rg_regexOptionsExpandable">Options</button>
                     </div>
                 </div>
-                <div class="collapse mt-3" id="rg_regexOptionsExpandable">
-                    <div class="card card-body bg-light">
-                        <form>
-                            <div class="form-group row">
-                                <div class="col-sm-12 rg-check-row">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="rg_onlymatches"
-                                            aria-describedby="rg_onlymatches_help">
-                                        <label class="custom-control-label" for="rg_onlymatches">Generate only
-                                            patterns</label>
-                                    </div>
-                                    <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
-                                        When checked then generated regular expression will only contain the
-                                        patterns you chose in step 2. Otherwise all the characters between the
-                                        patterns will be copied.
-                                    </small>
-                                </div>
+                <form class="mt-3">
+                    <div class="form-group row">
+                        <div class="col-sm-12 rg-check-row">
+                            <!-- TODO: Decide between checkbox and switch and delete corresponding CSS -->
+                            <!-- <div class="custom-control custom-checkbox"> -->
+                            <!-- <div class="custom-control custom-switch"> -->
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="rg_onlymatches"
+                                    aria-describedby="rg_onlymatches_help">
+                                <label class="custom-control-label" for="rg_onlymatches">Generate only
+                                    patterns</label>
                             </div>
-                            <!-- TODO: make visible again -->
-                            <div class="form-group row" style="display: none">
-                                <div class="col-sm-12 rg-check-row">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="rg_caseinsensitive"
-                                            aria-describedby="rg_caseinsensitive_help">
-                                        <label class="custom-control-label" for="rg_caseinsensitive">Case
-                                            Insensitive</label>
-                                    </div>
-                                    <small id="rg_caseinsensitive_help" class="form-text text-muted mt-0">
-                                        By default, all major regex engines match in case-sensitive mode. If you want
-                                        patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
-                                        to match in
-                                        case-insensitive fashion, we need to turn that feature on.<sup><a
-                                                href="https://www.rexegg.com/regex-modifiers.html#i"
-                                                target="_blank">*</a></sup>
-                                    </small>
-                                </div>
-                            </div>
-                            <!-- TODO: make visible again -->
-                            <div class="form-group row" style="display: none">
-                                <div class="col-sm-12 rg-check-row">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input"
-                                            id="rg_dotmatcheslinebreakes"
-                                            aria-describedby="rg_dotmatcheslinebreakes_help">
-                                        <label class="custom-control-label" for="rg_dotmatcheslinebreakes">Dot Matches
-                                            Line Breaks</label>
-                                    </div>
-                                    <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
-                                        By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
-                                        match line break characters such as line feeds and
-                                        carriage returns. If you want patterns such as <span
-                                            class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
-                                        lines, we need to turn that feature on.
-                                        <sup><a href="https://www.rexegg.com/regex-modifiers.html#dotall"
-                                                target="_blank">*</a></sup> </small>
-                                </div>
-                            </div>
-                            <!-- TODO: make visible again -->
-                            <div class="form-group row" style="display: none">
-                                <div class="col-sm-12 rg-check-row">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="rg_multiline"
-                                            aria-describedby="rg_multiline_help">
-                                        <label class="custom-control-label" for="rg_multiline">Multiline</label>
-                                    </div>
-                                    <small id="rg_multiline_help" class="form-text text-muted mt-0">
-                                        By default, most major engines (except Ruby), the anchors <span
-                                            class="border rg-code p-1 bg-white">^</span> and <span
-                                            class="border rg-code p-1 bg-white">$</span> only match
-                                        (respectively) at the beginning and the end of the string.
+                            <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
+                                When checked then generated regular expression will only contain the
+                                patterns you chose in step 2. Otherwise all the characters between the
+                                patterns will be copied.
+                            </small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-                                        In other engines, if you want patterns such as <span
-                                            class="border rg-code p-1 bg-white">^Define</span> and <span
-                                            class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
-                                        (respectively) at the beginning and the end of each line, we need to turn that
-                                        feature on.
-                                        <sup><a href="https://www.rexegg.com/regex-modifiers.html#multiline"
-                                                target="_blank">*</a></sup> </small>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_regex_result_container" style="display: none">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
+                <h3 class="display-3 text-secondary">4</h3>
+            </div>
+            <div class="col-12 col-md-11 py-4 pl-4">
+                <div class="d-flex justify-content-between">
+                    <h5>Language integration</h5>
                 </div>
+                <form>
+                    <div class="form-group row">
+                        <div class="col-sm-12 rg-check-row">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="rg_caseinsensitive"
+                                    aria-describedby="rg_caseinsensitive_help">
+                                <label class="custom-control-label" for="rg_caseinsensitive">Case
+                                    Insensitive</label>
+                            </div>
+                            <small id="rg_caseinsensitive_help" class="form-text text-muted mt-0">
+                                By default, all major regex engines match in case-sensitive mode. If you want
+                                patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
+                                to match in
+                                case-insensitive fashion, we need to turn that feature on.<sup><a
+                                        href="https://www.rexegg.com/regex-modifiers.html#i" target="_blank">*</a></sup>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 rg-check-row">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="rg_dotmatcheslinebreakes"
+                                    aria-describedby="rg_dotmatcheslinebreakes_help">
+                                <label class="custom-control-label" for="rg_dotmatcheslinebreakes">Dot Matches
+                                    Line Breaks</label>
+                            </div>
+                            <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
+                                By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
+                                match line break characters such as line feeds and
+                                carriage returns. If you want patterns such as <span
+                                    class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
+                                lines, we need to turn that feature on.
+                                <sup><a href="https://www.rexegg.com/regex-modifiers.html#dotall"
+                                        target="_blank">*</a></sup> </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12 rg-check-row">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="rg_multiline"
+                                    aria-describedby="rg_multiline_help">
+                                <label class="custom-control-label" for="rg_multiline">Multiline</label>
+                            </div>
+                            <small id="rg_multiline_help" class="form-text text-muted mt-0">
+                                By default, most major engines (except Ruby), the anchors <span
+                                    class="border rg-code p-1 bg-white">^</span> and <span
+                                    class="border rg-code p-1 bg-white">$</span> only match
+                                (respectively) at the beginning and the end of the string.
+
+                                In other engines, if you want patterns such as <span
+                                    class="border rg-code p-1 bg-white">^Define</span> and <span
+                                    class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
+                                (respectively) at the beginning and the end of each line, we need to turn that
+                                feature on.
+                                <sup><a href="https://www.rexegg.com/regex-modifiers.html#multiline"
+                                        target="_blank">*</a></sup> </small>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -236,12 +225,14 @@
                 <div class="row">
                     <div class="col-md-6 mt-md-0 mt-3">
                         <p>The idea for this page comes from <a
-                                href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/" target="_blank">txt2re</a>,
+                                href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/"
+                                target="_blank">txt2re</a>,
                             which has obviously been discontinued.</p>
                         <p>The goal of this page is to give as many people as possible the opportunity to develop and
                             use regular expressions. Hopefully nobody has to call <span
                                 class="rg-code">substring()</span> anymore.</p>
-                        <p>Find the project sources at <a href="https://github.com/noxone/regex-generator" target="_blank">Github</a>
+                        <p>Find the project sources at <a href="https://github.com/noxone/regex-generator"
+                                target="_blank">Github</a>
                         </p>
                     </div>
                     <hr class="clearfix w-100 d-md-none pb-3 border-secondary">

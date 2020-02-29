@@ -4,17 +4,11 @@ import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
-import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
-import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.Node
-import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
-import kotlin.dom.removeClass
 
 
-const val CLASS_HIDDEN = "rg-hidden"
 const val CLASS_MATCH_ROW = "rg-match-row"
 const val CLASS_MATCH_ITEM = "rg-match-item"
 const val CLASS_ITEM_SELECTED = "rg-item-selected"
@@ -30,13 +24,12 @@ const val ID_TEXT_DISPLAY = "rg_text_display"
 const val ID_RESULT_DISPLAY = "rg_result_display"
 const val ID_ROW_CONTAINER = "rg_row_container"
 const val ID_CONTAINER_INPUT = "rg_input_container"
-const val ID_CONTAINER_PATTERN_SELECTION = "rg_pattern_selection_container"
-const val ID_CONTAINER_RESULT = "rg_regex_result_container"
 const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
 const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
 const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
 const val ID_CHECK_MULTILINE = "rg_dotmatcheslinebreakes"
 const val ID_BUTTON_COPY = "rg_button_copy"
+const val ID_BUTTON_HELP = "rg_button_show_help"
 
 private val Int.characterUnits: String get() = "${this}ch"
 
@@ -46,15 +39,16 @@ class HtmlPage(
     private val RecognizerMatch.row: Int? get() = recognizerMatchToRow[this]
     private val RecognizerMatch.div: HTMLDivElement? get() = recognizerMatchToElements[this]
 
-    private val textInput = getInputById(ID_INPUT_ELEMENT)
-    private val textDisplay = getDivById(ID_TEXT_DISPLAY)
-    private val rowContainer = getDivById(ID_ROW_CONTAINER)
-    private val resultDisplay = getDivById(ID_RESULT_DISPLAY)
-    private val buttonCopy = getButtonById(ID_BUTTON_COPY)
-    private val checkOnlyMatches = getInputById(ID_CHECK_ONLY_MATCHES)
-    private val checkCaseInsensitive = getInputById(ID_CHECK_CASE_INSENSITIVE)
-    private val checkDotAll = getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
-    private val checkMultiline = getInputById(ID_CHECK_MULTILINE)
+    private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
+    private val textDisplay = HtmlHelper.getDivById(ID_TEXT_DISPLAY)
+    private val rowContainer = HtmlHelper.getDivById(ID_ROW_CONTAINER)
+    private val resultDisplay = HtmlHelper.getDivById(ID_RESULT_DISPLAY)
+    private val buttonCopy = HtmlHelper.getButtonById(ID_BUTTON_COPY)
+    private val buttonHelp = HtmlHelper.getLinkById(ID_BUTTON_HELP)
+    private val checkOnlyMatches = HtmlHelper.getInputById(ID_CHECK_ONLY_MATCHES)
+    private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
+    private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
+    private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
@@ -64,34 +58,11 @@ class HtmlPage(
     init {
         textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
         buttonCopy.addEventListener(EVENT_CLICK, { presenter.onButtonCopyClick() })
+        buttonHelp.addEventListener(EVENT_CLICK, { presenter.onButtonHelpClick() })
         checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-    }
-
-    private fun getDivById(id: String): HTMLDivElement {
-        try {
-            return document.getElementById(id) as HTMLDivElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find div with id '$id'.", e)
-        }
-    }
-
-    private fun getInputById(id: String): HTMLInputElement {
-        try {
-            return document.getElementById(id) as HTMLInputElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find input with id '$id'.", e)
-        }
-    }
-
-    private fun getButtonById(id: String): HTMLButtonElement {
-        try {
-            return document.getElementById(id) as HTMLButtonElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find button with id '$id'.", e)
-        }
     }
 
     override fun selectInputText() {
@@ -149,25 +120,17 @@ class HtmlPage(
         }.toMap()
     }
 
-    private fun createRowElement(): HTMLDivElement = createDivElement(rowContainer, CLASS_MATCH_ROW)
 
-    private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement = createDivElement(parent, CLASS_MATCH_ITEM)
+    private fun createRowElement(): HTMLDivElement =
+        HtmlHelper.createDivElement(rowContainer, CLASS_MATCH_ROW)
+    private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement =
+        HtmlHelper.createDivElement(parent, CLASS_MATCH_ITEM)
 
-    private fun createDivElement(parent: Node, vararg classNames: String): HTMLDivElement {
-        val element = document.createElement(ELEMENT_DIV) as HTMLDivElement
-        element.addClass(*classNames)
-        parent.appendChild(element)
-        return element
+    override fun select(match: RecognizerMatch, selected: Boolean) {
+        match.div?.let { HtmlHelper.toggleClass(it, selected, CLASS_ITEM_SELECTED) }
     }
-
-    override fun select(match: RecognizerMatch, selected: Boolean) = match.div?.let { toggleClass(it, selected, CLASS_ITEM_SELECTED) }!!
-    override fun disable(match: RecognizerMatch, disabled: Boolean) = match.div?.let { toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }!!
-
-    private fun toggleClass(element: HTMLDivElement, selected: Boolean, className: String) {
-        if (selected)
-            element.addClass(className)
-        else
-            element.removeClass(className)
+    override fun disable(match: RecognizerMatch, disabled: Boolean) {
+        match.div?.let { HtmlHelper.toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }
     }
 
     override val options: RecognizerCombiner.Options
