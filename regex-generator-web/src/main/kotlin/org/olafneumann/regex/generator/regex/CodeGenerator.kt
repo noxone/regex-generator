@@ -3,8 +3,8 @@ package org.olafneumann.regex.generator.regex
 interface CodeGenerator {
     companion object {
         val list = listOf(
-            JavaCodeGenerator()/*,
-            KotlinCodeGenerator()*/
+            JavaCodeGenerator(),
+            KotlinCodeGenerator()
         )
     }
 
@@ -27,6 +27,26 @@ interface CodeGenerator {
     abstract class CLikeCodeGenerator() : SimpleReplacingCodeGenerator() {
         override fun escapePattern(pattern: String): String =
             pattern.replace(Regex("([\\\\\"])"), "\\$1")
+
+        fun combineOptions(options: RecognizerCombiner.Options,
+                                    valueForCaseInsensitive: String,
+                                    valueForMultiline: String,
+                                    valueForDotAll: String,
+                                    prefix: String = "",
+                                    separator: String = "",
+                                    postfix: String = "",
+                                    mapper: (option: String) -> String): String {
+            val optionList = mutableListOf<String>()
+            if (options.caseSensitive)
+                optionList += valueForCaseInsensitive
+            if (options.dotMatchesLineBreaks)
+                optionList += valueForDotAll
+            if (options.multiline)
+                optionList += valueForMultiline
+
+            optionList.ifEmpty { return "" }
+            return optionList.joinToString(separator = separator, prefix = prefix, postfix = postfix) { s -> mapper(s) }
+        }
     }
 
     class JavaCodeGenerator() : CLikeCodeGenerator() {
@@ -47,21 +67,20 @@ interface CodeGenerator {
                 |    }
                 |}""".trimMargin()
 
-        override fun generateOptionsCode(options: RecognizerCombiner.Options): String {
-            val optionList = mutableListOf<String>()
-            if (options.caseSensitive)
-                optionList += "CASE_INSENSITIVE"
-            if (options.dotMatchesLineBreaks)
-                optionList += "DOTALL"
-            if (options.multiline)
-                optionList += "MULTILINE"
-
-            optionList.ifEmpty { return "" }
-            return optionList.joinToString(separator = " | ", prefix = " ,") { s -> "Pattern.$s" }
-        }
+        override fun generateOptionsCode(options: RecognizerCombiner.Options): String
+                = combineOptions(options, "CASE_INSENSITIVE", "MULTILINE", "DOTALL", prefix = " ,", separator = " | ") { s -> "Pattern.$s" }
     }
 
-    /*class KotlinCodeGenerator() : CLikeCodeGenerator() {
+    class KotlinCodeGenerator() : CLikeCodeGenerator() {
         override val languageName: String get() = "Kotlin"
-    }*/
+
+        override val templateCode: String get() = """fun useRegex(input: String): Boolean {
+    val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
+    return regex.matches(input)
+}"""
+
+        override fun generateOptionsCode(options: RecognizerCombiner.Options): String
+                = combineOptions(options, "IGNORE_CASE", "MULTILINE", "DOT_MATCHES_ALL", prefix = ", options = setOf(", postfix = ")", separator = ", ") { s -> "RegexOption.$s" }
+    }
 }
+
