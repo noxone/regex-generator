@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
+import org.olafneumann.regex.generator.js.Driver
+import org.olafneumann.regex.generator.js.createStepDefinition
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.w3c.dom.HTMLButtonElement
@@ -56,6 +58,8 @@ class HtmlPage(
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
+
+    private val driver = Driver(js("{}"))
 
     init {
         textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
@@ -173,4 +177,41 @@ class HtmlPage(
             dotMatchesLineBreaks = checkDotAll.checked,
             multiline = checkMultiline.checked
         )
+
+
+    override fun showUserGuide(initialStep: Boolean) {
+        driver.reset()
+        val steps = arrayOf(createStepDefinition(
+                "#rg-title",
+                "New to Regex Generator",
+                "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
+                "right"
+            ),
+            createStepDefinition(
+                "#$ID_CONTAINER_INPUT",
+                "Sample",
+                "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
+                "bottom-center"
+            ),
+            createStepDefinition(
+                "#rg_result_container",
+                "Recognition",
+                "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
+                "top-center"
+            ),
+            createStepDefinition(
+                "#$ID_ROW_CONTAINER",
+                "Suggestions",
+                "Click one or more of suggested patterns...",
+                "top"
+            ),
+            createStepDefinition(
+                "#rg_result_display_box",
+                "Result",
+                "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
+                "top-center")
+        )
+        driver.defineSteps(steps)
+        driver.start(if (initialStep) 0 else 1)
+    }
 }

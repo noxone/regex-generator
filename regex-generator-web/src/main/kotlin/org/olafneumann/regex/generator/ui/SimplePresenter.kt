@@ -1,8 +1,6 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.copyTextToClipboard
-import org.olafneumann.regex.generator.js.Driver
-import org.olafneumann.regex.generator.js.createStepDefinition
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 
@@ -22,6 +20,9 @@ class SimplePresenter : DisplayContract.Presenter {
     override fun onButtonCopyClick() {
         copyTextToClipboard(view.resultText)
     }
+
+    override fun onButtonHelpClick() = view.showUserGuide(false)
+    fun showInitialUserGuide() = view.showUserGuide(true)
 
     override fun onInputChanges(newInput: String) {
         matches.clear()
@@ -72,42 +73,5 @@ class SimplePresenter : DisplayContract.Presenter {
                 selectedMatches.any { selectedMatch ->
                     selectedMatch.range.intersect(match.range).isNotEmpty() } }
             .toSet()
-    }
-
-    fun showUserGuide() {
-        val driver = Driver()
-        driver.reset()
-        driver.defineSteps(arrayOf(
-            createStepDefinition(
-                "#rg-title",
-                "New to Regex Generator",
-                "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
-                "right"
-            ),
-            createStepDefinition(
-                "#$ID_CONTAINER_INPUT",
-                "Sample",
-                "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
-                "bottom-center"
-            ),
-            createStepDefinition(
-                "#rg_result_container",
-                "Recognition",
-                "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
-                "top-center"
-            ),
-            createStepDefinition(
-                "#$ID_ROW_CONTAINER",
-                "Suggestions",
-                "Click one or more of suggested patterns...",
-                "top"
-            ),
-            createStepDefinition(
-                "#rg_result_display_box",
-                "Result",
-                "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
-                "top-center")
-        ))
-        driver.start()
     }
 }
