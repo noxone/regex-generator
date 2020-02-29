@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.copyTextToClipboard
-import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 
@@ -64,10 +63,7 @@ class SimplePresenter : DisplayContract.Presenter {
             view.options
         )
         view.resultText = result.pattern
-
-        CodeGenerator.list
-            .map { cg -> cg.generateCode(result.pattern, view.options) }
-            .forEach { s -> console.info(s) }
+        view.showGeneratedCodeForPattern(result.pattern)
     }
 
     private val deactivatedMatches: Collection<RecognizerMatch> get() {

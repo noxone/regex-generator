@@ -5,6 +5,11 @@ import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.removeClass
 
+const val ELEMENT_DIV = "div"
+const val ELEMENT_BUTTON = "button"
+const val ELEMENT_PRE = "pre"
+const val ELEMENT_CODE = "code"
+
 object HtmlHelper {
     internal fun getDivById(id: String): HTMLDivElement {
         try {
@@ -38,8 +43,20 @@ object HtmlHelper {
         }
     }
 
-    internal fun createDivElement(parent: Node, vararg classNames: String): HTMLDivElement {
-        val element = document.createElement(ELEMENT_DIV) as HTMLDivElement
+    internal fun createDivElement(parent: Node, vararg classNames: String): HTMLDivElement =
+        createElement(parent, ELEMENT_DIV, *classNames) as HTMLDivElement
+
+    internal fun createButtonElement(parent: Node, vararg classNames: String): HTMLButtonElement =
+        createElement(parent, ELEMENT_BUTTON, *classNames) as HTMLButtonElement
+
+    internal fun createPreElement(parent: Node, vararg classNames: String): HTMLPreElement =
+        createElement(parent, ELEMENT_PRE, *classNames) as HTMLPreElement
+
+    internal fun createCodeElement(parent: Node, vararg classNames: String): HTMLElement =
+        createElement(parent, ELEMENT_CODE, *classNames) as HTMLElement
+
+    private fun createElement(parent: Node, type: String, vararg classNames: String): Element {
+        val element = document.createElement(type)
         element.addClass(*classNames)
         parent.appendChild(element)
         return element

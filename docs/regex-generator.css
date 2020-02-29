@@ -58,6 +58,11 @@
   /*for custom checkbox: margin-left: 1.4em;*/
   /*for custom switch: margin-left: 2.2em;*/
   margin-left: 2.2em;
+  padding-right: 3em;
+}
+
+form * .rg-check-row {
+  padding-right: 4em;
 }
 
 .rg-check-row .custom-control {
@@ -66,4 +71,17 @@
 
 .rg-check-row .custom-control .custom-control-input {
   margin-left: -2em;
+}
+
+
+.rg-code-accordion .card-header {
+    padding: 0.3em;
+}
+
+.rg-code-accordion .card-body {
+    padding: 0.6em 1em;
+}
+
+.rg-code-accordion pre {
+    margin: 0;
 }

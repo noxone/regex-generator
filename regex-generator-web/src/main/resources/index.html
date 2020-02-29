@@ -12,6 +12,7 @@
 
     <!-- kotlin stuff -->
     <script type="text/javascript" src="lib/kotlin.js"></script>
+    <script type="text/javascript" src="lib/kotlinx-html-js.js"></script>
 
     <!-- driver.js -->
     <script src="https://unpkg.com/driver.js/dist/driver.min.js"></script>
@@ -153,54 +154,9 @@
             </div>
             <div class="col-12 col-md-11 py-4 pl-4">
                 <div class="d-flex justify-content-between">
-                    <h5>Language integration</h5>
+                    <h5>Usage in programming languages</h5>
                 </div>
-                <div class="accordion rg-code-accordion" id="accordionExample">
-                    <div class="card">
-                        <div class="card-header" id="headingOne">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                                aria-expanded="true" aria-controls="collapseOne">
-                                Java
-                            </button>
-                        </div>
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                            data-parent="#accordionExample">
-                            <div class="card-body">
-                                <pre class="line-numbers"><code class="language-java">import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
-public class Sample {
-    public boolean useRegex(String input) {
-        // Compile regular expression
-        Pattern p = Pattern.compile("^2020-03-12T13:34:56\\.123Z INFO  \\[org\\.example\\.Class]: This is a #simple #logline containing a 'value'\\.$" ,Pattern.CASE_INSENSITIVE);
-        // Match regex against input
-        Matcher m = p.matcher(input);
-        // Use results...
-        return m.matches();
-    }
-}</code></pre>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header" id="headingTwo">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Kotlin
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                            data-parent="#accordionExample">
-                            <div class="card-body">
-                                <pre class="line-numbers"><code class="language-java">fun useRegex(input: String): Boolean {
-    val regex = Regex(pattern = "^2020-03-12T13:34:56\\.123Z INFO  \\[org\\.example\\.Class]: This is a #simple #logline containing a 'value'\\.$", options = setOf(RegexOption.IGNORE_CASE))
-    return regex.matches(input)
-}</code></pre>
-                            </div>
-                        </div>
-                    </div>
+                <div class="accordion rg-code-accordion" id="rg_language_accordion">
                 </div>
                 <div class="card mt-2 pt-3">
                     <form>
@@ -304,6 +260,7 @@ public class Sample {
                         <ul class="list-unstyled">
                             <li><a href="https://kotlinlang.org/" target="_blank">Kotlin</a></li>
                             <li><a href="https://getbootstrap.com" target="_blank">Bootstrap</a></li>
+                            <li><a href="https://prismjs.com/" target="_blank">Prism</a></li>
                         </ul>
                     </div>
                 </div>

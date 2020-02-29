@@ -17,6 +17,7 @@ interface DisplayContract {
         fun selectInputText()
 
         fun showUserGuide(initialStep: Boolean)
+        fun showGeneratedCodeForPattern(pattern: String)
     }
 
     interface Presenter {

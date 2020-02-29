@@ -1,10 +1,18 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.html.*
+import kotlinx.html.dom.create
+import kotlinx.html.js.div
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
+import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.w3c.dom.Attr
 import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.Node
+import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
 
@@ -13,8 +21,6 @@ const val CLASS_MATCH_ROW = "rg-match-row"
 const val CLASS_MATCH_ITEM = "rg-match-item"
 const val CLASS_ITEM_SELECTED = "rg-item-selected"
 const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
-
-const val ELEMENT_DIV = "div"
 
 const val EVENT_CLICK = "click"
 const val EVENT_INPUT = "input"
@@ -27,9 +33,10 @@ const val ID_CONTAINER_INPUT = "rg_input_container"
 const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
 const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
 const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
-const val ID_CHECK_MULTILINE = "rg_dotmatcheslinebreakes"
+const val ID_CHECK_MULTILINE = "rg_multiline"
 const val ID_BUTTON_COPY = "rg_button_copy"
 const val ID_BUTTON_HELP = "rg_button_show_help"
+const val ID_DIV_LANGUAGES = "rg_language_accordion"
 
 private val Int.characterUnits: String get() = "${this}ch"
 
@@ -49,9 +56,12 @@ class HtmlPage(
     private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
+    private val containerLanguages = HtmlHelper.getDivById(ID_DIV_LANGUAGES)
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
+
+    private val languageDisplays = CodeGenerator.list.map { it to LanguageCard(it, containerLanguages) }.toMap()
 
     private val driver = Driver(js("{}"))
 
@@ -142,6 +152,13 @@ class HtmlPage(
         )
 
 
+    override fun showGeneratedCodeForPattern(pattern: String) {
+        val options = options
+        CodeGenerator.list
+            .forEach { languageDisplays[it]?.let { ld -> ld.code = it.generateCode(pattern, options) } }
+    }
+
+
     override fun showUserGuide(initialStep: Boolean) {
         driver.reset()
         val steps = arrayOf(createStepDefinition(
@@ -178,3 +195,48 @@ class HtmlPage(
         driver.start(if (initialStep) 0 else 1)
     }
 }
+
+private class LanguageCard(
+    private val codeGenerator: CodeGenerator,
+    parent: Node
+) {
+    init {
+        val div = document.create.div("card") {
+            div("card-header") {
+                id = "${codeGenerator.languageName}_heading"
+                button {
+                    type = ButtonType.button
+                    classes = setOf("btn", "btn-link")
+                    attributes["data-toggle"] = "collapse"
+                    attributes["data-target"] = "#${codeGenerator.languageName}_body"
+                    +codeGenerator.languageName
+                }
+            }
+            div("collapse") {
+                id = "${codeGenerator.languageName}_body"
+                pre("line-numbers") {
+                    code("language-${codeGenerator.highlightLanguage}") {
+                        id = codeElementId
+                    }
+                }
+            }
+        }
+        parent.appendChild(div)
+    }
+
+    var code: String
+        get() = codeElement.innerText
+        set(value) { codeElement.innerText = value }
+
+    private val codeElement: HTMLElement
+        get() = document.getElementById(codeElementId) as HTMLElement
+
+    private val codeElementId: String
+        get() = "${codeGenerator.languageName}_code"
+}
+
+
+
+
+
+

@@ -2,13 +2,17 @@ package org.olafneumann.regex.generator.regex
 
 interface CodeGenerator {
     companion object {
-        val list = listOf(
-            JavaCodeGenerator(),
-            KotlinCodeGenerator()
-        )
+        val list by lazy {
+            listOf(
+                JavaCodeGenerator(),
+                KotlinCodeGenerator()
+            )
+        }
     }
 
     val languageName: String
+
+    val highlightLanguage: String
 
     fun generateCode(pattern: String, options: RecognizerCombiner.Options): String
 
@@ -51,6 +55,7 @@ interface CodeGenerator {
 
     class JavaCodeGenerator() : CLikeCodeGenerator() {
         override val languageName: String get() = "Java"
+        override val highlightLanguage: String get() = "java"
 
         override val templateCode: String
             get() = """import java.util.regex.Pattern;
@@ -73,9 +78,10 @@ interface CodeGenerator {
 
     class KotlinCodeGenerator() : CLikeCodeGenerator() {
         override val languageName: String get() = "Kotlin"
+        override val highlightLanguage: String get() = "kotlin"
 
         override val templateCode: String get() = """fun useRegex(input: String): Boolean {
-|    val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
+    val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
     return regex.matches(input)
 }"""
 
