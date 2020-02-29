@@ -17,6 +17,10 @@
     <script src="https://unpkg.com/driver.js/dist/driver.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/driver.js/dist/driver.min.css">
 
+    <!-- Prism -->
+    <script src="prism.js"></script>
+    <link rel="stylesheet" href="prism.css">
+
     <!-- now for our page -->
     <link rel="stylesheet" href="regex-generator.css">
     <title>Regex Generator</title>
@@ -143,7 +147,7 @@
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_regex_result_container" style="display: none">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_regex_result_container">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">4</h3>
             </div>
@@ -151,65 +155,115 @@
                 <div class="d-flex justify-content-between">
                     <h5>Language integration</h5>
                 </div>
-                <form>
-                    <div class="form-group row">
-                        <div class="col-sm-12 rg-check-row">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="rg_caseinsensitive"
-                                    aria-describedby="rg_caseinsensitive_help">
-                                <label class="custom-control-label" for="rg_caseinsensitive">Case
-                                    Insensitive</label>
-                            </div>
-                            <small id="rg_caseinsensitive_help" class="form-text text-muted mt-0">
-                                By default, all major regex engines match in case-sensitive mode. If you want
-                                patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
-                                to match in
-                                case-insensitive fashion, we need to turn that feature on.<sup><a
-                                        href="https://www.rexegg.com/regex-modifiers.html#i" target="_blank">*</a></sup>
-                            </small>
+                <div class="accordion rg-code-accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                                Java
+                            </button>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-12 rg-check-row">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="rg_dotmatcheslinebreakes"
-                                    aria-describedby="rg_dotmatcheslinebreakes_help">
-                                <label class="custom-control-label" for="rg_dotmatcheslinebreakes">Dot Matches
-                                    Line Breaks</label>
-                            </div>
-                            <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
-                                By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
-                                match line break characters such as line feeds and
-                                carriage returns. If you want patterns such as <span
-                                    class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
-                                lines, we need to turn that feature on.
-                                <sup><a href="https://www.rexegg.com/regex-modifiers.html#dotall"
-                                        target="_blank">*</a></sup> </small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-12 rg-check-row">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="rg_multiline"
-                                    aria-describedby="rg_multiline_help">
-                                <label class="custom-control-label" for="rg_multiline">Multiline</label>
-                            </div>
-                            <small id="rg_multiline_help" class="form-text text-muted mt-0">
-                                By default, most major engines (except Ruby), the anchors <span
-                                    class="border rg-code p-1 bg-white">^</span> and <span
-                                    class="border rg-code p-1 bg-white">$</span> only match
-                                (respectively) at the beginning and the end of the string.
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                            data-parent="#accordionExample">
+                            <div class="card-body">
+                                <pre class="line-numbers"><code class="language-java">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
-                                In other engines, if you want patterns such as <span
-                                    class="border rg-code p-1 bg-white">^Define</span> and <span
-                                    class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
-                                (respectively) at the beginning and the end of each line, we need to turn that
-                                feature on.
-                                <sup><a href="https://www.rexegg.com/regex-modifiers.html#multiline"
-                                        target="_blank">*</a></sup> </small>
+public class Sample {
+    public boolean useRegex(String input) {
+        // Compile regular expression
+        Pattern p = Pattern.compile("^2020-03-12T13:34:56\\.123Z INFO  \\[org\\.example\\.Class]: This is a #simple #logline containing a 'value'\\.$" ,Pattern.CASE_INSENSITIVE);
+        // Match regex against input
+        Matcher m = p.matcher(input);
+        // Use results...
+        return m.matches();
+    }
+}</code></pre>
+                            </div>
                         </div>
                     </div>
-                </form>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Kotlin
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                            data-parent="#accordionExample">
+                            <div class="card-body">
+                                <pre class="line-numbers"><code class="language-java">fun useRegex(input: String): Boolean {
+    val regex = Regex(pattern = "^2020-03-12T13:34:56\\.123Z INFO  \\[org\\.example\\.Class]: This is a #simple #logline containing a 'value'\\.$", options = setOf(RegexOption.IGNORE_CASE))
+    return regex.matches(input)
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-2 pt-3">
+                    <form>
+                        <div class="form-group row">
+                            <div class="col-sm-12 rg-check-row">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="rg_caseinsensitive"
+                                        aria-describedby="rg_caseinsensitive_help">
+                                    <label class="custom-control-label" for="rg_caseinsensitive">Case
+                                        Insensitive</label>
+                                </div>
+                                <small id="rg_caseinsensitive_help" class="form-text text-muted mt-0">
+                                    By default, all major regex engines match in case-sensitive mode. If you want
+                                    patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
+                                    to match in
+                                    case-insensitive fashion, we need to turn that feature on. <sup><a
+                                            href="https://www.rexegg.com/regex-modifiers.html#i"
+                                            target="_blank">*</a></sup>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 rg-check-row">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="rg_dotmatcheslinebreakes"
+                                        aria-describedby="rg_dotmatcheslinebreakes_help">
+                                    <label class="custom-control-label" for="rg_dotmatcheslinebreakes">Dot Matches
+                                        Line Breaks</label>
+                                </div>
+                                <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
+                                    By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
+                                    match line break characters such as line feeds and
+                                    carriage returns. If you want patterns such as <span
+                                        class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
+                                    lines, we need to turn that feature on.
+                                    <sup><a href="https://www.rexegg.com/regex-modifiers.html#dotall"
+                                            target="_blank">*</a></sup> </small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 rg-check-row">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="rg_multiline"
+                                        aria-describedby="rg_multiline_help">
+                                    <label class="custom-control-label" for="rg_multiline">Multiline</label>
+                                </div>
+                                <small id="rg_multiline_help" class="form-text text-muted mt-0">
+                                    By default, most major engines (except Ruby), the anchors <span
+                                        class="border rg-code p-1 bg-white">^</span> and <span
+                                        class="border rg-code p-1 bg-white">$</span> only match
+                                    (respectively) at the beginning and the end of the string.
+
+                                    In other engines, if you want patterns such as <span
+                                        class="border rg-code p-1 bg-white">^Define</span> and <span
+                                        class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
+                                    (respectively) at the beginning and the end of each line, we need to turn that
+                                    feature on.
+                                    <sup><a href="https://www.rexegg.com/regex-modifiers.html#multiline"
+                                            target="_blank">*</a></sup> </small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 

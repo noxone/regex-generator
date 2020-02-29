@@ -75,7 +75,7 @@ interface CodeGenerator {
         override val languageName: String get() = "Kotlin"
 
         override val templateCode: String get() = """fun useRegex(input: String): Boolean {
-    val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
+|    val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
     return regex.matches(input)
 }"""
 
