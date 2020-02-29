@@ -1,24 +1,26 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.html.*
+import kotlinx.html.dom.create
+import kotlinx.html.js.div
+import org.olafneumann.regex.generator.js.Driver
+import org.olafneumann.regex.generator.js.createStepDefinition
+import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
-import org.w3c.dom.HTMLButtonElement
+import org.w3c.dom.Attr
 import org.w3c.dom.HTMLDivElement
-import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.Node
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
-import kotlin.dom.removeClass
 
 
-const val CLASS_HIDDEN = "rg-hidden"
 const val CLASS_MATCH_ROW = "rg-match-row"
 const val CLASS_MATCH_ITEM = "rg-match-item"
 const val CLASS_ITEM_SELECTED = "rg-item-selected"
 const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
-
-const val ELEMENT_DIV = "div"
 
 const val EVENT_CLICK = "click"
 const val EVENT_INPUT = "input"
@@ -28,13 +30,13 @@ const val ID_TEXT_DISPLAY = "rg_text_display"
 const val ID_RESULT_DISPLAY = "rg_result_display"
 const val ID_ROW_CONTAINER = "rg_row_container"
 const val ID_CONTAINER_INPUT = "rg_input_container"
-const val ID_CONTAINER_PATTERN_SELECTION = "rg_pattern_selection_container"
-const val ID_CONTAINER_RESULT = "rg_regex_result_container"
 const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
 const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
 const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
-const val ID_CHECK_MULTILINE = "rg_dotmatcheslinebreakes"
+const val ID_CHECK_MULTILINE = "rg_multiline"
 const val ID_BUTTON_COPY = "rg_button_copy"
+const val ID_BUTTON_HELP = "rg_button_show_help"
+const val ID_DIV_LANGUAGES = "rg_language_accordion"
 
 private val Int.characterUnits: String get() = "${this}ch"
 
@@ -44,50 +46,33 @@ class HtmlPage(
     private val RecognizerMatch.row: Int? get() = recognizerMatchToRow[this]
     private val RecognizerMatch.div: HTMLDivElement? get() = recognizerMatchToElements[this]
 
-    private val textInput = getInputById(ID_INPUT_ELEMENT)
-    private val textDisplay = getDivById(ID_TEXT_DISPLAY)
-    private val rowContainer = getDivById(ID_ROW_CONTAINER)
-    private val resultDisplay = getDivById(ID_RESULT_DISPLAY)
-    private val buttonCopy = getButtonById(ID_BUTTON_COPY)
-    private val checkOnlyMatches = getInputById(ID_CHECK_ONLY_MATCHES)
-    private val checkCaseInsensitive = getInputById(ID_CHECK_CASE_INSENSITIVE)
-    private val checkDotAll = getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
-    private val checkMultiline = getInputById(ID_CHECK_MULTILINE)
+    private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
+    private val textDisplay = HtmlHelper.getDivById(ID_TEXT_DISPLAY)
+    private val rowContainer = HtmlHelper.getDivById(ID_ROW_CONTAINER)
+    private val resultDisplay = HtmlHelper.getDivById(ID_RESULT_DISPLAY)
+    private val buttonCopy = HtmlHelper.getButtonById(ID_BUTTON_COPY)
+    private val buttonHelp = HtmlHelper.getLinkById(ID_BUTTON_HELP)
+    private val checkOnlyMatches = HtmlHelper.getInputById(ID_CHECK_ONLY_MATCHES)
+    private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
+    private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
+    private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
+    private val containerLanguages = HtmlHelper.getDivById(ID_DIV_LANGUAGES)
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
 
+    private val languageDisplays = CodeGenerator.list.map { it to LanguageCard(it, containerLanguages) }.toMap()
+
+    private val driver = Driver(js("{}"))
+
     init {
         textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
         buttonCopy.addEventListener(EVENT_CLICK, { presenter.onButtonCopyClick() })
+        buttonHelp.addEventListener(EVENT_CLICK, { presenter.onButtonHelpClick() })
         checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-    }
-
-    private fun getDivById(id: String): HTMLDivElement {
-        try {
-            return document.getElementById(id) as HTMLDivElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find div with id '$id'.", e)
-        }
-    }
-
-    private fun getInputById(id: String): HTMLInputElement {
-        try {
-            return document.getElementById(id) as HTMLInputElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find input with id '$id'.", e)
-        }
-    }
-
-    private fun getButtonById(id: String): HTMLButtonElement {
-        try {
-            return document.getElementById(id) as HTMLButtonElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find button with id '$id'.", e)
-        }
     }
 
     override fun selectInputText() {
@@ -145,25 +130,17 @@ class HtmlPage(
         }.toMap()
     }
 
-    private fun createRowElement(): HTMLDivElement = createDivElement(rowContainer, CLASS_MATCH_ROW)
 
-    private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement = createDivElement(parent, CLASS_MATCH_ITEM)
+    private fun createRowElement(): HTMLDivElement =
+        HtmlHelper.createDivElement(rowContainer, CLASS_MATCH_ROW)
+    private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement =
+        HtmlHelper.createDivElement(parent, CLASS_MATCH_ITEM)
 
-    private fun createDivElement(parent: Node, vararg classNames: String): HTMLDivElement {
-        val element = document.createElement(ELEMENT_DIV) as HTMLDivElement
-        element.addClass(*classNames)
-        parent.appendChild(element)
-        return element
+    override fun select(match: RecognizerMatch, selected: Boolean) {
+        match.div?.let { HtmlHelper.toggleClass(it, selected, CLASS_ITEM_SELECTED) }
     }
-
-    override fun select(match: RecognizerMatch, selected: Boolean) = match.div?.let { toggleClass(it, selected, CLASS_ITEM_SELECTED) }!!
-    override fun disable(match: RecognizerMatch, disabled: Boolean) = match.div?.let { toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }!!
-
-    private fun toggleClass(element: HTMLDivElement, selected: Boolean, className: String) {
-        if (selected)
-            element.addClass(className)
-        else
-            element.removeClass(className)
+    override fun disable(match: RecognizerMatch, disabled: Boolean) {
+        match.div?.let { HtmlHelper.toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }
     }
 
     override val options: RecognizerCombiner.Options
@@ -173,4 +150,93 @@ class HtmlPage(
             dotMatchesLineBreaks = checkDotAll.checked,
             multiline = checkMultiline.checked
         )
+
+
+    override fun showGeneratedCodeForPattern(pattern: String) {
+        val options = options
+        CodeGenerator.list
+            .forEach { languageDisplays[it]?.let { ld -> ld.code = it.generateCode(pattern, options) } }
+    }
+
+
+    override fun showUserGuide(initialStep: Boolean) {
+        driver.reset()
+        val steps = arrayOf(createStepDefinition(
+                "#rg-title",
+                "New to Regex Generator",
+                "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
+                "right"
+            ),
+            createStepDefinition(
+                "#$ID_CONTAINER_INPUT",
+                "Sample",
+                "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
+                "bottom-center"
+            ),
+            createStepDefinition(
+                "#rg_result_container",
+                "Recognition",
+                "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
+                "top-center"
+            ),
+            createStepDefinition(
+                "#$ID_ROW_CONTAINER",
+                "Suggestions",
+                "Click one or more of suggested patterns...",
+                "top"
+            ),
+            createStepDefinition(
+                "#rg_result_display_box",
+                "Result",
+                "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
+                "top-center")
+        )
+        driver.defineSteps(steps)
+        driver.start(if (initialStep) 0 else 1)
+    }
 }
+
+private class LanguageCard(
+    private val codeGenerator: CodeGenerator,
+    parent: Node
+) {
+    init {
+        val div = document.create.div("card") {
+            div("card-header") {
+                id = "${codeGenerator.languageName}_heading"
+                button {
+                    type = ButtonType.button
+                    classes = setOf("btn", "btn-link")
+                    attributes["data-toggle"] = "collapse"
+                    attributes["data-target"] = "#${codeGenerator.languageName}_body"
+                    +codeGenerator.languageName
+                }
+            }
+            div("collapse") {
+                id = "${codeGenerator.languageName}_body"
+                pre("line-numbers") {
+                    code("language-${codeGenerator.highlightLanguage}") {
+                        id = codeElementId
+                    }
+                }
+            }
+        }
+        parent.appendChild(div)
+    }
+
+    var code: String
+        get() = codeElement.innerText
+        set(value) { codeElement.innerText = value }
+
+    private val codeElement: HTMLElement
+        get() = document.getElementById(codeElementId) as HTMLElement
+
+    private val codeElementId: String
+        get() = "${codeGenerator.languageName}_code"
+}
+
+
+
+
+
+

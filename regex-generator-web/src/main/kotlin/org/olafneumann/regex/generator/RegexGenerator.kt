@@ -27,7 +27,7 @@ private fun initRegexGenerator() {
 
         // show guide for new users
         if (showGuide) {
-            presenter.showUserGuide()
+            presenter.showInitialUserGuide()
         }
     } catch (exception: Exception) {
         console.error(exception)

@@ -15,10 +15,14 @@ interface DisplayContract {
         fun select(match: RecognizerMatch, selected: Boolean)
         fun disable(match: RecognizerMatch, disabled: Boolean)
         fun selectInputText()
+
+        fun showUserGuide(initialStep: Boolean)
+        fun showGeneratedCodeForPattern(pattern: String)
     }
 
     interface Presenter {
         fun onButtonCopyClick()
+        fun onButtonHelpClick()
         fun onInputChanges(newInput: String)
         fun onSuggestionClick(match: RecognizerMatch)
         fun onOptionsChange(options: RecognizerCombiner.Options)

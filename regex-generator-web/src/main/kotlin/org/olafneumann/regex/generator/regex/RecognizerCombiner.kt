@@ -22,7 +22,7 @@ class RecognizerCombiner {
             return RegularExpression("^${pattern}$")
         }
 
-        private fun escapeRegex(input: String) = input.replace(Regex("([.\\\\^$\\[\\]{}()*?+])"),"\\$1")
+        private fun escapeRegex(input: String) = input.replace(Regex("([.\\\\^$\\[{}()*?+])"),"\\$1")
     }
 
     data class Options(

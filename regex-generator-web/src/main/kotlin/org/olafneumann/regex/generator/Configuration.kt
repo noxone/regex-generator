@@ -24,8 +24,8 @@ data class Configuration(
             Recognizer("Characters","[a-zA-Z]+")
         ))
 
-        fun fromCopy(configuration: dynamic) : Configuration {
-            return Configuration(
+        fun fromCopy(configuration: dynamic) =
+             Configuration(
                 recognizers = (configuration.recognizers as Array<Recognizer>).map {
                     Recognizer(
                         name = it.name,
@@ -38,6 +38,5 @@ data class Configuration(
                 mainGroupIndex = configuration.mainGroupIndex as Int?,
                 mainGroupName = configuration.mainGroupName as String?
             )
-        }
     }
 }

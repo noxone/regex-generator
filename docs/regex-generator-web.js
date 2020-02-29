@@ -1,16 +1,24 @@
 if (typeof kotlin === 'undefined') {
   throw new Error("Error loading module 'regex-generator-web'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'regex-generator-web'.");
 }
-this['regex-generator-web'] = function (_, Kotlin) {
+if (typeof this['kotlinx-html-js'] === 'undefined') {
+  throw new Error("Error loading module 'regex-generator-web'. Its dependency 'kotlinx-html-js' was not found. Please, check whether 'kotlinx-html-js' is loaded prior to 'regex-generator-web'.");
+}
+this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   'use strict';
+  var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
   var throwCCE = Kotlin.throwCCE;
   var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var Kind_CLASS = Kotlin.Kind.CLASS;
   var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
+  var lazy = Kotlin.kotlin.lazy_klfg04$;
   var replace = Kotlin.kotlin.text.replace_680rmw$;
   var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
-  var lazy = Kotlin.kotlin.lazy_klfg04$;
+  var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
+  var trimMargin = Kotlin.kotlin.text.trimMargin_rjktp$;
+  var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
+  var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_287e2$;
   var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var step = Kotlin.kotlin.ranges.step_xsgg7u$;
@@ -18,7 +26,6 @@ this['regex-generator-web'] = function (_, Kotlin) {
   var sortedWith = Kotlin.kotlin.collections.sortedWith_eknfly$;
   var wrapFunction = Kotlin.wrapFunction;
   var Comparator = Kotlin.kotlin.Comparator;
-  var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_287e2$;
   var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
   var collectionSizeOrDefault = Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$;
   var UnsupportedOperationException_init = Kotlin.kotlin.UnsupportedOperationException_init_pdl1vj$;
@@ -35,21 +42,41 @@ this['regex-generator-web'] = function (_, Kotlin) {
   var Exception = Kotlin.kotlin.Exception;
   var toBoolean = Kotlin.kotlin.text.toBoolean_pdl1vz$;
   var toIntOrNull = Kotlin.kotlin.text.toIntOrNull_pdl1vz$;
-  var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var RuntimeException = Kotlin.kotlin.RuntimeException;
   var ClassCastException = Kotlin.kotlin.ClassCastException;
+  var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
+  var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
   var clear = Kotlin.kotlin.dom.clear_asww5s$;
   var max = Kotlin.kotlin.collections.max_exjks8$;
   var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
   var ensureNotNull = Kotlin.ensureNotNull;
-  var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
   var Unit = Kotlin.kotlin.Unit;
   var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
-  var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
+  var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
+  var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
+  var ButtonType = $module$kotlinx_html_js.kotlinx.html.ButtonType;
+  var setOf = Kotlin.kotlin.collections.setOf_i5x0yv$;
+  var set_classes = $module$kotlinx_html_js.kotlinx.html.set_classes_njy09m$;
   var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
+  var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
+  var DIV_init = $module$kotlinx_html_js.kotlinx.html.DIV;
+  var HTMLDivElement_0 = HTMLDivElement;
+  var visitTagAndFinalize = $module$kotlinx_html_js.kotlinx.html.visitTagAndFinalize_g9qte5$;
+  var enumEncode = $module$kotlinx_html_js.kotlinx.html.attributes.enumEncode_m4whry$;
+  var attributesMapOf_0 = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_alerag$;
+  var BUTTON_init = $module$kotlinx_html_js.kotlinx.html.BUTTON;
+  var visitTag = $module$kotlinx_html_js.kotlinx.html.visitTag_xwv8ym$;
+  var CODE_init = $module$kotlinx_html_js.kotlinx.html.CODE;
+  var PRE_init = $module$kotlinx_html_js.kotlinx.html.PRE;
   var intersect = Kotlin.kotlin.collections.intersect_q4559j$;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
   var Collection = Kotlin.kotlin.collections.Collection;
+  CodeGenerator$CLikeCodeGenerator.prototype = Object.create(CodeGenerator$SimpleReplacingCodeGenerator.prototype);
+  CodeGenerator$CLikeCodeGenerator.prototype.constructor = CodeGenerator$CLikeCodeGenerator;
+  CodeGenerator$JavaCodeGenerator.prototype = Object.create(CodeGenerator$CLikeCodeGenerator.prototype);
+  CodeGenerator$JavaCodeGenerator.prototype.constructor = CodeGenerator$JavaCodeGenerator;
+  CodeGenerator$KotlinCodeGenerator.prototype = Object.create(CodeGenerator$CLikeCodeGenerator.prototype);
+  CodeGenerator$KotlinCodeGenerator.prototype.constructor = CodeGenerator$KotlinCodeGenerator;
   function Configuration(recognizers, mainGroupName, mainGroupIndex) {
     Configuration$Companion_getInstance();
     if (mainGroupName === void 0)
@@ -127,6 +154,144 @@ this['regex-generator-web'] = function (_, Kotlin) {
     stepDefinition.popover.position = position;
     return stepDefinition;
   }
+  function CodeGenerator() {
+    CodeGenerator$Companion_getInstance();
+  }
+  function CodeGenerator$Companion() {
+    CodeGenerator$Companion_instance = this;
+    this.list_44j6bl$_0 = lazy(CodeGenerator$Companion$list$lambda);
+  }
+  Object.defineProperty(CodeGenerator$Companion.prototype, 'list', {
+    get: function () {
+      return this.list_44j6bl$_0.value;
+    }
+  });
+  function CodeGenerator$Companion$list$lambda() {
+    return listOf([new CodeGenerator$JavaCodeGenerator(), new CodeGenerator$KotlinCodeGenerator()]);
+  }
+  CodeGenerator$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var CodeGenerator$Companion_instance = null;
+  function CodeGenerator$Companion_getInstance() {
+    if (CodeGenerator$Companion_instance === null) {
+      new CodeGenerator$Companion();
+    }
+    return CodeGenerator$Companion_instance;
+  }
+  function CodeGenerator$SimpleReplacingCodeGenerator() {
+  }
+  CodeGenerator$SimpleReplacingCodeGenerator.prototype.generateCode_wa467u$ = function (pattern, options) {
+    return replace(replace(this.templateCode, '%1$s', this.escapePattern_61zpoe$(pattern)), '%2$s', this.generateOptionsCode_ow7xd4$(options));
+  };
+  CodeGenerator$SimpleReplacingCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'SimpleReplacingCodeGenerator',
+    interfaces: [CodeGenerator]
+  };
+  function CodeGenerator$CLikeCodeGenerator() {
+    CodeGenerator$SimpleReplacingCodeGenerator.call(this);
+  }
+  CodeGenerator$CLikeCodeGenerator.prototype.escapePattern_61zpoe$ = function (pattern) {
+    return Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
+  };
+  function CodeGenerator$CLikeCodeGenerator$combineOptions$lambda(closure$mapper) {
+    return function (s) {
+      return closure$mapper(s);
+    };
+  }
+  CodeGenerator$CLikeCodeGenerator.prototype.combineOptions_dp1fco$ = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, prefix, separator, postfix, mapper) {
+    if (prefix === void 0)
+      prefix = '';
+    if (separator === void 0)
+      separator = '';
+    if (postfix === void 0)
+      postfix = '';
+    var optionList = ArrayList_init_0();
+    if (options.caseSensitive) {
+      optionList.add_11rb$(valueForCaseInsensitive);
+    }
+    if (options.dotMatchesLineBreaks) {
+      optionList.add_11rb$(valueForDotAll);
+    }
+    if (options.multiline) {
+      optionList.add_11rb$(valueForMultiline);
+    }
+    if (optionList.isEmpty()) {
+      return '';
+    }
+    return joinToString(optionList, separator, prefix, postfix, void 0, void 0, CodeGenerator$CLikeCodeGenerator$combineOptions$lambda(mapper));
+  };
+  CodeGenerator$CLikeCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'CLikeCodeGenerator',
+    interfaces: [CodeGenerator$SimpleReplacingCodeGenerator]
+  };
+  function CodeGenerator$JavaCodeGenerator() {
+    CodeGenerator$CLikeCodeGenerator.call(this);
+  }
+  Object.defineProperty(CodeGenerator$JavaCodeGenerator.prototype, 'languageName', {
+    get: function () {
+      return 'Java';
+    }
+  });
+  Object.defineProperty(CodeGenerator$JavaCodeGenerator.prototype, 'highlightLanguage', {
+    get: function () {
+      return 'java';
+    }
+  });
+  Object.defineProperty(CodeGenerator$JavaCodeGenerator.prototype, 'templateCode', {
+    get: function () {
+      return trimMargin('import java.util.regex.Pattern;\n                |import java.util.regex.Matcher;\n                |\n                |public class Sample {\n                |    public boolean useRegex(String input) {\n                |        // Compile regular expression\n                |        Pattern p = Pattern.compile("%1$s"%2$s);\n                |        // Match regex against input\n                |        Matcher m = p.matcher(input);\n                |        // Use results...\n                |        return m.matches();\n                |    }\n                |}');
+    }
+  });
+  function CodeGenerator$JavaCodeGenerator$generateOptionsCode$lambda(s) {
+    return 'Pattern.' + s;
+  }
+  CodeGenerator$JavaCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
+    return this.combineOptions_dp1fco$(options, 'CASE_INSENSITIVE', 'MULTILINE', 'DOTALL', ' ,', ' | ', void 0, CodeGenerator$JavaCodeGenerator$generateOptionsCode$lambda);
+  };
+  CodeGenerator$JavaCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'JavaCodeGenerator',
+    interfaces: [CodeGenerator$CLikeCodeGenerator]
+  };
+  function CodeGenerator$KotlinCodeGenerator() {
+    CodeGenerator$CLikeCodeGenerator.call(this);
+  }
+  Object.defineProperty(CodeGenerator$KotlinCodeGenerator.prototype, 'languageName', {
+    get: function () {
+      return 'Kotlin';
+    }
+  });
+  Object.defineProperty(CodeGenerator$KotlinCodeGenerator.prototype, 'highlightLanguage', {
+    get: function () {
+      return 'kotlin';
+    }
+  });
+  Object.defineProperty(CodeGenerator$KotlinCodeGenerator.prototype, 'templateCode', {
+    get: function () {
+      return 'fun useRegex(input: String): Boolean {\n    val regex = Regex(pattern = "%1$s"%2$s)\n    return regex.matches(input)\n}';
+    }
+  });
+  function CodeGenerator$KotlinCodeGenerator$generateOptionsCode$lambda(s) {
+    return 'RegexOption.' + s;
+  }
+  CodeGenerator$KotlinCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
+    return this.combineOptions_dp1fco$(options, 'IGNORE_CASE', 'MULTILINE', 'DOT_MATCHES_ALL', ', options = setOf(', ', ', ')', CodeGenerator$KotlinCodeGenerator$generateOptionsCode$lambda);
+  };
+  CodeGenerator$KotlinCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'KotlinCodeGenerator',
+    interfaces: [CodeGenerator$CLikeCodeGenerator]
+  };
+  CodeGenerator.$metadata$ = {
+    kind: Kind_INTERFACE,
+    simpleName: 'CodeGenerator',
+    interfaces: []
+  };
   function Recognizer(name, outputPattern, description, searchPattern, active) {
     if (description === void 0)
       description = null;
@@ -284,7 +449,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
     return new RecognizerCombiner$RegularExpression('^' + pattern + '$');
   };
   RecognizerCombiner$Companion.prototype.escapeRegex_0 = function (input) {
-    return Regex_init('([.\\\\^$\\[\\]{}()*?+])').replace_x2uqeu$(input, '\\$1');
+    return Regex_init('([.\\\\^$\\[{}()*?+])').replace_x2uqeu$(input, '\\$1');
   };
   RecognizerCombiner$Companion.$metadata$ = {
     kind: Kind_OBJECT,
@@ -512,7 +677,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
       var showGuide = isNewUser();
       storeUserLastInfo();
       if (showGuide) {
-        presenter.showUserGuide();
+        presenter.showInitialUserGuide();
       }
     }
      catch (exception) {
@@ -553,56 +718,14 @@ this['regex-generator-web'] = function (_, Kotlin) {
     simpleName: 'DisplayContract',
     interfaces: []
   };
-  var CLASS_HIDDEN;
-  var CLASS_MATCH_ROW;
-  var CLASS_MATCH_ITEM;
-  var CLASS_ITEM_SELECTED;
-  var CLASS_ITEM_NOT_AVAILABLE;
   var ELEMENT_DIV;
-  var EVENT_CLICK;
-  var EVENT_INPUT;
-  var ID_INPUT_ELEMENT;
-  var ID_TEXT_DISPLAY;
-  var ID_RESULT_DISPLAY;
-  var ID_ROW_CONTAINER;
-  var ID_CONTAINER_INPUT;
-  var ID_CONTAINER_PATTERN_SELECTION;
-  var ID_CONTAINER_RESULT;
-  var ID_CHECK_ONLY_MATCHES;
-  var ID_CHECK_CASE_INSENSITIVE;
-  var ID_CHECK_DOT_MATCHES_LINE_BRAKES;
-  var ID_CHECK_MULTILINE;
-  var ID_BUTTON_COPY;
-  function get_characterUnits($receiver) {
-    return $receiver.toString() + 'ch';
+  var ELEMENT_BUTTON;
+  var ELEMENT_PRE;
+  var ELEMENT_CODE;
+  function HtmlHelper() {
+    HtmlHelper_instance = this;
   }
-  function HtmlPage(presenter) {
-    this.presenter_0 = presenter;
-    this.textInput_0 = this.getInputById_0(ID_INPUT_ELEMENT);
-    this.textDisplay_0 = this.getDivById_0(ID_TEXT_DISPLAY);
-    this.rowContainer_0 = this.getDivById_0(ID_ROW_CONTAINER);
-    this.resultDisplay_0 = this.getDivById_0(ID_RESULT_DISPLAY);
-    this.buttonCopy_0 = this.getButtonById_0(ID_BUTTON_COPY);
-    this.checkOnlyMatches_0 = this.getInputById_0(ID_CHECK_ONLY_MATCHES);
-    this.checkCaseInsensitive_0 = this.getInputById_0(ID_CHECK_CASE_INSENSITIVE);
-    this.checkDotAll_0 = this.getInputById_0(ID_CHECK_DOT_MATCHES_LINE_BRAKES);
-    this.checkMultiline_0 = this.getInputById_0(ID_CHECK_MULTILINE);
-    this.recognizerMatchToRow_0 = LinkedHashMap_init();
-    this.recognizerMatchToElements_0 = LinkedHashMap_init();
-    this.textInput_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda(this));
-    this.buttonCopy_0.addEventListener(EVENT_CLICK, HtmlPage_init$lambda_0(this));
-    this.checkCaseInsensitive_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_1(this));
-    this.checkDotAll_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_2(this));
-    this.checkMultiline_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_3(this));
-    this.checkOnlyMatches_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_4(this));
-  }
-  HtmlPage.prototype.get_row_0 = function ($receiver) {
-    return this.recognizerMatchToRow_0.get_11rb$($receiver);
-  };
-  HtmlPage.prototype.get_div_0 = function ($receiver) {
-    return this.recognizerMatchToElements_0.get_11rb$($receiver);
-  };
-  HtmlPage.prototype.getDivById_0 = function (id) {
+  HtmlHelper.prototype.getDivById_y4putb$ = function (id) {
     var tmp$;
     try {
       return Kotlin.isType(tmp$ = document.getElementById(id), HTMLDivElement) ? tmp$ : throwCCE();
@@ -615,7 +738,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
         throw e;
     }
   };
-  HtmlPage.prototype.getInputById_0 = function (id) {
+  HtmlHelper.prototype.getInputById_y4putb$ = function (id) {
     var tmp$;
     try {
       return Kotlin.isType(tmp$ = document.getElementById(id), HTMLInputElement) ? tmp$ : throwCCE();
@@ -628,7 +751,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
         throw e;
     }
   };
-  HtmlPage.prototype.getButtonById_0 = function (id) {
+  HtmlHelper.prototype.getButtonById_y4putb$ = function (id) {
     var tmp$;
     try {
       return Kotlin.isType(tmp$ = document.getElementById(id), HTMLButtonElement) ? tmp$ : throwCCE();
@@ -640,6 +763,164 @@ this['regex-generator-web'] = function (_, Kotlin) {
        else
         throw e;
     }
+  };
+  HtmlHelper.prototype.getLinkById_y4putb$ = function (id) {
+    var tmp$;
+    try {
+      return Kotlin.isType(tmp$ = document.getElementById(id), HTMLAnchorElement) ? tmp$ : throwCCE();
+    }
+     catch (e) {
+      if (Kotlin.isType(e, ClassCastException)) {
+        throw new RuntimeException("Unable to find link with id '" + id + "'.", e);
+      }
+       else
+        throw e;
+    }
+  };
+  HtmlHelper.prototype.createDivElement_9utdl7$ = function (parent, classNames) {
+    var tmp$;
+    return Kotlin.isType(tmp$ = this.createElement_0(parent, ELEMENT_DIV, classNames.slice()), HTMLDivElement) ? tmp$ : throwCCE();
+  };
+  HtmlHelper.prototype.createButtonElement_9utdl7$ = function (parent, classNames) {
+    var tmp$;
+    return Kotlin.isType(tmp$ = this.createElement_0(parent, ELEMENT_BUTTON, classNames.slice()), HTMLButtonElement) ? tmp$ : throwCCE();
+  };
+  HtmlHelper.prototype.createPreElement_9utdl7$ = function (parent, classNames) {
+    var tmp$;
+    return Kotlin.isType(tmp$ = this.createElement_0(parent, ELEMENT_PRE, classNames.slice()), HTMLPreElement) ? tmp$ : throwCCE();
+  };
+  HtmlHelper.prototype.createCodeElement_9utdl7$ = function (parent, classNames) {
+    var tmp$;
+    return Kotlin.isType(tmp$ = this.createElement_0(parent, ELEMENT_CODE, classNames.slice()), HTMLElement) ? tmp$ : throwCCE();
+  };
+  HtmlHelper.prototype.createElement_0 = function (parent, type, classNames) {
+    var element = document.createElement(type);
+    addClass(element, classNames.slice());
+    parent.appendChild(element);
+    return element;
+  };
+  HtmlHelper.prototype.toggleClass_g7pq4p$ = function (element, selected, className) {
+    if (selected)
+      addClass(element, [className]);
+    else
+      removeClass(element, [className]);
+  };
+  HtmlHelper.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'HtmlHelper',
+    interfaces: []
+  };
+  var HtmlHelper_instance = null;
+  function HtmlHelper_getInstance() {
+    if (HtmlHelper_instance === null) {
+      new HtmlHelper();
+    }
+    return HtmlHelper_instance;
+  }
+  function visitAndFinalize$lambda(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function div$lambda($receiver) {
+    return Unit;
+  }
+  function visit$lambda(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function button$lambda($receiver) {
+    return Unit;
+  }
+  function visit$lambda_0(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function code$lambda($receiver) {
+    return Unit;
+  }
+  function visit$lambda_1(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function pre$lambda($receiver) {
+    return Unit;
+  }
+  function visit$lambda_2(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function div$lambda_0($receiver) {
+    return Unit;
+  }
+  var CLASS_MATCH_ROW;
+  var CLASS_MATCH_ITEM;
+  var CLASS_ITEM_SELECTED;
+  var CLASS_ITEM_NOT_AVAILABLE;
+  var EVENT_CLICK;
+  var EVENT_INPUT;
+  var ID_INPUT_ELEMENT;
+  var ID_TEXT_DISPLAY;
+  var ID_RESULT_DISPLAY;
+  var ID_ROW_CONTAINER;
+  var ID_CONTAINER_INPUT;
+  var ID_CHECK_ONLY_MATCHES;
+  var ID_CHECK_CASE_INSENSITIVE;
+  var ID_CHECK_DOT_MATCHES_LINE_BRAKES;
+  var ID_CHECK_MULTILINE;
+  var ID_BUTTON_COPY;
+  var ID_BUTTON_HELP;
+  var ID_DIV_LANGUAGES;
+  function get_characterUnits($receiver) {
+    return $receiver.toString() + 'ch';
+  }
+  function HtmlPage(presenter) {
+    this.presenter_0 = presenter;
+    this.textInput_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_INPUT_ELEMENT);
+    this.textDisplay_0 = HtmlHelper_getInstance().getDivById_y4putb$(ID_TEXT_DISPLAY);
+    this.rowContainer_0 = HtmlHelper_getInstance().getDivById_y4putb$(ID_ROW_CONTAINER);
+    this.resultDisplay_0 = HtmlHelper_getInstance().getDivById_y4putb$(ID_RESULT_DISPLAY);
+    this.buttonCopy_0 = HtmlHelper_getInstance().getButtonById_y4putb$(ID_BUTTON_COPY);
+    this.buttonHelp_0 = HtmlHelper_getInstance().getLinkById_y4putb$(ID_BUTTON_HELP);
+    this.checkOnlyMatches_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_ONLY_MATCHES);
+    this.checkCaseInsensitive_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_CASE_INSENSITIVE);
+    this.checkDotAll_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_DOT_MATCHES_LINE_BRAKES);
+    this.checkMultiline_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_MULTILINE);
+    this.containerLanguages_0 = HtmlHelper_getInstance().getDivById_y4putb$(ID_DIV_LANGUAGES);
+    this.recognizerMatchToRow_0 = LinkedHashMap_init();
+    this.recognizerMatchToElements_0 = LinkedHashMap_init();
+    var $receiver = CodeGenerator$Companion_getInstance().list;
+    var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      destination.add_11rb$(to(item, new LanguageCard(item, this.containerLanguages_0)));
+    }
+    this.languageDisplays_0 = toMap(destination);
+    this.driver_0 = new Driver({});
+    this.textInput_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda(this));
+    this.buttonCopy_0.addEventListener(EVENT_CLICK, HtmlPage_init$lambda_0(this));
+    this.buttonHelp_0.addEventListener(EVENT_CLICK, HtmlPage_init$lambda_1(this));
+    this.checkCaseInsensitive_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_2(this));
+    this.checkDotAll_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_3(this));
+    this.checkMultiline_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_4(this));
+    this.checkOnlyMatches_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_5(this));
+  }
+  HtmlPage.prototype.get_row_0 = function ($receiver) {
+    return this.recognizerMatchToRow_0.get_11rb$($receiver);
+  };
+  HtmlPage.prototype.get_div_0 = function ($receiver) {
+    return this.recognizerMatchToElements_0.get_11rb$($receiver);
   };
   HtmlPage.prototype.selectInputText = function () {
     this.textInput_0.select();
@@ -755,51 +1036,46 @@ this['regex-generator-web'] = function (_, Kotlin) {
     return toMap(destination);
   };
   HtmlPage.prototype.createRowElement_0 = function () {
-    return this.createDivElement_0(this.rowContainer_0, [CLASS_MATCH_ROW]);
+    return HtmlHelper_getInstance().createDivElement_9utdl7$(this.rowContainer_0, [CLASS_MATCH_ROW]);
   };
   HtmlPage.prototype.createMatchElement_0 = function (parent) {
-    return this.createDivElement_0(parent, [CLASS_MATCH_ITEM]);
-  };
-  HtmlPage.prototype.createDivElement_0 = function (parent, classNames) {
-    var tmp$;
-    var element = Kotlin.isType(tmp$ = document.createElement(ELEMENT_DIV), HTMLDivElement) ? tmp$ : throwCCE();
-    addClass(element, classNames.slice());
-    parent.appendChild(element);
-    return element;
+    return HtmlHelper_getInstance().createDivElement_9utdl7$(parent, [CLASS_MATCH_ITEM]);
   };
   HtmlPage.prototype.select_n54ctl$ = function (match, selected) {
     var tmp$;
-    var tmp$_0;
     if ((tmp$ = this.get_div_0(match)) != null) {
-      this.toggleClass_0(tmp$, selected, CLASS_ITEM_SELECTED);
-      tmp$_0 = Unit;
+      HtmlHelper_getInstance().toggleClass_g7pq4p$(tmp$, selected, CLASS_ITEM_SELECTED);
     }
-     else
-      tmp$_0 = null;
-    ensureNotNull(tmp$_0);
   };
   HtmlPage.prototype.disable_n54ctl$ = function (match, disabled) {
     var tmp$;
-    var tmp$_0;
     if ((tmp$ = this.get_div_0(match)) != null) {
-      this.toggleClass_0(tmp$, disabled, CLASS_ITEM_NOT_AVAILABLE);
-      tmp$_0 = Unit;
+      HtmlHelper_getInstance().toggleClass_g7pq4p$(tmp$, disabled, CLASS_ITEM_NOT_AVAILABLE);
     }
-     else
-      tmp$_0 = null;
-    ensureNotNull(tmp$_0);
-  };
-  HtmlPage.prototype.toggleClass_0 = function (element, selected, className) {
-    if (selected)
-      addClass(element, [className]);
-    else
-      removeClass(element, [className]);
   };
   Object.defineProperty(HtmlPage.prototype, 'options', {
     get: function () {
       return new RecognizerCombiner$Options(this.checkOnlyMatches_0.checked, this.checkCaseInsensitive_0.checked, this.checkDotAll_0.checked, this.checkMultiline_0.checked);
     }
   });
+  HtmlPage.prototype.showGeneratedCodeForPattern_61zpoe$ = function (pattern) {
+    var options = this.options;
+    var tmp$;
+    tmp$ = CodeGenerator$Companion_getInstance().list.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      var tmp$_0;
+      if ((tmp$_0 = this.languageDisplays_0.get_11rb$(element)) != null) {
+        tmp$_0.code = element.generateCode_wa467u$(pattern, options);
+      }
+    }
+  };
+  HtmlPage.prototype.showUserGuide_6taknv$ = function (initialStep) {
+    this.driver_0.reset();
+    var steps = [createStepDefinition('#rg-title', 'New to Regex Generator', "Hi! It looks like you're new to <em>Regex Generator<\/em>. Let us show you how to use this tool.", 'right'), createStepDefinition('#rg_input_container', 'Sample', 'In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.', 'bottom-center'), createStepDefinition('#rg_result_container', 'Recognition', 'Regex Generator will immediately analyze your text and suggest common patterns you may use.', 'top-center'), createStepDefinition('#rg_row_container', 'Suggestions', 'Click one or more of suggested patterns...', 'top'), createStepDefinition('#rg_result_display_box', 'Result', '... and we will generate a first <em>regular expression<\/em> for you. It should be able to match your input text.', 'top-center')];
+    this.driver_0.defineSteps(steps);
+    this.driver_0.start(initialStep ? 0 : 1);
+  };
   function HtmlPage_init$lambda(this$HtmlPage) {
     return function (it) {
       this$HtmlPage.presenter_0.onInputChanges_61zpoe$(this$HtmlPage.inputText);
@@ -814,7 +1090,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
   }
   function HtmlPage_init$lambda_1(this$HtmlPage) {
     return function (it) {
-      this$HtmlPage.presenter_0.onOptionsChange_ow7xd4$(this$HtmlPage.options);
+      this$HtmlPage.presenter_0.onButtonHelpClick();
       return Unit;
     };
   }
@@ -836,10 +1112,105 @@ this['regex-generator-web'] = function (_, Kotlin) {
       return Unit;
     };
   }
+  function HtmlPage_init$lambda_5(this$HtmlPage) {
+    return function (it) {
+      this$HtmlPage.presenter_0.onOptionsChange_ow7xd4$(this$HtmlPage.options);
+      return Unit;
+    };
+  }
   HtmlPage.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'HtmlPage',
     interfaces: [DisplayContract$View]
+  };
+  function LanguageCard(codeGenerator, parent) {
+    this.codeGenerator_0 = codeGenerator;
+    var $receiver = get_create(document);
+    var tmp$;
+    var div = Kotlin.isType(tmp$ = visitTagAndFinalize(new DIV_init(attributesMapOf('class', 'card'), $receiver), $receiver, visitAndFinalize$lambda(LanguageCard_init$lambda(this))), HTMLDivElement_0) ? tmp$ : throwCCE();
+    parent.appendChild(div);
+  }
+  Object.defineProperty(LanguageCard.prototype, 'code', {
+    get: function () {
+      return this.codeElement_0.innerText;
+    },
+    set: function (value) {
+      this.codeElement_0.innerText = value;
+    }
+  });
+  Object.defineProperty(LanguageCard.prototype, 'codeElement_0', {
+    get: function () {
+      var tmp$;
+      return Kotlin.isType(tmp$ = document.getElementById(this.codeElementId_0), HTMLElement) ? tmp$ : throwCCE();
+    }
+  });
+  Object.defineProperty(LanguageCard.prototype, 'codeElementId_0', {
+    get: function () {
+      return this.codeGenerator_0.languageName + '_code';
+    }
+  });
+  function LanguageCard_init$lambda$lambda$lambda(this$LanguageCard) {
+    return function ($receiver) {
+      $receiver.type = ButtonType.button;
+      set_classes($receiver, setOf(['btn', 'btn-link']));
+      var $receiver_0 = $receiver.attributes;
+      var key = 'data-toggle';
+      var value = 'collapse';
+      $receiver_0.put_xwzc9p$(key, value);
+      var $receiver_1 = $receiver.attributes;
+      var key_0 = 'data-target';
+      var value_0 = '#' + this$LanguageCard.codeGenerator_0.languageName + '_body';
+      $receiver_1.put_xwzc9p$(key_0, value_0);
+      $receiver.unaryPlus_pdl1vz$(this$LanguageCard.codeGenerator_0.languageName);
+      return Unit;
+    };
+  }
+  function LanguageCard_init$lambda$lambda(this$LanguageCard) {
+    return function ($receiver) {
+      set_id($receiver, this$LanguageCard.codeGenerator_0.languageName + '_heading');
+      var block = LanguageCard_init$lambda$lambda$lambda(this$LanguageCard);
+      visitTag(new BUTTON_init(attributesMapOf_0(['formenctype', null != null ? enumEncode(null) : null, 'formmethod', null != null ? enumEncode(null) : null, 'name', null, 'type', null != null ? enumEncode(null) : null, 'class', null]), $receiver.consumer), visit$lambda(block));
+      return Unit;
+    };
+  }
+  function LanguageCard_init$lambda$lambda$lambda$lambda(this$LanguageCard) {
+    return function ($receiver) {
+      set_id($receiver, this$LanguageCard.codeElementId_0);
+      return Unit;
+    };
+  }
+  function LanguageCard_init$lambda$lambda$lambda_0(this$LanguageCard) {
+    return function ($receiver) {
+      var classes = 'language-' + this$LanguageCard.codeGenerator_0.highlightLanguage;
+      var block = LanguageCard_init$lambda$lambda$lambda$lambda(this$LanguageCard);
+      visitTag(new CODE_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_0(block));
+      return Unit;
+    };
+  }
+  function LanguageCard_init$lambda$lambda_0(this$LanguageCard) {
+    return function ($receiver) {
+      set_id($receiver, this$LanguageCard.codeGenerator_0.languageName + '_body');
+      var classes = 'line-numbers';
+      var block = LanguageCard_init$lambda$lambda$lambda_0(this$LanguageCard);
+      visitTag(new PRE_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_1(block));
+      return Unit;
+    };
+  }
+  function LanguageCard_init$lambda(this$LanguageCard) {
+    return function ($receiver) {
+      var classes = 'card-header';
+      var block = LanguageCard_init$lambda$lambda(this$LanguageCard);
+      visitTag(new DIV_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_2(block));
+      var classes_0 = 'collapse';
+      var block_0 = LanguageCard_init$lambda$lambda_0(this$LanguageCard);
+      visitTag(new DIV_init(attributesMapOf('class', classes_0), $receiver.consumer), visit$lambda_2(block_0));
+      return Unit;
+    };
+  }
+  LanguageCard.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'LanguageCard',
+    interfaces: []
   };
   function SimplePresenter() {
     this.view_0 = new HtmlPage(this);
@@ -859,6 +1230,12 @@ this['regex-generator-web'] = function (_, Kotlin) {
   };
   SimplePresenter.prototype.onButtonCopyClick = function () {
     copyTextToClipboard(this.view_0.resultText);
+  };
+  SimplePresenter.prototype.onButtonHelpClick = function () {
+    this.view_0.showUserGuide_6taknv$(false);
+  };
+  SimplePresenter.prototype.showInitialUserGuide = function () {
+    this.view_0.showUserGuide_6taknv$(true);
   };
   SimplePresenter.prototype.onInputChanges_61zpoe$ = function (newInput) {
     this.matches_0.clear();
@@ -919,6 +1296,7 @@ this['regex-generator-web'] = function (_, Kotlin) {
     }
     var result = tmp$.combine_9yx9zl$(tmp$_0, toList_0(destination_0), this.view_0.options);
     this.view_0.resultText = result.pattern;
+    this.view_0.showGeneratedCodeForPattern_61zpoe$(result.pattern);
   };
   Object.defineProperty(SimplePresenter.prototype, 'deactivatedMatches_0', {
     get: function () {
@@ -978,12 +1356,6 @@ this['regex-generator-web'] = function (_, Kotlin) {
       return toSet(destination_2);
     }
   });
-  SimplePresenter.prototype.showUserGuide = function () {
-    var driver = new Driver();
-    driver.reset();
-    driver.defineSteps([createStepDefinition('#rg-title', 'New to Regex Generator', "Hi! It looks like you're new to <em>Regex Generator<\/em>. Let us show you how to use this tool.", 'right'), createStepDefinition('#rg_input_container', 'Sample', 'In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.', 'bottom-center'), createStepDefinition('#rg_result_container', 'Recognition', 'Regex Generator will immediately analyze your text and suggest common patterns you may use.', 'top-center'), createStepDefinition('#rg_row_container', 'Suggestions', 'Click one or more of suggested patterns...', 'top'), createStepDefinition('#rg_result_display_box', 'Result', '... and we will generate a first <em>regular expression<\/em> for you. It should be able to match your input text.', 'top-center')]);
-    driver.start();
-  };
   SimplePresenter.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'SimplePresenter',
@@ -999,7 +1371,15 @@ this['regex-generator-web'] = function (_, Kotlin) {
   package$generator.Configuration = Configuration;
   var package$js = package$generator.js || (package$generator.js = {});
   package$js.createStepDefinition_w74nik$ = createStepDefinition;
+  Object.defineProperty(CodeGenerator, 'Companion', {
+    get: CodeGenerator$Companion_getInstance
+  });
+  CodeGenerator.SimpleReplacingCodeGenerator = CodeGenerator$SimpleReplacingCodeGenerator;
+  CodeGenerator.CLikeCodeGenerator = CodeGenerator$CLikeCodeGenerator;
+  CodeGenerator.JavaCodeGenerator = CodeGenerator$JavaCodeGenerator;
+  CodeGenerator.KotlinCodeGenerator = CodeGenerator$KotlinCodeGenerator;
   var package$regex_0 = package$generator.regex || (package$generator.regex = {});
+  package$regex_0.CodeGenerator = CodeGenerator;
   package$regex_0.Recognizer = Recognizer;
   Object.defineProperty(RecognizerCombiner, 'Companion', {
     get: RecognizerCombiner$Companion_getInstance
@@ -1036,10 +1416,28 @@ this['regex-generator-web'] = function (_, Kotlin) {
   DisplayContract.Presenter = DisplayContract$Presenter;
   var package$ui = package$generator.ui || (package$generator.ui = {});
   package$ui.DisplayContract = DisplayContract;
-  Object.defineProperty(package$ui, 'CLASS_HIDDEN', {
+  Object.defineProperty(package$ui, 'ELEMENT_DIV', {
     get: function () {
-      return CLASS_HIDDEN;
+      return ELEMENT_DIV;
     }
+  });
+  Object.defineProperty(package$ui, 'ELEMENT_BUTTON', {
+    get: function () {
+      return ELEMENT_BUTTON;
+    }
+  });
+  Object.defineProperty(package$ui, 'ELEMENT_PRE', {
+    get: function () {
+      return ELEMENT_PRE;
+    }
+  });
+  Object.defineProperty(package$ui, 'ELEMENT_CODE', {
+    get: function () {
+      return ELEMENT_CODE;
+    }
+  });
+  Object.defineProperty(package$ui, 'HtmlHelper', {
+    get: HtmlHelper_getInstance
   });
   Object.defineProperty(package$ui, 'CLASS_MATCH_ROW', {
     get: function () {
@@ -1059,11 +1457,6 @@ this['regex-generator-web'] = function (_, Kotlin) {
   Object.defineProperty(package$ui, 'CLASS_ITEM_NOT_AVAILABLE', {
     get: function () {
       return CLASS_ITEM_NOT_AVAILABLE;
-    }
-  });
-  Object.defineProperty(package$ui, 'ELEMENT_DIV', {
-    get: function () {
-      return ELEMENT_DIV;
     }
   });
   Object.defineProperty(package$ui, 'EVENT_CLICK', {
@@ -1101,16 +1494,6 @@ this['regex-generator-web'] = function (_, Kotlin) {
       return ID_CONTAINER_INPUT;
     }
   });
-  Object.defineProperty(package$ui, 'ID_CONTAINER_PATTERN_SELECTION', {
-    get: function () {
-      return ID_CONTAINER_PATTERN_SELECTION;
-    }
-  });
-  Object.defineProperty(package$ui, 'ID_CONTAINER_RESULT', {
-    get: function () {
-      return ID_CONTAINER_RESULT;
-    }
-  });
   Object.defineProperty(package$ui, 'ID_CHECK_ONLY_MATCHES', {
     get: function () {
       return ID_CHECK_ONLY_MATCHES;
@@ -1136,18 +1519,31 @@ this['regex-generator-web'] = function (_, Kotlin) {
       return ID_BUTTON_COPY;
     }
   });
+  Object.defineProperty(package$ui, 'ID_BUTTON_HELP', {
+    get: function () {
+      return ID_BUTTON_HELP;
+    }
+  });
+  Object.defineProperty(package$ui, 'ID_DIV_LANGUAGES', {
+    get: function () {
+      return ID_DIV_LANGUAGES;
+    }
+  });
   package$ui.HtmlPage = HtmlPage;
+  $$importsForInline$$['kotlinx-html-js'] = $module$kotlinx_html_js;
   package$ui.SimplePresenter = SimplePresenter;
   KEY_LAST_VERSION = 'user.lastVersion';
   KEY_LAST_VISIT = 'user.lastVisit';
   VAL_VERSION = 2;
   VAL_EXAMPLE_INPUT = "2020-03-12T13:34:56.123Z INFO  [org.example.Class]: This is a #simple #logline containing a 'value'.";
-  CLASS_HIDDEN = 'rg-hidden';
+  ELEMENT_DIV = 'div';
+  ELEMENT_BUTTON = 'button';
+  ELEMENT_PRE = 'pre';
+  ELEMENT_CODE = 'code';
   CLASS_MATCH_ROW = 'rg-match-row';
   CLASS_MATCH_ITEM = 'rg-match-item';
   CLASS_ITEM_SELECTED = 'rg-item-selected';
   CLASS_ITEM_NOT_AVAILABLE = 'rg-item-not-available';
-  ELEMENT_DIV = 'div';
   EVENT_CLICK = 'click';
   EVENT_INPUT = 'input';
   ID_INPUT_ELEMENT = 'rg_raw_input_text';
@@ -1155,16 +1551,16 @@ this['regex-generator-web'] = function (_, Kotlin) {
   ID_RESULT_DISPLAY = 'rg_result_display';
   ID_ROW_CONTAINER = 'rg_row_container';
   ID_CONTAINER_INPUT = 'rg_input_container';
-  ID_CONTAINER_PATTERN_SELECTION = 'rg_pattern_selection_container';
-  ID_CONTAINER_RESULT = 'rg_regex_result_container';
   ID_CHECK_ONLY_MATCHES = 'rg_onlymatches';
   ID_CHECK_CASE_INSENSITIVE = 'rg_caseinsensitive';
   ID_CHECK_DOT_MATCHES_LINE_BRAKES = 'rg_dotmatcheslinebreakes';
-  ID_CHECK_MULTILINE = 'rg_dotmatcheslinebreakes';
+  ID_CHECK_MULTILINE = 'rg_multiline';
   ID_BUTTON_COPY = 'rg_button_copy';
+  ID_BUTTON_HELP = 'rg_button_show_help';
+  ID_DIV_LANGUAGES = 'rg_language_accordion';
   main();
   Kotlin.defineModule('regex-generator-web', _);
   return _;
-}(typeof this['regex-generator-web'] === 'undefined' ? {} : this['regex-generator-web'], kotlin);
+}(typeof this['regex-generator-web'] === 'undefined' ? {} : this['regex-generator-web'], kotlin, this['kotlinx-html-js']);
 
 //# sourceMappingURL=regex-generator-web.js.map

@@ -27,6 +27,11 @@
             <artifactId>kotlin-stdlib-js</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-html-js</artifactId>
+            <version>0.7.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -72,6 +77,19 @@
                             <excludes>**\/*.meta.js</excludes>                            <!-- we don't need meta.js files in runtime -->
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>extract-kotlinx-html-js</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeArtifactIds>kotlinx-html-js</includeArtifactIds>
+                            <outputDirectory>${project.build.outputDirectory}/lib</outputDirectory>
+                            <includes>**\/*.js</includes>
+                            <excludes>**\/*.meta.js</excludes>                            <!-- we don't need meta.js files in runtime -->
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -94,6 +112,7 @@
                                     <includes>
 										<include>index.html</include>
                                         <include>regex-generator-web.js</include>
+                                        <include>prism.js</include>
 										<include>lib/**/*</include>
                                         <include>**/*.css</include>
 									</includes>

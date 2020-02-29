@@ -30,7 +30,7 @@ external class StepDefinition {
     // var onPrevious: () => {},         // Called when moving to previous step from current step
 };
 
-external class Driver {
+external class Driver(options: dynamic) {
     /** Checks if the driver is active or not */
     fun isActivated(): Boolean
 
@@ -38,8 +38,7 @@ external class Driver {
     // fun defineSteps(stepDefinitions: Array<StepDefinition>)
     fun defineSteps(stepDefinitions: Array<dynamic>)
     /**Starts driving through the defined steps*/
-    fun start()
-    fun start(stepNumber: Number)
+    fun start(stepNumber: Number = definedExternally)
     fun moveNext();             // Moves to next step in the steps list
     fun movePrevious();         // Moves to previous step in the steps list
     fun hasNextStep();          // Checks if there is next step to move to
