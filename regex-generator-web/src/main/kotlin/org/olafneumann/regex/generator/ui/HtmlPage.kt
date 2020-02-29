@@ -156,6 +156,7 @@ class HtmlPage(
         val options = options
         CodeGenerator.list
             .forEach { languageDisplays[it]?.let { ld -> ld.code = it.generateCode(pattern, options) } }
+        js("Prism.highlightAll();")
     }
 
 
@@ -225,8 +226,8 @@ private class LanguageCard(
     }
 
     var code: String
-        get() = codeElement.innerText
-        set(value) { codeElement.innerText = value }
+        get() = codeElement.innerHTML
+        set(value) { codeElement.innerHTML = value.replace("<", "&lt;") }
 
     private val codeElement: HTMLElement
         get() = document.getElementById(codeElementId) as HTMLElement
