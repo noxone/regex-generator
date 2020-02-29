@@ -2,7 +2,7 @@
 name: Add language request
 about: Add a language to the generator
 title: ''
-labels: ''
+labels: New language
 assignees: ''
 
 ---
