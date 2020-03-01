@@ -202,7 +202,14 @@ class HtmlPage(
                 "#rg_result_display_box",
                 "Result",
                 "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
-                "top-center")
+                "top-center"
+            ),
+            createStepDefinition(
+                "#$ID_DIV_LANGUAGES",
+                "Language snippets",
+                "We will also generate snippets for some languages that show you, how to use the regular expression in your favourite language.",
+                "top-left"
+            )
         )
         driver.defineSteps(steps)
         driver.start(if (initialStep) 0 else 1)
