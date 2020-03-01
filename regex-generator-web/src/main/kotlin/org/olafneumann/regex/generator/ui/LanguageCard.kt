@@ -15,7 +15,6 @@ internal class LanguageCard(
     private val codeGenerator: CodeGenerator,
     parent: Node
 ) {
-    private val headingElementId: String get() = "${codeGenerator.uniqueName}_heading"
     private val bodyElementId: String get() = "${codeGenerator.uniqueName}_body"
     private val codeElementId: String get() = "${codeGenerator.uniqueName}_code"
     private val bodyElement: HTMLElement
@@ -25,7 +24,6 @@ internal class LanguageCard(
     init {
         parent.appendChild(document.create.div(classes = "card") {
             div(classes = "card-header") {
-                id = headingElementId
                 button(classes = "btn btn-link", type = ButtonType.button) {
                     attributes["data-toggle"] = "collapse"
                     attributes["data-target"] = "#$bodyElementId"
@@ -34,7 +32,7 @@ internal class LanguageCard(
             }
             div(classes = "collapse ${if (shown) "show" else ""}") {
                 id = bodyElementId
-                pre(classes = "line-numbers") {
+                pre {
                     code(classes = "language-${codeGenerator.highlightLanguage}") {
                         id = codeElementId
                     }
@@ -50,7 +48,7 @@ internal class LanguageCard(
 
     // TODO move all localStorage-access to separate storage class
     private val shownPropertyName: String get() = "language.${codeGenerator.uniqueName}.expanded"
-    var shown: Boolean
+    private var shown: Boolean
         get() = localStorage.getItem(shownPropertyName)?.toBoolean() ?: false
         set(value) = localStorage.setItem(shownPropertyName, value.toString())
 

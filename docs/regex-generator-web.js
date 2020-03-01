@@ -58,8 +58,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
   var iterator = Kotlin.kotlin.text.iterator_gw00vp$;
   var unboxChar = Kotlin.unboxChar;
-  var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
   var ButtonType = $module$kotlinx_html_js.kotlinx.html.ButtonType;
+  var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
   var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
   var DIV_init = $module$kotlinx_html_js.kotlinx.html.DIV;
   var HTMLDivElement_0 = HTMLDivElement;
@@ -1377,11 +1377,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     jQuery(this.bodyElement_0).on('shown.bs.collapse', LanguageCard_init$lambda_0(this));
     jQuery(this.bodyElement_0).on('hidden.bs.collapse', LanguageCard_init$lambda_1(this));
   }
-  Object.defineProperty(LanguageCard.prototype, 'headingElementId_0', {
-    get: function () {
-      return this.codeGenerator_0.uniqueName + '_heading';
-    }
-  });
   Object.defineProperty(LanguageCard.prototype, 'bodyElementId_0', {
     get: function () {
       return this.codeGenerator_0.uniqueName + '_body';
@@ -1397,7 +1392,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return 'language.' + this.codeGenerator_0.uniqueName + '.expanded';
     }
   });
-  Object.defineProperty(LanguageCard.prototype, 'shown', {
+  Object.defineProperty(LanguageCard.prototype, 'shown_0', {
     get: function () {
       var tmp$, tmp$_0;
       return (tmp$_0 = (tmp$ = localStorage.getItem(this.shownPropertyName_0)) != null ? toBoolean(tmp$) : null) != null ? tmp$_0 : false;
@@ -1492,7 +1487,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function LanguageCard_init$lambda$lambda(this$LanguageCard) {
     return function ($receiver) {
       var tmp$, tmp$_0;
-      set_id($receiver, this$LanguageCard.headingElementId_0);
       tmp$ = ButtonType.button;
       tmp$_0 = LanguageCard_init$lambda$lambda$lambda(this$LanguageCard);
       visitTag(new BUTTON_init(attributesMapOf_0(['formenctype', null != null ? enumEncode(null) : null, 'formmethod', null != null ? enumEncode(null) : null, 'name', null, 'type', tmp$ != null ? enumEncode(tmp$) : null, 'class', 'btn btn-link']), $receiver.consumer), visit$lambda(tmp$_0));
@@ -1516,9 +1510,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function LanguageCard_init$lambda$lambda_0(this$LanguageCard) {
     return function ($receiver) {
       set_id($receiver, this$LanguageCard.bodyElementId_0);
-      var classes = 'line-numbers';
       var block = LanguageCard_init$lambda$lambda$lambda_0(this$LanguageCard);
-      visitTag(new PRE_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_1(block));
+      visitTag(new PRE_init(attributesMapOf('class', null), $receiver.consumer), visit$lambda_1(block));
       return Unit;
     };
   }
@@ -1527,7 +1520,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       var classes = 'card-header';
       var block = LanguageCard_init$lambda$lambda(this$LanguageCard);
       visitTag(new DIV_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_2(block));
-      var classes_0 = 'collapse ' + (this$LanguageCard.shown ? 'show' : '');
+      var classes_0 = 'collapse ' + (this$LanguageCard.shown_0 ? 'show' : '');
       var block_0 = LanguageCard_init$lambda$lambda_0(this$LanguageCard);
       visitTag(new DIV_init(attributesMapOf('class', classes_0), $receiver.consumer), visit$lambda_2(block_0));
       return Unit;
@@ -1535,13 +1528,13 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function LanguageCard_init$lambda_0(this$LanguageCard) {
     return function () {
-      this$LanguageCard.shown = true;
+      this$LanguageCard.shown_0 = true;
       return Unit;
     };
   }
   function LanguageCard_init$lambda_1(this$LanguageCard) {
     return function () {
-      this$LanguageCard.shown = false;
+      this$LanguageCard.shown_0 = false;
       return Unit;
     };
   }
