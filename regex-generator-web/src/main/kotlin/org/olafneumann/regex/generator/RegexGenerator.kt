@@ -6,7 +6,6 @@ import kotlin.browser.localStorage
 import kotlin.browser.window
 import kotlin.js.Date
 
-
 const val KEY_LAST_VERSION = "user.lastVersion"
 const val KEY_LAST_VISIT = "user.lastVisit"
 

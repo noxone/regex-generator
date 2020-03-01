@@ -74,6 +74,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var PRE_init = $module$kotlinx_html_js.kotlinx.html.PRE;
   var intersect = Kotlin.kotlin.collections.intersect_q4559j$;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
+  var equals = Kotlin.equals;
   var Collection = Kotlin.kotlin.collections.Collection;
   CLikeCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   CLikeCodeGenerator.prototype.constructor = CLikeCodeGenerator;
@@ -462,14 +463,14 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   });
   Object.defineProperty(CSharpCodeGenerator.prototype, 'templateCode', {
     get: function () {
-      return 'using System;\nusing System.Text.RegularExpressions;\n\npublic class Example\n{\n    public static void useRegex(String input)\n    {\n        Regex regex = new Regex("%1$s"%2$s);\n        return regex.IsMatch(input);\n    }\n}';
+      return 'using System;\nusing System.Text.RegularExpressions;\n\npublic class Sample\n{\n    public static void useRegex(String input)\n    {\n        Regex regex = new Regex("%1$s"%2$s);\n        return regex.IsMatch(input);\n    }\n}';
     }
   });
   function CSharpCodeGenerator$generateOptionsCode$lambda(s) {
     return 'RegexOptions.' + s;
   }
   CSharpCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_1rvtm9$(options, 'IgnoreCase', 'Multiline', 'Singleline', void 0, ' ,', ' | ', void 0, CSharpCodeGenerator$generateOptionsCode$lambda);
+    return this.combineOptions_1rvtm9$(options, 'IgnoreCase', 'Multiline', 'Singleline', void 0, ', ', ' | ', void 0, CSharpCodeGenerator$generateOptionsCode$lambda);
   };
   CSharpCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
     if (options.dotMatchesLineBreaks)
@@ -1054,6 +1055,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var ID_CHECK_DOT_MATCHES_LINE_BRAKES;
   var ID_CHECK_MULTILINE;
   var ID_BUTTON_COPY;
+  var ID_DIV_ONLYMATCH_CONTAINER;
   var ID_BUTTON_HELP;
   var ID_DIV_LANGUAGES;
   function get_characterUnits($receiver) {
@@ -1097,6 +1099,18 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   HtmlPage.prototype.get_div_0 = function ($receiver) {
     return this.recognizerMatchToElements_0.get_11rb$($receiver);
+  };
+  HtmlPage.prototype.showCopyButton_6taknv$ = function (visible) {
+    var button = jQuery(this.buttonCopy_0);
+    if (visible) {
+      button.show();
+    }
+     else {
+      button.hide();
+      var container = $('#rg_div_onlymatch_container');
+      container.removeClass();
+      container.addClass('form-group');
+    }
   };
   HtmlPage.prototype.selectInputText = function () {
     this.textInput_0.select();
@@ -1542,6 +1556,9 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function SimplePresenter() {
     this.view_0 = new HtmlPage(this);
     this.matches_0 = LinkedHashMap_init();
+    if (equals(navigator.clipboard, undefined)) {
+      this.view_0.showCopyButton_6taknv$(false);
+    }
   }
   Object.defineProperty(SimplePresenter.prototype, 'currentTextInput', {
     get: function () {
@@ -1555,8 +1572,12 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.onInputChanges_61zpoe$(input);
     this.view_0.selectInputText();
   };
+  function SimplePresenter$onButtonCopyClick$lambda(it) {
+    window.alert('Could not copy text: ' + it);
+    return Unit;
+  }
   SimplePresenter.prototype.onButtonCopyClick = function () {
-    copyTextToClipboard(this.view_0.resultText);
+    navigator.clipboard.writeText(this.view_0.resultText).catch(SimplePresenter$onButtonCopyClick$lambda);
   };
   SimplePresenter.prototype.onButtonHelpClick = function () {
     this.view_0.showUserGuide_6taknv$(false);
@@ -1852,6 +1873,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return ID_BUTTON_COPY;
     }
   });
+  Object.defineProperty(package$ui, 'ID_DIV_ONLYMATCH_CONTAINER', {
+    get: function () {
+      return ID_DIV_ONLYMATCH_CONTAINER;
+    }
+  });
   Object.defineProperty(package$ui, 'ID_BUTTON_HELP', {
     get: function () {
       return ID_BUTTON_HELP;
@@ -1891,6 +1917,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   ID_CHECK_DOT_MATCHES_LINE_BRAKES = 'rg_dotmatcheslinebreakes';
   ID_CHECK_MULTILINE = 'rg_multiline';
   ID_BUTTON_COPY = 'rg_button_copy';
+  ID_DIV_ONLYMATCH_CONTAINER = 'rg_div_onlymatch_container';
   ID_BUTTON_HELP = 'rg_button_show_help';
   ID_DIV_LANGUAGES = 'rg_language_accordion';
   main();
