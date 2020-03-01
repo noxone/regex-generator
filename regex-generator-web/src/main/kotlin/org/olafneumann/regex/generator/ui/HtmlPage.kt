@@ -1,19 +1,11 @@
 package org.olafneumann.regex.generator.ui
 
-import kotlinx.html.*
-import kotlinx.html.dom.create
-import kotlinx.html.dom.prepend
-import kotlinx.html.js.div
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
-import org.olafneumann.regex.generator.regex.*
-import org.olafneumann.regex.generator.regex.JavaCodeGenerator
-import org.olafneumann.regex.generator.regex.KotlinCodeGenerator
+import org.olafneumann.regex.generator.regex.CodeGenerator
+import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.w3c.dom.HTMLDivElement
-import org.w3c.dom.HTMLElement
-import org.w3c.dom.HTMLParagraphElement
-import org.w3c.dom.Node
-import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
 
@@ -62,7 +54,11 @@ class HtmlPage(
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
 
-    private val languageDisplays = CodeGenerator.list.map { it to LanguageCard(it, containerLanguages) }.toMap()
+    private val languageDisplays = CodeGenerator.list
+        .map {
+            it to LanguageCard(it, containerLanguages)
+        }
+        .toMap()
 
     private val driver = Driver(js("{}"))
 
@@ -156,7 +152,7 @@ class HtmlPage(
     override fun showGeneratedCodeForPattern(pattern: String) {
         val options = options
         CodeGenerator.list
-            .forEach { languageDisplays[it]?.let { ld -> ld.setSnippet(it.generateCode(pattern, options)) } }
+            .forEach { languageDisplays[it]?.setSnippet(it.generateCode(pattern, options)) }
         js("Prism.highlightAll();")
     }
 
@@ -197,87 +193,5 @@ class HtmlPage(
         driver.start(if (initialStep) 0 else 1)
     }
 }
-
-private class LanguageCard(
-    private val codeGenerator: CodeGenerator,
-    parent: Node
-) {
-    init {
-        val div = document.create.div("card") {
-            div("card-header") {
-                id = "${codeGenerator.languageName}_heading"
-                button {
-                    type = ButtonType.button
-                    classes = setOf("btn", "btn-link")
-                    attributes["data-toggle"] = "collapse"
-                    attributes["data-target"] = "#${codeGenerator.languageName}_body"
-                    +codeGenerator.languageName
-                }
-            }
-            div("collapse") {
-                id = bodyElementId
-                pre("line-numbers") {
-                    code("language-${codeGenerator.highlightLanguage}") {
-                        id = codeElementId
-                    }
-                }
-            }
-        }
-        parent.appendChild(div)
-    }
-
-    private fun String.escapeHTML(): String {
-        val text :String = this@escapeHTML
-        if (text.isEmpty()) return text
-
-        return buildString(length) {
-            for (element in text) {
-                when (val ch :Char = element) {
-                    '\'' -> append("&apos;")
-                    '\"' -> append("&quot")
-                    '&' -> append("&amp;")
-                    '<' -> append("&lt;")
-                    '>' -> append("&gt;")
-                    else -> append(ch)
-                }
-            }
-        }
-    }
-
-    fun setSnippet(snippet: GeneratedSnippet) {
-        code = snippet.snippet
-        warnings.forEach { it.parentElement?.let { p -> p.removeChild(it) } }
-        warnings.clear()
-        snippet.warnings.forEach {
-            val warningElement = createWarning(it)
-            warnings.add(warningElement)
-            bodyElement.prepend(warningElement)
-        }
-    }
-
-    private val warnings: MutableList<HTMLElement> = mutableListOf()
-
-    private fun createWarning(text: String): HTMLElement =
-        document.create.p("alert alert-warning rounded m-2") {
-            +text
-        }
-
-    private var code: String
-        get() = codeElement.innerHTML
-        set(value) { codeElement.innerHTML = value.escapeHTML() }
-
-    private val codeElement by lazy { document.getElementById(codeElementId) as HTMLElement }
-    private val bodyElement by lazy { document.getElementById(bodyElementId) as HTMLElement }
-
-    private val codeElementId: String
-        get() = "${codeGenerator.languageName}_code"
-
-    private val bodyElementId: String
-        get() = "${codeGenerator.languageName}_body"
-}
-
-
-
-
 
 
