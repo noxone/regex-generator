@@ -54,20 +54,18 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var ensureNotNull = Kotlin.ensureNotNull;
   var Unit = Kotlin.kotlin.Unit;
   var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
+  var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
+  var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
   var iterator = Kotlin.kotlin.text.iterator_gw00vp$;
   var unboxChar = Kotlin.unboxChar;
-  var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
   var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
   var ButtonType = $module$kotlinx_html_js.kotlinx.html.ButtonType;
-  var setOf = Kotlin.kotlin.collections.setOf_i5x0yv$;
-  var set_classes = $module$kotlinx_html_js.kotlinx.html.set_classes_njy09m$;
-  var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
   var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
   var DIV_init = $module$kotlinx_html_js.kotlinx.html.DIV;
   var HTMLDivElement_0 = HTMLDivElement;
   var visitTagAndFinalize = $module$kotlinx_html_js.kotlinx.html.visitTagAndFinalize_g9qte5$;
-  var StringBuilder_init = Kotlin.kotlin.text.StringBuilder_init_za3lpa$;
   var P_init = $module$kotlinx_html_js.kotlinx.html.P;
+  var StringBuilder_init = Kotlin.kotlin.text.StringBuilder_init_za3lpa$;
   var enumEncode = $module$kotlinx_html_js.kotlinx.html.attributes.enumEncode_m4whry$;
   var attributesMapOf_0 = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_alerag$;
   var BUTTON_init = $module$kotlinx_html_js.kotlinx.html.BUTTON;
@@ -161,6 +159,9 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     stepDefinition.popover.description = description;
     stepDefinition.popover.position = position;
     return stepDefinition;
+  }
+  function jQuery(element) {
+    return $('#' + element.id);
   }
   function Comparator$ObjectLiteral(closure$comparison) {
     this.closure$comparison = closure$comparison;
@@ -921,60 +922,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     return HtmlHelper_instance;
   }
-  function visitAndFinalize$lambda(closure$block) {
-    return function ($receiver) {
-      closure$block($receiver);
-      return Unit;
-    };
-  }
-  function div$lambda($receiver) {
-    return Unit;
-  }
-  function visitAndFinalize$lambda_0(closure$block) {
-    return function ($receiver) {
-      closure$block($receiver);
-      return Unit;
-    };
-  }
-  function p$lambda($receiver) {
-    return Unit;
-  }
-  function visit$lambda(closure$block) {
-    return function ($receiver) {
-      closure$block($receiver);
-      return Unit;
-    };
-  }
-  function button$lambda($receiver) {
-    return Unit;
-  }
-  function visit$lambda_0(closure$block) {
-    return function ($receiver) {
-      closure$block($receiver);
-      return Unit;
-    };
-  }
-  function code$lambda($receiver) {
-    return Unit;
-  }
-  function visit$lambda_1(closure$block) {
-    return function ($receiver) {
-      closure$block($receiver);
-      return Unit;
-    };
-  }
-  function pre$lambda($receiver) {
-    return Unit;
-  }
-  function visit$lambda_2(closure$block) {
-    return function ($receiver) {
-      closure$block($receiver);
-      return Unit;
-    };
-  }
-  function div$lambda_0($receiver) {
-    return Unit;
-  }
   var CLASS_MATCH_ROW;
   var CLASS_MATCH_ITEM;
   var CLASS_ITEM_SELECTED;
@@ -1178,9 +1125,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     while (tmp$.hasNext()) {
       var element = tmp$.next();
       var tmp$_0;
-      if ((tmp$_0 = this.languageDisplays_0.get_11rb$(element)) != null) {
-        tmp$_0.setSnippet_eos4sh$(element.generateCode_wa467u$(pattern, options));
-      }
+      (tmp$_0 = this.languageDisplays_0.get_11rb$(element)) != null ? (tmp$_0.setSnippet_eos4sh$(element.generateCode_wa467u$(pattern, options)), Unit) : null;
     }
     Prism.highlightAll();
   };
@@ -1237,16 +1182,140 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'HtmlPage',
     interfaces: [DisplayContract$View]
   };
+  function visitAndFinalize$lambda(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function div$lambda($receiver) {
+    return Unit;
+  }
+  function visitAndFinalize$lambda_0(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function p$lambda($receiver) {
+    return Unit;
+  }
+  function visit$lambda(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function button$lambda($receiver) {
+    return Unit;
+  }
+  function visit$lambda_0(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function code$lambda($receiver) {
+    return Unit;
+  }
+  function visit$lambda_1(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function pre$lambda($receiver) {
+    return Unit;
+  }
+  function visit$lambda_2(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function div$lambda_0($receiver) {
+    return Unit;
+  }
   function LanguageCard(codeGenerator, parent) {
     this.codeGenerator_0 = codeGenerator;
-    var $receiver = get_create(document);
-    var tmp$;
-    var div = Kotlin.isType(tmp$ = visitTagAndFinalize(new DIV_init(attributesMapOf('class', 'card'), $receiver), $receiver, visitAndFinalize$lambda(LanguageCard_init$lambda(this))), HTMLDivElement_0) ? tmp$ : throwCCE();
-    parent.appendChild(div);
+    this.bodyElement_0 = null;
+    this.codeElement_0 = null;
     this.warnings_0 = ArrayList_init_0();
-    this.codeElement_dmvgap$_0 = lazy(LanguageCard$codeElement$lambda(this));
-    this.bodyElement_i3b8ju$_0 = lazy(LanguageCard$bodyElement$lambda(this));
+    var tmp$, tmp$_0;
+    var $receiver = get_create(document);
+    var tmp$_1;
+    parent.appendChild(Kotlin.isType(tmp$_1 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', 'card'), $receiver), $receiver, visitAndFinalize$lambda(LanguageCard_init$lambda(this))), HTMLDivElement_0) ? tmp$_1 : throwCCE());
+    this.codeElement_0 = Kotlin.isType(tmp$ = document.getElementById(this.codeElementId_0), HTMLElement) ? tmp$ : throwCCE();
+    this.bodyElement_0 = Kotlin.isType(tmp$_0 = document.getElementById(this.bodyElementId_0), HTMLElement) ? tmp$_0 : throwCCE();
+    jQuery(this.bodyElement_0).on('shown.bs.collapse', LanguageCard_init$lambda_0(this));
+    jQuery(this.bodyElement_0).on('hidden.bs.collapse', LanguageCard_init$lambda_1(this));
   }
+  Object.defineProperty(LanguageCard.prototype, 'headingElementId_0', {
+    get: function () {
+      return this.codeGenerator_0.languageName + '_heading';
+    }
+  });
+  Object.defineProperty(LanguageCard.prototype, 'bodyElementId_0', {
+    get: function () {
+      return this.codeGenerator_0.languageName + '_body';
+    }
+  });
+  Object.defineProperty(LanguageCard.prototype, 'codeElementId_0', {
+    get: function () {
+      return this.codeGenerator_0.languageName + '_code';
+    }
+  });
+  Object.defineProperty(LanguageCard.prototype, 'shownPropertyName_0', {
+    get: function () {
+      return 'language.' + this.codeGenerator_0.languageName + '.expanded';
+    }
+  });
+  Object.defineProperty(LanguageCard.prototype, 'shown', {
+    get: function () {
+      var tmp$, tmp$_0;
+      return (tmp$_0 = (tmp$ = localStorage.getItem(this.shownPropertyName_0)) != null ? toBoolean(tmp$) : null) != null ? tmp$_0 : false;
+    },
+    set: function (value) {
+      localStorage.setItem(this.shownPropertyName_0, value.toString());
+    }
+  });
+  LanguageCard.prototype.setSnippet_eos4sh$ = function (snippet) {
+    this.code_0 = snippet.snippet;
+    var tmp$;
+    tmp$ = this.warnings_0.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      var tmp$_0;
+      (tmp$_0 = element.parentElement) != null ? tmp$_0.removeChild(element) : null;
+    }
+    this.warnings_0.clear();
+    var tmp$_1;
+    tmp$_1 = snippet.warnings.iterator();
+    while (tmp$_1.hasNext()) {
+      var element_0 = tmp$_1.next();
+      var warningElement = this.createWarning_0(element_0);
+      this.warnings_0.add_11rb$(warningElement);
+      this.bodyElement_0.prepend(warningElement);
+    }
+  };
+  function LanguageCard$createWarning$lambda(closure$text) {
+    return function ($receiver) {
+      $receiver.unaryPlus_pdl1vz$(closure$text);
+      return Unit;
+    };
+  }
+  LanguageCard.prototype.createWarning_0 = function (text) {
+    var $receiver = get_create(document);
+    return visitTagAndFinalize(new P_init(attributesMapOf('class', 'alert alert-warning rounded m-2'), $receiver), $receiver, visitAndFinalize$lambda_0(LanguageCard$createWarning$lambda(text)));
+  };
+  Object.defineProperty(LanguageCard.prototype, 'code_0', {
+    get: function () {
+      return this.codeElement_0.innerHTML;
+    },
+    set: function (value) {
+      this.codeElement_0.innerHTML = this.escapeHTML_0(value);
+    }
+  });
   LanguageCard.prototype.escapeHTML_0 = function ($receiver) {
     var text = $receiver;
     if (text.length === 0)
@@ -1279,76 +1348,15 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     return $receiver_0.toString();
   };
-  LanguageCard.prototype.setSnippet_eos4sh$ = function (snippet) {
-    this.code_0 = snippet.snippet;
-    var tmp$;
-    tmp$ = this.warnings_0.iterator();
-    while (tmp$.hasNext()) {
-      var element = tmp$.next();
-      var tmp$_0;
-      if ((tmp$_0 = element.parentElement) != null) {
-        tmp$_0.removeChild(element);
-      }
-    }
-    this.warnings_0.clear();
-    var tmp$_1;
-    tmp$_1 = snippet.warnings.iterator();
-    while (tmp$_1.hasNext()) {
-      var element_0 = tmp$_1.next();
-      var warningElement = this.createWarning_0(element_0);
-      this.warnings_0.add_11rb$(warningElement);
-      this.bodyElement_0.prepend(warningElement);
-    }
-  };
-  function LanguageCard$createWarning$lambda(closure$text) {
-    return function ($receiver) {
-      $receiver.unaryPlus_pdl1vz$(closure$text);
-      return Unit;
-    };
-  }
-  LanguageCard.prototype.createWarning_0 = function (text) {
-    var $receiver = get_create(document);
-    return visitTagAndFinalize(new P_init(attributesMapOf('class', 'alert alert-warning rounded m-2'), $receiver), $receiver, visitAndFinalize$lambda_0(LanguageCard$createWarning$lambda(text)));
-  };
-  Object.defineProperty(LanguageCard.prototype, 'code_0', {
-    get: function () {
-      return this.codeElement_0.innerHTML;
-    },
-    set: function (value) {
-      this.codeElement_0.innerHTML = this.escapeHTML_0(value);
-    }
-  });
-  Object.defineProperty(LanguageCard.prototype, 'codeElement_0', {
-    get: function () {
-      return this.codeElement_dmvgap$_0.value;
-    }
-  });
-  Object.defineProperty(LanguageCard.prototype, 'bodyElement_0', {
-    get: function () {
-      return this.bodyElement_i3b8ju$_0.value;
-    }
-  });
-  Object.defineProperty(LanguageCard.prototype, 'codeElementId_0', {
-    get: function () {
-      return this.codeGenerator_0.languageName + '_code';
-    }
-  });
-  Object.defineProperty(LanguageCard.prototype, 'bodyElementId_0', {
-    get: function () {
-      return this.codeGenerator_0.languageName + '_body';
-    }
-  });
   function LanguageCard_init$lambda$lambda$lambda(this$LanguageCard) {
     return function ($receiver) {
-      $receiver.type = ButtonType.button;
-      set_classes($receiver, setOf(['btn', 'btn-link']));
       var $receiver_0 = $receiver.attributes;
       var key = 'data-toggle';
       var value = 'collapse';
       $receiver_0.put_xwzc9p$(key, value);
       var $receiver_1 = $receiver.attributes;
       var key_0 = 'data-target';
-      var value_0 = '#' + this$LanguageCard.codeGenerator_0.languageName + '_body';
+      var value_0 = '#' + this$LanguageCard.bodyElementId_0;
       $receiver_1.put_xwzc9p$(key_0, value_0);
       $receiver.unaryPlus_pdl1vz$(this$LanguageCard.codeGenerator_0.languageName);
       return Unit;
@@ -1356,9 +1364,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function LanguageCard_init$lambda$lambda(this$LanguageCard) {
     return function ($receiver) {
-      set_id($receiver, this$LanguageCard.codeGenerator_0.languageName + '_heading');
-      var block = LanguageCard_init$lambda$lambda$lambda(this$LanguageCard);
-      visitTag(new BUTTON_init(attributesMapOf_0(['formenctype', null != null ? enumEncode(null) : null, 'formmethod', null != null ? enumEncode(null) : null, 'name', null, 'type', null != null ? enumEncode(null) : null, 'class', null]), $receiver.consumer), visit$lambda(block));
+      var tmp$, tmp$_0;
+      set_id($receiver, this$LanguageCard.headingElementId_0);
+      tmp$ = ButtonType.button;
+      tmp$_0 = LanguageCard_init$lambda$lambda$lambda(this$LanguageCard);
+      visitTag(new BUTTON_init(attributesMapOf_0(['formenctype', null != null ? enumEncode(null) : null, 'formmethod', null != null ? enumEncode(null) : null, 'name', null, 'type', tmp$ != null ? enumEncode(tmp$) : null, 'class', 'btn btn-link']), $receiver.consumer), visit$lambda(tmp$_0));
       return Unit;
     };
   }
@@ -1390,22 +1400,22 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       var classes = 'card-header';
       var block = LanguageCard_init$lambda$lambda(this$LanguageCard);
       visitTag(new DIV_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_2(block));
-      var classes_0 = 'collapse';
+      var classes_0 = 'collapse ' + (this$LanguageCard.shown ? 'show' : '');
       var block_0 = LanguageCard_init$lambda$lambda_0(this$LanguageCard);
       visitTag(new DIV_init(attributesMapOf('class', classes_0), $receiver.consumer), visit$lambda_2(block_0));
       return Unit;
     };
   }
-  function LanguageCard$codeElement$lambda(this$LanguageCard) {
+  function LanguageCard_init$lambda_0(this$LanguageCard) {
     return function () {
-      var tmp$;
-      return Kotlin.isType(tmp$ = document.getElementById(this$LanguageCard.codeElementId_0), HTMLElement) ? tmp$ : throwCCE();
+      this$LanguageCard.shown = true;
+      return Unit;
     };
   }
-  function LanguageCard$bodyElement$lambda(this$LanguageCard) {
+  function LanguageCard_init$lambda_1(this$LanguageCard) {
     return function () {
-      var tmp$;
-      return Kotlin.isType(tmp$ = document.getElementById(this$LanguageCard.bodyElementId_0), HTMLElement) ? tmp$ : throwCCE();
+      this$LanguageCard.shown = false;
+      return Unit;
     };
   }
   LanguageCard.$metadata$ = {
@@ -1572,6 +1582,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   package$generator.Configuration = Configuration;
   var package$js = package$generator.js || (package$generator.js = {});
   package$js.createStepDefinition_w74nik$ = createStepDefinition;
+  package$js.jQuery_lt8gi4$ = jQuery;
   Object.defineProperty(CodeGenerator, 'Companion', {
     get: CodeGenerator$Companion_getInstance
   });
@@ -1734,6 +1745,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   });
   package$ui.HtmlPage = HtmlPage;
   $$importsForInline$$['kotlinx-html-js'] = $module$kotlinx_html_js;
+  package$ui.LanguageCard = LanguageCard;
   package$ui.SimplePresenter = SimplePresenter;
   KEY_LAST_VERSION = 'user.lastVersion';
   KEY_LAST_VISIT = 'user.lastVisit';
