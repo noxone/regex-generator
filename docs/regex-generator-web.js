@@ -13,9 +13,9 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var Kind_CLASS = Kotlin.Kind.CLASS;
   var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
   var lazy = Kotlin.kotlin.lazy_klfg04$;
+  var replace = Kotlin.kotlin.text.replace_680rmw$;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var emptyList = Kotlin.kotlin.collections.emptyList_287e2$;
-  var replace = Kotlin.kotlin.text.replace_680rmw$;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
   var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
   var trimMargin = Kotlin.kotlin.text.trimMargin_rjktp$;
@@ -83,6 +83,10 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   KotlinCodeGenerator.prototype.constructor = KotlinCodeGenerator;
   PhpCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   PhpCodeGenerator.prototype.constructor = PhpCodeGenerator;
+  JavascriptCodeGenerator.prototype = Object.create(CLikeCodeGenerator.prototype);
+  JavascriptCodeGenerator.prototype.constructor = JavascriptCodeGenerator;
+  CSharpCodeGenerator.prototype = Object.create(CLikeCodeGenerator.prototype);
+  CSharpCodeGenerator.prototype.constructor = CSharpCodeGenerator;
   PythonCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   PythonCodeGenerator.prototype.constructor = PythonCodeGenerator;
   function Configuration(recognizers, mainGroupName, mainGroupIndex) {
@@ -197,7 +201,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return it.languageName;
   }
   function CodeGenerator$Companion$list$lambda() {
-    return sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator()]), new Comparator$ObjectLiteral(compareBy$lambda(CodeGenerator$Companion$list$lambda$lambda)));
+    return sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavascriptCodeGenerator(), new CSharpCodeGenerator()]), new Comparator$ObjectLiteral(compareBy$lambda(CodeGenerator$Companion$list$lambda$lambda)));
   }
   CodeGenerator$Companion.$metadata$ = {
     kind: Kind_OBJECT,
@@ -211,6 +215,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     return CodeGenerator$Companion_instance;
   }
+  Object.defineProperty(CodeGenerator.prototype, 'uniqueName', {
+    get: function () {
+      return replace(this.languageName, '#', '_sharp_');
+    }
+  });
   CodeGenerator.$metadata$ = {
     kind: Kind_INTERFACE,
     simpleName: 'CodeGenerator',
@@ -254,22 +263,22 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return emptyList();
   };
   SimpleReplacingCodeGenerator.prototype.generateCode_wa467u$ = function (pattern, options) {
-    return new GeneratedSnippet(replace(replace(this.templateCode, '%1$s', this.escapePattern_61zpoe$(pattern)), '%2$s', this.generateOptionsCode_ow7xd4$(options)), this.getWarnings_wa467u$(pattern, options));
+    return new GeneratedSnippet(replace(replace(this.templateCode, '%1$s', this.transformPattern_wa467u$(pattern, options)), '%2$s', this.generateOptionsCode_ow7xd4$(options)), this.getWarnings_wa467u$(pattern, options));
   };
   function SimpleReplacingCodeGenerator$combineOptions$lambda(closure$mapper) {
     return function (s) {
       return closure$mapper(s);
     };
   }
-  SimpleReplacingCodeGenerator.prototype.combineOptions_j8105m$$default = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper) {
+  SimpleReplacingCodeGenerator.prototype.combineOptions_1rvtm9$$default = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper) {
     var optionList = ArrayList_init_0();
-    if (options.caseSensitive) {
+    if (options.caseSensitive && valueForCaseInsensitive != null) {
       optionList.add_11rb$(valueForCaseInsensitive);
     }
-    if (options.dotMatchesLineBreaks) {
+    if (options.dotMatchesLineBreaks && valueForDotAll != null) {
       optionList.add_11rb$(valueForDotAll);
     }
-    if (options.multiline) {
+    if (options.multiline && valueForMultiline != null) {
       optionList.add_11rb$(valueForMultiline);
     }
     if (optionList.isEmpty()) {
@@ -280,7 +289,13 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function SimpleReplacingCodeGenerator$combineOptions$lambda_0(s) {
     return s;
   }
-  SimpleReplacingCodeGenerator.prototype.combineOptions_j8105m$ = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper, callback$default) {
+  SimpleReplacingCodeGenerator.prototype.combineOptions_1rvtm9$ = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper, callback$default) {
+    if (valueForCaseInsensitive === void 0)
+      valueForCaseInsensitive = null;
+    if (valueForMultiline === void 0)
+      valueForMultiline = null;
+    if (valueForDotAll === void 0)
+      valueForDotAll = null;
     if (valueIfNone === void 0)
       valueIfNone = '';
     if (prefix === void 0)
@@ -291,7 +306,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       postfix = '';
     if (mapper === void 0)
       mapper = SimpleReplacingCodeGenerator$combineOptions$lambda_0;
-    return callback$default ? callback$default(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper) : this.combineOptions_j8105m$$default(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper);
+    return callback$default ? callback$default(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper) : this.combineOptions_1rvtm9$$default(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper);
   };
   SimpleReplacingCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
@@ -301,7 +316,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function CLikeCodeGenerator() {
     SimpleReplacingCodeGenerator.call(this);
   }
-  CLikeCodeGenerator.prototype.escapePattern_61zpoe$ = function (pattern) {
+  CLikeCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     return Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
   };
   CLikeCodeGenerator.$metadata$ = {
@@ -331,7 +346,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return 'Pattern.' + s;
   }
   JavaCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_j8105m$(options, 'CASE_INSENSITIVE', 'MULTILINE', 'DOTALL', void 0, ' ,', ' | ', void 0, JavaCodeGenerator$generateOptionsCode$lambda);
+    return this.combineOptions_1rvtm9$(options, 'CASE_INSENSITIVE', 'MULTILINE', 'DOTALL', void 0, ' ,', ' | ', void 0, JavaCodeGenerator$generateOptionsCode$lambda);
   };
   JavaCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
@@ -360,7 +375,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return 'RegexOption.' + s;
   }
   KotlinCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_j8105m$(options, 'IGNORE_CASE', 'MULTILINE', 'DOT_MATCHES_ALL', void 0, ', options = setOf(', ', ', ')', KotlinCodeGenerator$generateOptionsCode$lambda);
+    return this.combineOptions_1rvtm9$(options, 'IGNORE_CASE', 'MULTILINE', 'DOT_MATCHES_ALL', void 0, ', options = setOf(', ', ', ')', KotlinCodeGenerator$generateOptionsCode$lambda);
   };
   KotlinCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
     if (options.dotMatchesLineBreaks)
@@ -385,21 +400,86 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return 'php';
     }
   });
-  PhpCodeGenerator.prototype.escapePattern_61zpoe$ = function (pattern) {
+  PhpCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     return Regex_init('([\\\\"\'])').replace_x2uqeu$(pattern, '\\$1');
   };
   Object.defineProperty(PhpCodeGenerator.prototype, 'templateCode', {
     get: function () {
-      return '<?php\nfunction foo($input)\n{\n    $regex = "/%1$s/%2$s";\n    return preg_match($regex, $input);\n}\n?>';
+      return '<?php\nfunction useRegex($input)\n{\n    $regex = "/%1$s/%2$s";\n    return preg_match($regex, $input);\n}\n?>';
     }
   });
   PhpCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_j8105m$(options, 'i', 'm', 's');
+    return this.combineOptions_1rvtm9$(options, 'i', 'm', 's');
   };
   PhpCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'PhpCodeGenerator',
     interfaces: [SimpleReplacingCodeGenerator]
+  };
+  function JavascriptCodeGenerator() {
+    CLikeCodeGenerator.call(this);
+  }
+  Object.defineProperty(JavascriptCodeGenerator.prototype, 'languageName', {
+    get: function () {
+      return 'JavaScript';
+    }
+  });
+  Object.defineProperty(JavascriptCodeGenerator.prototype, 'highlightLanguage', {
+    get: function () {
+      return 'javascript';
+    }
+  });
+  Object.defineProperty(JavascriptCodeGenerator.prototype, 'templateCode', {
+    get: function () {
+      return 'function useRegex(input) {\n    let regex = /%1$s/%2$s;\n    return regex.test(input);\n}';
+    }
+  });
+  JavascriptCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
+    return this.combineOptions_1rvtm9$(options, 'i', 'm', 's');
+  };
+  JavascriptCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
+    if (options.dotMatchesLineBreaks)
+      return listOf_0("The option 's' (dot matches line breaks) is not supported in Firefox and IE.");
+    return emptyList();
+  };
+  JavascriptCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'JavascriptCodeGenerator',
+    interfaces: [CLikeCodeGenerator]
+  };
+  function CSharpCodeGenerator() {
+    CLikeCodeGenerator.call(this);
+  }
+  Object.defineProperty(CSharpCodeGenerator.prototype, 'languageName', {
+    get: function () {
+      return 'C#';
+    }
+  });
+  Object.defineProperty(CSharpCodeGenerator.prototype, 'highlightLanguage', {
+    get: function () {
+      return 'csharp';
+    }
+  });
+  Object.defineProperty(CSharpCodeGenerator.prototype, 'templateCode', {
+    get: function () {
+      return 'using System;\nusing System.Text.RegularExpressions;\n\npublic class Example\n{\n    public static void useRegex(String input)\n    {\n        Regex regex = new Regex("%1$s"%2$s);\n        return regex.IsMatch(input);\n    }\n}';
+    }
+  });
+  function CSharpCodeGenerator$generateOptionsCode$lambda(s) {
+    return 'RegexOptions.' + s;
+  }
+  CSharpCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
+    return this.combineOptions_1rvtm9$(options, 'IgnoreCase', 'Multiline', 'Singleline', void 0, ' ,', ' | ', void 0, CSharpCodeGenerator$generateOptionsCode$lambda);
+  };
+  CSharpCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
+    if (options.dotMatchesLineBreaks)
+      return listOf_0("The option 's' (dot matches line breaks) is not supported in Firefox and IE.");
+    return emptyList();
+  };
+  CSharpCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'CSharpCodeGenerator',
+    interfaces: [CLikeCodeGenerator]
   };
   function PythonCodeGenerator() {
     SimpleReplacingCodeGenerator.call(this);
@@ -414,7 +494,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return 'python';
     }
   });
-  PythonCodeGenerator.prototype.escapePattern_61zpoe$ = function (pattern) {
+  PythonCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     return Regex_init("([\\\\'])").replace_x2uqeu$(pattern, '\\$1');
   };
   Object.defineProperty(PythonCodeGenerator.prototype, 'templateCode', {
@@ -426,7 +506,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return 're.' + s;
   }
   PythonCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_j8105m$(options, 'I', 'M', 'S', '0', void 0, ' | ', void 0, PythonCodeGenerator$generateOptionsCode$lambda);
+    return this.combineOptions_1rvtm9$(options, 'I', 'M', 'S', '0', void 0, ' | ', void 0, PythonCodeGenerator$generateOptionsCode$lambda);
   };
   PythonCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
@@ -1288,22 +1368,22 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   Object.defineProperty(LanguageCard.prototype, 'headingElementId_0', {
     get: function () {
-      return this.codeGenerator_0.languageName + '_heading';
+      return this.codeGenerator_0.uniqueName + '_heading';
     }
   });
   Object.defineProperty(LanguageCard.prototype, 'bodyElementId_0', {
     get: function () {
-      return this.codeGenerator_0.languageName + '_body';
+      return this.codeGenerator_0.uniqueName + '_body';
     }
   });
   Object.defineProperty(LanguageCard.prototype, 'codeElementId_0', {
     get: function () {
-      return this.codeGenerator_0.languageName + '_code';
+      return this.codeGenerator_0.uniqueName + '_code';
     }
   });
   Object.defineProperty(LanguageCard.prototype, 'shownPropertyName_0', {
     get: function () {
-      return 'language.' + this.codeGenerator_0.languageName + '.expanded';
+      return 'language.' + this.codeGenerator_0.uniqueName + '.expanded';
     }
   });
   Object.defineProperty(LanguageCard.prototype, 'shown', {
@@ -1630,6 +1710,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   package$regex_0.JavaCodeGenerator = JavaCodeGenerator;
   package$regex_0.KotlinCodeGenerator = KotlinCodeGenerator;
   package$regex_0.PhpCodeGenerator = PhpCodeGenerator;
+  package$regex_0.JavascriptCodeGenerator = JavascriptCodeGenerator;
+  package$regex_0.CSharpCodeGenerator = CSharpCodeGenerator;
   package$regex_0.PythonCodeGenerator = PythonCodeGenerator;
   package$regex_0.Recognizer = Recognizer;
   Object.defineProperty(RecognizerCombiner, 'Companion', {
@@ -1784,6 +1866,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   $$importsForInline$$['kotlinx-html-js'] = $module$kotlinx_html_js;
   package$ui.LanguageCard = LanguageCard;
   package$ui.SimplePresenter = SimplePresenter;
+  Object.defineProperty(SimpleReplacingCodeGenerator.prototype, 'uniqueName', Object.getOwnPropertyDescriptor(CodeGenerator.prototype, 'uniqueName'));
   KEY_LAST_VERSION = 'user.lastVersion';
   KEY_LAST_VISIT = 'user.lastVisit';
   VAL_VERSION = 2;

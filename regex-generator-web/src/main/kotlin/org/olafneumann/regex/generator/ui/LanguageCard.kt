@@ -15,9 +15,9 @@ internal class LanguageCard(
     private val codeGenerator: CodeGenerator,
     parent: Node
 ) {
-    private val headingElementId: String get() = "${codeGenerator.languageName}_heading"
-    private val bodyElementId: String get() = "${codeGenerator.languageName}_body"
-    private val codeElementId: String get() = "${codeGenerator.languageName}_code"
+    private val headingElementId: String get() = "${codeGenerator.uniqueName}_heading"
+    private val bodyElementId: String get() = "${codeGenerator.uniqueName}_body"
+    private val codeElementId: String get() = "${codeGenerator.uniqueName}_code"
     private val bodyElement: HTMLElement
     private val codeElement: HTMLElement
     private val warnings: MutableList<HTMLElement> = mutableListOf()
@@ -49,7 +49,7 @@ internal class LanguageCard(
     }
 
     // TODO move all localStorage-access to separate storage class
-    private val shownPropertyName: String get() = "language.${codeGenerator.languageName}.expanded"
+    private val shownPropertyName: String get() = "language.${codeGenerator.uniqueName}.expanded"
     var shown: Boolean
         get() = localStorage.getItem(shownPropertyName)?.toBoolean() ?: false
         set(value) = localStorage.setItem(shownPropertyName, value.toString())
