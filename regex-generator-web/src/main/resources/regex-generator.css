@@ -55,8 +55,6 @@
 }
 
 .rg-check-row {
-  /*for custom checkbox: margin-left: 1.4em;*/
-  /*for custom switch: margin-left: 2.2em;*/
   margin-left: 1.4em;
   padding-right: 3em;
 }
