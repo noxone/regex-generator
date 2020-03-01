@@ -26,8 +26,11 @@ Hopefully this regex generator continues to grow to eventually support a really 
 
 The ``regex generator`` is currently able to generate code snippets in the following languages:
 
-- Kotlin
+- C#
 - Java
+- JavaScript
+- Kotlin
+- PHP
 
 If you're missing a language, just create a generator and open a pull-request or simply open a [new issue](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=New+language&template=add-language.md&title=).
 

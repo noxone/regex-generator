@@ -2,6 +2,8 @@ package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
+import org.olafneumann.regex.generator.js.jQuery
+import org.olafneumann.regex.generator.js.navigator
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
@@ -28,6 +30,7 @@ const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
 const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
 const val ID_CHECK_MULTILINE = "rg_multiline"
 const val ID_BUTTON_COPY = "rg_button_copy"
+const val ID_DIV_ONLYMATCH_CONTAINER = "rg_div_onlymatch_container"
 const val ID_BUTTON_HELP = "rg_button_show_help"
 const val ID_DIV_LANGUAGES = "rg_language_accordion"
 
@@ -70,6 +73,18 @@ class HtmlPage(
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+    }
+
+    override fun showCopyButton(visible: Boolean) {
+        val button = jQuery(buttonCopy)
+        if (visible) {
+            button.show()
+        } else {
+            button.hide()
+            // val container = jQuery("#$ID_DIV_ONLYMATCH_CONTAINER")
+            // container.removeClass()
+            // container.addClass("form-group")
+        }
     }
 
     override fun selectInputText() {
@@ -187,7 +202,14 @@ class HtmlPage(
                 "#rg_result_display_box",
                 "Result",
                 "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
-                "top-center")
+                "top-center"
+            ),
+            createStepDefinition(
+                "#$ID_DIV_LANGUAGES",
+                "Language snippets",
+                "We will also generate snippets for some languages that show you, how to use the regular expression in your favourite language.",
+                "top-left"
+            )
         )
         driver.defineSteps(steps)
         driver.start(if (initialStep) 0 else 1)

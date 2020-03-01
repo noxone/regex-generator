@@ -15,9 +15,8 @@ internal class LanguageCard(
     private val codeGenerator: CodeGenerator,
     parent: Node
 ) {
-    private val headingElementId: String get() = "${codeGenerator.languageName}_heading"
-    private val bodyElementId: String get() = "${codeGenerator.languageName}_body"
-    private val codeElementId: String get() = "${codeGenerator.languageName}_code"
+    private val bodyElementId: String get() = "${codeGenerator.uniqueName}_body"
+    private val codeElementId: String get() = "${codeGenerator.uniqueName}_code"
     private val bodyElement: HTMLElement
     private val codeElement: HTMLElement
     private val warnings: MutableList<HTMLElement> = mutableListOf()
@@ -25,7 +24,6 @@ internal class LanguageCard(
     init {
         parent.appendChild(document.create.div(classes = "card") {
             div(classes = "card-header") {
-                id = headingElementId
                 button(classes = "btn btn-link", type = ButtonType.button) {
                     attributes["data-toggle"] = "collapse"
                     attributes["data-target"] = "#$bodyElementId"
@@ -34,7 +32,7 @@ internal class LanguageCard(
             }
             div(classes = "collapse ${if (shown) "show" else ""}") {
                 id = bodyElementId
-                pre(classes = "line-numbers") {
+                pre {
                     code(classes = "language-${codeGenerator.highlightLanguage}") {
                         id = codeElementId
                     }
@@ -49,8 +47,8 @@ internal class LanguageCard(
     }
 
     // TODO move all localStorage-access to separate storage class
-    private val shownPropertyName: String get() = "language.${codeGenerator.languageName}.expanded"
-    var shown: Boolean
+    private val shownPropertyName: String get() = "language.${codeGenerator.uniqueName}.expanded"
+    private var shown: Boolean
         get() = localStorage.getItem(shownPropertyName)?.toBoolean() ?: false
         set(value) = localStorage.setItem(shownPropertyName, value.toString())
 
@@ -66,7 +64,7 @@ internal class LanguageCard(
     }
 
     private fun createWarning(text: String): HTMLElement =
-        document.create.p("alert alert-warning rounded m-2") { +text }
+        document.create.p(classes = "alert alert-warning rounded m-2") { +text }
 
     private var code: String
         get() = codeElement.innerHTML

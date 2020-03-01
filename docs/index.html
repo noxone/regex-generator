@@ -124,7 +124,7 @@
                     <div class="col-12 col-sm-4 col-md-3 col-lg-2">
                         <button class="btn btn-primary" id="rg_button_copy">Copy regex</button>
                     </div>
-                    <div class="col-12 col-sm-8 col-md-9 col-lg-10 mt-3 mt-sm-0 form-group">
+                    <div id="rg_div_onlymatch_container" class="col-12 col-sm-8 col-md-9 col-lg-10 mt-3 mt-sm-0 form-group">
                         <div class="rg-check-row">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="rg_onlymatches"
@@ -143,7 +143,7 @@
             </div>
         </div>
 
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_regex_result_container">
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
                 <h3 class="display-3 text-secondary">4</h3>
             </div>
@@ -277,25 +277,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
-    <script type="text/javascript">
-        function copyTextToClipboard(text) {
-            if (!navigator.clipboard) {
-                alert('Copy is not available in your browser.')
-            }
-            navigator.clipboard.writeText(text).then(function () {
-                console.log('Async: Copying to clipboard was successful!');
-                $('#rg_copy_toast').toast('show')
-            }, function (err) {
-                alert('Could not copy text: ', err);
-            });
-        }
-
-        if (!navigator.clipboard) {
-            $('#rg_button_copy').hide()
-        }
-
-    </script>
 
     <script type="text/javascript" src="regex-generator-web.js"></script>
 

@@ -11,10 +11,11 @@ interface DisplayContract {
 
         val options: RecognizerCombiner.Options
 
+        fun showCopyButton(visible: Boolean)
+        fun selectInputText()
         fun showResults(matches: Collection<RecognizerMatch>)
         fun select(match: RecognizerMatch, selected: Boolean)
         fun disable(match: RecognizerMatch, disabled: Boolean)
-        fun selectInputText()
 
         fun showUserGuide(initialStep: Boolean)
         fun showGeneratedCodeForPattern(pattern: String)

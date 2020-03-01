@@ -1,8 +1,9 @@
 package org.olafneumann.regex.generator.ui
 
-import org.olafneumann.regex.generator.js.copyTextToClipboard
+import org.olafneumann.regex.generator.js.navigator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import kotlin.browser.window
 
 
 class SimplePresenter : DisplayContract.Presenter {
@@ -11,6 +12,13 @@ class SimplePresenter : DisplayContract.Presenter {
 
     val currentTextInput: String get() = view.inputText
 
+    init {
+        // if copy is not available: remove copy button
+        if (navigator.clipboard == undefined) {
+            view.showCopyButton(false)
+        }
+    }
+
     fun recognizeMatches(input: String = currentTextInput) {
         view.inputText = input
         onInputChanges(input)
@@ -18,7 +26,9 @@ class SimplePresenter : DisplayContract.Presenter {
     }
 
     override fun onButtonCopyClick() {
-        copyTextToClipboard(view.resultText)
+        navigator.clipboard
+            .writeText(view.resultText)
+            .catch( onRejected = { window.alert("Could not copy text: $it") } )
     }
 
     override fun onButtonHelpClick() = view.showUserGuide(false)
