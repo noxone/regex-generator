@@ -66,7 +66,7 @@ internal class LanguageCard(
     }
 
     private fun createWarning(text: String): HTMLElement =
-        document.create.p("alert alert-warning rounded m-2") { +text }
+        document.create.p(classes = "alert alert-warning rounded m-2") { +text }
 
     private var code: String
         get() = codeElement.innerHTML

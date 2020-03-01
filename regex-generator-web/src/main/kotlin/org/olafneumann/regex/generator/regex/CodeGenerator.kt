@@ -6,6 +6,7 @@ interface CodeGenerator {
             listOf<CodeGenerator>(
                 JavaCodeGenerator()
                 ,KotlinCodeGenerator()
+                ,PhpCodeGenerator()
                 //,PythonCodeGenerator()
             ).sortedBy { it.languageName }
         }
@@ -30,9 +31,9 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
 
     protected abstract fun generateOptionsCode(options: RecognizerCombiner.Options): String
 
-    protected open fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> = emptyList<String>()
+    protected open fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> = emptyList()
 
-    open override fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet =
+    override fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet =
         GeneratedSnippet(
             templateCode.replace("%1${'$'}s", escapePattern(pattern))
                 .replace("%2${'$'}s", generateOptionsCode(options)),
@@ -43,11 +44,11 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
                                       valueForCaseInsensitive: String,
                                       valueForMultiline: String,
                                       valueForDotAll: String,
-                                      valueIfNone: String? = null,
+                                      valueIfNone: String = "",
                                       prefix: String = "",
                                       separator: String = "",
                                       postfix: String = "",
-                                      mapper: (option: String) -> String): String {
+                                      mapper: (option: String) -> String = { s -> s }): String {
         val optionList = mutableListOf<String>()
         if (options.caseSensitive)
             optionList += valueForCaseInsensitive
@@ -56,17 +57,17 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
         if (options.multiline)
             optionList += valueForMultiline
 
-        optionList.ifEmpty { return valueIfNone ?: "" }
+        optionList.ifEmpty { return valueIfNone }
         return optionList.joinToString(separator = separator, prefix = prefix, postfix = postfix) { s -> mapper(s) }
     }
 }
 
-internal abstract class CLikeCodeGenerator() : SimpleReplacingCodeGenerator() {
-    open override fun escapePattern(pattern: String): String =
+internal abstract class CLikeCodeGenerator : SimpleReplacingCodeGenerator() {
+    override fun escapePattern(pattern: String): String =
         pattern.replace(Regex("([\\\\\"])"), "\\$1")
 }
 
-internal class JavaCodeGenerator() : CLikeCodeGenerator() {
+internal class JavaCodeGenerator : CLikeCodeGenerator() {
     override val languageName: String get() = "Java"
     override val highlightLanguage: String get() = "java"
 
@@ -89,7 +90,7 @@ internal class JavaCodeGenerator() : CLikeCodeGenerator() {
             = combineOptions(options, "CASE_INSENSITIVE", "MULTILINE", "DOTALL", prefix = " ,", separator = " | ") { s -> "Pattern.$s" }
 }
 
-internal class KotlinCodeGenerator() : CLikeCodeGenerator() {
+internal class KotlinCodeGenerator : CLikeCodeGenerator() {
     override val languageName: String get() = "Kotlin"
     override val highlightLanguage: String get() = "kotlin"
 
@@ -108,7 +109,29 @@ internal class KotlinCodeGenerator() : CLikeCodeGenerator() {
     }
 }
 
-internal class PythonCodeGenerator() : SimpleReplacingCodeGenerator() {
+internal class PhpCodeGenerator : SimpleReplacingCodeGenerator() {
+    override val languageName: String
+        get() = "PHP"
+    override val highlightLanguage: String
+        get() = "php"
+
+    override fun escapePattern(pattern: String): String =
+        pattern.replace(Regex("([\\\\\"'])"), "\\$1")
+
+    override val templateCode: String
+        get() = """<?php
+function foo(${'$'}input)
+{
+    ${'$'}regex = "/%1${'$'}s/%2${'$'}s";
+    return preg_match(${'$'}regex, ${'$'}input);
+}
+?>"""
+
+    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+        combineOptions(options, "i", "m", "s")
+}
+
+internal class PythonCodeGenerator : SimpleReplacingCodeGenerator() {
     override val languageName: String
         get() = "Python"
     override val highlightLanguage: String

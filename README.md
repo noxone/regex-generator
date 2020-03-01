@@ -28,6 +28,7 @@ The ``regex generator`` is currently able to generate code snippets in the follo
 
 - Kotlin
 - Java
+- PHP
 
 If you're missing a language, just create a generator and open a pull-request or simply open a [new issue](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=New+language&template=add-language.md&title=).
 
