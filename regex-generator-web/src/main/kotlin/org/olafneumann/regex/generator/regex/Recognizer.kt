@@ -16,21 +16,23 @@ interface Recognizer {
 }
 
 data class RecognizerMatch(
-    val range: IntRange,
+    val startRange: Range? = null,
+    val mainRange: Range,
+    val endRange: Range? = null,
     val inputPart: String,
     val recognizer: Recognizer
 ) {
-    override fun toString() = "[${range.first}+${range.last - range.first}] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
+    val first: Int = startRange?.first ?: mainRange.first
+    val last: Int = endRange?.last ?: mainRange.last
+
+    override fun toString() =
+        "[${first}+${last - first}] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
 }
 
 data class Range(
     val first: Int,
     val last: Int,
-    val content: String,
-    val type: RangeType
+    val content: String? = null
 ) {
-    enum class RangeType {
-        Start, Center, End
-    }
 }
 

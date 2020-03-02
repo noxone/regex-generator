@@ -15,9 +15,9 @@ data class SimpleRecognizer(
         searchRegex.findAll(input)
             .map { result ->
                 RecognizerMatch(
-                    getMainGroupRange(result),
-                    getMainGroupValue(result),
-                    this
+                    mainRange = getMainGroupRange(result),
+                    inputPart = getMainGroupValue(result),
+                    recognizer = this
                 )
             }.toList()
 
@@ -31,8 +31,8 @@ data class SimpleRecognizer(
         }
 
     // the JS-Regex do not support positions for groups... so we need to use a quite bad work-around (that will not always work)
-    private fun getMainGroupRange(result: MatchResult): IntRange {
+    private fun getMainGroupRange(result: MatchResult): Range {
         val start = result.value.indexOf(getMainGroupValue(result))
-        return IntRange(result.range.first + start, result.range.last + start)
+        return Range(result.range.first + start, result.range.last + start)
     }
 }
