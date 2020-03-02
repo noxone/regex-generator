@@ -16,26 +16,21 @@ interface Recognizer {
 }
 
 data class RecognizerMatch(
-    val startRange: Range? = null,
-    val mainRange: Range,
-    val endRange: Range? = null,
+    val startRange: IntRange? = null,
+    val mainRange: IntRange,
+    val endRange: IntRange? = null,
     val inputPart: String,
     val recognizer: Recognizer
 ) {
     val first: Int = startRange?.first ?: mainRange.first
     val last: Int = endRange?.last ?: mainRange.last
-    val length: Int = last - first
+    val length: Int = last - first + 1
 
-    fun intersect(other: RecognizerMatch): Boolean =
-        !((first < other.first && last < other.first) || (first > other.last && last > other.last))
+    private val totalRange: IntRange = IntRange(start = first, endInclusive = last)
+
+    fun intersect(other: RecognizerMatch): Boolean = totalRange.intersect(other.totalRange).isNotEmpty()
 
     override fun toString() =
         "[${first}+${last - first}] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
 }
-
-data class Range(
-    val first: Int,
-    val last: Int,
-    val content: String? = null
-)
 

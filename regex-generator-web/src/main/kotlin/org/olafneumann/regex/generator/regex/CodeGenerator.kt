@@ -6,9 +6,8 @@ interface CodeGenerator {
             JavaCodeGenerator()
             , KotlinCodeGenerator()
             , PhpCodeGenerator()
-            , JavascriptCodeGenerator()
+            , JavaScriptCodeGenerator()
             , CSharpCodeGenerator()
-            //,PythonCodeGenerator()
         ).sortedBy { it.languageName }
     }
 
@@ -31,7 +30,7 @@ data class GeneratedSnippet(
 )
 
 internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
-    protected abstract fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String
+    protected open fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String = pattern
 
     protected abstract val templateCode: String
 
@@ -70,12 +69,7 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
     }
 }
 
-internal abstract class CLikeCodeGenerator : SimpleReplacingCodeGenerator() {
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\\"])"), "\\$1")
-}
-
-internal class JavaCodeGenerator : CLikeCodeGenerator() {
+internal class JavaCodeGenerator : SimpleReplacingCodeGenerator() {
     override val languageName: String get() = "Java"
     override val highlightLanguage: String get() = "java"
 
@@ -86,13 +80,16 @@ internal class JavaCodeGenerator : CLikeCodeGenerator() {
                 |public class Sample {
                 |    public boolean useRegex(String input) {
                 |        // Compile regular expression
-                |        Pattern p = Pattern.compile("%1${'$'}s"%2${'$'}s);
+                |        Pattern pattern = Pattern.compile("%1${'$'}s"%2${'$'}s);
                 |        // Match regex against input
-                |        Matcher m = p.matcher(input);
+                |        Matcher matcher = pattern.matcher(input);
                 |        // Use results...
-                |        return m.matches();
+                |        return matcher.matches();
                 |    }
                 |}""".trimMargin()
+
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String = combineOptions(
         options,
@@ -104,7 +101,7 @@ internal class JavaCodeGenerator : CLikeCodeGenerator() {
     ) { s -> "Pattern.$s" }
 }
 
-internal class KotlinCodeGenerator : CLikeCodeGenerator() {
+internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator() {
     override val languageName: String get() = "Kotlin"
     override val highlightLanguage: String get() = "kotlin"
 
@@ -113,6 +110,9 @@ internal class KotlinCodeGenerator : CLikeCodeGenerator() {
     val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
     return regex.matches(input)
 }"""
+
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String = combineOptions(
         options,
@@ -138,13 +138,12 @@ internal class PhpCodeGenerator : SimpleReplacingCodeGenerator() {
         get() = "php"
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\\"'])"), "\\$1")
+        pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
 
     override val templateCode: String
         get() = """<?php
-function useRegex(${'$'}input)
-{
-    ${'$'}regex = "/%1${'$'}s/%2${'$'}s";
+function useRegex(${'$'}input) {
+    ${'$'}regex = '/%1${'$'}s/%2${'$'}s';
     return preg_match(${'$'}regex, ${'$'}input);
 }
 ?>"""
@@ -153,7 +152,7 @@ function useRegex(${'$'}input)
         combineOptions(options, "i", "m", "s")
 }
 
-internal class JavascriptCodeGenerator : CLikeCodeGenerator() {
+internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator() {
     override val languageName: String
         get() = "JavaScript"
     override val highlightLanguage: String
@@ -165,6 +164,9 @@ internal class JavascriptCodeGenerator : CLikeCodeGenerator() {
     return regex.test(input);
 }"""
 
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(Regex("\t"), "\\t")
+
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options, "i", "m", "s")
 
@@ -175,7 +177,7 @@ internal class JavascriptCodeGenerator : CLikeCodeGenerator() {
     }
 }
 
-internal class CSharpCodeGenerator : CLikeCodeGenerator() {
+internal class CSharpCodeGenerator : SimpleReplacingCodeGenerator() {
     override val languageName: String
         get() = "C#"
     override val highlightLanguage: String
@@ -194,6 +196,9 @@ public class Sample
     }
 }"""
 
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
+
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(
             options,
@@ -203,37 +208,6 @@ public class Sample
             separator = " | ",
             prefix = ", "
         ) { s -> "RegexOptions.$s" }
-
-    override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
-        if (options.dotMatchesLineBreaks)
-            return listOf("The option 's' (dot matches line breaks) is not supported in Firefox and IE.")
-        return emptyList()
-    }
-}
-
-internal class PythonCodeGenerator : SimpleReplacingCodeGenerator() {
-    override val languageName: String
-        get() = "Python"
-    override val highlightLanguage: String
-        get() = "python"
-
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\'])"), "\\$1")
-
-    override val templateCode: String
-        get() = """import re
-
-pattern = '%1${'$'}s'
-test_string = 'This is a test.'
-result = re.match(pattern, test_string, flags = %2${'$'}s)
-
-if result:
-  print("Search successful.")
-else:
-  print("Search unsuccessful.")	"""
-
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
-        combineOptions(options, "I", "M", "S", valueIfNone = "0", separator = " | ") { s -> "re.$s" }
 }
 
 

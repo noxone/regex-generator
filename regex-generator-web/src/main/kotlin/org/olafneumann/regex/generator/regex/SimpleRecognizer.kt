@@ -37,8 +37,12 @@ data class SimpleRecognizer(
         }
 
     // the JS-Regex do not support positions for groups... so we need to use a quite bad work-around (that will not always work)
-    private fun getMainGroupRange(result: MatchResult): Range {
-        val start = result.value.indexOf(getMainGroupValue(result))
-        return Range(result.range.first + start, result.range.last + start)
+    private fun getMainGroupRange(result: MatchResult): IntRange {
+        val mainGroupValue = getMainGroupValue(result)
+        val start = result.value.indexOf(mainGroupValue)
+        return IntRange(
+            start = result.range.first + start,
+            endInclusive = result.range.first + start + mainGroupValue.length - 1
+        )
     }
 }

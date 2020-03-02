@@ -138,15 +138,17 @@ class HtmlPage(
 
     private fun distributeToRows(matches: Collection<RecognizerMatch>): Map<RecognizerMatch, Int> {
         val lines = mutableListOf<Int>()
-        matches.sortedWith(compareBy({ it.first }, { it.length }))
-        return matches.map { match ->
-            val indexOfFreeLine = lines.indexOfFirst { it <= match.first }
-            val line = if (indexOfFreeLine >= 0) indexOfFreeLine else {
-                lines.add(0); lines.size - 1
-            }
-            lines[line] = match.last + 1
-            match to line
-        }.toMap()
+        return matches
+            .sortedWith(compareBy({ it.first }, { -it.length }))
+            .map { match ->
+                val indexOfFreeLine = lines.indexOfFirst { it < match.first }
+                val line = if (indexOfFreeLine >= 0) indexOfFreeLine else {
+                    lines.add(0)
+                    lines.size - 1
+                }
+                lines[line] = match.last
+                match to line
+            }.toMap()
     }
 
 
