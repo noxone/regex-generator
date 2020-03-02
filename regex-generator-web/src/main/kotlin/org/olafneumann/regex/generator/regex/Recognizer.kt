@@ -31,6 +31,6 @@ data class RecognizerMatch(
     fun intersect(other: RecognizerMatch): Boolean = totalRange.intersect(other.totalRange).isNotEmpty()
 
     override fun toString() =
-        "[${first}+${last - first}] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
+        "[$first+$length] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
 }
 

@@ -570,7 +570,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return !intersect(this.totalRange_0, other.totalRange_0).isEmpty();
   };
   RecognizerMatch.prototype.toString = function () {
-    return '[' + this.first + '+' + (this.last - this.first | 0) + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
+    return '[' + this.first + '+' + this.length + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
   };
   RecognizerMatch.$metadata$ = {
     kind: Kind_CLASS,
@@ -1235,6 +1235,12 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       element_0.addEventListener(EVENT_CLICK, HtmlPage$showResults$lambda$lambda(this, element));
     }
   };
+  function HtmlPage$distributeToRows$createNextLine(closure$lines) {
+    return function () {
+      closure$lines.add_11rb$(0);
+      return closure$lines.size - 1 | 0;
+    };
+  }
   function HtmlPage$distributeToRows$lambda(it) {
     return it.first;
   }
@@ -1243,6 +1249,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   HtmlPage.prototype.distributeToRows_0 = function (matches) {
     var lines = ArrayList_init();
+    var createNextLine = HtmlPage$distributeToRows$createNextLine(lines);
     var $receiver = sortedWith(matches, compareBy([HtmlPage$distributeToRows$lambda, HtmlPage$distributeToRows$lambda_0]));
     var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
     var tmp$;
@@ -1250,14 +1257,13 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     loop_label: while (tmp$.hasNext()) {
       var item = tmp$.next();
       var tmp$_0 = destination.add_11rb$;
-      var tmp$_1;
       var indexOfFirst$result;
       indexOfFirst$break: do {
-        var tmp$_2;
+        var tmp$_1;
         var index = 0;
-        tmp$_2 = lines.iterator();
-        while (tmp$_2.hasNext()) {
-          var item_0 = tmp$_2.next();
+        tmp$_1 = lines.iterator();
+        while (tmp$_1.hasNext()) {
+          var item_0 = tmp$_1.next();
           if (item_0 < item.first) {
             indexOfFirst$result = index;
             break indexOfFirst$break;
@@ -1268,13 +1274,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       }
        while (false);
       var indexOfFreeLine = indexOfFirst$result;
-      if (indexOfFreeLine >= 0)
-        tmp$_1 = indexOfFreeLine;
-      else {
-        lines.add_11rb$(0);
-        tmp$_1 = lines.size - 1 | 0;
-      }
-      var line = tmp$_1;
+      var line = indexOfFreeLine >= 0 ? indexOfFreeLine : createNextLine();
       lines.set_wxm5ur$(line, item.last);
       tmp$_0.call(destination, to(item, line));
     }
