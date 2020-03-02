@@ -530,12 +530,19 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return 'Regexp::' + it;
   }
   RubyCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_1rvtm9$(options, 'IGNORECASE', null, 'MULTILINE', void 0, ', ', ' | ', void 0, RubyCodeGenerator$generateOptionsCode$lambda);
+    return this.combineOptions_1rvtm9$(options, 'IGNORECASE', void 0, 'MULTILINE', void 0, ', ', ' | ', void 0, RubyCodeGenerator$generateOptionsCode$lambda);
   };
   RubyCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
-    if (options.multiline)
-      return listOf_0("The Ruby regex engine does not support the MULTILINE option. Regex' are always treated as multiline.");
-    return emptyList();
+    var warnings = ArrayList_init();
+    if (options.multiline) {
+      var element = "The Ruby regex engine does not support the MULTILINE option. Regex' are always treated as multiline.";
+      warnings.add_11rb$(element);
+    }
+    if (options.dotMatchesLineBreaks) {
+      var element_0 = 'In Ruby, the DOTALL modifier equivalent is m, Regexp::MULTILINE modifier.';
+      warnings.add_11rb$(element_0);
+    }
+    return warnings;
   };
   RubyCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,

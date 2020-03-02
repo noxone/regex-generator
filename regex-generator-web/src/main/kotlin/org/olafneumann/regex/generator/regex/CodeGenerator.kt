@@ -252,17 +252,21 @@ end"""
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(
             options,
-            "IGNORECASE",
-            null,
-            "MULTILINE",
+            valueForCaseInsensitive = "IGNORECASE",
+            valueForDotAll = "MULTILINE",
             separator = " | ",
             prefix = ", "
         ) { "Regexp::$it" }
 
     override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+        val warnings = mutableListOf<String>()
         if (options.multiline)
-            return listOf("The Ruby regex engine does not support the MULTILINE option. Regex' are always treated as multiline.")
-        return emptyList()
+            warnings += "The Ruby regex engine does not support the MULTILINE option. Regex' are always treated as multiline."
+        if (options.dotMatchesLineBreaks)
+            // https://riptutorial.com/regex/example/18156/dotall-modifier
+            warnings += "In Ruby, the DOTALL modifier equivalent is m, Regexp::MULTILINE modifier."
+
+        return warnings
     }
 }
 
