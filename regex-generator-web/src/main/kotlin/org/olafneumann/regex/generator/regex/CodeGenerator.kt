@@ -8,6 +8,7 @@ interface CodeGenerator {
             , PhpCodeGenerator()
             , JavaScriptCodeGenerator()
             , CSharpCodeGenerator()
+            , RubyCodeGenerator()
         ).sortedBy { it.languageName }
     }
 
@@ -98,7 +99,7 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator() {
         "DOTALL",
         prefix = " ,",
         separator = " | "
-    ) { s -> "Pattern.$s" }
+    ) { "Pattern.$it" }
 }
 
 internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator() {
@@ -122,7 +123,7 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator() {
         prefix = ", options = setOf(",
         postfix = ")",
         separator = ", "
-    ) { s -> "RegexOption.$s" }
+    ) { "RegexOption.$it" }
 
     override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
         if (options.dotMatchesLineBreaks)
@@ -207,7 +208,40 @@ public class Sample
             "Singleline",
             separator = " | ",
             prefix = ", "
-        ) { s -> "RegexOptions.$s" }
+        ) { "RegexOptions.$it" }
+}
+
+
+internal class RubyCodeGenerator : SimpleReplacingCodeGenerator() {
+    override val languageName: String
+        get() = "Ruby"
+    override val highlightLanguage: String
+        get() = "ruby"
+
+    override val templateCode: String
+        get() = """def use_regex(input)
+    regex = Regexp.new('%1${'$'}s'%2${'$'}s)
+    regex.match input
+end"""
+
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
+
+    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+        combineOptions(
+            options,
+            "IGNORECASE",
+            null,
+            "MULTILINE",
+            separator = " | ",
+            prefix = ", "
+        ) { "Regexp::$it" }
+
+    override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+        if (options.multiline)
+            return listOf("The Ruby regex engine does not support the MULTILINE option. Regex' are always treated as multiline.")
+        return emptyList()
+    }
 }
 
 

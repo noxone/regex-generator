@@ -89,6 +89,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   JavaScriptCodeGenerator.prototype.constructor = JavaScriptCodeGenerator;
   CSharpCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   CSharpCodeGenerator.prototype.constructor = CSharpCodeGenerator;
+  RubyCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
+  RubyCodeGenerator.prototype.constructor = RubyCodeGenerator;
   function createStepDefinition(element, title, description, position) {
     var stepDefinition = {};
     stepDefinition.element = element;
@@ -185,7 +187,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function CodeGenerator$Companion() {
     CodeGenerator$Companion_instance = this;
-    this.list = sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavaScriptCodeGenerator(), new CSharpCodeGenerator()]), new Comparator$ObjectLiteral(compareBy$lambda(CodeGenerator$Companion$list$lambda)));
+    this.list = sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavaScriptCodeGenerator(), new CSharpCodeGenerator(), new RubyCodeGenerator()]), new Comparator$ObjectLiteral(compareBy$lambda(CodeGenerator$Companion$list$lambda)));
   }
   function CodeGenerator$Companion$list$lambda(it) {
     return it.languageName;
@@ -325,8 +327,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     var $receiver = Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
     return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
   };
-  function JavaCodeGenerator$generateOptionsCode$lambda(s) {
-    return 'Pattern.' + s;
+  function JavaCodeGenerator$generateOptionsCode$lambda(it) {
+    return 'Pattern.' + it;
   }
   JavaCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
     return this.combineOptions_1rvtm9$(options, 'CASE_INSENSITIVE', 'MULTILINE', 'DOTALL', void 0, ' ,', ' | ', void 0, JavaCodeGenerator$generateOptionsCode$lambda);
@@ -358,8 +360,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     var $receiver = Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
     return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
   };
-  function KotlinCodeGenerator$generateOptionsCode$lambda(s) {
-    return 'RegexOption.' + s;
+  function KotlinCodeGenerator$generateOptionsCode$lambda(it) {
+    return 'RegexOption.' + it;
   }
   KotlinCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
     return this.combineOptions_1rvtm9$(options, 'IGNORE_CASE', 'MULTILINE', 'DOT_MATCHES_ALL', void 0, ', options = setOf(', ', ', ')', KotlinCodeGenerator$generateOptionsCode$lambda);
@@ -460,8 +462,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     var $receiver = Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
     return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
   };
-  function CSharpCodeGenerator$generateOptionsCode$lambda(s) {
-    return 'RegexOptions.' + s;
+  function CSharpCodeGenerator$generateOptionsCode$lambda(it) {
+    return 'RegexOptions.' + it;
   }
   CSharpCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
     return this.combineOptions_1rvtm9$(options, 'IgnoreCase', 'Multiline', 'Singleline', void 0, ', ', ' | ', void 0, CSharpCodeGenerator$generateOptionsCode$lambda);
@@ -469,6 +471,44 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   CSharpCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'CSharpCodeGenerator',
+    interfaces: [SimpleReplacingCodeGenerator]
+  };
+  function RubyCodeGenerator() {
+    SimpleReplacingCodeGenerator.call(this);
+  }
+  Object.defineProperty(RubyCodeGenerator.prototype, 'languageName', {
+    get: function () {
+      return 'Ruby';
+    }
+  });
+  Object.defineProperty(RubyCodeGenerator.prototype, 'highlightLanguage', {
+    get: function () {
+      return 'ruby';
+    }
+  });
+  Object.defineProperty(RubyCodeGenerator.prototype, 'templateCode', {
+    get: function () {
+      return "def use_regex(input)\n    regex = Regexp.new('%1$s'%2$s)\n    regex.match input\nend";
+    }
+  });
+  RubyCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
+    var $receiver = Regex_init("([\\\\'])").replace_x2uqeu$(pattern, '\\$1');
+    return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
+  };
+  function RubyCodeGenerator$generateOptionsCode$lambda(it) {
+    return 'Regexp::' + it;
+  }
+  RubyCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
+    return this.combineOptions_1rvtm9$(options, 'IGNORECASE', null, 'MULTILINE', void 0, ', ', ' | ', void 0, RubyCodeGenerator$generateOptionsCode$lambda);
+  };
+  RubyCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
+    if (options.multiline)
+      return listOf_0("The Ruby regex engine does not support the MULTILINE option. Regex' are always treated as multiline.");
+    return emptyList();
+  };
+  RubyCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'RubyCodeGenerator',
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function Configuration(recognizers) {
@@ -1777,6 +1817,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   package$regex_0.PhpCodeGenerator = PhpCodeGenerator;
   package$regex_0.JavaScriptCodeGenerator = JavaScriptCodeGenerator;
   package$regex_0.CSharpCodeGenerator = CSharpCodeGenerator;
+  package$regex_0.RubyCodeGenerator = RubyCodeGenerator;
   Object.defineProperty(Configuration, 'Companion', {
     get: Configuration$Companion_getInstance
   });
