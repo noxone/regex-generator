@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator.js
 
 import kotlin.js.Promise
 
-external object navigator : Navigator
+external val navigator: Navigator
 
 open external class Navigator {
     val clipboard: Clipboard
