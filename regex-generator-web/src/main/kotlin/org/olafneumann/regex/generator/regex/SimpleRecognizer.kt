@@ -11,6 +11,12 @@ data class SimpleRecognizer(
 ) : Recognizer {
     private val searchRegex by lazy { Regex(searchPattern?.replace("%s", outputPattern) ?: "($outputPattern)") }
 
+    init {
+        if (mainGroupIndex == null && mainGroupName == null) {
+            throw IllegalArgumentException(message = "Either mainGroupIndex or mainGroupName must be defined.")
+        }
+    }
+
     override fun findMatches(input: String): List<RecognizerMatch> =
         searchRegex.findAll(input)
             .map { result ->
@@ -27,7 +33,7 @@ data class SimpleRecognizer(
                 ?: throw Exception("Unable to find group '${mainGroupName}'")
             mainGroupIndex != null -> result.groups[mainGroupIndex]?.value
                 ?: throw Exception("Unable to find group with index ${mainGroupIndex}.")
-            else -> result.value
+            else -> throw RuntimeException("Neither mainGroupName nor mainGroupIndex defined.")
         }
 
     // the JS-Regex do not support positions for groups... so we need to use a quite bad work-around (that will not always work)

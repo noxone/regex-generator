@@ -2,23 +2,25 @@ package org.olafneumann.regex.generator.regex
 
 interface CodeGenerator {
     companion object {
-        val list by lazy {
-            listOf<CodeGenerator>(
-                JavaCodeGenerator()
-                ,KotlinCodeGenerator()
-                ,PhpCodeGenerator()
-                ,JavascriptCodeGenerator()
-                ,CSharpCodeGenerator()
-                //,PythonCodeGenerator()
-            ).sortedBy { it.languageName }
-        }
+        val list = listOf<CodeGenerator>(
+            JavaCodeGenerator()
+            , KotlinCodeGenerator()
+            , PhpCodeGenerator()
+            , JavascriptCodeGenerator()
+            , CSharpCodeGenerator()
+            //,PythonCodeGenerator()
+        ).sortedBy { it.languageName }
     }
 
     val languageName: String
 
     val highlightLanguage: String
 
-    val uniqueName: String get() = languageName.replace("#", "_sharp_")
+    val uniqueName: String
+        get() = languageName
+            .replace("-", "_minus_")
+            .replace("+", "_plus_")
+            .replace("#", "_sharp_")
 
     fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet
 }
@@ -44,15 +46,17 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
             getWarnings(pattern, options)
         )
 
-    protected open fun combineOptions(options: RecognizerCombiner.Options,
-                                      valueForCaseInsensitive: String? = null,
-                                      valueForMultiline: String? = null,
-                                      valueForDotAll: String? = null,
-                                      valueIfNone: String = "",
-                                      prefix: String = "",
-                                      separator: String = "",
-                                      postfix: String = "",
-                                      mapper: (option: String) -> String = { s -> s }): String {
+    protected open fun combineOptions(
+        options: RecognizerCombiner.Options,
+        valueForCaseInsensitive: String? = null,
+        valueForMultiline: String? = null,
+        valueForDotAll: String? = null,
+        valueIfNone: String = "",
+        prefix: String = "",
+        separator: String = "",
+        postfix: String = "",
+        mapper: (option: String) -> String = { s -> s }
+    ): String {
         val optionList = mutableListOf<String>()
         if (options.caseSensitive && valueForCaseInsensitive != null)
             optionList += valueForCaseInsensitive
@@ -90,21 +94,35 @@ internal class JavaCodeGenerator : CLikeCodeGenerator() {
                 |    }
                 |}""".trimMargin()
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options): String
-            = combineOptions(options, "CASE_INSENSITIVE", "MULTILINE", "DOTALL", prefix = " ,", separator = " | ") { s -> "Pattern.$s" }
+    override fun generateOptionsCode(options: RecognizerCombiner.Options): String = combineOptions(
+        options,
+        "CASE_INSENSITIVE",
+        "MULTILINE",
+        "DOTALL",
+        prefix = " ,",
+        separator = " | "
+    ) { s -> "Pattern.$s" }
 }
 
 internal class KotlinCodeGenerator : CLikeCodeGenerator() {
     override val languageName: String get() = "Kotlin"
     override val highlightLanguage: String get() = "kotlin"
 
-    override val templateCode: String get() = """fun useRegex(input: String): Boolean {
+    override val templateCode: String
+        get() = """fun useRegex(input: String): Boolean {
     val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
     return regex.matches(input)
 }"""
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options): String
-            = combineOptions(options, "IGNORE_CASE", "MULTILINE", "DOT_MATCHES_ALL", prefix = ", options = setOf(", postfix = ")", separator = ", ") { s -> "RegexOption.$s" }
+    override fun generateOptionsCode(options: RecognizerCombiner.Options): String = combineOptions(
+        options,
+        "IGNORE_CASE",
+        "MULTILINE",
+        "DOT_MATCHES_ALL",
+        prefix = ", options = setOf(",
+        postfix = ")",
+        separator = ", "
+    ) { s -> "RegexOption.$s" }
 
     override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
         if (options.dotMatchesLineBreaks)
@@ -177,7 +195,14 @@ public class Sample
 }"""
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
-        combineOptions(options, "IgnoreCase", "Multiline", "Singleline", separator = " | ", prefix = ", ") { s -> "RegexOptions.$s"}
+        combineOptions(
+            options,
+            "IgnoreCase",
+            "Multiline",
+            "Singleline",
+            separator = " | ",
+            prefix = ", "
+        ) { s -> "RegexOptions.$s" }
 
     override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
         if (options.dotMatchesLineBreaks)
@@ -208,7 +233,7 @@ else:
   print("Search unsuccessful.")	"""
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
-        combineOptions(options, "I", "M", "S", valueIfNone = "0", separator = " | ") { s -> "re.$s"}
+        combineOptions(options, "I", "M", "S", valueIfNone = "0", separator = " | ") { s -> "re.$s" }
 }
 
 

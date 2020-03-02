@@ -24,6 +24,10 @@ data class RecognizerMatch(
 ) {
     val first: Int = startRange?.first ?: mainRange.first
     val last: Int = endRange?.last ?: mainRange.last
+    val length: Int = last - first
+
+    fun intersect(other: RecognizerMatch): Boolean =
+        !((first < other.first && last < other.first) || (first > other.last && last > other.last))
 
     override fun toString() =
         "[${first}+${last - first}] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
@@ -33,6 +37,5 @@ data class Range(
     val first: Int,
     val last: Int,
     val content: String? = null
-) {
-}
+)
 

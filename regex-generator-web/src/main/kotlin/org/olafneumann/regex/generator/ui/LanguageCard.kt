@@ -42,8 +42,8 @@ internal class LanguageCard(
         codeElement = document.getElementById(codeElementId) as HTMLElement
         bodyElement = document.getElementById(bodyElementId) as HTMLElement
 
-        jQuery(bodyElement).on("shown.bs.collapse") {shown = true}
-        jQuery(bodyElement).on("hidden.bs.collapse") {shown = false}
+        jQuery(bodyElement).on("shown.bs.collapse") { shown = true }
+        jQuery(bodyElement).on("hidden.bs.collapse") { shown = false }
     }
 
     // TODO move all localStorage-access to separate storage class
@@ -68,15 +68,17 @@ internal class LanguageCard(
 
     private var code: String
         get() = codeElement.innerHTML
-        set(value) { codeElement.innerHTML = value.escapeHTML() }
+        set(value) {
+            codeElement.innerHTML = value.escapeHTML()
+        }
 
     private fun String.escapeHTML(): String {
-        val text :String = this@escapeHTML
+        val text: String = this@escapeHTML
         if (text.isEmpty()) return text
 
         return buildString(length) {
             for (element in text) {
-                when (val ch :Char = element) {
+                when (val ch: Char = element) {
                     '\'' -> append("&apos;")
                     '\"' -> append("&quot")
                     '&' -> append("&amp;")

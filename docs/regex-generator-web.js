@@ -7,13 +7,13 @@ if (typeof this['kotlinx-html-js'] === 'undefined') {
 this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   'use strict';
   var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
+  var Kind_CLASS = Kotlin.Kind.CLASS;
+  var NotImplementedError_init = Kotlin.kotlin.NotImplementedError;
   var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
-  var lazy = Kotlin.kotlin.lazy_klfg04$;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var replace = Kotlin.kotlin.text.replace_680rmw$;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var emptyList = Kotlin.kotlin.collections.emptyList_287e2$;
-  var Kind_CLASS = Kotlin.Kind.CLASS;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
   var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
   var trimMargin = Kotlin.kotlin.text.trimMargin_rjktp$;
@@ -22,13 +22,12 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var wrapFunction = Kotlin.wrapFunction;
   var Comparator = Kotlin.kotlin.Comparator;
   var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
-  var Enum = Kotlin.kotlin.Enum;
-  var throwISE = Kotlin.throwISE;
   var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
   var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var step = Kotlin.kotlin.ranges.step_xsgg7u$;
   var to = Kotlin.kotlin.to_ujzrz7$;
+  var lazy = Kotlin.kotlin.lazy_klfg04$;
   var collectionSizeOrDefault = Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$;
   var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
   var UnsupportedOperationException_init = Kotlin.kotlin.UnsupportedOperationException_init_pdl1vj$;
@@ -39,8 +38,9 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var throwCCE = Kotlin.throwCCE;
   var toString = Kotlin.toString;
   var Exception_init = Kotlin.kotlin.Exception_init_pdl1vj$;
+  var RuntimeException_init = Kotlin.kotlin.RuntimeException_init_pdl1vj$;
   var indexOf = Kotlin.kotlin.text.indexOf_l5u8uk$;
-  var IntRange = Kotlin.kotlin.ranges.IntRange;
+  var IllegalArgumentException_init = Kotlin.kotlin.IllegalArgumentException_init_pdl1vj$;
   var isBlank = Kotlin.kotlin.text.isBlank_gw00vp$;
   var Exception = Kotlin.kotlin.Exception;
   var toBoolean = Kotlin.kotlin.text.toBoolean_pdl1vz$;
@@ -51,9 +51,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
   var clear = Kotlin.kotlin.dom.clear_asww5s$;
   var max = Kotlin.kotlin.collections.max_exjks8$;
+  var IntRange = Kotlin.kotlin.ranges.IntRange;
   var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
   var ensureNotNull = Kotlin.ensureNotNull;
   var Unit = Kotlin.kotlin.Unit;
+  var compareBy = Kotlin.kotlin.comparisons.compareBy_bvgy4j$;
   var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
   var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
@@ -73,7 +75,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var visitTag = $module$kotlinx_html_js.kotlinx.html.visitTag_xwv8ym$;
   var CODE_init = $module$kotlinx_html_js.kotlinx.html.CODE;
   var PRE_init = $module$kotlinx_html_js.kotlinx.html.PRE;
-  var intersect = Kotlin.kotlin.collections.intersect_q4559j$;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
   var equals = Kotlin.equals;
   var Collection = Kotlin.kotlin.collections.Collection;
@@ -91,8 +92,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   CSharpCodeGenerator.prototype.constructor = CSharpCodeGenerator;
   PythonCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   PythonCodeGenerator.prototype.constructor = PythonCodeGenerator;
-  Range$RangeType.prototype = Object.create(Enum.prototype);
-  Range$RangeType.prototype.constructor = Range$RangeType;
   function createStepDefinition(element, title, description, position) {
     var stepDefinition = {};
     stepDefinition.element = element;
@@ -105,6 +104,69 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function jQuery(element) {
     return $('#' + element.id);
   }
+  function BracketedRecognizer(name, outputPattern, description, active) {
+    this.name_umq4d7$_0 = name;
+    this.outputPattern_rzs6v3$_0 = outputPattern;
+    this.description_ffks6q$_0 = description;
+    this.active_hu82o0$_0 = active;
+  }
+  Object.defineProperty(BracketedRecognizer.prototype, 'name', {
+    get: function () {
+      return this.name_umq4d7$_0;
+    }
+  });
+  Object.defineProperty(BracketedRecognizer.prototype, 'outputPattern', {
+    get: function () {
+      return this.outputPattern_rzs6v3$_0;
+    }
+  });
+  Object.defineProperty(BracketedRecognizer.prototype, 'description', {
+    get: function () {
+      return this.description_ffks6q$_0;
+    }
+  });
+  Object.defineProperty(BracketedRecognizer.prototype, 'active', {
+    get: function () {
+      return this.active_hu82o0$_0;
+    }
+  });
+  BracketedRecognizer.prototype.findMatches_61zpoe$ = function (input) {
+    throw new NotImplementedError_init('An operation is not implemented: ' + 'not implemented');
+  };
+  BracketedRecognizer.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'BracketedRecognizer',
+    interfaces: [Recognizer]
+  };
+  BracketedRecognizer.prototype.component1 = function () {
+    return this.name;
+  };
+  BracketedRecognizer.prototype.component2 = function () {
+    return this.outputPattern;
+  };
+  BracketedRecognizer.prototype.component3 = function () {
+    return this.description;
+  };
+  BracketedRecognizer.prototype.component4 = function () {
+    return this.active;
+  };
+  BracketedRecognizer.prototype.copy_ii6ut2$ = function (name, outputPattern, description, active) {
+    return new BracketedRecognizer(name === void 0 ? this.name : name, outputPattern === void 0 ? this.outputPattern : outputPattern, description === void 0 ? this.description : description, active === void 0 ? this.active : active);
+  };
+  BracketedRecognizer.prototype.toString = function () {
+    return 'BracketedRecognizer(name=' + Kotlin.toString(this.name) + (', outputPattern=' + Kotlin.toString(this.outputPattern)) + (', description=' + Kotlin.toString(this.description)) + (', active=' + Kotlin.toString(this.active)) + ')';
+  };
+  BracketedRecognizer.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.name) | 0;
+    result = result * 31 + Kotlin.hashCode(this.outputPattern) | 0;
+    result = result * 31 + Kotlin.hashCode(this.description) | 0;
+    result = result * 31 + Kotlin.hashCode(this.active) | 0;
+    return result;
+  };
+  BracketedRecognizer.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.outputPattern, other.outputPattern) && Kotlin.equals(this.description, other.description) && Kotlin.equals(this.active, other.active)))));
+  };
   function Comparator$ObjectLiteral(closure$comparison) {
     this.closure$comparison = closure$comparison;
   }
@@ -126,18 +188,10 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function CodeGenerator$Companion() {
     CodeGenerator$Companion_instance = this;
-    this.list_44j6bl$_0 = lazy(CodeGenerator$Companion$list$lambda);
+    this.list = sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavascriptCodeGenerator(), new CSharpCodeGenerator()]), new Comparator$ObjectLiteral(compareBy$lambda(CodeGenerator$Companion$list$lambda)));
   }
-  Object.defineProperty(CodeGenerator$Companion.prototype, 'list', {
-    get: function () {
-      return this.list_44j6bl$_0.value;
-    }
-  });
-  function CodeGenerator$Companion$list$lambda$lambda(it) {
+  function CodeGenerator$Companion$list$lambda(it) {
     return it.languageName;
-  }
-  function CodeGenerator$Companion$list$lambda() {
-    return sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavascriptCodeGenerator(), new CSharpCodeGenerator()]), new Comparator$ObjectLiteral(compareBy$lambda(CodeGenerator$Companion$list$lambda$lambda)));
   }
   CodeGenerator$Companion.$metadata$ = {
     kind: Kind_OBJECT,
@@ -153,7 +207,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   Object.defineProperty(CodeGenerator.prototype, 'uniqueName', {
     get: function () {
-      return replace(this.languageName, '#', '_sharp_');
+      return replace(replace(replace(this.languageName, '-', '_minus_'), '+', '_plus_'), '#', '_sharp_');
     }
   });
   CodeGenerator.$metadata$ = {
@@ -528,13 +582,26 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'Recognizer',
     interfaces: []
   };
-  function RecognizerMatch(range, inputPart, recognizer) {
-    this.range = range;
+  function RecognizerMatch(startRange, mainRange, endRange, inputPart, recognizer) {
+    if (startRange === void 0)
+      startRange = null;
+    if (endRange === void 0)
+      endRange = null;
+    this.startRange = startRange;
+    this.mainRange = mainRange;
+    this.endRange = endRange;
     this.inputPart = inputPart;
     this.recognizer = recognizer;
+    var tmp$, tmp$_0, tmp$_1, tmp$_2;
+    this.first = (tmp$_0 = (tmp$ = this.startRange) != null ? tmp$.first : null) != null ? tmp$_0 : this.mainRange.first;
+    this.last = (tmp$_2 = (tmp$_1 = this.endRange) != null ? tmp$_1.last : null) != null ? tmp$_2 : this.mainRange.last;
+    this.length = this.last - this.first | 0;
   }
+  RecognizerMatch.prototype.intersect_hdji9c$ = function (other) {
+    return !(this.first < other.first && this.last < other.first || (this.first > other.last && this.last > other.last));
+  };
   RecognizerMatch.prototype.toString = function () {
-    return '[' + this.range.first + '+' + (this.range.last - this.range.first | 0) + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
+    return '[' + this.first + '+' + (this.last - this.first | 0) + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
   };
   RecognizerMatch.$metadata$ = {
     kind: Kind_CLASS,
@@ -542,81 +609,42 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     interfaces: []
   };
   RecognizerMatch.prototype.component1 = function () {
-    return this.range;
+    return this.startRange;
   };
   RecognizerMatch.prototype.component2 = function () {
-    return this.inputPart;
+    return this.mainRange;
   };
   RecognizerMatch.prototype.component3 = function () {
+    return this.endRange;
+  };
+  RecognizerMatch.prototype.component4 = function () {
+    return this.inputPart;
+  };
+  RecognizerMatch.prototype.component5 = function () {
     return this.recognizer;
   };
-  RecognizerMatch.prototype.copy_d8z5i$ = function (range, inputPart, recognizer) {
-    return new RecognizerMatch(range === void 0 ? this.range : range, inputPart === void 0 ? this.inputPart : inputPart, recognizer === void 0 ? this.recognizer : recognizer);
+  RecognizerMatch.prototype.copy_vn8x7h$ = function (startRange, mainRange, endRange, inputPart, recognizer) {
+    return new RecognizerMatch(startRange === void 0 ? this.startRange : startRange, mainRange === void 0 ? this.mainRange : mainRange, endRange === void 0 ? this.endRange : endRange, inputPart === void 0 ? this.inputPart : inputPart, recognizer === void 0 ? this.recognizer : recognizer);
   };
   RecognizerMatch.prototype.hashCode = function () {
     var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.range) | 0;
+    result = result * 31 + Kotlin.hashCode(this.startRange) | 0;
+    result = result * 31 + Kotlin.hashCode(this.mainRange) | 0;
+    result = result * 31 + Kotlin.hashCode(this.endRange) | 0;
     result = result * 31 + Kotlin.hashCode(this.inputPart) | 0;
     result = result * 31 + Kotlin.hashCode(this.recognizer) | 0;
     return result;
   };
   RecognizerMatch.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.range, other.range) && Kotlin.equals(this.inputPart, other.inputPart) && Kotlin.equals(this.recognizer, other.recognizer)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.startRange, other.startRange) && Kotlin.equals(this.mainRange, other.mainRange) && Kotlin.equals(this.endRange, other.endRange) && Kotlin.equals(this.inputPart, other.inputPart) && Kotlin.equals(this.recognizer, other.recognizer)))));
   };
-  function Range(first, last, content, type) {
+  function Range(first, last, content) {
+    if (content === void 0)
+      content = null;
     this.first = first;
     this.last = last;
     this.content = content;
-    this.type = type;
   }
-  function Range$RangeType(name, ordinal) {
-    Enum.call(this);
-    this.name$ = name;
-    this.ordinal$ = ordinal;
-  }
-  function Range$RangeType_initFields() {
-    Range$RangeType_initFields = function () {
-    };
-    Range$RangeType$Start_instance = new Range$RangeType('Start', 0);
-    Range$RangeType$Center_instance = new Range$RangeType('Center', 1);
-    Range$RangeType$End_instance = new Range$RangeType('End', 2);
-  }
-  var Range$RangeType$Start_instance;
-  function Range$RangeType$Start_getInstance() {
-    Range$RangeType_initFields();
-    return Range$RangeType$Start_instance;
-  }
-  var Range$RangeType$Center_instance;
-  function Range$RangeType$Center_getInstance() {
-    Range$RangeType_initFields();
-    return Range$RangeType$Center_instance;
-  }
-  var Range$RangeType$End_instance;
-  function Range$RangeType$End_getInstance() {
-    Range$RangeType_initFields();
-    return Range$RangeType$End_instance;
-  }
-  Range$RangeType.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'RangeType',
-    interfaces: [Enum]
-  };
-  function Range$RangeType$values() {
-    return [Range$RangeType$Start_getInstance(), Range$RangeType$Center_getInstance(), Range$RangeType$End_getInstance()];
-  }
-  Range$RangeType.values = Range$RangeType$values;
-  function Range$RangeType$valueOf(name) {
-    switch (name) {
-      case 'Start':
-        return Range$RangeType$Start_getInstance();
-      case 'Center':
-        return Range$RangeType$Center_getInstance();
-      case 'End':
-        return Range$RangeType$End_getInstance();
-      default:throwISE('No enum constant org.olafneumann.regex.generator.regex.Range.RangeType.' + name);
-    }
-  }
-  Range$RangeType.valueOf_61zpoe$ = Range$RangeType$valueOf;
   Range.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Range',
@@ -631,25 +659,21 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   Range.prototype.component3 = function () {
     return this.content;
   };
-  Range.prototype.component4 = function () {
-    return this.type;
-  };
-  Range.prototype.copy_v7fgn$ = function (first, last, content, type) {
-    return new Range(first === void 0 ? this.first : first, last === void 0 ? this.last : last, content === void 0 ? this.content : content, type === void 0 ? this.type : type);
+  Range.prototype.copy_273qip$ = function (first, last, content) {
+    return new Range(first === void 0 ? this.first : first, last === void 0 ? this.last : last, content === void 0 ? this.content : content);
   };
   Range.prototype.toString = function () {
-    return 'Range(first=' + Kotlin.toString(this.first) + (', last=' + Kotlin.toString(this.last)) + (', content=' + Kotlin.toString(this.content)) + (', type=' + Kotlin.toString(this.type)) + ')';
+    return 'Range(first=' + Kotlin.toString(this.first) + (', last=' + Kotlin.toString(this.last)) + (', content=' + Kotlin.toString(this.content)) + ')';
   };
   Range.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.first) | 0;
     result = result * 31 + Kotlin.hashCode(this.last) | 0;
     result = result * 31 + Kotlin.hashCode(this.content) | 0;
-    result = result * 31 + Kotlin.hashCode(this.type) | 0;
     return result;
   };
   Range.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.first, other.first) && Kotlin.equals(this.last, other.last) && Kotlin.equals(this.content, other.content) && Kotlin.equals(this.type, other.type)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.first, other.first) && Kotlin.equals(this.last, other.last) && Kotlin.equals(this.content, other.content)))));
   };
   function Comparator$ObjectLiteral_0(closure$comparison) {
     this.closure$comparison = closure$comparison;
@@ -674,7 +698,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     RecognizerCombiner$Companion_instance = this;
   }
   function RecognizerCombiner$Companion$combine$lambda(it) {
-    return it.range.first;
+    return it.first;
   }
   RecognizerCombiner$Companion.prototype.combine_9yx9zl$ = function (inputText, selectedMatches, options) {
     if (options === void 0)
@@ -686,7 +710,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     tmp$ = orderedMatches.iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      var list = listOf([element.range.first, element.range.last + 1 | 0]);
+      var list = listOf([element.first, element.last + 1 | 0]);
       addAll(destination, list);
     }
     indices.addAll_brywnq$(destination);
@@ -867,6 +891,9 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.mainGroupIndex_0 = mainGroupIndex;
     this.mainGroupName_0 = mainGroupName;
     this.searchRegex_btrjsy$_0 = lazy(SimpleRecognizer$searchRegex$lambda(this));
+    if (this.mainGroupIndex_0 == null && this.mainGroupName_0 == null) {
+      throw IllegalArgumentException_init('Either mainGroupIndex or mainGroupName must be defined.');
+    }
   }
   Object.defineProperty(SimpleRecognizer.prototype, 'name', {
     get: function () {
@@ -895,7 +922,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   });
   function SimpleRecognizer$findMatches$lambda(this$SimpleRecognizer) {
     return function (result) {
-      return new RecognizerMatch(this$SimpleRecognizer.getMainGroupRange_0(result), this$SimpleRecognizer.getMainGroupValue_0(result), this$SimpleRecognizer);
+      return new RecognizerMatch(void 0, this$SimpleRecognizer.getMainGroupRange_0(result), void 0, this$SimpleRecognizer.getMainGroupValue_0(result), this$SimpleRecognizer);
     };
   }
   SimpleRecognizer.prototype.findMatches_61zpoe$ = function (input) {
@@ -918,11 +945,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return tmp$_3;
     }
      else
-      return result.value;
+      throw RuntimeException_init('Neither mainGroupName nor mainGroupIndex defined.');
   };
   SimpleRecognizer.prototype.getMainGroupRange_0 = function (result) {
     var start = indexOf(result.value, this.getMainGroupValue_0(result));
-    return new IntRange(result.range.first + start | 0, result.range.last + start | 0);
+    return new Range(result.range.first + start | 0, result.range.last + start | 0);
   };
   function SimpleRecognizer$searchRegex$lambda(this$SimpleRecognizer) {
     return function () {
@@ -1147,7 +1174,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var ID_CHECK_DOT_MATCHES_LINE_BRAKES;
   var ID_CHECK_MULTILINE;
   var ID_BUTTON_COPY;
-  var ID_DIV_ONLYMATCH_CONTAINER;
   var ID_BUTTON_HELP;
   var ID_DIV_LANGUAGES;
   function get_characterUnits($receiver) {
@@ -1271,13 +1297,20 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       this.recognizerMatchToElements_0.put_xwzc9p$(element, element_0);
       addClass(element_0, [getCssClass()]);
       element_0.style.width = get_characterUnits(element.inputPart.length);
-      element_0.style.left = get_characterUnits(element.range.first);
+      element_0.style.left = get_characterUnits(element.first);
       element_0.title = getElementTitle(element);
       element_0.addEventListener(EVENT_CLICK, HtmlPage$showResults$lambda$lambda(this, element));
     }
   };
+  function HtmlPage$distributeToRows$lambda(it) {
+    return it.first;
+  }
+  function HtmlPage$distributeToRows$lambda_0(it) {
+    return it.length;
+  }
   HtmlPage.prototype.distributeToRows_0 = function (matches) {
     var lines = ArrayList_init();
+    sortedWith(matches, compareBy([HtmlPage$distributeToRows$lambda, HtmlPage$distributeToRows$lambda_0]));
     var destination = ArrayList_init_0(collectionSizeOrDefault(matches, 10));
     var tmp$;
     tmp$ = matches.iterator();
@@ -1292,7 +1325,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
         tmp$_2 = lines.iterator();
         while (tmp$_2.hasNext()) {
           var item_0 = tmp$_2.next();
-          if (item_0 <= item.range.first) {
+          if (item_0 <= item.first) {
             indexOfFirst$result = index;
             break indexOfFirst$break;
           }
@@ -1309,7 +1342,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
         tmp$_1 = lines.size - 1 | 0;
       }
       var line = tmp$_1;
-      lines.set_wxm5ur$(line, item.range.last + 1 | 0);
+      lines.set_wxm5ur$(line, item.last + 1 | 0);
       tmp$_0.call(destination, to(item, line));
     }
     return toMap(destination);
@@ -1772,7 +1805,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
           tmp$_3 = selectedMatches.iterator();
           while (tmp$_3.hasNext()) {
             var element_2 = tmp$_3.next();
-            if (!intersect(element_2.range, element_1.range).isEmpty()) {
+            if (element_2.intersect_hdji9c$(element_1)) {
               any$result = true;
               break any$break;
             }
@@ -1798,10 +1831,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var package$js = package$generator.js || (package$generator.js = {});
   package$js.createStepDefinition_w74nik$ = createStepDefinition;
   package$js.jQuery_lt8gi4$ = jQuery;
+  var package$regex_0 = package$generator.regex || (package$generator.regex = {});
+  package$regex_0.BracketedRecognizer = BracketedRecognizer;
   Object.defineProperty(CodeGenerator, 'Companion', {
     get: CodeGenerator$Companion_getInstance
   });
-  var package$regex_0 = package$generator.regex || (package$generator.regex = {});
   package$regex_0.CodeGenerator = CodeGenerator;
   package$regex_0.GeneratedSnippet = GeneratedSnippet;
   package$regex_0.SimpleReplacingCodeGenerator = SimpleReplacingCodeGenerator;
@@ -1821,16 +1855,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   });
   package$regex_0.Recognizer = Recognizer;
   package$regex_0.RecognizerMatch = RecognizerMatch;
-  Object.defineProperty(Range$RangeType, 'Start', {
-    get: Range$RangeType$Start_getInstance
-  });
-  Object.defineProperty(Range$RangeType, 'Center', {
-    get: Range$RangeType$Center_getInstance
-  });
-  Object.defineProperty(Range$RangeType, 'End', {
-    get: Range$RangeType$End_getInstance
-  });
-  Range.RangeType = Range$RangeType;
   package$regex_0.Range = Range;
   Object.defineProperty(RecognizerCombiner, 'Companion', {
     get: RecognizerCombiner$Companion_getInstance
@@ -1967,11 +1991,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return ID_BUTTON_COPY;
     }
   });
-  Object.defineProperty(package$ui, 'ID_DIV_ONLYMATCH_CONTAINER', {
-    get: function () {
-      return ID_DIV_ONLYMATCH_CONTAINER;
-    }
-  });
   Object.defineProperty(package$ui, 'ID_BUTTON_HELP', {
     get: function () {
       return ID_BUTTON_HELP;
@@ -2011,7 +2030,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   ID_CHECK_DOT_MATCHES_LINE_BRAKES = 'rg_dotmatcheslinebreakes';
   ID_CHECK_MULTILINE = 'rg_multiline';
   ID_BUTTON_COPY = 'rg_button_copy';
-  ID_DIV_ONLYMATCH_CONTAINER = 'rg_div_onlymatch_container';
   ID_BUTTON_HELP = 'rg_button_show_help';
   ID_DIV_LANGUAGES = 'rg_language_accordion';
   main();
