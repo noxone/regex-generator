@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.navigator
+import org.olafneumann.regex.generator.regex.Recognizer
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import kotlin.browser.window
@@ -37,7 +38,7 @@ class SimplePresenter : DisplayContract.Presenter {
     override fun onInputChanges(newInput: String) {
         matches.clear()
         matches.putAll(
-            RecognizerMatch.recognize(newInput)
+            Recognizer.recognize(newInput)
                 .map { it to false }
                 .toMap())
 

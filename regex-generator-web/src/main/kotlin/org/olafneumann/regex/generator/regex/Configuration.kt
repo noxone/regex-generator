@@ -1,11 +1,11 @@
 package org.olafneumann.regex.generator.regex
 
-data class RecognizerConfiguration(
+data class Configuration(
     val recognizers: List<Recognizer>
 ) {
     companion object {
         // val config = js("require('settings.json')") as Configuration
-        val default = RecognizerConfiguration(
+        val default = Configuration(
             recognizers = listOf(
                 SimpleRecognizer("number", "[0-9]+"),
                 SimpleRecognizer("date", "[0-9]{4}-[0-9]{2}-[0-9]{2}"),

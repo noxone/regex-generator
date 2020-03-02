@@ -7,15 +7,13 @@ if (typeof this['kotlinx-html-js'] === 'undefined') {
 this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   'use strict';
   var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
-  var throwCCE = Kotlin.throwCCE;
   var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
-  var Kind_OBJECT = Kotlin.Kind.OBJECT;
-  var Kind_CLASS = Kotlin.Kind.CLASS;
-  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
   var lazy = Kotlin.kotlin.lazy_klfg04$;
+  var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var replace = Kotlin.kotlin.text.replace_680rmw$;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var emptyList = Kotlin.kotlin.collections.emptyList_287e2$;
+  var Kind_CLASS = Kotlin.Kind.CLASS;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
   var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
   var trimMargin = Kotlin.kotlin.text.trimMargin_rjktp$;
@@ -23,19 +21,22 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var sortedWith = Kotlin.kotlin.collections.sortedWith_eknfly$;
   var wrapFunction = Kotlin.wrapFunction;
   var Comparator = Kotlin.kotlin.Comparator;
-  var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_287e2$;
+  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
+  var Enum = Kotlin.kotlin.Enum;
+  var throwISE = Kotlin.throwISE;
+  var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
   var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var step = Kotlin.kotlin.ranges.step_xsgg7u$;
   var to = Kotlin.kotlin.to_ujzrz7$;
-  var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
   var collectionSizeOrDefault = Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$;
+  var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
   var UnsupportedOperationException_init = Kotlin.kotlin.UnsupportedOperationException_init_pdl1vj$;
   var checkIndexOverflow = Kotlin.kotlin.collections.checkIndexOverflow_za3lpa$;
   var map = Kotlin.kotlin.sequences.map_z5avom$;
   var toList = Kotlin.kotlin.sequences.toList_veqyi0$;
-  var compareBy = Kotlin.kotlin.comparisons.compareBy_bvgy4j$;
   var MatchNamedGroupCollection = Kotlin.kotlin.text.MatchNamedGroupCollection;
+  var throwCCE = Kotlin.throwCCE;
   var toString = Kotlin.toString;
   var Exception_init = Kotlin.kotlin.Exception_init_pdl1vj$;
   var indexOf = Kotlin.kotlin.text.indexOf_l5u8uk$;
@@ -90,74 +91,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   CSharpCodeGenerator.prototype.constructor = CSharpCodeGenerator;
   PythonCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   PythonCodeGenerator.prototype.constructor = PythonCodeGenerator;
-  function Configuration(recognizers, mainGroupName, mainGroupIndex) {
-    Configuration$Companion_getInstance();
-    if (mainGroupName === void 0)
-      mainGroupName = null;
-    if (mainGroupIndex === void 0)
-      mainGroupIndex = 1;
-    this.recognizers = recognizers;
-    this.mainGroupName = mainGroupName;
-    this.mainGroupIndex = mainGroupIndex;
-  }
-  function Configuration$Companion() {
-    Configuration$Companion_instance = this;
-    this.default = new Configuration(listOf([new Recognizer('number', '[0-9]+'), new Recognizer('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new Recognizer('real', '[0-9]*\\.[0-9]+'), new Recognizer('day', '(0?[1-9]|[12][0-9]|3[01])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('month', '(0?[1-9]|[1][0-2])', void 0, '(?:^|\\D)(%s)($|\\D)'), new Recognizer('time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new Recognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new Recognizer('String 1', "'([^']|\\\\')*'"), new Recognizer('String 2', '"([^"]|\\\\\')*"'), new Recognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new Recognizer('loglevel', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new Recognizer('Characters', '[a-zA-Z]+')]));
-  }
-  Configuration$Companion.prototype.fromCopy_za3rmp$ = function (configuration) {
-    var tmp$, tmp$_0, tmp$_1, tmp$_2;
-    var $receiver = Kotlin.isArray(tmp$ = configuration.recognizers) ? tmp$ : throwCCE();
-    var destination = ArrayList_init($receiver.length);
-    var tmp$_3;
-    for (tmp$_3 = 0; tmp$_3 !== $receiver.length; ++tmp$_3) {
-      var item = $receiver[tmp$_3];
-      destination.add_11rb$(new Recognizer(item.name, item.outputPattern, item.description, item.searchPattern, item.active));
-    }
-    tmp$_1 = (tmp$_0 = configuration.mainGroupIndex) == null || typeof tmp$_0 === 'number' ? tmp$_0 : throwCCE();
-    return new Configuration(destination, (tmp$_2 = configuration.mainGroupName) == null || typeof tmp$_2 === 'string' ? tmp$_2 : throwCCE(), tmp$_1);
-  };
-  Configuration$Companion.$metadata$ = {
-    kind: Kind_OBJECT,
-    simpleName: 'Companion',
-    interfaces: []
-  };
-  var Configuration$Companion_instance = null;
-  function Configuration$Companion_getInstance() {
-    if (Configuration$Companion_instance === null) {
-      new Configuration$Companion();
-    }
-    return Configuration$Companion_instance;
-  }
-  Configuration.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'Configuration',
-    interfaces: []
-  };
-  Configuration.prototype.component1 = function () {
-    return this.recognizers;
-  };
-  Configuration.prototype.component2 = function () {
-    return this.mainGroupName;
-  };
-  Configuration.prototype.component3 = function () {
-    return this.mainGroupIndex;
-  };
-  Configuration.prototype.copy_yjkkig$ = function (recognizers, mainGroupName, mainGroupIndex) {
-    return new Configuration(recognizers === void 0 ? this.recognizers : recognizers, mainGroupName === void 0 ? this.mainGroupName : mainGroupName, mainGroupIndex === void 0 ? this.mainGroupIndex : mainGroupIndex);
-  };
-  Configuration.prototype.toString = function () {
-    return 'Configuration(recognizers=' + Kotlin.toString(this.recognizers) + (', mainGroupName=' + Kotlin.toString(this.mainGroupName)) + (', mainGroupIndex=' + Kotlin.toString(this.mainGroupIndex)) + ')';
-  };
-  Configuration.prototype.hashCode = function () {
-    var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.recognizers) | 0;
-    result = result * 31 + Kotlin.hashCode(this.mainGroupName) | 0;
-    result = result * 31 + Kotlin.hashCode(this.mainGroupIndex) | 0;
-    return result;
-  };
-  Configuration.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.recognizers, other.recognizers) && Kotlin.equals(this.mainGroupName, other.mainGroupName) && Kotlin.equals(this.mainGroupIndex, other.mainGroupIndex)))));
-  };
+  Range$RangeType.prototype = Object.create(Enum.prototype);
+  Range$RangeType.prototype.constructor = Range$RangeType;
   function createStepDefinition(element, title, description, position) {
     var stepDefinition = {};
     stepDefinition.element = element;
@@ -272,7 +207,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     };
   }
   SimpleReplacingCodeGenerator.prototype.combineOptions_1rvtm9$$default = function (options, valueForCaseInsensitive, valueForMultiline, valueForDotAll, valueIfNone, prefix, separator, postfix, mapper) {
-    var optionList = ArrayList_init_0();
+    var optionList = ArrayList_init();
     if (options.caseSensitive && valueForCaseInsensitive != null) {
       optionList.add_11rb$(valueForCaseInsensitive);
     }
@@ -514,68 +449,207 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'PythonCodeGenerator',
     interfaces: [SimpleReplacingCodeGenerator]
   };
-  function Recognizer(name, outputPattern, description, searchPattern, active) {
-    if (description === void 0)
-      description = null;
-    if (searchPattern === void 0)
-      searchPattern = null;
-    if (active === void 0)
-      active = true;
-    this.name = name;
-    this.outputPattern = outputPattern;
-    this.description = description;
-    this.searchPattern = searchPattern;
-    this.active = active;
-    this.searchRegex_ijvo7o$_0 = lazy(Recognizer$searchRegex$lambda(this));
+  function Configuration(recognizers) {
+    Configuration$Companion_getInstance();
+    this.recognizers = recognizers;
   }
-  Object.defineProperty(Recognizer.prototype, 'searchRegex', {
-    get: function () {
-      return this.searchRegex_ijvo7o$_0.value;
+  function Configuration$Companion() {
+    Configuration$Companion_instance = this;
+    this.default = new Configuration(listOf([new SimpleRecognizer('number', '[0-9]+'), new SimpleRecognizer('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new SimpleRecognizer('real', '[0-9]*\\.[0-9]+'), new SimpleRecognizer('day', '(0?[1-9]|[12][0-9]|3[01])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('month', '(0?[1-9]|[1][0-2])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new SimpleRecognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new SimpleRecognizer('String 1', "'([^']|\\\\')*'"), new SimpleRecognizer('String 2', '"([^"]|\\\\\')*"'), new SimpleRecognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new SimpleRecognizer('loglevel', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new SimpleRecognizer('Characters', '[a-zA-Z]+')]));
+  }
+  Configuration$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var Configuration$Companion_instance = null;
+  function Configuration$Companion_getInstance() {
+    if (Configuration$Companion_instance === null) {
+      new Configuration$Companion();
     }
-  });
-  function Recognizer$searchRegex$lambda(this$Recognizer) {
-    return function () {
-      var tmp$, tmp$_0;
-      return Regex_init((tmp$_0 = (tmp$ = this$Recognizer.searchPattern) != null ? replace(tmp$, '%s', this$Recognizer.outputPattern) : null) != null ? tmp$_0 : '(' + this$Recognizer.outputPattern + ')');
-    };
+    return Configuration$Companion_instance;
+  }
+  Configuration.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Configuration',
+    interfaces: []
+  };
+  Configuration.prototype.component1 = function () {
+    return this.recognizers;
+  };
+  Configuration.prototype.copy_lde1di$ = function (recognizers) {
+    return new Configuration(recognizers === void 0 ? this.recognizers : recognizers);
+  };
+  Configuration.prototype.toString = function () {
+    return 'Configuration(recognizers=' + Kotlin.toString(this.recognizers) + ')';
+  };
+  Configuration.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.recognizers) | 0;
+    return result;
+  };
+  Configuration.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.recognizers, other.recognizers))));
+  };
+  function Recognizer() {
+    Recognizer$Companion_getInstance();
+  }
+  function Recognizer$Companion() {
+    Recognizer$Companion_instance = this;
+  }
+  Recognizer$Companion.prototype.recognize_mu52mh$ = function (input, config) {
+    if (config === void 0)
+      config = Configuration$Companion_getInstance().default;
+    var $receiver = config.recognizers;
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      var list = element.findMatches_61zpoe$(input);
+      addAll(destination, list);
+    }
+    return destination;
+  };
+  Recognizer$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var Recognizer$Companion_instance = null;
+  function Recognizer$Companion_getInstance() {
+    if (Recognizer$Companion_instance === null) {
+      new Recognizer$Companion();
+    }
+    return Recognizer$Companion_instance;
   }
   Recognizer.$metadata$ = {
-    kind: Kind_CLASS,
+    kind: Kind_INTERFACE,
     simpleName: 'Recognizer',
     interfaces: []
   };
-  Recognizer.prototype.component1 = function () {
-    return this.name;
+  function RecognizerMatch(range, inputPart, recognizer) {
+    this.range = range;
+    this.inputPart = inputPart;
+    this.recognizer = recognizer;
+  }
+  RecognizerMatch.prototype.toString = function () {
+    return '[' + this.range.first + '+' + (this.range.last - this.range.first | 0) + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
   };
-  Recognizer.prototype.component2 = function () {
-    return this.outputPattern;
+  RecognizerMatch.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'RecognizerMatch',
+    interfaces: []
   };
-  Recognizer.prototype.component3 = function () {
-    return this.description;
+  RecognizerMatch.prototype.component1 = function () {
+    return this.range;
   };
-  Recognizer.prototype.component4 = function () {
-    return this.searchPattern;
+  RecognizerMatch.prototype.component2 = function () {
+    return this.inputPart;
   };
-  Recognizer.prototype.component5 = function () {
-    return this.active;
+  RecognizerMatch.prototype.component3 = function () {
+    return this.recognizer;
   };
-  Recognizer.prototype.copy_l76g9$ = function (name, outputPattern, description, searchPattern, active) {
-    return new Recognizer(name === void 0 ? this.name : name, outputPattern === void 0 ? this.outputPattern : outputPattern, description === void 0 ? this.description : description, searchPattern === void 0 ? this.searchPattern : searchPattern, active === void 0 ? this.active : active);
+  RecognizerMatch.prototype.copy_d8z5i$ = function (range, inputPart, recognizer) {
+    return new RecognizerMatch(range === void 0 ? this.range : range, inputPart === void 0 ? this.inputPart : inputPart, recognizer === void 0 ? this.recognizer : recognizer);
   };
-  Recognizer.prototype.toString = function () {
-    return 'Recognizer(name=' + Kotlin.toString(this.name) + (', outputPattern=' + Kotlin.toString(this.outputPattern)) + (', description=' + Kotlin.toString(this.description)) + (', searchPattern=' + Kotlin.toString(this.searchPattern)) + (', active=' + Kotlin.toString(this.active)) + ')';
-  };
-  Recognizer.prototype.hashCode = function () {
+  RecognizerMatch.prototype.hashCode = function () {
     var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.name) | 0;
-    result = result * 31 + Kotlin.hashCode(this.outputPattern) | 0;
-    result = result * 31 + Kotlin.hashCode(this.description) | 0;
-    result = result * 31 + Kotlin.hashCode(this.searchPattern) | 0;
-    result = result * 31 + Kotlin.hashCode(this.active) | 0;
+    result = result * 31 + Kotlin.hashCode(this.range) | 0;
+    result = result * 31 + Kotlin.hashCode(this.inputPart) | 0;
+    result = result * 31 + Kotlin.hashCode(this.recognizer) | 0;
     return result;
   };
-  Recognizer.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.outputPattern, other.outputPattern) && Kotlin.equals(this.description, other.description) && Kotlin.equals(this.searchPattern, other.searchPattern) && Kotlin.equals(this.active, other.active)))));
+  RecognizerMatch.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.range, other.range) && Kotlin.equals(this.inputPart, other.inputPart) && Kotlin.equals(this.recognizer, other.recognizer)))));
+  };
+  function Range(first, last, content, type) {
+    this.first = first;
+    this.last = last;
+    this.content = content;
+    this.type = type;
+  }
+  function Range$RangeType(name, ordinal) {
+    Enum.call(this);
+    this.name$ = name;
+    this.ordinal$ = ordinal;
+  }
+  function Range$RangeType_initFields() {
+    Range$RangeType_initFields = function () {
+    };
+    Range$RangeType$Start_instance = new Range$RangeType('Start', 0);
+    Range$RangeType$Center_instance = new Range$RangeType('Center', 1);
+    Range$RangeType$End_instance = new Range$RangeType('End', 2);
+  }
+  var Range$RangeType$Start_instance;
+  function Range$RangeType$Start_getInstance() {
+    Range$RangeType_initFields();
+    return Range$RangeType$Start_instance;
+  }
+  var Range$RangeType$Center_instance;
+  function Range$RangeType$Center_getInstance() {
+    Range$RangeType_initFields();
+    return Range$RangeType$Center_instance;
+  }
+  var Range$RangeType$End_instance;
+  function Range$RangeType$End_getInstance() {
+    Range$RangeType_initFields();
+    return Range$RangeType$End_instance;
+  }
+  Range$RangeType.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'RangeType',
+    interfaces: [Enum]
+  };
+  function Range$RangeType$values() {
+    return [Range$RangeType$Start_getInstance(), Range$RangeType$Center_getInstance(), Range$RangeType$End_getInstance()];
+  }
+  Range$RangeType.values = Range$RangeType$values;
+  function Range$RangeType$valueOf(name) {
+    switch (name) {
+      case 'Start':
+        return Range$RangeType$Start_getInstance();
+      case 'Center':
+        return Range$RangeType$Center_getInstance();
+      case 'End':
+        return Range$RangeType$End_getInstance();
+      default:throwISE('No enum constant org.olafneumann.regex.generator.regex.Range.RangeType.' + name);
+    }
+  }
+  Range$RangeType.valueOf_61zpoe$ = Range$RangeType$valueOf;
+  Range.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Range',
+    interfaces: []
+  };
+  Range.prototype.component1 = function () {
+    return this.first;
+  };
+  Range.prototype.component2 = function () {
+    return this.last;
+  };
+  Range.prototype.component3 = function () {
+    return this.content;
+  };
+  Range.prototype.component4 = function () {
+    return this.type;
+  };
+  Range.prototype.copy_v7fgn$ = function (first, last, content, type) {
+    return new Range(first === void 0 ? this.first : first, last === void 0 ? this.last : last, content === void 0 ? this.content : content, type === void 0 ? this.type : type);
+  };
+  Range.prototype.toString = function () {
+    return 'Range(first=' + Kotlin.toString(this.first) + (', last=' + Kotlin.toString(this.last)) + (', content=' + Kotlin.toString(this.content)) + (', type=' + Kotlin.toString(this.type)) + ')';
+  };
+  Range.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.first) | 0;
+    result = result * 31 + Kotlin.hashCode(this.last) | 0;
+    result = result * 31 + Kotlin.hashCode(this.content) | 0;
+    result = result * 31 + Kotlin.hashCode(this.type) | 0;
+    return result;
+  };
+  Range.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.first, other.first) && Kotlin.equals(this.last, other.last) && Kotlin.equals(this.content, other.content) && Kotlin.equals(this.type, other.type)))));
   };
   function Comparator$ObjectLiteral_0(closure$comparison) {
     this.closure$comparison = closure$comparison;
@@ -607,7 +681,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       options = new RecognizerCombiner$Options();
     var orderedMatches = sortedWith(selectedMatches, new Comparator$ObjectLiteral_0(compareBy$lambda_0(RecognizerCombiner$Companion$combine$lambda)));
     var indices = mutableListOf([0]);
-    var destination = ArrayList_init_0();
+    var destination = ArrayList_init();
     var tmp$;
     tmp$ = orderedMatches.iterator();
     while (tmp$.hasNext()) {
@@ -618,14 +692,14 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     indices.addAll_brywnq$(destination);
     indices.add_11rb$(inputText.length);
     var $receiver = step(until(0, indices.size), 2);
-    var destination_0 = ArrayList_init(collectionSizeOrDefault($receiver, 10));
+    var destination_0 = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
     var tmp$_0;
     tmp$_0 = $receiver.iterator();
     while (tmp$_0.hasNext()) {
       var item = tmp$_0.next();
       destination_0.add_11rb$(to(indices.get_za3lpa$(item), indices.get_za3lpa$(item + 1 | 0)));
     }
-    var destination_1 = ArrayList_init(collectionSizeOrDefault(destination_0, 10));
+    var destination_1 = ArrayList_init_0(collectionSizeOrDefault(destination_0, 10));
     var tmp$_1;
     tmp$_1 = destination_0.iterator();
     while (tmp$_1.hasNext()) {
@@ -635,14 +709,14 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       var endIndex = item_0.second;
       tmp$_2.call(destination_1, inputText.substring(startIndex, endIndex));
     }
-    var destination_2 = ArrayList_init(collectionSizeOrDefault(destination_1, 10));
+    var destination_2 = ArrayList_init_0(collectionSizeOrDefault(destination_1, 10));
     var tmp$_3;
     tmp$_3 = destination_1.iterator();
     while (tmp$_3.hasNext()) {
       var item_1 = tmp$_3.next();
       destination_2.add_11rb$(this.escapeRegex_0(item_1));
     }
-    var destination_3 = ArrayList_init(collectionSizeOrDefault(destination_2, 10));
+    var destination_3 = ArrayList_init_0(collectionSizeOrDefault(destination_2, 10));
     var tmp$_4;
     tmp$_4 = destination_2.iterator();
     while (tmp$_4.hasNext()) {
@@ -774,115 +848,133 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'RecognizerCombiner',
     interfaces: []
   };
-  function RecognizerMatch(range, inputPart, recognizer) {
-    RecognizerMatch$Companion_getInstance();
-    this.range = range;
-    this.inputPart = inputPart;
-    this.recognizer = recognizer;
+  function SimpleRecognizer(name, outputPattern, description, active, searchPattern, mainGroupIndex, mainGroupName) {
+    if (description === void 0)
+      description = null;
+    if (active === void 0)
+      active = true;
+    if (searchPattern === void 0)
+      searchPattern = null;
+    if (mainGroupIndex === void 0)
+      mainGroupIndex = 1;
+    if (mainGroupName === void 0)
+      mainGroupName = null;
+    this.name_dn1z7s$_0 = name;
+    this.outputPattern_qgiqgi$_0 = outputPattern;
+    this.description_l8a38b$_0 = description;
+    this.active_8xsxxv$_0 = active;
+    this.searchPattern_0 = searchPattern;
+    this.mainGroupIndex_0 = mainGroupIndex;
+    this.mainGroupName_0 = mainGroupName;
+    this.searchRegex_btrjsy$_0 = lazy(SimpleRecognizer$searchRegex$lambda(this));
   }
-  function RecognizerMatch$Companion() {
-    RecognizerMatch$Companion_instance = this;
-  }
-  function RecognizerMatch$Companion$recognize$lambda$lambda(closure$config, this$RecognizerMatch$, closure$recognizer) {
+  Object.defineProperty(SimpleRecognizer.prototype, 'name', {
+    get: function () {
+      return this.name_dn1z7s$_0;
+    }
+  });
+  Object.defineProperty(SimpleRecognizer.prototype, 'outputPattern', {
+    get: function () {
+      return this.outputPattern_qgiqgi$_0;
+    }
+  });
+  Object.defineProperty(SimpleRecognizer.prototype, 'description', {
+    get: function () {
+      return this.description_l8a38b$_0;
+    }
+  });
+  Object.defineProperty(SimpleRecognizer.prototype, 'active', {
+    get: function () {
+      return this.active_8xsxxv$_0;
+    }
+  });
+  Object.defineProperty(SimpleRecognizer.prototype, 'searchRegex_0', {
+    get: function () {
+      return this.searchRegex_btrjsy$_0.value;
+    }
+  });
+  function SimpleRecognizer$findMatches$lambda(this$SimpleRecognizer) {
     return function (result) {
-      return new RecognizerMatch(this$RecognizerMatch$.getMainGroupRange_0(result, closure$config), this$RecognizerMatch$.getMainGroupValue_0(result, closure$config), closure$recognizer);
+      return new RecognizerMatch(this$SimpleRecognizer.getMainGroupRange_0(result), this$SimpleRecognizer.getMainGroupValue_0(result), this$SimpleRecognizer);
     };
   }
-  function RecognizerMatch$Companion$recognize$lambda(it) {
-    return it.range.first;
-  }
-  function RecognizerMatch$Companion$recognize$lambda_0(it) {
-    return 0 - (it.range.last - it.range.first) | 0;
-  }
-  function RecognizerMatch$Companion$recognize$lambda_1(it) {
-    return it.recognizer.name;
-  }
-  RecognizerMatch$Companion.prototype.recognize_sjii3m$ = function (input, config) {
-    if (config === void 0)
-      config = Configuration$Companion_getInstance().default;
-    var $receiver = config.recognizers;
-    var destination = ArrayList_init_0();
-    var tmp$;
-    tmp$ = $receiver.iterator();
-    while (tmp$.hasNext()) {
-      var element = tmp$.next();
-      if (element.active)
-        destination.add_11rb$(element);
-    }
-    var destination_0 = ArrayList_init_0();
-    var tmp$_0;
-    tmp$_0 = destination.iterator();
-    while (tmp$_0.hasNext()) {
-      var element_0 = tmp$_0.next();
-      var list = toList(map(element_0.searchRegex.findAll_905azu$(input), RecognizerMatch$Companion$recognize$lambda$lambda(config, this, element_0)));
-      addAll(destination_0, list);
-    }
-    return sortedWith(destination_0, compareBy([RecognizerMatch$Companion$recognize$lambda, RecognizerMatch$Companion$recognize$lambda_0, RecognizerMatch$Companion$recognize$lambda_1]));
+  SimpleRecognizer.prototype.findMatches_61zpoe$ = function (input) {
+    return toList(map(this.searchRegex_0.findAll_905azu$(input), SimpleRecognizer$findMatches$lambda(this)));
   };
-  RecognizerMatch$Companion.prototype.getMainGroupValue_0 = function (result, config) {
+  SimpleRecognizer.prototype.getMainGroupValue_0 = function (result) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3;
-    if (config.mainGroupName != null) {
-      tmp$_1 = (tmp$_0 = (Kotlin.isType(tmp$ = result.groups, MatchNamedGroupCollection) ? tmp$ : throwCCE()).get_61zpoe$(config.mainGroupName)) != null ? tmp$_0.value : null;
+    if (this.mainGroupName_0 != null) {
+      tmp$_1 = (tmp$_0 = (Kotlin.isType(tmp$ = result.groups, MatchNamedGroupCollection) ? tmp$ : throwCCE()).get_61zpoe$(this.mainGroupName_0)) != null ? tmp$_0.value : null;
       if (tmp$_1 == null) {
-        throw Exception_init("Unable to find group '" + toString(config.mainGroupName) + "'");
+        throw Exception_init("Unable to find group '" + toString(this.mainGroupName_0) + "'");
       }
       return tmp$_1;
     }
-     else if (config.mainGroupIndex != null) {
-      tmp$_3 = (tmp$_2 = result.groups.get_za3lpa$(config.mainGroupIndex)) != null ? tmp$_2.value : null;
+     else if (this.mainGroupIndex_0 != null) {
+      tmp$_3 = (tmp$_2 = result.groups.get_za3lpa$(this.mainGroupIndex_0)) != null ? tmp$_2.value : null;
       if (tmp$_3 == null) {
-        throw Exception_init('Unable to find group with index ' + toString(config.mainGroupIndex) + '.');
+        throw Exception_init('Unable to find group with index ' + toString(this.mainGroupIndex_0) + '.');
       }
       return tmp$_3;
     }
      else
       return result.value;
   };
-  RecognizerMatch$Companion.prototype.getMainGroupRange_0 = function (result, config) {
-    var start = indexOf(result.value, this.getMainGroupValue_0(result, config));
+  SimpleRecognizer.prototype.getMainGroupRange_0 = function (result) {
+    var start = indexOf(result.value, this.getMainGroupValue_0(result));
     return new IntRange(result.range.first + start | 0, result.range.last + start | 0);
   };
-  RecognizerMatch$Companion.$metadata$ = {
-    kind: Kind_OBJECT,
-    simpleName: 'Companion',
-    interfaces: []
-  };
-  var RecognizerMatch$Companion_instance = null;
-  function RecognizerMatch$Companion_getInstance() {
-    if (RecognizerMatch$Companion_instance === null) {
-      new RecognizerMatch$Companion();
-    }
-    return RecognizerMatch$Companion_instance;
+  function SimpleRecognizer$searchRegex$lambda(this$SimpleRecognizer) {
+    return function () {
+      var tmp$, tmp$_0;
+      return Regex_init((tmp$_0 = (tmp$ = this$SimpleRecognizer.searchPattern_0) != null ? replace(tmp$, '%s', this$SimpleRecognizer.outputPattern) : null) != null ? tmp$_0 : '(' + this$SimpleRecognizer.outputPattern + ')');
+    };
   }
-  RecognizerMatch.prototype.toString = function () {
-    return '[' + this.range.first + '+' + (this.range.last - this.range.first | 0) + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
-  };
-  RecognizerMatch.$metadata$ = {
+  SimpleRecognizer.$metadata$ = {
     kind: Kind_CLASS,
-    simpleName: 'RecognizerMatch',
-    interfaces: []
+    simpleName: 'SimpleRecognizer',
+    interfaces: [Recognizer]
   };
-  RecognizerMatch.prototype.component1 = function () {
-    return this.range;
+  SimpleRecognizer.prototype.component1 = function () {
+    return this.name;
   };
-  RecognizerMatch.prototype.component2 = function () {
-    return this.inputPart;
+  SimpleRecognizer.prototype.component2 = function () {
+    return this.outputPattern;
   };
-  RecognizerMatch.prototype.component3 = function () {
-    return this.recognizer;
+  SimpleRecognizer.prototype.component3 = function () {
+    return this.description;
   };
-  RecognizerMatch.prototype.copy_d8z5i$ = function (range, inputPart, recognizer) {
-    return new RecognizerMatch(range === void 0 ? this.range : range, inputPart === void 0 ? this.inputPart : inputPart, recognizer === void 0 ? this.recognizer : recognizer);
+  SimpleRecognizer.prototype.component4 = function () {
+    return this.active;
   };
-  RecognizerMatch.prototype.hashCode = function () {
+  SimpleRecognizer.prototype.component5_0 = function () {
+    return this.searchPattern_0;
+  };
+  SimpleRecognizer.prototype.component6_0 = function () {
+    return this.mainGroupIndex_0;
+  };
+  SimpleRecognizer.prototype.component7_0 = function () {
+    return this.mainGroupName_0;
+  };
+  SimpleRecognizer.prototype.copy_f7157r$ = function (name, outputPattern, description, active, searchPattern, mainGroupIndex, mainGroupName) {
+    return new SimpleRecognizer(name === void 0 ? this.name : name, outputPattern === void 0 ? this.outputPattern : outputPattern, description === void 0 ? this.description : description, active === void 0 ? this.active : active, searchPattern === void 0 ? this.searchPattern_0 : searchPattern, mainGroupIndex === void 0 ? this.mainGroupIndex_0 : mainGroupIndex, mainGroupName === void 0 ? this.mainGroupName_0 : mainGroupName);
+  };
+  SimpleRecognizer.prototype.toString = function () {
+    return 'SimpleRecognizer(name=' + Kotlin.toString(this.name) + (', outputPattern=' + Kotlin.toString(this.outputPattern)) + (', description=' + Kotlin.toString(this.description)) + (', active=' + Kotlin.toString(this.active)) + (', searchPattern=' + Kotlin.toString(this.searchPattern_0)) + (', mainGroupIndex=' + Kotlin.toString(this.mainGroupIndex_0)) + (', mainGroupName=' + Kotlin.toString(this.mainGroupName_0)) + ')';
+  };
+  SimpleRecognizer.prototype.hashCode = function () {
     var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.range) | 0;
-    result = result * 31 + Kotlin.hashCode(this.inputPart) | 0;
-    result = result * 31 + Kotlin.hashCode(this.recognizer) | 0;
+    result = result * 31 + Kotlin.hashCode(this.name) | 0;
+    result = result * 31 + Kotlin.hashCode(this.outputPattern) | 0;
+    result = result * 31 + Kotlin.hashCode(this.description) | 0;
+    result = result * 31 + Kotlin.hashCode(this.active) | 0;
+    result = result * 31 + Kotlin.hashCode(this.searchPattern_0) | 0;
+    result = result * 31 + Kotlin.hashCode(this.mainGroupIndex_0) | 0;
+    result = result * 31 + Kotlin.hashCode(this.mainGroupName_0) | 0;
     return result;
   };
-  RecognizerMatch.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.range, other.range) && Kotlin.equals(this.inputPart, other.inputPart) && Kotlin.equals(this.recognizer, other.recognizer)))));
+  SimpleRecognizer.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.outputPattern, other.outputPattern) && Kotlin.equals(this.description, other.description) && Kotlin.equals(this.active, other.active) && Kotlin.equals(this.searchPattern_0, other.searchPattern_0) && Kotlin.equals(this.mainGroupIndex_0, other.mainGroupIndex_0) && Kotlin.equals(this.mainGroupName_0, other.mainGroupName_0)))));
   };
   var KEY_LAST_VERSION;
   var KEY_LAST_VISIT;
@@ -1077,7 +1169,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.recognizerMatchToRow_0 = LinkedHashMap_init();
     this.recognizerMatchToElements_0 = LinkedHashMap_init();
     var $receiver = CodeGenerator$Companion_getInstance().list;
-    var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
+    var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
     var tmp$;
     tmp$ = $receiver.iterator();
     while (tmp$.hasNext()) {
@@ -1162,7 +1254,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.recognizerMatchToElements_0.clear();
     this.recognizerMatchToRow_0.putAll_a2k3zr$(this.distributeToRows_0(matches));
     var $receiver = new IntRange(0, (tmp$ = max(this.recognizerMatchToRow_0.values)) != null ? tmp$ : 0);
-    var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
+    var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
     var tmp$_0;
     tmp$_0 = $receiver.iterator();
     while (tmp$_0.hasNext()) {
@@ -1185,8 +1277,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     }
   };
   HtmlPage.prototype.distributeToRows_0 = function (matches) {
-    var lines = ArrayList_init_0();
-    var destination = ArrayList_init(collectionSizeOrDefault(matches, 10));
+    var lines = ArrayList_init();
+    var destination = ArrayList_init_0(collectionSizeOrDefault(matches, 10));
     var tmp$;
     tmp$ = matches.iterator();
     loop_label: while (tmp$.hasNext()) {
@@ -1367,7 +1459,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.codeGenerator_0 = codeGenerator;
     this.bodyElement_0 = null;
     this.codeElement_0 = null;
-    this.warnings_0 = ArrayList_init_0();
+    this.warnings_0 = ArrayList_init();
     var tmp$, tmp$_0;
     var $receiver = get_create(document);
     var tmp$_1;
@@ -1578,8 +1670,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   SimplePresenter.prototype.onInputChanges_61zpoe$ = function (newInput) {
     this.matches_0.clear();
     var tmp$ = this.matches_0;
-    var $receiver = RecognizerMatch$Companion_getInstance().recognize_sjii3m$(newInput);
-    var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
+    var $receiver = Recognizer$Companion_getInstance().recognize_mu52mh$(newInput);
+    var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
     var tmp$_0;
     tmp$_0 = $receiver.iterator();
     while (tmp$_0.hasNext()) {
@@ -1625,7 +1717,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
         destination.put_xwzc9p$(element.key, element.value);
       }
     }
-    var destination_0 = ArrayList_init(destination.size);
+    var destination_0 = ArrayList_init_0(destination.size);
     var tmp$_2;
     tmp$_2 = destination.entries.iterator();
     while (tmp$_2.hasNext()) {
@@ -1648,7 +1740,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
           destination.put_xwzc9p$(element.key, element.value);
         }
       }
-      var destination_0 = ArrayList_init(destination.size);
+      var destination_0 = ArrayList_init_0(destination.size);
       var tmp$_0;
       tmp$_0 = destination.entries.iterator();
       while (tmp$_0.hasNext()) {
@@ -1657,7 +1749,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       }
       var selectedMatches = toList_0(destination_0);
       var $receiver_0 = this.matches_0.keys;
-      var destination_1 = ArrayList_init_0();
+      var destination_1 = ArrayList_init();
       var tmp$_1;
       tmp$_1 = $receiver_0.iterator();
       while (tmp$_1.hasNext()) {
@@ -1665,7 +1757,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
         if (!selectedMatches.contains_11rb$(element_0))
           destination_1.add_11rb$(element_0);
       }
-      var destination_2 = ArrayList_init_0();
+      var destination_2 = ArrayList_init();
       var tmp$_2;
       tmp$_2 = destination_1.iterator();
       loop_label: while (tmp$_2.hasNext()) {
@@ -1699,14 +1791,10 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'SimplePresenter',
     interfaces: [DisplayContract$Presenter]
   };
-  Object.defineProperty(Configuration, 'Companion', {
-    get: Configuration$Companion_getInstance
-  });
   var package$org = _.org || (_.org = {});
   var package$olafneumann = package$org.olafneumann || (package$org.olafneumann = {});
   var package$regex = package$olafneumann.regex || (package$olafneumann.regex = {});
   var package$generator = package$regex.generator || (package$regex.generator = {});
-  package$generator.Configuration = Configuration;
   var package$js = package$generator.js || (package$generator.js = {});
   package$js.createStepDefinition_w74nik$ = createStepDefinition;
   package$js.jQuery_lt8gi4$ = jQuery;
@@ -1724,17 +1812,33 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   package$regex_0.JavascriptCodeGenerator = JavascriptCodeGenerator;
   package$regex_0.CSharpCodeGenerator = CSharpCodeGenerator;
   package$regex_0.PythonCodeGenerator = PythonCodeGenerator;
+  Object.defineProperty(Configuration, 'Companion', {
+    get: Configuration$Companion_getInstance
+  });
+  package$regex_0.Configuration = Configuration;
+  Object.defineProperty(Recognizer, 'Companion', {
+    get: Recognizer$Companion_getInstance
+  });
   package$regex_0.Recognizer = Recognizer;
+  package$regex_0.RecognizerMatch = RecognizerMatch;
+  Object.defineProperty(Range$RangeType, 'Start', {
+    get: Range$RangeType$Start_getInstance
+  });
+  Object.defineProperty(Range$RangeType, 'Center', {
+    get: Range$RangeType$Center_getInstance
+  });
+  Object.defineProperty(Range$RangeType, 'End', {
+    get: Range$RangeType$End_getInstance
+  });
+  Range.RangeType = Range$RangeType;
+  package$regex_0.Range = Range;
   Object.defineProperty(RecognizerCombiner, 'Companion', {
     get: RecognizerCombiner$Companion_getInstance
   });
   RecognizerCombiner.Options = RecognizerCombiner$Options;
   RecognizerCombiner.RegularExpression = RecognizerCombiner$RegularExpression;
   package$regex_0.RecognizerCombiner = RecognizerCombiner;
-  Object.defineProperty(RecognizerMatch, 'Companion', {
-    get: RecognizerMatch$Companion_getInstance
-  });
-  package$regex_0.RecognizerMatch = RecognizerMatch;
+  package$regex_0.SimpleRecognizer = SimpleRecognizer;
   Object.defineProperty(package$generator, 'KEY_LAST_VERSION', {
     get: function () {
       return KEY_LAST_VERSION;
