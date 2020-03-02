@@ -1,9 +1,7 @@
 package org.olafneumann.regex.generator.regex
 
 data class RecognizerConfiguration(
-    val recognizers: List<Recognizer>,
-    val mainGroupName: String? = null,
-    val mainGroupIndex: Int? = 1
+    val recognizers: List<Recognizer>
 ) {
     companion object {
         // val config = js("require('settings.json')") as Configuration
