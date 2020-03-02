@@ -79,6 +79,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
   var equals = Kotlin.equals;
   var Collection = Kotlin.kotlin.collections.Collection;
+  Regex101CodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
+  Regex101CodeGenerator.prototype.constructor = Regex101CodeGenerator;
   JavaCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   JavaCodeGenerator.prototype.constructor = JavaCodeGenerator;
   KotlinCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
@@ -304,6 +306,35 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     kind: Kind_CLASS,
     simpleName: 'SimpleReplacingCodeGenerator',
     interfaces: [CodeGenerator]
+  };
+  function Regex101CodeGenerator() {
+    SimpleReplacingCodeGenerator.call(this);
+  }
+  Object.defineProperty(Regex101CodeGenerator.prototype, 'languageName', {
+    get: function () {
+      return 'Regex101';
+    }
+  });
+  Object.defineProperty(Regex101CodeGenerator.prototype, 'highlightLanguage', {
+    get: function () {
+      return 'regex101';
+    }
+  });
+  Object.defineProperty(Regex101CodeGenerator.prototype, 'templateCode', {
+    get: function () {
+      return 'https://regex101.com/?regex=%1$s&flags=%2$s';
+    }
+  });
+  Regex101CodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
+    return encodeURIComponent(pattern);
+  };
+  Regex101CodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
+    return this.combineOptions_1rvtm9$(options, 'i', 'm', 's');
+  };
+  Regex101CodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Regex101CodeGenerator',
+    interfaces: [SimpleReplacingCodeGenerator]
   };
   function JavaCodeGenerator() {
     SimpleReplacingCodeGenerator.call(this);
@@ -1078,7 +1109,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
         throw e;
     }
   };
-  HtmlHelper.prototype.getLinkById_y4putb$ = function (id) {
+  HtmlHelper.prototype.getAnchorById_y4putb$ = function (id) {
     var tmp$;
     try {
       return Kotlin.isType(tmp$ = document.getElementById(id), HTMLAnchorElement) ? tmp$ : throwCCE();
@@ -1149,6 +1180,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var ID_BUTTON_COPY;
   var ID_BUTTON_HELP;
   var ID_DIV_LANGUAGES;
+  var ID_ANCHOR_REGEX101;
   function get_characterUnits($receiver) {
     return $receiver.toString() + 'ch';
   }
@@ -1159,12 +1191,13 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.rowContainer_0 = HtmlHelper_getInstance().getDivById_y4putb$(ID_ROW_CONTAINER);
     this.resultDisplay_0 = HtmlHelper_getInstance().getDivById_y4putb$(ID_RESULT_DISPLAY);
     this.buttonCopy_0 = HtmlHelper_getInstance().getButtonById_y4putb$(ID_BUTTON_COPY);
-    this.buttonHelp_0 = HtmlHelper_getInstance().getLinkById_y4putb$(ID_BUTTON_HELP);
+    this.buttonHelp_0 = HtmlHelper_getInstance().getAnchorById_y4putb$(ID_BUTTON_HELP);
     this.checkOnlyMatches_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_ONLY_MATCHES);
     this.checkCaseInsensitive_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_CASE_INSENSITIVE);
     this.checkDotAll_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_DOT_MATCHES_LINE_BRAKES);
     this.checkMultiline_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_MULTILINE);
     this.containerLanguages_0 = HtmlHelper_getInstance().getDivById_y4putb$(ID_DIV_LANGUAGES);
+    this.anchorRegex101_0 = HtmlHelper_getInstance().getAnchorById_y4putb$(ID_ANCHOR_REGEX101);
     this.recognizerMatchToRow_0 = LinkedHashMap_init();
     this.recognizerMatchToElements_0 = LinkedHashMap_init();
     var $receiver = CodeGenerator$Companion_getInstance().list;
@@ -1225,6 +1258,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     },
     set: function (value) {
       this.resultDisplay_0.innerText = value;
+      this.anchorRegex101_0.href = (new Regex101CodeGenerator()).generateCode_wa467u$(value, this.options).snippet;
     }
   });
   function HtmlPage$showResults$getCssClass(closure$classes, closure$index) {
@@ -1812,6 +1846,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   package$regex_0.CodeGenerator = CodeGenerator;
   package$regex_0.GeneratedSnippet = GeneratedSnippet;
   package$regex_0.SimpleReplacingCodeGenerator = SimpleReplacingCodeGenerator;
+  package$regex_0.Regex101CodeGenerator = Regex101CodeGenerator;
   package$regex_0.JavaCodeGenerator = JavaCodeGenerator;
   package$regex_0.KotlinCodeGenerator = KotlinCodeGenerator;
   package$regex_0.PhpCodeGenerator = PhpCodeGenerator;
@@ -1972,6 +2007,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return ID_DIV_LANGUAGES;
     }
   });
+  Object.defineProperty(package$ui, 'ID_ANCHOR_REGEX101', {
+    get: function () {
+      return ID_ANCHOR_REGEX101;
+    }
+  });
   package$ui.HtmlPage = HtmlPage;
   $$importsForInline$$['kotlinx-html-js'] = $module$kotlinx_html_js;
   package$ui.LanguageCard = LanguageCard;
@@ -2003,6 +2043,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   ID_BUTTON_COPY = 'rg_button_copy';
   ID_BUTTON_HELP = 'rg_button_show_help';
   ID_DIV_LANGUAGES = 'rg_language_accordion';
+  ID_ANCHOR_REGEX101 = 'rg_anchor_regex101';
   main();
   Kotlin.defineModule('regex-generator-web', _);
   return _;

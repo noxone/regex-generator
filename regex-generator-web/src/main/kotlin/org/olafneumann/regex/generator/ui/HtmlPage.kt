@@ -2,10 +2,12 @@ package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
+import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.regex.Regex101CodeGenerator
 import org.w3c.dom.HTMLDivElement
 import kotlin.dom.addClass
 import kotlin.dom.clear
@@ -31,6 +33,7 @@ const val ID_CHECK_MULTILINE = "rg_multiline"
 const val ID_BUTTON_COPY = "rg_button_copy"
 const val ID_BUTTON_HELP = "rg_button_show_help"
 const val ID_DIV_LANGUAGES = "rg_language_accordion"
+const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
 
 private val Int.characterUnits: String get() = "${this}ch"
 
@@ -45,12 +48,13 @@ class HtmlPage(
     private val rowContainer = HtmlHelper.getDivById(ID_ROW_CONTAINER)
     private val resultDisplay = HtmlHelper.getDivById(ID_RESULT_DISPLAY)
     private val buttonCopy = HtmlHelper.getButtonById(ID_BUTTON_COPY)
-    private val buttonHelp = HtmlHelper.getLinkById(ID_BUTTON_HELP)
+    private val buttonHelp = HtmlHelper.getAnchorById(ID_BUTTON_HELP)
     private val checkOnlyMatches = HtmlHelper.getInputById(ID_CHECK_ONLY_MATCHES)
     private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
     private val containerLanguages = HtmlHelper.getDivById(ID_DIV_LANGUAGES)
+    private val anchorRegex101 = HtmlHelper.getAnchorById(ID_ANCHOR_REGEX101)
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
@@ -105,6 +109,7 @@ class HtmlPage(
         get() = resultDisplay.innerText
         set(value) {
             resultDisplay.innerText = value
+            anchorRegex101.href = Regex101CodeGenerator().generateCode(value, options).snippet
         }
 
     override fun showResults(matches: Collection<RecognizerMatch>) {

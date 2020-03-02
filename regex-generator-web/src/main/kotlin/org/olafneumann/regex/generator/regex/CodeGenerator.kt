@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.js.encodeURIComponent
+
 interface CodeGenerator {
     companion object {
         val list = listOf<CodeGenerator>(
@@ -68,6 +70,26 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
         optionList.ifEmpty { return valueIfNone }
         return optionList.joinToString(separator = separator, prefix = prefix, postfix = postfix) { s -> mapper(s) }
     }
+}
+
+internal class Regex101CodeGenerator : SimpleReplacingCodeGenerator() {
+    override val languageName: String
+        get() = "Regex101"
+    override val highlightLanguage: String
+        get() = "regex101"
+
+    override val templateCode: String
+        get() = "https://regex101.com/?regex=%1\$s&flags=%2\$s"
+
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        encodeURIComponent(pattern)
+
+    override fun generateOptionsCode(options: RecognizerCombiner.Options): String =
+        combineOptions(options,
+            valueForCaseInsensitive = "i",
+            valueForDotAll = "s",
+            valueForMultiline = "m"
+        )
 }
 
 internal class JavaCodeGenerator : SimpleReplacingCodeGenerator() {

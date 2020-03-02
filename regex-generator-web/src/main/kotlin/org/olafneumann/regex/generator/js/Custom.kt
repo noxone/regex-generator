@@ -11,3 +11,4 @@ external class Clipboard {
     fun writeText(text: String): Promise<Any>
 }
 
+external fun encodeURIComponent(input: String): String
