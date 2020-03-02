@@ -1,7 +1,5 @@
 package org.olafneumann.regex.generator.regex
 
-import org.olafneumann.regex.generator.Configuration
-
 data class RecognizerMatch(
     val range: IntRange,
     val inputPart: String,
@@ -9,7 +7,7 @@ data class RecognizerMatch(
 ) {
     companion object {
 
-        fun recognize(input: String, config: Configuration = Configuration.default) =
+        fun recognize(input: String, config: RecognizerConfiguration = RecognizerConfiguration.default) =
             config.recognizers
                 .filter { it.active }
                 .flatMap { recognizer ->
@@ -29,7 +27,7 @@ data class RecognizerMatch(
                         { it.recognizer.name })
                 )
 
-        private fun getMainGroupValue(result: MatchResult, config: Configuration) =
+        private fun getMainGroupValue(result: MatchResult, config: RecognizerConfiguration) =
             when {
                 config.mainGroupName != null -> (result.groups as MatchNamedGroupCollection)[config.mainGroupName]?.value
                     ?: throw Exception("Unable to find group '${config.mainGroupName}'")
@@ -39,7 +37,7 @@ data class RecognizerMatch(
             }
 
         // the JS-Regex do not support positions for groups... so we need to use a quite bad work-around (that will not always work)
-        private fun getMainGroupRange(result: MatchResult, config: Configuration): IntRange {
+        private fun getMainGroupRange(result: MatchResult, config: RecognizerConfiguration): IntRange {
             val start = result.value.indexOf(getMainGroupValue(result, config))
             return IntRange(result.range.first + start, result.range.last + start)
         }
