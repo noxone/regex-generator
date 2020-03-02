@@ -2,11 +2,12 @@ package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
+import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.js.navigator
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.regex.Regex101CodeGenerator
 import org.w3c.dom.HTMLDivElement
 import kotlin.dom.addClass
 import kotlin.dom.clear
@@ -30,9 +31,9 @@ const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
 const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
 const val ID_CHECK_MULTILINE = "rg_multiline"
 const val ID_BUTTON_COPY = "rg_button_copy"
-const val ID_DIV_ONLYMATCH_CONTAINER = "rg_div_onlymatch_container"
 const val ID_BUTTON_HELP = "rg_button_show_help"
 const val ID_DIV_LANGUAGES = "rg_language_accordion"
+const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
 
 private val Int.characterUnits: String get() = "${this}ch"
 
@@ -47,12 +48,13 @@ class HtmlPage(
     private val rowContainer = HtmlHelper.getDivById(ID_ROW_CONTAINER)
     private val resultDisplay = HtmlHelper.getDivById(ID_RESULT_DISPLAY)
     private val buttonCopy = HtmlHelper.getButtonById(ID_BUTTON_COPY)
-    private val buttonHelp = HtmlHelper.getLinkById(ID_BUTTON_HELP)
+    private val buttonHelp = HtmlHelper.getAnchorById(ID_BUTTON_HELP)
     private val checkOnlyMatches = HtmlHelper.getInputById(ID_CHECK_ONLY_MATCHES)
     private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
     private val containerLanguages = HtmlHelper.getDivById(ID_DIV_LANGUAGES)
+    private val anchorRegex101 = HtmlHelper.getAnchorById(ID_ANCHOR_REGEX101)
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
@@ -93,21 +95,28 @@ class HtmlPage(
 
     override var inputText: String
         get() = textInput.value
-        set(value) { textInput.value = value}
+        set(value) {
+            textInput.value = value
+        }
 
     override var displayText: String
         get() = textDisplay.innerText
-        set(value) { textDisplay.innerText = value }
+        set(value) {
+            textDisplay.innerText = value
+        }
 
     override var resultText: String
         get() = resultDisplay.innerText
-        set(value) { resultDisplay.innerText = value }
+        set(value) {
+            resultDisplay.innerText = value
+            anchorRegex101.href = Regex101CodeGenerator().generateCode(value, options).snippet
+        }
 
     override fun showResults(matches: Collection<RecognizerMatch>) {
         // TODO remove CSS class iterator
         var index = 0
         val classes = listOf("primary", "success", "danger", "warning")
-        fun getCssClass() = "bg-${classes[index++%classes.size]}"
+        fun getCssClass() = "bg-${classes[index++ % classes.size]}"
 
         fun getElementTitle(match: RecognizerMatch) = "${match.recognizer.name} (${match.inputPart})"
 
@@ -118,7 +127,7 @@ class HtmlPage(
         // find the correct row for each match
         recognizerMatchToRow.putAll(distributeToRows(matches))
         // Create row elements
-        val rowElements = (0..(recognizerMatchToRow.values.max()?:0)).map { createRowElement() }.toList()
+        val rowElements = (0..(recognizerMatchToRow.values.max() ?: 0)).map { createRowElement() }.toList()
         // Create match elements
         matches.forEach { match ->
             val rowElement = rowElements[match.row!!]
@@ -126,31 +135,39 @@ class HtmlPage(
             recognizerMatchToElements[match] = element
             element.addClass(getCssClass())
             element.style.width = match.inputPart.length.characterUnits
-            element.style.left = match.range.first.characterUnits
+            element.style.left = match.first.characterUnits
             element.title = getElementTitle(match)
-            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(match)})
+            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(match) })
         }
     }
 
     private fun distributeToRows(matches: Collection<RecognizerMatch>): Map<RecognizerMatch, Int> {
         val lines = mutableListOf<Int>()
-        return matches.map { match ->
-            val indexOfFreeLine = lines.indexOfFirst { it <= match.range.first }
-            val line = if (indexOfFreeLine >= 0) indexOfFreeLine else { lines.add(0); lines.size - 1 }
-            lines[line] = match.range.last + 1
-            match to line
-        }.toMap()
+        fun createNextLine(): Int {
+            lines.add(0)
+            return lines.size - 1
+        }
+        return matches
+            .sortedWith(compareBy({ it.first }, { -it.length }))
+            .map { match ->
+                val indexOfFreeLine = lines.indexOfFirst { it < match.first }
+                val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
+                lines[line] = match.last
+                match to line
+            }.toMap()
     }
 
 
     private fun createRowElement(): HTMLDivElement =
         HtmlHelper.createDivElement(rowContainer, CLASS_MATCH_ROW)
+
     private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement =
         HtmlHelper.createDivElement(parent, CLASS_MATCH_ITEM)
 
     override fun select(match: RecognizerMatch, selected: Boolean) {
         match.div?.let { HtmlHelper.toggleClass(it, selected, CLASS_ITEM_SELECTED) }
     }
+
     override fun disable(match: RecognizerMatch, disabled: Boolean) {
         match.div?.let { HtmlHelper.toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }
     }
@@ -174,7 +191,8 @@ class HtmlPage(
 
     override fun showUserGuide(initialStep: Boolean) {
         driver.reset()
-        val steps = arrayOf(createStepDefinition(
+        val steps = arrayOf(
+            createStepDefinition(
                 "#rg-title",
                 "New to Regex Generator",
                 "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",

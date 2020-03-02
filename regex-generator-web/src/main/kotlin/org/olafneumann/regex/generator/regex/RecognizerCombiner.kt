@@ -2,11 +2,15 @@ package org.olafneumann.regex.generator.regex
 
 class RecognizerCombiner {
     companion object {
-        fun combine(inputText: String, selectedMatches: Collection<RecognizerMatch>, options: Options = Options()): RegularExpression {
-            val orderedMatches = selectedMatches.sortedBy { it.range.first }
+        fun combine(
+            inputText: String,
+            selectedMatches: Collection<RecognizerMatch>,
+            options: Options = Options()
+        ): RegularExpression {
+            val orderedMatches = selectedMatches.sortedBy { it.first }
 
             val indices = mutableListOf<Int>(0)
-            indices.addAll(orderedMatches.flatMap { listOf(it.range.first, it.range.last + 1) })
+            indices.addAll(orderedMatches.flatMap { listOf(it.first, it.last + 1) })
             indices.add(inputText.length)
 
             val staticValues = (0 until indices.size step 2)
@@ -15,14 +19,15 @@ class RecognizerCombiner {
                 .map { escapeRegex(it) }
                 .map { if (options.onlyPatterns && it.isNotEmpty()) ".*" else it }
 
-            val pattern = staticValues.reduceIndexed { index, acc, s -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${s}" }
+            val pattern =
+                staticValues.reduceIndexed { index, acc, s -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${s}" }
 
-                //.reduceIndexed { index, acc, item -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${item}"}
+            //.reduceIndexed { index, acc, item -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${item}"}
 
             return RegularExpression("^${pattern}$")
         }
 
-        private fun escapeRegex(input: String) = input.replace(Regex("([.\\\\^$\\[{}()*?+])"),"\\$1")
+        private fun escapeRegex(input: String) = input.replace(Regex("([.\\\\^$\\[{}()*?+])"), "\\$1")
     }
 
     data class Options(

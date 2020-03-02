@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.navigator
+import org.olafneumann.regex.generator.regex.Recognizer
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import kotlin.browser.window
@@ -28,7 +29,7 @@ class SimplePresenter : DisplayContract.Presenter {
     override fun onButtonCopyClick() {
         navigator.clipboard
             .writeText(view.resultText)
-            .catch( onRejected = { window.alert("Could not copy text: $it") } )
+            .catch(onRejected = { window.alert("Could not copy text: $it") })
     }
 
     override fun onButtonHelpClick() = view.showUserGuide(false)
@@ -37,7 +38,7 @@ class SimplePresenter : DisplayContract.Presenter {
     override fun onInputChanges(newInput: String) {
         matches.clear()
         matches.putAll(
-            RecognizerMatch.recognize(newInput)
+            Recognizer.recognize(newInput)
                 .map { it to false }
                 .toMap())
 
@@ -51,9 +52,9 @@ class SimplePresenter : DisplayContract.Presenter {
             return
         }
         // determine selected state of the match
-        matches[match] = !(matches[match]?:false)
+        matches[match] = !(matches[match] ?: false)
         // (de)select match in UI
-        view.select(match, matches[match]?:false)
+        view.select(match, matches[match] ?: false)
         // find disabled matches
         val disabledMatches = deactivatedMatches
         // disable matches in UI
@@ -76,13 +77,16 @@ class SimplePresenter : DisplayContract.Presenter {
         view.showGeneratedCodeForPattern(result.pattern)
     }
 
-    private val deactivatedMatches: Collection<RecognizerMatch> get() {
-        val selectedMatches = matches.filter { it.value }.map { it.key }.toList()
-        return matches.keys
-            .filter { !selectedMatches.contains(it) }
-            .filter { match ->
-                selectedMatches.any { selectedMatch ->
-                    selectedMatch.range.intersect(match.range).isNotEmpty() } }
-            .toSet()
-    }
+    private val deactivatedMatches: Collection<RecognizerMatch>
+        get() {
+            val selectedMatches = matches.filter { it.value }.map { it.key }.toList()
+            return matches.keys
+                .filter { !selectedMatches.contains(it) }
+                .filter { match ->
+                    selectedMatches.any { selectedMatch ->
+                        selectedMatch.intersect(match)
+                    }
+                }
+                .toSet()
+        }
 }

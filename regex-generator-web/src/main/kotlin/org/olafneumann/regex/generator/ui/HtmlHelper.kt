@@ -35,7 +35,7 @@ object HtmlHelper {
         }
     }
 
-    internal fun getLinkById(id: String): HTMLAnchorElement {
+    internal fun getAnchorById(id: String): HTMLAnchorElement {
         try {
             return document.getElementById(id) as HTMLAnchorElement
         } catch (e: ClassCastException) {

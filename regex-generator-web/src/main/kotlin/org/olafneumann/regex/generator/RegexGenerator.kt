@@ -16,6 +16,7 @@ fun main() = initRegexGenerator()
 
 private fun initRegexGenerator() {
     try {
+        // initialize presentation code
         val presenter = SimplePresenter()
         val input = if (presenter.currentTextInput.isBlank()) VAL_EXAMPLE_INPUT else presenter.currentTextInput
         presenter.recognizeMatches(input)
