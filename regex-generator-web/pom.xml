@@ -105,7 +105,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/../docs/</outputDirectory>
+                            <outputDirectory>${basedir}/../${github.pages.directory}/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/target/classes</directory>

@@ -230,3 +230,8 @@ gradle-app.setting
 **/build/
 
 # End of https://www.gitignore.io/api/java,maven,gradle,eclipse,intellij,visualstudiocode
+
+
+# Don't add gh-pages folder (which is used for github pages deployment)
+gh-pages/
+
