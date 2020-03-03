@@ -2,12 +2,9 @@ package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
-import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.regex.CodeGenerator
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.regex.RecognizerMatch
-import org.olafneumann.regex.generator.regex.Regex101CodeGenerator
+import org.olafneumann.regex.generator.regex.*
+import org.olafneumann.regex.generator.regex.UrlGenerator
 import org.w3c.dom.HTMLDivElement
 import kotlin.dom.addClass
 import kotlin.dom.clear
@@ -34,6 +31,7 @@ const val ID_BUTTON_COPY = "rg_button_copy"
 const val ID_BUTTON_HELP = "rg_button_show_help"
 const val ID_DIV_LANGUAGES = "rg_language_accordion"
 const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
+const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
 
 private val Int.characterUnits: String get() = "${this}ch"
 
@@ -54,15 +52,20 @@ class HtmlPage(
     private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
     private val containerLanguages = HtmlHelper.getDivById(ID_DIV_LANGUAGES)
-    private val anchorRegex101 = HtmlHelper.getAnchorById(ID_ANCHOR_REGEX101)
+
+    private val anchorRegex101 = LinkHandler(
+        HtmlHelper.getAnchorById(ID_ANCHOR_REGEX101),
+        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s"))
+    private val anchorRegexr = LinkHandler(
+        HtmlHelper.getAnchorById(ID_ANCHOR_REGEXR),
+        UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
+    )
 
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
 
-    private val languageDisplays = CodeGenerator.list
-        .map {
-            it to LanguageCard(it, containerLanguages)
-        }
+    private val languageDisplays = CodeGenerator.all
+        .map { it to LanguageCard(it, containerLanguages) }
         .toMap()
 
     private val driver = Driver(js("{}"))
@@ -109,7 +112,8 @@ class HtmlPage(
         get() = resultDisplay.innerText
         set(value) {
             resultDisplay.innerText = value
-            anchorRegex101.href = Regex101CodeGenerator().generateCode(value, options).snippet
+            anchorRegex101.setPattern(value, options)
+            anchorRegexr.setPattern(value, options)
         }
 
     override fun showResults(matches: Collection<RecognizerMatch>) {
@@ -183,7 +187,7 @@ class HtmlPage(
 
     override fun showGeneratedCodeForPattern(pattern: String) {
         val options = options
-        CodeGenerator.list
+        CodeGenerator.all
             .forEach { languageDisplays[it]?.setSnippet(it.generateCode(pattern, options)) }
         js("Prism.highlightAll();")
     }
