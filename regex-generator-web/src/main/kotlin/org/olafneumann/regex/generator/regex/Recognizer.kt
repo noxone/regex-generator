@@ -16,21 +16,25 @@ interface Recognizer {
 }
 
 data class RecognizerMatch(
-    val startRange: IntRange? = null,
-    val mainRange: IntRange,
-    val endRange: IntRange? = null,
+    val ranges: List<IntRange>,
     val inputPart: String,
     val recognizer: Recognizer
 ) {
-    val first: Int = startRange?.first ?: mainRange.first
-    val last: Int = endRange?.last ?: mainRange.last
+    init {
+        if (ranges.isEmpty()) {
+            throw RuntimeException("RecognizerMatch without ranges is not allowed.")
+        }
+    }
+
+    val first: Int by lazy { ranges.map { it.first }.min()!! }
+    val last: Int by lazy { ranges.map { it.last }.max()!! }
     val length: Int = last - first + 1
 
-    private val totalRange: IntRange = IntRange(start = first, endInclusive = last)
+    fun intersect(other: RecognizerMatch): Boolean =
+        ranges.flatMap { thisRange -> other.ranges.map { otherRange -> thisRange to otherRange } }
+            .any { it.first.intersect(it.second).isNotEmpty() }
 
-    fun intersect(other: RecognizerMatch): Boolean = totalRange.intersect(other.totalRange).isNotEmpty()
-
-    override fun toString() =
+    override fun toString(): String =
         "[$first+$length] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
 }
 
