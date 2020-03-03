@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
+import org.olafneumann.regex.generator.regex.CodeGenerator
+import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.w3c.dom.*
 import kotlin.browser.document
 import kotlin.dom.addClass
@@ -67,5 +69,14 @@ object HtmlHelper {
             element.addClass(className)
         else
             element.removeClass(className)
+    }
+}
+
+internal class LinkHandler(
+    private val link: HTMLAnchorElement,
+    private val codeGenerator: CodeGenerator
+) {
+    fun setPattern(pattern: String, options: RecognizerCombiner.Options) {
+        link.href = codeGenerator.generateCode(pattern, options).snippet
     }
 }

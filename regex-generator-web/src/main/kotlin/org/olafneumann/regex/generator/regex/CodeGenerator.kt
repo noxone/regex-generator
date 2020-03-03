@@ -4,7 +4,7 @@ import org.olafneumann.regex.generator.js.encodeURIComponent
 
 interface CodeGenerator {
     companion object {
-        val list = listOf<CodeGenerator>(
+        val all = listOf<CodeGenerator>(
             JavaCodeGenerator()
             , KotlinCodeGenerator()
             , PhpCodeGenerator()
@@ -44,7 +44,8 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
     override fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet =
         GeneratedSnippet(
             templateCode.replace("%1${'$'}s", transformPattern(pattern, options))
-                .replace("%2${'$'}s", generateOptionsCode(options)),
+                .replace("%2${'$'}s", generateOptionsCode(options))
+                .replace("%3${'$'}s", pattern),
             getWarnings(pattern, options)
         )
 
@@ -72,24 +73,21 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
     }
 }
 
-internal class Regex101CodeGenerator : SimpleReplacingCodeGenerator() {
-    override val languageName: String
-        get() = "Regex101"
-    override val highlightLanguage: String
-        get() = "regex101"
-
-    override val templateCode: String
-        get() = "https://regex101.com/?regex=%1\$s&flags=%2\$s"
-
+internal open class UrlGenerator(
+    private val linkName: String,
+    private val urlTemplate: String,
+    private val valueForCaseInsensitive: String? = "i",
+    private val valueForDotAll: String? = "s",
+    private val valueForMultiline: String? = "m"
+) : SimpleReplacingCodeGenerator() {
+    override val languageName: String get() = linkName
+    override val highlightLanguage: String get() = linkName
+    override val templateCode: String get() = urlTemplate
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         encodeURIComponent(pattern)
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String =
-        combineOptions(options,
-            valueForCaseInsensitive = "i",
-            valueForDotAll = "s",
-            valueForMultiline = "m"
-        )
+        combineOptions(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll)
 }
 
 internal class JavaCodeGenerator : SimpleReplacingCodeGenerator() {
