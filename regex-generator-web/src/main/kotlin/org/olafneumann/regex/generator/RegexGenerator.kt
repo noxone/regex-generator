@@ -39,7 +39,6 @@ private fun isNewUser(): Boolean =
     localStorage.getItem(KEY_LAST_VISIT)?.toBoolean() ?: true
             || localStorage.getItem(KEY_LAST_VERSION)?.toIntOrNull() ?: VAL_VERSION < VAL_VERSION
 private fun storeUserLastInfo() {
-    localStorage[KEY_LAST_VISIT] = Date().toISOString()
     localStorage[KEY_LAST_VERSION] = VAL_VERSION.toString()
 }
 

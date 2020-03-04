@@ -11,7 +11,7 @@ interface DisplayContract {
 
         val options: RecognizerCombiner.Options
 
-        fun showCopyButton(visible: Boolean)
+        fun hideCopyButton()
         fun selectInputText()
         fun showResults(matches: Collection<RecognizerMatch>)
         fun select(match: RecognizerMatch, selected: Boolean)

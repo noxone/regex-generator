@@ -21,7 +21,7 @@ data class SimpleRecognizer(
         searchRegex.findAll(input)
             .map { result ->
                 RecognizerMatch(
-                    mainRange = getMainGroupRange(result),
+                    ranges = listOf(getMainGroupRange(result)),
                     inputPart = getMainGroupValue(result),
                     recognizer = this
                 )

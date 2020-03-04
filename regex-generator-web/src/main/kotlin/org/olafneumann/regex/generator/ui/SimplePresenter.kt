@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.navigator
-import org.olafneumann.regex.generator.regex.Recognizer
+import org.olafneumann.regex.generator.regex.Configuration
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import kotlin.browser.window
@@ -16,7 +16,7 @@ class SimplePresenter : DisplayContract.Presenter {
     init {
         // if copy is not available: remove copy button
         if (navigator.clipboard == undefined) {
-            view.showCopyButton(false)
+            view.hideCopyButton()
         }
     }
 
@@ -37,15 +37,17 @@ class SimplePresenter : DisplayContract.Presenter {
 
     override fun onInputChanges(newInput: String) {
         matches.clear()
-        matches.putAll(
-            Recognizer.recognize(newInput)
-                .map { it to false }
-                .toMap())
+        matches.putAll(findMatches(newInput).map { it to false }.toMap())
 
         view.displayText = newInput
         view.showResults(matches.keys)
         computeOutputPattern()
     }
+
+    private fun findMatches(input: String): List<RecognizerMatch> =
+        Configuration.default.recognizers
+            .filter { it.active }
+            .flatMap { it.findMatches(input) }
 
     override fun onSuggestionClick(match: RecognizerMatch) {
         if (deactivatedMatches.contains(match)) {
