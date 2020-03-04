@@ -27,36 +27,38 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var wrapFunction = Kotlin.wrapFunction;
   var Comparator = Kotlin.kotlin.Comparator;
   var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
-  var intersect = Kotlin.kotlin.collections.intersect_q4559j$;
-  var IntRange = Kotlin.kotlin.ranges.IntRange;
-  var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
   var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var step = Kotlin.kotlin.ranges.step_xsgg7u$;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var lazy = Kotlin.kotlin.lazy_klfg04$;
+  var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
   var collectionSizeOrDefault = Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$;
   var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
   var UnsupportedOperationException_init = Kotlin.kotlin.UnsupportedOperationException_init_pdl1vj$;
   var checkIndexOverflow = Kotlin.kotlin.collections.checkIndexOverflow_za3lpa$;
+  var compareBy = Kotlin.kotlin.comparisons.compareBy_bvgy4j$;
+  var intersect = Kotlin.kotlin.collections.intersect_q4559j$;
+  var RuntimeException_init = Kotlin.kotlin.RuntimeException_init_pdl1vj$;
+  var min = Kotlin.kotlin.collections.min_exjks8$;
+  var ensureNotNull = Kotlin.ensureNotNull;
+  var max = Kotlin.kotlin.collections.max_exjks8$;
+  var Collection = Kotlin.kotlin.collections.Collection;
   var map = Kotlin.kotlin.sequences.map_z5avom$;
   var toList = Kotlin.kotlin.sequences.toList_veqyi0$;
   var MatchNamedGroupCollection = Kotlin.kotlin.text.MatchNamedGroupCollection;
   var throwCCE = Kotlin.throwCCE;
   var Exception_init = Kotlin.kotlin.Exception_init_pdl1vj$;
-  var RuntimeException_init = Kotlin.kotlin.RuntimeException_init_pdl1vj$;
   var indexOf = Kotlin.kotlin.text.indexOf_l5u8uk$;
+  var IntRange = Kotlin.kotlin.ranges.IntRange;
   var IllegalArgumentException_init = Kotlin.kotlin.IllegalArgumentException_init_pdl1vj$;
   var RuntimeException = Kotlin.kotlin.RuntimeException;
   var ClassCastException = Kotlin.kotlin.ClassCastException;
   var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
   var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
   var clear = Kotlin.kotlin.dom.clear_asww5s$;
-  var max = Kotlin.kotlin.collections.max_exjks8$;
   var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
-  var ensureNotNull = Kotlin.ensureNotNull;
   var Unit = Kotlin.kotlin.Unit;
-  var compareBy = Kotlin.kotlin.comparisons.compareBy_bvgy4j$;
   var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
   var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
@@ -78,7 +80,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var PRE_init = $module$kotlinx_html_js.kotlinx.html.PRE;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
   var equals = Kotlin.equals;
-  var Collection = Kotlin.kotlin.collections.Collection;
   UrlGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   UrlGenerator.prototype.constructor = UrlGenerator;
   JavaCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
@@ -125,7 +126,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return ((tmp$_0 = (tmp$ = localStorage.getItem(KEY_LAST_VISIT)) != null ? toBoolean(tmp$) : null) != null ? tmp$_0 : true) || ((tmp$_2 = (tmp$_1 = localStorage.getItem(KEY_LAST_VERSION)) != null ? toIntOrNull(tmp$_1) : null) != null ? tmp$_2 : 3) < 3;
   }
   function storeUserLastInfo() {
-    localStorage[KEY_LAST_VISIT] = (new Date()).toISOString();
     localStorage[KEY_LAST_VERSION] = (3).toString();
   }
   function createStepDefinition(element, title, description, position) {
@@ -638,185 +638,87 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.recognizers, other.recognizers))));
   };
   function Recognizer() {
-    Recognizer$Companion_getInstance();
-  }
-  function Recognizer$Companion() {
-    Recognizer$Companion_instance = this;
-  }
-  Recognizer$Companion.prototype.recognize_mu52mh$ = function (input, config) {
-    if (config === void 0)
-      config = Configuration$Companion_getInstance().default;
-    var $receiver = config.recognizers;
-    var destination = ArrayList_init();
-    var tmp$;
-    tmp$ = $receiver.iterator();
-    while (tmp$.hasNext()) {
-      var element = tmp$.next();
-      var list = element.findMatches_61zpoe$(input);
-      addAll(destination, list);
-    }
-    return destination;
-  };
-  Recognizer$Companion.$metadata$ = {
-    kind: Kind_OBJECT,
-    simpleName: 'Companion',
-    interfaces: []
-  };
-  var Recognizer$Companion_instance = null;
-  function Recognizer$Companion_getInstance() {
-    if (Recognizer$Companion_instance === null) {
-      new Recognizer$Companion();
-    }
-    return Recognizer$Companion_instance;
   }
   Recognizer.$metadata$ = {
     kind: Kind_INTERFACE,
     simpleName: 'Recognizer',
     interfaces: []
   };
-  function RecognizerMatch(startRange, mainRange, endRange, inputPart, recognizer) {
-    if (startRange === void 0)
-      startRange = null;
-    if (endRange === void 0)
-      endRange = null;
-    this.startRange = startRange;
-    this.mainRange = mainRange;
-    this.endRange = endRange;
-    this.inputPart = inputPart;
-    this.recognizer = recognizer;
-    var tmp$, tmp$_0, tmp$_1, tmp$_2;
-    this.first = (tmp$_0 = (tmp$ = this.startRange) != null ? tmp$.first : null) != null ? tmp$_0 : this.mainRange.first;
-    this.last = (tmp$_2 = (tmp$_1 = this.endRange) != null ? tmp$_1.last : null) != null ? tmp$_2 : this.mainRange.last;
-    this.length = this.last - this.first + 1 | 0;
-    this.totalRange_0 = new IntRange(this.first, this.last);
-  }
-  RecognizerMatch.prototype.intersect_hdji9c$ = function (other) {
-    return !intersect(this.totalRange_0, other.totalRange_0).isEmpty();
-  };
-  RecognizerMatch.prototype.toString = function () {
-    return '[' + this.first + '+' + this.length + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
-  };
-  RecognizerMatch.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'RecognizerMatch',
-    interfaces: []
-  };
-  RecognizerMatch.prototype.component1 = function () {
-    return this.startRange;
-  };
-  RecognizerMatch.prototype.component2 = function () {
-    return this.mainRange;
-  };
-  RecognizerMatch.prototype.component3 = function () {
-    return this.endRange;
-  };
-  RecognizerMatch.prototype.component4 = function () {
-    return this.inputPart;
-  };
-  RecognizerMatch.prototype.component5 = function () {
-    return this.recognizer;
-  };
-  RecognizerMatch.prototype.copy_hsopiu$ = function (startRange, mainRange, endRange, inputPart, recognizer) {
-    return new RecognizerMatch(startRange === void 0 ? this.startRange : startRange, mainRange === void 0 ? this.mainRange : mainRange, endRange === void 0 ? this.endRange : endRange, inputPart === void 0 ? this.inputPart : inputPart, recognizer === void 0 ? this.recognizer : recognizer);
-  };
-  RecognizerMatch.prototype.hashCode = function () {
-    var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.startRange) | 0;
-    result = result * 31 + Kotlin.hashCode(this.mainRange) | 0;
-    result = result * 31 + Kotlin.hashCode(this.endRange) | 0;
-    result = result * 31 + Kotlin.hashCode(this.inputPart) | 0;
-    result = result * 31 + Kotlin.hashCode(this.recognizer) | 0;
-    return result;
-  };
-  RecognizerMatch.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.startRange, other.startRange) && Kotlin.equals(this.mainRange, other.mainRange) && Kotlin.equals(this.endRange, other.endRange) && Kotlin.equals(this.inputPart, other.inputPart) && Kotlin.equals(this.recognizer, other.recognizer)))));
-  };
-  function Comparator$ObjectLiteral_0(closure$comparison) {
-    this.closure$comparison = closure$comparison;
-  }
-  Comparator$ObjectLiteral_0.prototype.compare = function (a, b) {
-    return this.closure$comparison(a, b);
-  };
-  Comparator$ObjectLiteral_0.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
-  var compareBy$lambda_0 = wrapFunction(function () {
-    var compareValues = Kotlin.kotlin.comparisons.compareValues_s00gnj$;
-    return function (closure$selector) {
-      return function (a, b) {
-        var selector = closure$selector;
-        return compareValues(selector(a), selector(b));
-      };
-    };
-  });
   function RecognizerCombiner() {
     RecognizerCombiner$Companion_getInstance();
   }
   function RecognizerCombiner$Companion() {
     RecognizerCombiner$Companion_instance = this;
   }
-  function RecognizerCombiner$Companion$combine$lambda(it) {
-    return it.first;
-  }
   RecognizerCombiner$Companion.prototype.combine_9yx9zl$ = function (inputText, selectedMatches, options) {
     if (options === void 0)
       options = new RecognizerCombiner$Options();
-    var orderedMatches = sortedWith(selectedMatches, new Comparator$ObjectLiteral_0(compareBy$lambda_0(RecognizerCombiner$Companion$combine$lambda)));
+    var orderedMatches = sortedWith(selectedMatches, RecognizerMatch$Companion_getInstance().comparator);
     var indices = mutableListOf([0]);
     var destination = ArrayList_init();
     var tmp$;
     tmp$ = orderedMatches.iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      var list = listOf([element.first, element.last + 1 | 0]);
+      var list = element.ranges;
       addAll(destination, list);
     }
-    indices.addAll_brywnq$(destination);
+    var destination_0 = ArrayList_init();
+    var tmp$_0;
+    tmp$_0 = destination.iterator();
+    while (tmp$_0.hasNext()) {
+      var element_0 = tmp$_0.next();
+      var list_0 = listOf([element_0.first, element_0.last + 1 | 0]);
+      addAll(destination_0, list_0);
+    }
+    indices.addAll_brywnq$(destination_0);
     indices.add_11rb$(inputText.length);
     var $receiver = step(until(0, indices.size), 2);
-    var destination_0 = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
-    var tmp$_0;
-    tmp$_0 = $receiver.iterator();
-    while (tmp$_0.hasNext()) {
-      var item = tmp$_0.next();
-      destination_0.add_11rb$(to(indices.get_za3lpa$(item), indices.get_za3lpa$(item + 1 | 0)));
-    }
-    var destination_1 = ArrayList_init_0(collectionSizeOrDefault(destination_0, 10));
+    var destination_1 = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
     var tmp$_1;
-    tmp$_1 = destination_0.iterator();
+    tmp$_1 = $receiver.iterator();
     while (tmp$_1.hasNext()) {
-      var item_0 = tmp$_1.next();
-      var tmp$_2 = destination_1.add_11rb$;
-      var startIndex = item_0.first;
-      var endIndex = item_0.second;
-      tmp$_2.call(destination_1, inputText.substring(startIndex, endIndex));
+      var item = tmp$_1.next();
+      destination_1.add_11rb$(to(indices.get_za3lpa$(item), indices.get_za3lpa$(item + 1 | 0)));
     }
     var destination_2 = ArrayList_init_0(collectionSizeOrDefault(destination_1, 10));
-    var tmp$_3;
-    tmp$_3 = destination_1.iterator();
-    while (tmp$_3.hasNext()) {
-      var item_1 = tmp$_3.next();
-      destination_2.add_11rb$(this.escapeRegex_0(item_1));
+    var tmp$_2;
+    tmp$_2 = destination_1.iterator();
+    while (tmp$_2.hasNext()) {
+      var item_0 = tmp$_2.next();
+      var tmp$_3 = destination_2.add_11rb$;
+      var startIndex = item_0.first;
+      var endIndex = item_0.second;
+      tmp$_3.call(destination_2, inputText.substring(startIndex, endIndex));
     }
     var destination_3 = ArrayList_init_0(collectionSizeOrDefault(destination_2, 10));
     var tmp$_4;
     tmp$_4 = destination_2.iterator();
     while (tmp$_4.hasNext()) {
-      var item_2 = tmp$_4.next();
-      var tmp$_5 = destination_3.add_11rb$;
-      var tmp$_6 = options.onlyPatterns;
-      if (tmp$_6) {
-        tmp$_6 = item_2.length > 0;
-      }
-      tmp$_5.call(destination_3, tmp$_6 ? '.*' : item_2);
+      var item_1 = tmp$_4.next();
+      destination_3.add_11rb$(this.escapeRegex_0(item_1));
     }
-    var staticValues = destination_3;
-    var tmp$_7;
+    var destination_4 = ArrayList_init_0(collectionSizeOrDefault(destination_3, 10));
+    var tmp$_5;
+    tmp$_5 = destination_3.iterator();
+    while (tmp$_5.hasNext()) {
+      var item_2 = tmp$_5.next();
+      var tmp$_6 = destination_4.add_11rb$;
+      var tmp$_7 = options.onlyPatterns;
+      if (tmp$_7) {
+        tmp$_7 = item_2.length > 0;
+      }
+      tmp$_6.call(destination_4, tmp$_7 ? '.*' : item_2);
+    }
+    var staticValues = destination_4;
+    var tmp$_8;
     var iterator = staticValues.iterator();
     if (!iterator.hasNext())
       throw UnsupportedOperationException_init("Empty collection can't be reduced.");
     var index = 1;
     var accumulator = iterator.next();
     while (iterator.hasNext()) {
-      var index_0 = checkIndexOverflow((tmp$_7 = index, index = tmp$_7 + 1 | 0, tmp$_7));
+      var index_0 = checkIndexOverflow((tmp$_8 = index, index = tmp$_8 + 1 | 0, tmp$_8));
       var acc = accumulator;
       var s = iterator.next();
       accumulator = acc + ((index_0 - 1 | 0) < orderedMatches.size ? orderedMatches.get_za3lpa$(index_0 - 1 | 0).recognizer.outputPattern : '') + s;
@@ -928,6 +830,124 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'RecognizerCombiner',
     interfaces: []
   };
+  function RecognizerMatch(ranges, inputPart, recognizer) {
+    RecognizerMatch$Companion_getInstance();
+    this.ranges = ranges;
+    this.inputPart = inputPart;
+    this.recognizer = recognizer;
+    if (this.ranges.isEmpty()) {
+      throw RuntimeException_init('RecognizerMatch without ranges is not allowed.');
+    }
+    var $receiver = this.ranges;
+    var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      destination.add_11rb$(item.first);
+    }
+    this.first = ensureNotNull(min(destination));
+    var $receiver_0 = this.ranges;
+    var destination_0 = ArrayList_init_0(collectionSizeOrDefault($receiver_0, 10));
+    var tmp$_0;
+    tmp$_0 = $receiver_0.iterator();
+    while (tmp$_0.hasNext()) {
+      var item_0 = tmp$_0.next();
+      destination_0.add_11rb$(item_0.last);
+    }
+    this.last_0 = ensureNotNull(max(destination_0));
+    this.length = this.last_0 - this.first + 1 | 0;
+  }
+  function RecognizerMatch$Companion() {
+    RecognizerMatch$Companion_instance = this;
+    this.comparator = compareBy([RecognizerMatch$Companion$comparator$lambda, RecognizerMatch$Companion$comparator$lambda_0]);
+  }
+  function RecognizerMatch$Companion$comparator$lambda(it) {
+    return it.first;
+  }
+  function RecognizerMatch$Companion$comparator$lambda_0(it) {
+    return -it.length | 0;
+  }
+  RecognizerMatch$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var RecognizerMatch$Companion_instance = null;
+  function RecognizerMatch$Companion_getInstance() {
+    if (RecognizerMatch$Companion_instance === null) {
+      new RecognizerMatch$Companion();
+    }
+    return RecognizerMatch$Companion_instance;
+  }
+  RecognizerMatch.prototype.intersect_hdji9c$ = function (other) {
+    var $receiver = this.ranges;
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      var $receiver_0 = other.ranges;
+      var destination_0 = ArrayList_init_0(collectionSizeOrDefault($receiver_0, 10));
+      var tmp$_0;
+      tmp$_0 = $receiver_0.iterator();
+      while (tmp$_0.hasNext()) {
+        var item = tmp$_0.next();
+        destination_0.add_11rb$(to(element, item));
+      }
+      var list = destination_0;
+      addAll(destination, list);
+    }
+    var any$result;
+    any$break: do {
+      var tmp$_1;
+      if (Kotlin.isType(destination, Collection) && destination.isEmpty()) {
+        any$result = false;
+        break any$break;
+      }
+      tmp$_1 = destination.iterator();
+      while (tmp$_1.hasNext()) {
+        var element_0 = tmp$_1.next();
+        if (!intersect(element_0.first, element_0.second).isEmpty()) {
+          any$result = true;
+          break any$break;
+        }
+      }
+      any$result = false;
+    }
+     while (false);
+    return any$result;
+  };
+  RecognizerMatch.prototype.toString = function () {
+    return '[' + this.first + '+' + this.length + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
+  };
+  RecognizerMatch.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'RecognizerMatch',
+    interfaces: []
+  };
+  RecognizerMatch.prototype.component1 = function () {
+    return this.ranges;
+  };
+  RecognizerMatch.prototype.component2 = function () {
+    return this.inputPart;
+  };
+  RecognizerMatch.prototype.component3 = function () {
+    return this.recognizer;
+  };
+  RecognizerMatch.prototype.copy_c4pwzn$ = function (ranges, inputPart, recognizer) {
+    return new RecognizerMatch(ranges === void 0 ? this.ranges : ranges, inputPart === void 0 ? this.inputPart : inputPart, recognizer === void 0 ? this.recognizer : recognizer);
+  };
+  RecognizerMatch.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.ranges) | 0;
+    result = result * 31 + Kotlin.hashCode(this.inputPart) | 0;
+    result = result * 31 + Kotlin.hashCode(this.recognizer) | 0;
+    return result;
+  };
+  RecognizerMatch.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.ranges, other.ranges) && Kotlin.equals(this.inputPart, other.inputPart) && Kotlin.equals(this.recognizer, other.recognizer)))));
+  };
   function SimpleRecognizer(name, outputPattern, description, active, searchPattern, mainGroupIndex, mainGroupName) {
     if (description === void 0)
       description = null;
@@ -978,7 +998,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   });
   function SimpleRecognizer$findMatches$lambda(this$SimpleRecognizer) {
     return function (result) {
-      return new RecognizerMatch(void 0, this$SimpleRecognizer.getMainGroupRange_0(result), void 0, this$SimpleRecognizer.getMainGroupValue_0(result), this$SimpleRecognizer);
+      return new RecognizerMatch(listOf_0(this$SimpleRecognizer.getMainGroupRange_0(result)), this$SimpleRecognizer.getMainGroupValue_0(result), this$SimpleRecognizer);
     };
   }
   SimpleRecognizer.prototype.findMatches_61zpoe$ = function (input) {
@@ -1256,14 +1276,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   HtmlPage.prototype.get_div_0 = function ($receiver) {
     return this.recognizerMatchToElements_0.get_11rb$($receiver);
   };
-  HtmlPage.prototype.showCopyButton_6taknv$ = function (visible) {
-    var button = jQuery(this.buttonCopy_0);
-    if (visible) {
-      button.show();
-    }
-     else {
-      button.hide();
-    }
+  HtmlPage.prototype.hideCopyButton = function () {
+    jQuery(this.buttonCopy_0).parent().remove();
   };
   HtmlPage.prototype.selectInputText = function () {
     this.textInput_0.select();
@@ -1348,30 +1362,40 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return closure$lines.size - 1 | 0;
     };
   }
-  function HtmlPage$distributeToRows$lambda(it) {
-    return it.first;
-  }
-  function HtmlPage$distributeToRows$lambda_0(it) {
-    return -it.length | 0;
-  }
   HtmlPage.prototype.distributeToRows_0 = function (matches) {
     var lines = ArrayList_init();
     var createNextLine = HtmlPage$distributeToRows$createNextLine(lines);
-    var $receiver = sortedWith(matches, compareBy([HtmlPage$distributeToRows$lambda, HtmlPage$distributeToRows$lambda_0]));
-    var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
+    var $receiver = sortedWith(matches, RecognizerMatch$Companion_getInstance().comparator);
+    var destination = ArrayList_init();
     var tmp$;
     tmp$ = $receiver.iterator();
-    loop_label: while (tmp$.hasNext()) {
-      var item = tmp$.next();
-      var tmp$_0 = destination.add_11rb$;
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      var $receiver_0 = element.ranges;
+      var destination_0 = ArrayList_init_0(collectionSizeOrDefault($receiver_0, 10));
+      var tmp$_0;
+      tmp$_0 = $receiver_0.iterator();
+      while (tmp$_0.hasNext()) {
+        var item = tmp$_0.next();
+        destination_0.add_11rb$(to(element, item));
+      }
+      var list = destination_0;
+      addAll(destination, list);
+    }
+    var destination_1 = ArrayList_init_0(collectionSizeOrDefault(destination, 10));
+    var tmp$_1;
+    tmp$_1 = destination.iterator();
+    loop_label: while (tmp$_1.hasNext()) {
+      var item_0 = tmp$_1.next();
+      var tmp$_2 = destination_1.add_11rb$;
       var indexOfFirst$result;
       indexOfFirst$break: do {
-        var tmp$_1;
+        var tmp$_3;
         var index = 0;
-        tmp$_1 = lines.iterator();
-        while (tmp$_1.hasNext()) {
-          var item_0 = tmp$_1.next();
-          if (item_0 < item.first) {
+        tmp$_3 = lines.iterator();
+        while (tmp$_3.hasNext()) {
+          var item_1 = tmp$_3.next();
+          if (item_1 < item_0.second.first) {
             indexOfFirst$result = index;
             break indexOfFirst$break;
           }
@@ -1382,10 +1406,10 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
        while (false);
       var indexOfFreeLine = indexOfFirst$result;
       var line = indexOfFreeLine >= 0 ? indexOfFreeLine : createNextLine();
-      lines.set_wxm5ur$(line, item.last);
-      tmp$_0.call(destination, to(item, line));
+      lines.set_wxm5ur$(line, item_0.second.last);
+      tmp$_2.call(destination_1, to(item_0.first, line));
     }
-    return toMap(destination);
+    return toMap(destination_1);
   };
   HtmlPage.prototype.createRowElement_0 = function () {
     return HtmlHelper_getInstance().createDivElement_9utdl7$(this.rowContainer_0, [CLASS_MATCH_ROW]);
@@ -1712,7 +1736,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.view_0 = new HtmlPage(this);
     this.matches_0 = LinkedHashMap_init();
     if (equals(navigator.clipboard, undefined)) {
-      this.view_0.showCopyButton_6taknv$(false);
+      this.view_0.hideCopyButton();
     }
   }
   Object.defineProperty(SimplePresenter.prototype, 'currentTextInput', {
@@ -1743,7 +1767,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   SimplePresenter.prototype.onInputChanges_61zpoe$ = function (newInput) {
     this.matches_0.clear();
     var tmp$ = this.matches_0;
-    var $receiver = Recognizer$Companion_getInstance().recognize_mu52mh$(newInput);
+    var $receiver = this.findMatches_0(newInput);
     var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
     var tmp$_0;
     tmp$_0 = $receiver.iterator();
@@ -1755,6 +1779,26 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.view_0.displayText = newInput;
     this.view_0.showResults_oz4rjz$(this.matches_0.keys);
     this.computeOutputPattern_0();
+  };
+  SimplePresenter.prototype.findMatches_0 = function (input) {
+    var $receiver = Configuration$Companion_getInstance().default.recognizers;
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (element.active)
+        destination.add_11rb$(element);
+    }
+    var destination_0 = ArrayList_init();
+    var tmp$_0;
+    tmp$_0 = destination.iterator();
+    while (tmp$_0.hasNext()) {
+      var element_0 = tmp$_0.next();
+      var list = element_0.findMatches_61zpoe$(input);
+      addAll(destination_0, list);
+    }
+    return destination_0;
   };
   SimplePresenter.prototype.onSuggestionClick_hdji9c$ = function (match) {
     var tmp$, tmp$_0;
@@ -1911,17 +1955,17 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     get: Configuration$Companion_getInstance
   });
   package$regex_0.Configuration = Configuration;
-  Object.defineProperty(Recognizer, 'Companion', {
-    get: Recognizer$Companion_getInstance
-  });
   package$regex_0.Recognizer = Recognizer;
-  package$regex_0.RecognizerMatch = RecognizerMatch;
   Object.defineProperty(RecognizerCombiner, 'Companion', {
     get: RecognizerCombiner$Companion_getInstance
   });
   RecognizerCombiner.Options = RecognizerCombiner$Options;
   RecognizerCombiner.RegularExpression = RecognizerCombiner$RegularExpression;
   package$regex_0.RecognizerCombiner = RecognizerCombiner;
+  Object.defineProperty(RecognizerMatch, 'Companion', {
+    get: RecognizerMatch$Companion_getInstance
+  });
+  package$regex_0.RecognizerMatch = RecognizerMatch;
   package$regex_0.SimpleRecognizer = SimpleRecognizer;
   DisplayContract.View = DisplayContract$View;
   DisplayContract.Presenter = DisplayContract$Presenter;
