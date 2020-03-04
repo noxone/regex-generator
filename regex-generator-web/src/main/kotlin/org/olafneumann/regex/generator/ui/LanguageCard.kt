@@ -5,7 +5,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.CodeGenerator
-import org.olafneumann.regex.generator.regex.GeneratedSnippet
+import org.olafneumann.regex.generator.regex.CodeGenerator.GeneratedSnippet
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.Node
 import kotlin.browser.document
