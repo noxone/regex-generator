@@ -123,7 +123,9 @@ class HtmlPage(
         // find the correct row for each match
         recognizerMatchToRow.putAll(distributeToRows(matches))
         // Create row elements
-        val rowElements = (0..(recognizerMatchToRow.values.max() ?: 0)).map { createRowElement() }.toList()
+        val rowElements = (0..(recognizerMatchToRow.values.max() ?: 0))
+            .map { createRowElement() }
+            .toList()
         // Create match elements
         matches.forEach { match ->
             val rowElement = rowElements[match.row!!]
@@ -144,12 +146,13 @@ class HtmlPage(
             return lines.size - 1
         }
         return matches
-            .sortedWith(compareBy({ it.first }, { -it.length }))
-            .map { match ->
-                val indexOfFreeLine = lines.indexOfFirst { it < match.first }
+            .sortedWith(RecognizerMatch.comparator)
+            .flatMap { match -> match.ranges.map { match to it } }
+            .map { pair ->
+                val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }
                 val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
-                lines[line] = match.last
-                match to line
+                lines[line] = pair.second.last
+                pair.first to line
             }.toMap()
     }
 

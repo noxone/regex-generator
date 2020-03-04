@@ -7,10 +7,12 @@ class RecognizerCombiner {
             selectedMatches: Collection<RecognizerMatch>,
             options: Options = Options()
         ): RegularExpression {
-            val orderedMatches = selectedMatches.sortedBy { it.first }
+            val orderedMatches = selectedMatches.sortedWith(RecognizerMatch.comparator)
 
             val indices = mutableListOf<Int>(0)
-            indices.addAll(orderedMatches.flatMap { listOf(it.first, it.last + 1) })
+            indices.addAll(orderedMatches
+                .flatMap { it.ranges }
+                .flatMap { listOf(it.first, it.last + 1) })
             indices.add(inputText.length)
 
             val staticValues = (0 until indices.size step 2)
@@ -21,8 +23,6 @@ class RecognizerCombiner {
 
             val pattern =
                 staticValues.reduceIndexed { index, acc, s -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${s}" }
-
-            //.reduceIndexed { index, acc, item -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${item}"}
 
             return RegularExpression("^${pattern}$")
         }
