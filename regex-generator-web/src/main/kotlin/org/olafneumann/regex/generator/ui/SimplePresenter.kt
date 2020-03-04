@@ -16,7 +16,7 @@ class SimplePresenter : DisplayContract.Presenter {
     init {
         // if copy is not available: remove copy button
         if (navigator.clipboard == undefined) {
-            view.showCopyButton(false)
+            view.hideCopyButton()
         }
     }
 

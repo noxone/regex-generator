@@ -80,16 +80,8 @@ class HtmlPage(
         checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
     }
 
-    override fun showCopyButton(visible: Boolean) {
-        val button = jQuery(buttonCopy)
-        if (visible) {
-            button.show()
-        } else {
-            button.hide()
-            // val container = jQuery("#$ID_DIV_ONLYMATCH_CONTAINER")
-            // container.removeClass()
-            // container.addClass("form-group")
-        }
+    override fun hideCopyButton() {
+        jQuery(buttonCopy).parent().remove()
     }
 
     override fun selectInputText() {
