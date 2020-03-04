@@ -13,9 +13,7 @@ interface DisplayContract {
 
         fun hideCopyButton()
         fun selectInputText()
-        fun showResults(matches: Collection<RecognizerMatch>)
-        fun select(match: RecognizerMatch, selected: Boolean)
-        fun disable(match: RecognizerMatch, disabled: Boolean)
+        fun showResults(matches: Collection<RecognizerMatchPresentation>)
 
         fun showUserGuide(initialStep: Boolean)
         fun showGeneratedCodeForPattern(pattern: String)
@@ -25,7 +23,7 @@ interface DisplayContract {
         fun onButtonCopyClick()
         fun onButtonHelpClick()
         fun onInputChanges(newInput: String)
-        fun onSuggestionClick(match: RecognizerMatch)
+        fun onSuggestionClick(match: RecognizerMatchPresentation)
         fun onOptionsChange(options: RecognizerCombiner.Options)
     }
 }

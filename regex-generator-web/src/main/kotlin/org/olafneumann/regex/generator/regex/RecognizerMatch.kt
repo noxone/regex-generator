@@ -32,6 +32,11 @@ class RecognizerMatch(
             .all { it }
     }
 
+    override fun equals(other: Any?): Boolean =
+        other is RecognizerMatch
+                && recognizer == other.recognizer
+                && hasSameRangesAs(other)
+
     override fun toString(): String =
         "[$first+$length] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
 

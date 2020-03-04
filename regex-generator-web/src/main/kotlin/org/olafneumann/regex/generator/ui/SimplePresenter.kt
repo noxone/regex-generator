@@ -9,7 +9,7 @@ import kotlin.browser.window
 
 class SimplePresenter : DisplayContract.Presenter {
     private val view: DisplayContract.View = HtmlPage(this)
-    private val matches = mutableMapOf<RecognizerMatch, Boolean>()
+    private var matches = listOf<RecognizerMatchPresentation>()
 
     val currentTextInput: String get() = view.inputText
 
@@ -19,6 +19,9 @@ class SimplePresenter : DisplayContract.Presenter {
             view.hideCopyButton()
         }
     }
+
+    private fun RecognizerMatch.toPresentation() =
+        matches.find { it.recognizerMatch == this } ?: RecognizerMatchPresentation(this)
 
     fun recognizeMatches(input: String = currentTextInput) {
         view.inputText = input
@@ -36,11 +39,10 @@ class SimplePresenter : DisplayContract.Presenter {
     fun showInitialUserGuide() = view.showUserGuide(true)
 
     override fun onInputChanges(newInput: String) {
-        matches.clear()
-        matches.putAll(findMatches(newInput).map { it to false }.toMap())
+        matches = findMatches(newInput).map { it.toPresentation() }
 
         view.displayText = newInput
-        view.showResults(matches.keys)
+        view.showResults(matches)
         computeOutputPattern()
     }
 
@@ -49,18 +51,17 @@ class SimplePresenter : DisplayContract.Presenter {
             .filter { it.active }
             .flatMap { it.findMatches(input) }
 
-    override fun onSuggestionClick(match: RecognizerMatch) {
-        if (deactivatedMatches.contains(match)) {
+    override fun onSuggestionClick(match: RecognizerMatchPresentation) {
+        if (match.deactivated) {
             return
         }
         // determine selected state of the match
-        matches[match] = !(matches[match] ?: false)
-        // (de)select match in UI
-        view.select(match, matches[match] ?: false)
-        // find disabled matches
-        val disabledMatches = deactivatedMatches
-        // disable matches in UI
-        matches.keys.forEach { view.disable(it, disabledMatches.contains(it)) }
+        match.selected = !match.selected
+        // find matches to disable
+        matches.filter { !it.selected }
+            .forEach { unselected ->
+                unselected.deactivated = matches.filter { it.selected }
+                .any { selected -> unselected.recognizerMatch.intersect(selected.recognizerMatch) } }
 
         computeOutputPattern()
     }
@@ -72,23 +73,10 @@ class SimplePresenter : DisplayContract.Presenter {
     private fun computeOutputPattern() {
         val result = RecognizerCombiner.combine(
             view.inputText,
-            matches.filter { it.value }.map { it.key }.toList(),
+            matches.filter { it.selected }.map { it.recognizerMatch }.toList(),
             view.options
         )
         view.resultText = result.pattern
         view.showGeneratedCodeForPattern(result.pattern)
     }
-
-    private val deactivatedMatches: Collection<RecognizerMatch>
-        get() {
-            val selectedMatches = matches.filter { it.value }.map { it.key }.toList()
-            return matches.keys
-                .filter { !selectedMatches.contains(it) }
-                .filter { match ->
-                    selectedMatches.any { selectedMatch ->
-                        selectedMatch.intersect(match)
-                    }
-                }
-                .toSet()
-        }
 }

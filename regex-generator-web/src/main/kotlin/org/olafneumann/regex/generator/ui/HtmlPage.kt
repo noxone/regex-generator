@@ -3,7 +3,9 @@ package org.olafneumann.regex.generator.ui
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.regex.*
+import org.olafneumann.regex.generator.regex.CodeGenerator
+import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.UrlGenerator
 import org.w3c.dom.HTMLDivElement
 import kotlin.dom.addClass
@@ -38,8 +40,8 @@ private val Int.characterUnits: String get() = "${this}ch"
 class HtmlPage(
     private val presenter: DisplayContract.Presenter
 ) : DisplayContract.View {
-    private val RecognizerMatch.row: Int? get() = recognizerMatchToRow[this]
-    private val RecognizerMatch.div: HTMLDivElement? get() = recognizerMatchToElements[this]
+    private val RecognizerMatchPresentation.row: Int? get() = recognizerMatchToRow[this]
+    private val RecognizerMatchPresentation.div: HTMLDivElement? get() = recognizerMatchToElements[this]
 
     private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
     private val textDisplay = HtmlHelper.getDivById(ID_TEXT_DISPLAY)
@@ -61,8 +63,8 @@ class HtmlPage(
         UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
     )
 
-    private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
-    private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
+    private val recognizerMatchToRow = mutableMapOf<RecognizerMatchPresentation, Int>()
+    private val recognizerMatchToElements = mutableMapOf<RecognizerMatchPresentation, HTMLDivElement>()
 
     private val languageDisplays = CodeGenerator.all
         .map { it to LanguageCard(it, containerLanguages) }
@@ -108,11 +110,11 @@ class HtmlPage(
             anchorRegexr.setPattern(value, options)
         }
 
-    override fun showResults(matches: Collection<RecognizerMatch>) {
+    override fun showResults(matches: Collection<RecognizerMatchPresentation>) {
         // TODO remove CSS class iterator
         var index = 0
         val classes = listOf("primary", "success", "danger", "warning")
-        fun getCssClass() = "bg-${classes[index++ % classes.size]}"
+        fun nextCssClass() = "bg-${classes[index++ % classes.size]}"
 
         fun getElementTitle(match: RecognizerMatch) = "${match.recognizer.name} (${match.inputPart})"
 
@@ -127,27 +129,33 @@ class HtmlPage(
             .map { createRowElement() }
             .toList()
         // Create match elements
-        matches.forEach { match ->
-            val rowElement = rowElements[match.row!!]
+        matches.forEach { pres ->
+            val rowElement = rowElements[pres.row!!]
             val element = createMatchElement(rowElement)
-            recognizerMatchToElements[match] = element
-            element.addClass(getCssClass())
-            element.style.width = match.inputPart.length.characterUnits
-            element.style.left = match.first.characterUnits
-            element.title = getElementTitle(match)
-            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(match) })
+            recognizerMatchToElements[pres] = element
+            element.addClass(nextCssClass())
+            element.style.width = pres.recognizerMatch.inputPart.length.characterUnits
+            element.style.left = pres.recognizerMatch.first.characterUnits
+            element.title = getElementTitle(pres.recognizerMatch)
+            pres.onSelectedChanged = { b -> pres.div?.let { HtmlHelper.toggleClass(it, b, CLASS_ITEM_SELECTED) } }
+            pres.onDeactivatedChanged = { b -> pres.div?.let { HtmlHelper.toggleClass(it, b, CLASS_ITEM_NOT_AVAILABLE) } }
+            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
+            pres.div?.let {
+                HtmlHelper.toggleClass(it,  pres.selected, CLASS_ITEM_SELECTED)
+                HtmlHelper.toggleClass(it,  pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
+            }
         }
     }
 
-    private fun distributeToRows(matches: Collection<RecognizerMatch>): Map<RecognizerMatch, Int> {
+    private fun distributeToRows(matches: Collection<RecognizerMatchPresentation>): Map<RecognizerMatchPresentation, Int> {
         val lines = mutableListOf<Int>()
         fun createNextLine(): Int {
             lines.add(0)
             return lines.size - 1
         }
         return matches
-            .sortedWith(RecognizerMatch.comparator)
-            .flatMap { match -> match.ranges.map { match to it } }
+            .sortedWith(compareBy(RecognizerMatch.comparator) {it.recognizerMatch})
+            .flatMap { pres -> pres.recognizerMatch.ranges.map { pres to it } }
             .map { pair ->
                 val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }
                 val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
@@ -162,14 +170,6 @@ class HtmlPage(
 
     private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement =
         HtmlHelper.createDivElement(parent, CLASS_MATCH_ITEM)
-
-    override fun select(match: RecognizerMatch, selected: Boolean) {
-        match.div?.let { HtmlHelper.toggleClass(it, selected, CLASS_ITEM_SELECTED) }
-    }
-
-    override fun disable(match: RecognizerMatch, disabled: Boolean) {
-        match.div?.let { HtmlHelper.toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }
-    }
 
     override val options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
