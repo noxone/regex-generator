@@ -25,24 +25,26 @@ interface CodeGenerator {
             .replace("#", "_sharp_")
 
     fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet
+
+    data class GeneratedSnippet(
+        val snippet: String,
+        val warnings: List<String> = emptyList()
+    )
 }
 
-data class GeneratedSnippet(
-    val snippet: String,
-    val warnings: List<String> = emptyList()
-)
-
-internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
+internal abstract class SimpleReplacingCodeGenerator(
+    override val languageName: String,
+    override val highlightLanguage: String,
+    private val templateCode: String
+) : CodeGenerator {
     protected open fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String = pattern
-
-    protected abstract val templateCode: String
 
     protected abstract fun generateOptionsCode(options: RecognizerCombiner.Options): String
 
     protected open fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> = emptyList()
 
-    override fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet =
-        GeneratedSnippet(
+    override fun generateCode(pattern: String, options: RecognizerCombiner.Options): CodeGenerator.GeneratedSnippet =
+        CodeGenerator.GeneratedSnippet(
             templateCode.replace("%1${'$'}s", transformPattern(pattern, options))
                 .replace("%2${'$'}s", generateOptionsCode(options))
                 .replace("%3${'$'}s", pattern),
@@ -74,15 +76,12 @@ internal abstract class SimpleReplacingCodeGenerator : CodeGenerator {
 }
 
 internal open class UrlGenerator(
-    private val linkName: String,
-    private val urlTemplate: String,
+    linkName: String,
+    urlTemplate: String,
     private val valueForCaseInsensitive: String? = "i",
     private val valueForDotAll: String? = "s",
     private val valueForMultiline: String? = "m"
-) : SimpleReplacingCodeGenerator() {
-    override val languageName: String get() = linkName
-    override val highlightLanguage: String get() = linkName
-    override val templateCode: String get() = urlTemplate
+) : SimpleReplacingCodeGenerator(linkName, linkName, urlTemplate) {
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         encodeURIComponent(pattern)
 
@@ -90,12 +89,10 @@ internal open class UrlGenerator(
         combineOptions(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll)
 }
 
-internal class JavaCodeGenerator : SimpleReplacingCodeGenerator() {
-    override val languageName: String get() = "Java"
-    override val highlightLanguage: String get() = "java"
-
-    override val templateCode: String
-        get() = """import java.util.regex.Pattern;
+internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "Java",
+    highlightLanguage = "java",
+    templateCode = """import java.util.regex.Pattern;
                 |import java.util.regex.Matcher;
                 |
                 |public class Sample {
@@ -107,7 +104,7 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator() {
                 |        // Use results...
                 |        return matcher.matches();
                 |    }
-                |}""".trimMargin()
+                |}""".trimMargin()) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
@@ -122,15 +119,13 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator() {
     ) { "Pattern.$it" }
 }
 
-internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator() {
-    override val languageName: String get() = "Kotlin"
-    override val highlightLanguage: String get() = "kotlin"
-
-    override val templateCode: String
-        get() = """fun useRegex(input: String): Boolean {
+internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "Kotlin",
+    highlightLanguage = "kotlin",
+    templateCode = """fun useRegex(input: String): Boolean {
     val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
     return regex.matches(input)
-}"""
+}""") {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
@@ -152,38 +147,29 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator() {
     }
 }
 
-internal class PhpCodeGenerator : SimpleReplacingCodeGenerator() {
-    override val languageName: String
-        get() = "PHP"
-    override val highlightLanguage: String
-        get() = "php"
-
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
-
-    override val templateCode: String
-        get() = """<?php
+internal class PhpCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "PHP",
+    highlightLanguage = "php",
+    templateCode = """<?php
 function useRegex(${'$'}input) {
     ${'$'}regex = '/%1${'$'}s/%2${'$'}s';
     return preg_match(${'$'}regex, ${'$'}input);
 }
-?>"""
+?>""") {
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options, "i", "m", "s")
 }
 
-internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator() {
-    override val languageName: String
-        get() = "JavaScript"
-    override val highlightLanguage: String
-        get() = "javascript"
-
-    override val templateCode: String
-        get() = """function useRegex(input) {
+internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "JavaScript",
+    highlightLanguage = "javascript",
+    templateCode = """function useRegex(input) {
     let regex = /%1${'$'}s/%2${'$'}s;
     return regex.test(input);
-}"""
+}""") {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("\t"), "\\t")
@@ -198,14 +184,10 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator() {
     }
 }
 
-internal class CSharpCodeGenerator : SimpleReplacingCodeGenerator() {
-    override val languageName: String
-        get() = "C#"
-    override val highlightLanguage: String
-        get() = "csharp"
-
-    override val templateCode: String
-        get() = """using System;
+internal class CSharpCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "C#",
+    highlightLanguage = "csharp",
+    templateCode = """using System;
 using System.Text.RegularExpressions;
 
 public class Sample
@@ -215,7 +197,8 @@ public class Sample
         Regex regex = new Regex("%1${'$'}s"%2${'$'}s);
         return regex.IsMatch(input);
     }
-}"""
+}""") {
+
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
@@ -231,18 +214,13 @@ public class Sample
         ) { "RegexOptions.$it" }
 }
 
-
-internal class RubyCodeGenerator : SimpleReplacingCodeGenerator() {
-    override val languageName: String
-        get() = "Ruby"
-    override val highlightLanguage: String
-        get() = "ruby"
-
-    override val templateCode: String
-        get() = """def use_regex(input)
+internal class RubyCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "Ruby",
+    highlightLanguage = "ruby",
+    templateCode = """def use_regex(input)
     regex = Regexp.new('%1${'$'}s'%2${'$'}s)
     regex.match input
-end"""
+end""") {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")

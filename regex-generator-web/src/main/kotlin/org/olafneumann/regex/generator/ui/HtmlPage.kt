@@ -1,22 +1,32 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.html.dom.create
+import kotlinx.html.js.span
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.regex.*
+import org.olafneumann.regex.generator.regex.CodeGenerator
+import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.UrlGenerator
 import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLSpanElement
+import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
+import kotlin.dom.removeClass
 
 
 const val CLASS_MATCH_ROW = "rg-match-row"
 const val CLASS_MATCH_ITEM = "rg-match-item"
 const val CLASS_ITEM_SELECTED = "rg-item-selected"
+const val CLASS_CHAR_SELECTED = "rg-char-selected"
 const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
 
 const val EVENT_CLICK = "click"
 const val EVENT_INPUT = "input"
+const val EVENT_MOUSE_ENTER = "mouseenter"
+const val EVENT_MOUSE_LEAVE = "mouseleave"
 
 const val ID_INPUT_ELEMENT = "rg_raw_input_text"
 const val ID_TEXT_DISPLAY = "rg_text_display"
@@ -24,6 +34,7 @@ const val ID_RESULT_DISPLAY = "rg_result_display"
 const val ID_ROW_CONTAINER = "rg_row_container"
 const val ID_CONTAINER_INPUT = "rg_input_container"
 const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
+const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
 const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
 const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
 const val ID_CHECK_MULTILINE = "rg_multiline"
@@ -33,14 +44,13 @@ const val ID_DIV_LANGUAGES = "rg_language_accordion"
 const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
 const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
 
-private val Int.characterUnits: String get() = "${this}ch"
-
 class HtmlPage(
     private val presenter: DisplayContract.Presenter
 ) : DisplayContract.View {
-    private val RecognizerMatch.row: Int? get() = recognizerMatchToRow[this]
-    private val RecognizerMatch.div: HTMLDivElement? get() = recognizerMatchToElements[this]
+    // extend other classes
+    private val Int.characterUnits: String get() = "${this}ch"
 
+    // HTML elements we need to change
     private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
     private val textDisplay = HtmlHelper.getDivById(ID_TEXT_DISPLAY)
     private val rowContainer = HtmlHelper.getDivById(ID_ROW_CONTAINER)
@@ -48,6 +58,7 @@ class HtmlPage(
     private val buttonCopy = HtmlHelper.getButtonById(ID_BUTTON_COPY)
     private val buttonHelp = HtmlHelper.getAnchorById(ID_BUTTON_HELP)
     private val checkOnlyMatches = HtmlHelper.getInputById(ID_CHECK_ONLY_MATCHES)
+    private val checkWholeLine = HtmlHelper.getInputById(ID_CHECK_WHOLELINE)
     private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
@@ -55,14 +66,17 @@ class HtmlPage(
 
     private val anchorRegex101 = LinkHandler(
         HtmlHelper.getAnchorById(ID_ANCHOR_REGEX101),
-        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s"))
+        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s")
+    )
     private val anchorRegexr = LinkHandler(
         HtmlHelper.getAnchorById(ID_ANCHOR_REGEXR),
         UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
     )
 
-    private val recognizerMatchToRow = mutableMapOf<RecognizerMatch, Int>()
-    private val recognizerMatchToElements = mutableMapOf<RecognizerMatch, HTMLDivElement>()
+    // Stuff needed to display the regex
+    private val recognizerMatchToRow = mutableMapOf<RecognizerMatchPresentation, Int>()
+    private val recognizerMatchToElements = mutableMapOf<RecognizerMatchPresentation, HTMLDivElement>()
+    private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     private val languageDisplays = CodeGenerator.all
         .map { it to LanguageCard(it, containerLanguages) }
@@ -78,6 +92,7 @@ class HtmlPage(
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+        checkWholeLine.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
     }
 
     override fun hideCopyButton() {
@@ -97,7 +112,9 @@ class HtmlPage(
     override var displayText: String
         get() = textDisplay.innerText
         set(value) {
-            textDisplay.innerText = value
+            inputCharacterSpans = value.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
+            textDisplay.clear()
+            inputCharacterSpans.forEach { textDisplay.appendChild(it) }
         }
 
     override var resultText: String
@@ -108,11 +125,11 @@ class HtmlPage(
             anchorRegexr.setPattern(value, options)
         }
 
-    override fun showResults(matches: Collection<RecognizerMatch>) {
+    override fun showResults(matches: Collection<RecognizerMatchPresentation>) {
         // TODO remove CSS class iterator
         var index = 0
         val classes = listOf("primary", "success", "danger", "warning")
-        fun getCssClass() = "bg-${classes[index++ % classes.size]}"
+        fun nextCssClass() = "bg-${classes[index++ % classes.size]}"
 
         fun getElementTitle(match: RecognizerMatch) = "${match.recognizer.name} (${match.inputPart})"
 
@@ -127,27 +144,60 @@ class HtmlPage(
             .map { createRowElement() }
             .toList()
         // Create match elements
-        matches.forEach { match ->
-            val rowElement = rowElements[match.row!!]
+        matches.forEach { pres ->
+            // create the corresponding regex element
+            val rowElement = rowElements[recognizerMatchToRow[pres]!!]
             val element = createMatchElement(rowElement)
-            recognizerMatchToElements[match] = element
-            element.addClass(getCssClass())
-            element.style.width = match.inputPart.length.characterUnits
-            element.style.left = match.first.characterUnits
-            element.title = getElementTitle(match)
-            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(match) })
+            recognizerMatchToElements[pres] = element
+            // adjust styling
+            val cssClass = nextCssClass()
+            element.addClass(cssClass)
+            element.style.width = pres.recognizerMatch.inputPart.length.characterUnits
+            element.style.left = pres.recognizerMatch.first.characterUnits
+            element.title = getElementTitle(pres.recognizerMatch)
+            // add listeners to handle display correctly
+            pres.onSelectedChanged = { selected ->
+                HtmlHelper.toggleClass(element, selected, CLASS_ITEM_SELECTED)
+                pres.recognizerMatch.forEach {
+                    HtmlHelper.toggleClass(
+                        inputCharacterSpans[it],
+                        selected,
+                        CLASS_CHAR_SELECTED
+                    )
+                }
+            }
+            pres.onDeactivatedChanged =
+                { deactivated -> HtmlHelper.toggleClass(element, deactivated, CLASS_ITEM_NOT_AVAILABLE) }
+            HtmlHelper.toggleClass(element, pres.selected, CLASS_ITEM_SELECTED)
+            HtmlHelper.toggleClass(element, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
+            // add listeners to react on user input
+            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
+            element.addEventListener(
+                EVENT_MOUSE_ENTER,
+                {
+                    if (pres.availableForHighlight) {
+                        pres.recognizerMatch.forEach { inputCharacterSpans[it].addClass(cssClass) }
+                    }
+                })
+            element.addEventListener(
+                EVENT_MOUSE_LEAVE,
+                {
+                    if (pres.availableForHighlight) {
+                        pres.recognizerMatch.forEach { inputCharacterSpans[it].removeClass(cssClass) }
+                    }
+                })
         }
     }
 
-    private fun distributeToRows(matches: Collection<RecognizerMatch>): Map<RecognizerMatch, Int> {
+    private fun distributeToRows(matches: Collection<RecognizerMatchPresentation>): Map<RecognizerMatchPresentation, Int> {
         val lines = mutableListOf<Int>()
         fun createNextLine(): Int {
             lines.add(0)
             return lines.size - 1
         }
         return matches
-            .sortedWith(RecognizerMatch.comparator)
-            .flatMap { match -> match.ranges.map { match to it } }
+            .sortedWith(compareBy(RecognizerMatch.comparator) { it.recognizerMatch })
+            .flatMap { pres -> pres.recognizerMatch.ranges.map { pres to it } }
             .map { pair ->
                 val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }
                 val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
@@ -163,17 +213,10 @@ class HtmlPage(
     private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement =
         HtmlHelper.createDivElement(parent, CLASS_MATCH_ITEM)
 
-    override fun select(match: RecognizerMatch, selected: Boolean) {
-        match.div?.let { HtmlHelper.toggleClass(it, selected, CLASS_ITEM_SELECTED) }
-    }
-
-    override fun disable(match: RecognizerMatch, disabled: Boolean) {
-        match.div?.let { HtmlHelper.toggleClass(it, disabled, CLASS_ITEM_NOT_AVAILABLE) }
-    }
-
     override val options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
             onlyPatterns = checkOnlyMatches.checked,
+            matchWholeLine = checkWholeLine.checked,
             caseSensitive = checkCaseInsensitive.checked,
             dotMatchesLineBreaks = checkDotAll.checked,
             multiline = checkMultiline.checked
