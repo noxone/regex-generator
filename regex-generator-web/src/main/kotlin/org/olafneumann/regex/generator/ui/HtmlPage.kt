@@ -1,6 +1,8 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.html.div
 import kotlinx.html.dom.create
+import kotlinx.html.js.div
 import kotlinx.html.js.span
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
@@ -147,7 +149,12 @@ class HtmlPage(
         matches.forEach { pres ->
             // create the corresponding regex element
             val rowElement = rowElements[recognizerMatchToRow[pres]!!]
-            val element = createMatchElement(rowElement)
+            val element = document.create.div(classes = CLASS_MATCH_ITEM) {
+                div(classes = "rg-match-item-overlay") {
+                    +"abc"
+                }
+            }
+            rowElement.appendChild(element)
             recognizerMatchToElements[pres] = element
             // adjust styling
             val cssClass = nextCssClass()
@@ -209,9 +216,6 @@ class HtmlPage(
 
     private fun createRowElement(): HTMLDivElement =
         HtmlHelper.createDivElement(rowContainer, CLASS_MATCH_ROW)
-
-    private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement =
-        HtmlHelper.createDivElement(parent, CLASS_MATCH_ITEM)
 
     override val options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(

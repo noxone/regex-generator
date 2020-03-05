@@ -14,6 +14,7 @@
 .rg-match-container {
   overflow-x: auto;
   width: 100%;
+  padding-bottom: 1.5em;
 }
 
 .rg-match-row {
@@ -41,6 +42,20 @@
 .rg-match-item-green {
   background-color: green;
   border: 1px solid green;
+}
+
+.rg-match-item-overlay {
+  z-index: 2;
+  display: none;
+  top: 0.6em;
+  position: relative;
+  width: max-content;
+  padding: 0.2em;
+  background-color: inherit;
+}
+
+.rg-match-item:hover .rg-match-item-overlay {
+  display: block;
 }
 
 .rg-char-selected {
@@ -75,16 +90,15 @@ form * .rg-check-row {
   margin-left: -2em;
 }
 
-
 .rg-code-accordion .card-header {
-    padding: 0.3em;
+  padding: 0.3em;
 }
 
 .rg-code-accordion .card-body {
-    padding: 0.6em 1em;
+  padding: 0.6em 1em;
 }
 
 .rg-code-accordion pre {
-    margin: 0;
-    background-color: white;
+  margin: 0;
+  background-color: white;
 }
