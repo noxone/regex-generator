@@ -74,8 +74,8 @@ class HtmlPage(
     )
 
     // Stuff needed to display the regex
-    private val recognizerMatchToRow = mutableMapOf<RecognizerMatchPresentation, Int>()
-    private val recognizerMatchToElements = mutableMapOf<RecognizerMatchPresentation, HTMLDivElement>()
+    private val recognizerMatchToRow = mutableMapOf<MatchPresenter, Int>()
+    private val recognizerMatchToElements = mutableMapOf<MatchPresenter, HTMLDivElement>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     private val languageDisplays = CodeGenerator.all
@@ -125,7 +125,7 @@ class HtmlPage(
             anchorRegexr.setPattern(value, options)
         }
 
-    override fun showResults(matches: Collection<RecognizerMatchPresentation>) {
+    override fun showResults(matches: Collection<MatchPresenter>) {
         // TODO remove CSS class iterator
         var index = 0
         val classes = listOf("primary", "success", "danger", "warning")
@@ -189,7 +189,7 @@ class HtmlPage(
         }
     }
 
-    private fun distributeToRows(matches: Collection<RecognizerMatchPresentation>): Map<RecognizerMatchPresentation, Int> {
+    private fun distributeToRows(matches: Collection<MatchPresenter>): Map<MatchPresenter, Int> {
         val lines = mutableListOf<Int>()
         fun createNextLine(): Int {
             lines.add(0)

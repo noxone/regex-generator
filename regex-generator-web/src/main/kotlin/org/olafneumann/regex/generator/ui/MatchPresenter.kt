@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.ui
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import kotlin.properties.Delegates
 
-class RecognizerMatchPresentation(
+class MatchPresenter(
     val recognizerMatch: RecognizerMatch,
     selected: Boolean = false,
     deactivated: Boolean = false,

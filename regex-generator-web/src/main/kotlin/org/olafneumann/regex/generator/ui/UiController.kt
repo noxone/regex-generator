@@ -7,9 +7,9 @@ import org.olafneumann.regex.generator.regex.RecognizerMatch
 import kotlin.browser.window
 
 
-class SimplePresenter : DisplayContract.Presenter {
+class UiController : DisplayContract.Presenter {
     private val view: DisplayContract.View = HtmlPage(this)
-    private var matches = listOf<RecognizerMatchPresentation>()
+    private var matches = listOf<MatchPresenter>()
 
     val currentTextInput: String get() = view.inputText
 
@@ -21,7 +21,7 @@ class SimplePresenter : DisplayContract.Presenter {
     }
 
     private fun RecognizerMatch.toPresentation() =
-        matches.find { it.recognizerMatch == this } ?: RecognizerMatchPresentation(this)
+        matches.find { it.recognizerMatch == this } ?: MatchPresenter(this)
 
     fun recognizeMatches(input: String = currentTextInput) {
         view.inputText = input
@@ -51,7 +51,7 @@ class SimplePresenter : DisplayContract.Presenter {
             .filter { it.active }
             .flatMap { it.findMatches(input) }
 
-    override fun onSuggestionClick(match: RecognizerMatchPresentation) {
+    override fun onSuggestionClick(match: MatchPresenter) {
         if (match.deactivated) {
             return
         }

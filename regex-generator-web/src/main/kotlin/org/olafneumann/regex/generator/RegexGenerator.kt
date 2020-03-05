@@ -1,10 +1,9 @@
 package org.olafneumann.regex.generator
 
-import org.olafneumann.regex.generator.ui.SimplePresenter
+import org.olafneumann.regex.generator.ui.UiController
 import org.w3c.dom.set
 import kotlin.browser.localStorage
 import kotlin.browser.window
-import kotlin.js.Date
 
 const val KEY_LAST_VERSION = "user.lastVersion"
 const val KEY_LAST_VISIT = "user.lastVisit"
@@ -17,7 +16,7 @@ fun main() = initRegexGenerator()
 private fun initRegexGenerator() {
     try {
         // initialize presentation code
-        val presenter = SimplePresenter()
+        val presenter = UiController()
         val input = if (presenter.currentTextInput.isBlank()) VAL_EXAMPLE_INPUT else presenter.currentTextInput
         presenter.recognizeMatches(input)
 
