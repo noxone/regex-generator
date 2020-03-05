@@ -24,6 +24,8 @@ class RecognizerMatch(
         ranges.flatMap { thisRange -> other.ranges.map { otherRange -> thisRange to otherRange } }
             .any { it.first.intersect(it.second).isNotEmpty() }
 
+    fun forEach(action: (Int) -> Unit) = ranges.flatMap { it.asIterable() }.forEach { action(it) }
+
     fun hasSameRangesAs(other: RecognizerMatch): Boolean {
         if (ranges.size != other.ranges.size) {
             return false

@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.html.dom.create
+import kotlinx.html.js.span
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
 import org.olafneumann.regex.generator.js.jQuery
@@ -8,8 +10,11 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.UrlGenerator
 import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLSpanElement
+import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
+import kotlin.dom.removeClass
 
 
 const val CLASS_MATCH_ROW = "rg-match-row"
@@ -19,6 +24,8 @@ const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
 
 const val EVENT_CLICK = "click"
 const val EVENT_INPUT = "input"
+const val EVENT_MOUSE_ENTER = "mouseenter"
+const val EVENT_MOUSE_LEAVE = "mouseleave"
 
 const val ID_INPUT_ELEMENT = "rg_raw_input_text"
 const val ID_TEXT_DISPLAY = "rg_text_display"
@@ -35,14 +42,15 @@ const val ID_DIV_LANGUAGES = "rg_language_accordion"
 const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
 const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
 
-private val Int.characterUnits: String get() = "${this}ch"
-
 class HtmlPage(
     private val presenter: DisplayContract.Presenter
 ) : DisplayContract.View {
+    // extend other classes
+    private val Int.characterUnits: String get() = "${this}ch"
     private val RecognizerMatchPresentation.row: Int? get() = recognizerMatchToRow[this]
     private val RecognizerMatchPresentation.div: HTMLDivElement? get() = recognizerMatchToElements[this]
 
+    // HTML elements we need to change
     private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
     private val textDisplay = HtmlHelper.getDivById(ID_TEXT_DISPLAY)
     private val rowContainer = HtmlHelper.getDivById(ID_ROW_CONTAINER)
@@ -63,8 +71,10 @@ class HtmlPage(
         UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
     )
 
+    // Stuff needed to display the regex
     private val recognizerMatchToRow = mutableMapOf<RecognizerMatchPresentation, Int>()
     private val recognizerMatchToElements = mutableMapOf<RecognizerMatchPresentation, HTMLDivElement>()
+    private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     private val languageDisplays = CodeGenerator.all
         .map { it to LanguageCard(it, containerLanguages) }
@@ -99,7 +109,9 @@ class HtmlPage(
     override var displayText: String
         get() = textDisplay.innerText
         set(value) {
-            textDisplay.innerText = value
+            textDisplay.clear()
+            inputCharacterSpans = value.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
+            inputCharacterSpans.forEach { textDisplay.appendChild(it) }
         }
 
     override var resultText: String
@@ -130,20 +142,41 @@ class HtmlPage(
             .toList()
         // Create match elements
         matches.forEach { pres ->
+            // create the corresponding regex element
             val rowElement = rowElements[pres.row!!]
             val element = createMatchElement(rowElement)
             recognizerMatchToElements[pres] = element
-            element.addClass(nextCssClass())
+            // adjust styling
+            val cssClass = nextCssClass()
+            element.addClass(cssClass)
             element.style.width = pres.recognizerMatch.inputPart.length.characterUnits
             element.style.left = pres.recognizerMatch.first.characterUnits
             element.title = getElementTitle(pres.recognizerMatch)
-            pres.onSelectedChanged = { b -> pres.div?.let { HtmlHelper.toggleClass(it, b, CLASS_ITEM_SELECTED) } }
-            pres.onDeactivatedChanged = { b -> pres.div?.let { HtmlHelper.toggleClass(it, b, CLASS_ITEM_NOT_AVAILABLE) } }
-            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
+            // add listeners to handle display correctly
+            pres.onSelectedChanged =
+                { b -> pres.div?.let { HtmlHelper.toggleClass(it, b, CLASS_ITEM_SELECTED) } }
+            pres.onDeactivatedChanged =
+                { b -> pres.div?.let { HtmlHelper.toggleClass(it, b, CLASS_ITEM_NOT_AVAILABLE) } }
             pres.div?.let {
-                HtmlHelper.toggleClass(it,  pres.selected, CLASS_ITEM_SELECTED)
-                HtmlHelper.toggleClass(it,  pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
+                HtmlHelper.toggleClass(it, pres.selected, CLASS_ITEM_SELECTED)
+                HtmlHelper.toggleClass(it, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
             }
+            // add listeners to react on user input
+            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
+            element.addEventListener(
+                EVENT_MOUSE_ENTER,
+                {
+                    if (pres.availableForHighlight) {
+                        pres.recognizerMatch.forEach { inputCharacterSpans[it].addClass(cssClass) }
+                    }
+                })
+            element.addEventListener(
+                EVENT_MOUSE_LEAVE,
+                {
+                    if (pres.availableForHighlight) {
+                        pres.recognizerMatch.forEach { inputCharacterSpans[it].removeClass(cssClass) }
+                    }
+                })
         }
     }
 

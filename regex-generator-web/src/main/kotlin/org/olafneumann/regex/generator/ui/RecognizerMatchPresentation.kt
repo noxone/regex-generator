@@ -11,7 +11,9 @@ class RecognizerMatchPresentation(
     var onDeactivatedChanged: (Boolean) -> Unit = {}
 ) {
     var selected: Boolean by Delegates.observable(selected)
-        { _, _, new -> onSelectedChanged(new) }
+    { _, _, new -> onSelectedChanged(new) }
     var deactivated: Boolean by Delegates.observable(deactivated)
-        { _, _, new -> onDeactivatedChanged(new) }
+    { _, _, new -> onDeactivatedChanged(new) }
+
+    val availableForHighlight: Boolean = !deactivated
 }
