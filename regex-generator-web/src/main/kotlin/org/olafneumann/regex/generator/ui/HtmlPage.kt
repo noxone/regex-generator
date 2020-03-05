@@ -20,6 +20,7 @@ import kotlin.dom.removeClass
 const val CLASS_MATCH_ROW = "rg-match-row"
 const val CLASS_MATCH_ITEM = "rg-match-item"
 const val CLASS_ITEM_SELECTED = "rg-item-selected"
+const val CLASS_CHAR_SELECTED = "rg-char-selected"
 const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
 
 const val EVENT_CLICK = "click"
@@ -47,8 +48,6 @@ class HtmlPage(
 ) : DisplayContract.View {
     // extend other classes
     private val Int.characterUnits: String get() = "${this}ch"
-    private val RecognizerMatchPresentation.row: Int? get() = recognizerMatchToRow[this]
-    private val RecognizerMatchPresentation.div: HTMLDivElement? get() = recognizerMatchToElements[this]
 
     // HTML elements we need to change
     private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
@@ -65,7 +64,8 @@ class HtmlPage(
 
     private val anchorRegex101 = LinkHandler(
         HtmlHelper.getAnchorById(ID_ANCHOR_REGEX101),
-        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s"))
+        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s")
+    )
     private val anchorRegexr = LinkHandler(
         HtmlHelper.getAnchorById(ID_ANCHOR_REGEXR),
         UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
@@ -109,8 +109,8 @@ class HtmlPage(
     override var displayText: String
         get() = textDisplay.innerText
         set(value) {
-            textDisplay.clear()
             inputCharacterSpans = value.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
+            textDisplay.clear()
             inputCharacterSpans.forEach { textDisplay.appendChild(it) }
         }
 
@@ -143,7 +143,7 @@ class HtmlPage(
         // Create match elements
         matches.forEach { pres ->
             // create the corresponding regex element
-            val rowElement = rowElements[pres.row!!]
+            val rowElement = rowElements[recognizerMatchToRow[pres]!!]
             val element = createMatchElement(rowElement)
             recognizerMatchToElements[pres] = element
             // adjust styling
@@ -153,14 +153,20 @@ class HtmlPage(
             element.style.left = pres.recognizerMatch.first.characterUnits
             element.title = getElementTitle(pres.recognizerMatch)
             // add listeners to handle display correctly
-            pres.onSelectedChanged =
-                { b -> pres.div?.let { HtmlHelper.toggleClass(it, b, CLASS_ITEM_SELECTED) } }
-            pres.onDeactivatedChanged =
-                { b -> pres.div?.let { HtmlHelper.toggleClass(it, b, CLASS_ITEM_NOT_AVAILABLE) } }
-            pres.div?.let {
-                HtmlHelper.toggleClass(it, pres.selected, CLASS_ITEM_SELECTED)
-                HtmlHelper.toggleClass(it, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
+            pres.onSelectedChanged = { selected ->
+                HtmlHelper.toggleClass(element, selected, CLASS_ITEM_SELECTED)
+                pres.recognizerMatch.forEach {
+                    HtmlHelper.toggleClass(
+                        inputCharacterSpans[it],
+                        selected,
+                        CLASS_CHAR_SELECTED
+                    )
+                }
             }
+            pres.onDeactivatedChanged =
+                { deactivated -> HtmlHelper.toggleClass(element, deactivated, CLASS_ITEM_NOT_AVAILABLE) }
+            HtmlHelper.toggleClass(element, pres.selected, CLASS_ITEM_SELECTED)
+            HtmlHelper.toggleClass(element, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
             // add listeners to react on user input
             element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
             element.addEventListener(
@@ -187,7 +193,7 @@ class HtmlPage(
             return lines.size - 1
         }
         return matches
-            .sortedWith(compareBy(RecognizerMatch.comparator) {it.recognizerMatch})
+            .sortedWith(compareBy(RecognizerMatch.comparator) { it.recognizerMatch })
             .flatMap { pres -> pres.recognizerMatch.ranges.map { pres to it } }
             .map { pair ->
                 val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }

@@ -64,7 +64,7 @@ object HtmlHelper {
         return element
     }
 
-    internal fun toggleClass(element: HTMLDivElement, selected: Boolean, className: String) {
+    internal fun toggleClass(element: HTMLElement, selected: Boolean, className: String) {
         if (selected)
             element.addClass(className)
         else
