@@ -1,9 +1,12 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.html.a
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.js.div
+import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
+import kotlinx.html.onClick
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.createStepDefinition
 import org.olafneumann.regex.generator.js.jQuery
@@ -149,7 +152,14 @@ class HtmlView(
             val rowElement = rowElements[recognizerMatchToRow[pres]!!]
             val element = document.create.div(classes = CLASS_MATCH_ITEM) {
                 div(classes = "rg-match-item-overlay") {
-                    +"abc"
+                    pres.recognizerMatches.forEach { match ->
+                        div(classes = "rg-recognizer") {
+                            a {
+                                +match.recognizer.name
+                                onClickFunction = { presenter.onSuggestionClick(match) }
+                            }
+                        }
+                    }
                 }
             }
             rowElement.appendChild(element)
@@ -175,7 +185,7 @@ class HtmlView(
             HtmlHelper.toggleClass(element, pres.selected, CLASS_ITEM_SELECTED)
             HtmlHelper.toggleClass(element, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
             // add listeners to react on user input
-            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
+            //element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
             element.addEventListener(
                 EVENT_MOUSE_ENTER,
                 {

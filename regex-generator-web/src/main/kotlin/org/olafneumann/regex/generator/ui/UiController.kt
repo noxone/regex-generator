@@ -4,6 +4,7 @@ import org.olafneumann.regex.generator.js.navigator
 import org.olafneumann.regex.generator.regex.Configuration
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.util.HasRange
 import kotlin.browser.window
 
 
@@ -20,8 +21,9 @@ class UiController : DisplayContract.Controller {
         }
     }
 
-    private fun RecognizerMatch.toPresentation() =
-        matches.find { it.recognizerMatches[0] == this } ?: MatchPresenter(listOf(this))
+    private fun Collection<RecognizerMatch>.toPresentation(): MatchPresenter =
+        matches.findLast { it.recognizerMatches.containsAll(this)
+                && this.containsAll(it.recognizerMatches) } ?: MatchPresenter(this)
 
     fun recognizeMatches(input: String = currentTextInput) {
         view.inputText = input
@@ -39,7 +41,8 @@ class UiController : DisplayContract.Controller {
     fun showInitialUserGuide() = view.showUserGuide(true)
 
     override fun onInputChanges(newInput: String) {
-        matches = findMatches(newInput).map { it.toPresentation() }
+        val matchGroups = groupMatches(findMatches(newInput))
+        matches = matchGroups.map { it.toPresentation() }
 
         view.displayText = newInput
         view.showResults(matches)
@@ -50,18 +53,28 @@ class UiController : DisplayContract.Controller {
         Configuration.default.recognizers
             .filter { it.active }
             .flatMap { it.findMatches(input) }
+            .sortedWith(HasRange.comparator)
 
-    override fun onSuggestionClick(match: MatchPresenter) {
-        if (match.deactivated) {
+    private fun groupMatches(matches: List<RecognizerMatch>) =
+        matches.groupBy { it.ranges }.values
+
+    override fun onSuggestionClick(recognizerMatch: RecognizerMatch) {
+        val matchPresenter = matches.find { it.recognizerMatches.contains(recognizerMatch) }
+        if (matchPresenter == null || matchPresenter.deactivated) {
             return
         }
-        // determine selected state of the match
-        match.selected = !match.selected
+        // determine selected state of the presenter
+        matchPresenter.selected = !matchPresenter.selected
         // find matches to disable
         matches.filter { !it.selected }
             .forEach { unselected ->
                 unselected.deactivated = matches.filter { it.selected }
-                .any { selected -> unselected.recognizerMatches[0].intersect(selected.recognizerMatches[0]) } }
+                    // TODO fix iterator
+                    .any { selected ->
+                        unselected.recognizerMatches.iterator().next()
+                            .intersect(selected.recognizerMatches.iterator().next())
+                    }
+            }
 
         computeOutputPattern()
     }
@@ -73,7 +86,8 @@ class UiController : DisplayContract.Controller {
     private fun computeOutputPattern() {
         val result = RecognizerCombiner.combine(
             view.inputText,
-            matches.filter { it.selected }.map { it.recognizerMatches[0] }.toList(),
+            // TODO fix iterator
+            matches.filter { it.selected }.map { it.recognizerMatches.iterator().next() }.toList(),
             view.options
         )
         view.resultText = result.pattern

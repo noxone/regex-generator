@@ -5,24 +5,26 @@ import org.olafneumann.regex.generator.util.HasRange
 import kotlin.properties.Delegates
 
 class MatchPresenter(
-    val recognizerMatches: List<RecognizerMatch>,
+    val recognizerMatches: Collection<RecognizerMatch>,
     selected: Boolean = false,
     deactivated: Boolean = false,
     var onSelectedChanged: (Boolean) -> Unit = {},
     var onDeactivatedChanged: (Boolean) -> Unit = {}
 ) : HasRange {
+    val ranges: List<IntRange>
     init {
         if (recognizerMatches.isEmpty()) {
             throw kotlin.IllegalArgumentException("Empty MatchPresenter is not allowed.")
         }
-        for (i in 1 until recognizerMatches.size) {
-            if (!recognizerMatches[0].hasSameRangesAs(recognizerMatches[i])) {
+        val listOfMatches = recognizerMatches.toList()
+        for (i in 1 until listOfMatches.size) {
+            if (!listOfMatches[0].hasSameRangesAs(listOfMatches[i])) {
                 throw kotlin.IllegalArgumentException("All RecognizerMatches in a MatchPresenter must have the same ranges.")
             }
         }
+        ranges = listOfMatches[0].ranges
     }
 
-    val ranges = recognizerMatches[0].ranges.toList()
     override val first = ranges.first().first
     override val last = ranges.last().last
     override val length = last - first + 1

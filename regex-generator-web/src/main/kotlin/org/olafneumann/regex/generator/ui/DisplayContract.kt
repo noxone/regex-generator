@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatch
 
 interface DisplayContract {
     interface View {
@@ -22,7 +23,7 @@ interface DisplayContract {
         fun onButtonCopyClick()
         fun onButtonHelpClick()
         fun onInputChanges(newInput: String)
-        fun onSuggestionClick(match: MatchPresenter)
+        fun onSuggestionClick(recognizerMatch: RecognizerMatch)
         fun onOptionsChange(options: RecognizerCombiner.Options)
     }
 }
