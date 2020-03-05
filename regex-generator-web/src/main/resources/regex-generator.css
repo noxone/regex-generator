@@ -58,6 +58,11 @@
   display: block;
 }
 
+.rg-match-item.rg-item-selected:hover .rg-match-item-overlay,
+.rg-match-item.rg-item-not-available:hover .rg-match-item-overlay {
+  display: none;
+}
+
 .rg-char-selected {
   background: lightgray !important;
 }

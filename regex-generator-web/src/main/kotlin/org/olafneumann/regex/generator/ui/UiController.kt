@@ -7,8 +7,8 @@ import org.olafneumann.regex.generator.regex.RecognizerMatch
 import kotlin.browser.window
 
 
-class UiController : DisplayContract.Presenter {
-    private val view: DisplayContract.View = HtmlPage(this)
+class UiController : DisplayContract.Controller {
+    private val view: DisplayContract.View = HtmlView(this)
     private var matches = listOf<MatchPresenter>()
 
     val currentTextInput: String get() = view.inputText
@@ -21,7 +21,7 @@ class UiController : DisplayContract.Presenter {
     }
 
     private fun RecognizerMatch.toPresentation() =
-        matches.find { it.recognizerMatch == this } ?: MatchPresenter(this)
+        matches.find { it.recognizerMatches[0] == this } ?: MatchPresenter(listOf(this))
 
     fun recognizeMatches(input: String = currentTextInput) {
         view.inputText = input
@@ -61,7 +61,7 @@ class UiController : DisplayContract.Presenter {
         matches.filter { !it.selected }
             .forEach { unselected ->
                 unselected.deactivated = matches.filter { it.selected }
-                .any { selected -> unselected.recognizerMatch.intersect(selected.recognizerMatch) } }
+                .any { selected -> unselected.recognizerMatches[0].intersect(selected.recognizerMatches[0]) } }
 
         computeOutputPattern()
     }
@@ -73,7 +73,7 @@ class UiController : DisplayContract.Presenter {
     private fun computeOutputPattern() {
         val result = RecognizerCombiner.combine(
             view.inputText,
-            matches.filter { it.selected }.map { it.recognizerMatch }.toList(),
+            matches.filter { it.selected }.map { it.recognizerMatches[0] }.toList(),
             view.options
         )
         view.resultText = result.pattern

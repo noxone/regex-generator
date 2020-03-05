@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.util.HasRange
+
 class RecognizerCombiner {
     companion object {
         fun combine(
@@ -7,7 +9,7 @@ class RecognizerCombiner {
             selectedMatches: Collection<RecognizerMatch>,
             options: Options
         ): RegularExpression {
-            val orderedMatches = selectedMatches.sortedWith(RecognizerMatch.comparator)
+            val orderedMatches = selectedMatches.sortedWith(HasRange.comparator)
 
             val indices = mutableListOf<Int>(0)
             indices.addAll(orderedMatches

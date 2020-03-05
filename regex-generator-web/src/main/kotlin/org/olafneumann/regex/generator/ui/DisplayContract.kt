@@ -18,7 +18,7 @@ interface DisplayContract {
         fun showGeneratedCodeForPattern(pattern: String)
     }
 
-    interface Presenter {
+    interface Controller {
         fun onButtonCopyClick()
         fun onButtonHelpClick()
         fun onInputChanges(newInput: String)

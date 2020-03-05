@@ -9,8 +9,8 @@ import org.olafneumann.regex.generator.js.createStepDefinition
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.UrlGenerator
+import org.olafneumann.regex.generator.util.HasRange
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLSpanElement
 import kotlin.browser.document
@@ -46,11 +46,11 @@ const val ID_DIV_LANGUAGES = "rg_language_accordion"
 const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
 const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
 
-class HtmlPage(
-    private val presenter: DisplayContract.Presenter
+class HtmlView(
+    private val presenter: DisplayContract.Controller
 ) : DisplayContract.View {
     // extend other classes
-    private val Int.characterUnits: String get() = "${this}ch"
+    private fun Int.toCharacterUnits() = "${this}ch"
 
     // HTML elements we need to change
     private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
@@ -133,8 +133,6 @@ class HtmlPage(
         val classes = listOf("primary", "success", "danger", "warning")
         fun nextCssClass() = "bg-${classes[index++ % classes.size]}"
 
-        fun getElementTitle(match: RecognizerMatch) = "${match.recognizer.name} (${match.inputPart})"
-
         rowContainer.clear()
         recognizerMatchToRow.clear()
         recognizerMatchToElements.clear()
@@ -159,13 +157,12 @@ class HtmlPage(
             // adjust styling
             val cssClass = nextCssClass()
             element.addClass(cssClass)
-            element.style.width = pres.recognizerMatch.inputPart.length.characterUnits
-            element.style.left = pres.recognizerMatch.first.characterUnits
-            element.title = getElementTitle(pres.recognizerMatch)
+            element.style.left = pres.first.toCharacterUnits()
+            element.style.width = pres.length.toCharacterUnits()
             // add listeners to handle display correctly
             pres.onSelectedChanged = { selected ->
                 HtmlHelper.toggleClass(element, selected, CLASS_ITEM_SELECTED)
-                pres.recognizerMatch.forEach {
+                pres.forEach {
                     HtmlHelper.toggleClass(
                         inputCharacterSpans[it],
                         selected,
@@ -183,14 +180,14 @@ class HtmlPage(
                 EVENT_MOUSE_ENTER,
                 {
                     if (pres.availableForHighlight) {
-                        pres.recognizerMatch.forEach { inputCharacterSpans[it].addClass(cssClass) }
+                        pres.forEach { inputCharacterSpans[it].addClass(cssClass) }
                     }
                 })
             element.addEventListener(
                 EVENT_MOUSE_LEAVE,
                 {
                     if (pres.availableForHighlight) {
-                        pres.recognizerMatch.forEach { inputCharacterSpans[it].removeClass(cssClass) }
+                        pres.forEach { inputCharacterSpans[it].removeClass(cssClass) }
                     }
                 })
         }
@@ -203,8 +200,8 @@ class HtmlPage(
             return lines.size - 1
         }
         return matches
-            .sortedWith(compareBy(RecognizerMatch.comparator) { it.recognizerMatch })
-            .flatMap { pres -> pres.recognizerMatch.ranges.map { pres to it } }
+            .sortedWith(HasRange.comparator)
+            .flatMap { pres -> pres.ranges.map { pres to it } }
             .map { pair ->
                 val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }
                 val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
