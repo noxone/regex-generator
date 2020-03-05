@@ -17,11 +17,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var replace = Kotlin.kotlin.text.replace_680rmw$;
-  var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var emptyList = Kotlin.kotlin.collections.emptyList_287e2$;
+  var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
-  var trimMargin = Kotlin.kotlin.text.trimMargin_rjktp$;
   var Regex_init = Kotlin.kotlin.text.Regex_init_61zpoe$;
+  var trimMargin = Kotlin.kotlin.text.trimMargin_rjktp$;
   var listOf_0 = Kotlin.kotlin.collections.listOf_mh5how$;
   var sortedWith = Kotlin.kotlin.collections.sortedWith_eknfly$;
   var wrapFunction = Kotlin.wrapFunction;
@@ -30,21 +30,21 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var step = Kotlin.kotlin.ranges.step_xsgg7u$;
+  var asSequence = Kotlin.kotlin.collections.asSequence_7wnvza$;
   var to = Kotlin.kotlin.to_ujzrz7$;
+  var map = Kotlin.kotlin.sequences.map_z5avom$;
+  var toMutableList = Kotlin.kotlin.sequences.toMutableList_veqyi0$;
   var lazy = Kotlin.kotlin.lazy_klfg04$;
   var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
-  var collectionSizeOrDefault = Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$;
-  var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
   var UnsupportedOperationException_init = Kotlin.kotlin.UnsupportedOperationException_init_pdl1vj$;
   var checkIndexOverflow = Kotlin.kotlin.collections.checkIndexOverflow_za3lpa$;
-  var compareBy = Kotlin.kotlin.comparisons.compareBy_bvgy4j$;
   var intersect = Kotlin.kotlin.collections.intersect_q4559j$;
+  var equals = Kotlin.equals;
+  var compareBy = Kotlin.kotlin.comparisons.compareBy_bvgy4j$;
   var RuntimeException_init = Kotlin.kotlin.RuntimeException_init_pdl1vj$;
-  var min = Kotlin.kotlin.collections.min_exjks8$;
-  var ensureNotNull = Kotlin.ensureNotNull;
-  var max = Kotlin.kotlin.collections.max_exjks8$;
+  var collectionSizeOrDefault = Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$;
+  var ArrayList_init_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
   var Collection = Kotlin.kotlin.collections.Collection;
-  var map = Kotlin.kotlin.sequences.map_z5avom$;
   var toList = Kotlin.kotlin.sequences.toList_veqyi0$;
   var MatchNamedGroupCollection = Kotlin.kotlin.text.MatchNamedGroupCollection;
   var throwCCE = Kotlin.throwCCE;
@@ -56,20 +56,25 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var ClassCastException = Kotlin.kotlin.ClassCastException;
   var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
   var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
-  var clear = Kotlin.kotlin.dom.clear_asww5s$;
-  var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
+  var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
+  var unboxChar = Kotlin.unboxChar;
   var Unit = Kotlin.kotlin.Unit;
+  var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
+  var clear = Kotlin.kotlin.dom.clear_asww5s$;
+  var max = Kotlin.kotlin.collections.max_exjks8$;
+  var ensureNotNull = Kotlin.ensureNotNull;
   var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
   var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
-  var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
+  var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
+  var SPAN_init = $module$kotlinx_html_js.kotlinx.html.SPAN;
+  var HTMLSpanElement_0 = HTMLSpanElement;
+  var visitTagAndFinalize = $module$kotlinx_html_js.kotlinx.html.visitTagAndFinalize_g9qte5$;
   var iterator = Kotlin.kotlin.text.iterator_gw00vp$;
-  var unboxChar = Kotlin.unboxChar;
+  var toBoxedChar = Kotlin.toBoxedChar;
   var ButtonType = $module$kotlinx_html_js.kotlinx.html.ButtonType;
   var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
-  var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
   var DIV_init = $module$kotlinx_html_js.kotlinx.html.DIV;
   var HTMLDivElement_0 = HTMLDivElement;
-  var visitTagAndFinalize = $module$kotlinx_html_js.kotlinx.html.visitTagAndFinalize_g9qte5$;
   var P_init = $module$kotlinx_html_js.kotlinx.html.P;
   var StringBuilder_init = Kotlin.kotlin.text.StringBuilder_init_za3lpa$;
   var enumEncode = $module$kotlinx_html_js.kotlinx.html.attributes.enumEncode_m4whry$;
@@ -78,8 +83,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var visitTag = $module$kotlinx_html_js.kotlinx.html.visitTag_xwv8ym$;
   var CODE_init = $module$kotlinx_html_js.kotlinx.html.CODE;
   var PRE_init = $module$kotlinx_html_js.kotlinx.html.PRE;
-  var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
-  var equals = Kotlin.equals;
+  var PropertyMetadata = Kotlin.PropertyMetadata;
+  var ObservableProperty = Kotlin.kotlin.properties.ObservableProperty;
   UrlGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   UrlGenerator.prototype.constructor = UrlGenerator;
   JavaCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
@@ -246,45 +251,58 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return replace(replace(replace(this.languageName, '-', '_minus_'), '+', '_plus_'), '#', '_sharp_');
     }
   });
-  CodeGenerator.$metadata$ = {
-    kind: Kind_INTERFACE,
-    simpleName: 'CodeGenerator',
-    interfaces: []
-  };
-  function GeneratedSnippet(snippet, warnings) {
+  function CodeGenerator$GeneratedSnippet(snippet, warnings) {
     if (warnings === void 0)
       warnings = emptyList();
     this.snippet = snippet;
     this.warnings = warnings;
   }
-  GeneratedSnippet.$metadata$ = {
+  CodeGenerator$GeneratedSnippet.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'GeneratedSnippet',
     interfaces: []
   };
-  GeneratedSnippet.prototype.component1 = function () {
+  CodeGenerator$GeneratedSnippet.prototype.component1 = function () {
     return this.snippet;
   };
-  GeneratedSnippet.prototype.component2 = function () {
+  CodeGenerator$GeneratedSnippet.prototype.component2 = function () {
     return this.warnings;
   };
-  GeneratedSnippet.prototype.copy_kwv3np$ = function (snippet, warnings) {
-    return new GeneratedSnippet(snippet === void 0 ? this.snippet : snippet, warnings === void 0 ? this.warnings : warnings);
+  CodeGenerator$GeneratedSnippet.prototype.copy_kwv3np$ = function (snippet, warnings) {
+    return new CodeGenerator$GeneratedSnippet(snippet === void 0 ? this.snippet : snippet, warnings === void 0 ? this.warnings : warnings);
   };
-  GeneratedSnippet.prototype.toString = function () {
+  CodeGenerator$GeneratedSnippet.prototype.toString = function () {
     return 'GeneratedSnippet(snippet=' + Kotlin.toString(this.snippet) + (', warnings=' + Kotlin.toString(this.warnings)) + ')';
   };
-  GeneratedSnippet.prototype.hashCode = function () {
+  CodeGenerator$GeneratedSnippet.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.snippet) | 0;
     result = result * 31 + Kotlin.hashCode(this.warnings) | 0;
     return result;
   };
-  GeneratedSnippet.prototype.equals = function (other) {
+  CodeGenerator$GeneratedSnippet.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.snippet, other.snippet) && Kotlin.equals(this.warnings, other.warnings)))));
   };
-  function SimpleReplacingCodeGenerator() {
+  CodeGenerator.$metadata$ = {
+    kind: Kind_INTERFACE,
+    simpleName: 'CodeGenerator',
+    interfaces: []
+  };
+  function SimpleReplacingCodeGenerator(languageName, highlightLanguage, templateCode) {
+    this.languageName_gnrhy9$_0 = languageName;
+    this.highlightLanguage_g6a7r8$_0 = highlightLanguage;
+    this.templateCode_0 = templateCode;
   }
+  Object.defineProperty(SimpleReplacingCodeGenerator.prototype, 'languageName', {
+    get: function () {
+      return this.languageName_gnrhy9$_0;
+    }
+  });
+  Object.defineProperty(SimpleReplacingCodeGenerator.prototype, 'highlightLanguage', {
+    get: function () {
+      return this.highlightLanguage_g6a7r8$_0;
+    }
+  });
   SimpleReplacingCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     return pattern;
   };
@@ -292,7 +310,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return emptyList();
   };
   SimpleReplacingCodeGenerator.prototype.generateCode_wa467u$ = function (pattern, options) {
-    return new GeneratedSnippet(replace(replace(replace(this.templateCode, '%1$s', this.transformPattern_wa467u$(pattern, options)), '%2$s', this.generateOptionsCode_ow7xd4$(options)), '%3$s', pattern), this.getWarnings_wa467u$(pattern, options));
+    return new CodeGenerator$GeneratedSnippet(replace(replace(replace(this.templateCode_0, '%1$s', this.transformPattern_wa467u$(pattern, options)), '%2$s', this.generateOptionsCode_ow7xd4$(options)), '%3$s', pattern), this.getWarnings_wa467u$(pattern, options));
   };
   function SimpleReplacingCodeGenerator$combineOptions$lambda(closure$mapper) {
     return function (s) {
@@ -349,28 +367,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       valueForDotAll = 's';
     if (valueForMultiline === void 0)
       valueForMultiline = 'm';
-    SimpleReplacingCodeGenerator.call(this);
-    this.linkName_0 = linkName;
-    this.urlTemplate_0 = urlTemplate;
+    SimpleReplacingCodeGenerator.call(this, linkName, linkName, urlTemplate);
     this.valueForCaseInsensitive_0 = valueForCaseInsensitive;
     this.valueForDotAll_0 = valueForDotAll;
     this.valueForMultiline_0 = valueForMultiline;
   }
-  Object.defineProperty(UrlGenerator.prototype, 'languageName', {
-    get: function () {
-      return this.linkName_0;
-    }
-  });
-  Object.defineProperty(UrlGenerator.prototype, 'highlightLanguage', {
-    get: function () {
-      return this.linkName_0;
-    }
-  });
-  Object.defineProperty(UrlGenerator.prototype, 'templateCode', {
-    get: function () {
-      return this.urlTemplate_0;
-    }
-  });
   UrlGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     return encodeURIComponent(pattern);
   };
@@ -383,23 +384,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function JavaCodeGenerator() {
-    SimpleReplacingCodeGenerator.call(this);
+    SimpleReplacingCodeGenerator.call(this, 'Java', 'java', trimMargin('import java.util.regex.Pattern;\n                |import java.util.regex.Matcher;\n                |\n                |public class Sample {\n                |    public boolean useRegex(String input) {\n                |        // Compile regular expression\n                |        Pattern pattern = Pattern.compile("%1$s"%2$s);\n                |        // Match regex against input\n                |        Matcher matcher = pattern.matcher(input);\n                |        // Use results...\n                |        return matcher.matches();\n                |    }\n                |}'));
   }
-  Object.defineProperty(JavaCodeGenerator.prototype, 'languageName', {
-    get: function () {
-      return 'Java';
-    }
-  });
-  Object.defineProperty(JavaCodeGenerator.prototype, 'highlightLanguage', {
-    get: function () {
-      return 'java';
-    }
-  });
-  Object.defineProperty(JavaCodeGenerator.prototype, 'templateCode', {
-    get: function () {
-      return trimMargin('import java.util.regex.Pattern;\n                |import java.util.regex.Matcher;\n                |\n                |public class Sample {\n                |    public boolean useRegex(String input) {\n                |        // Compile regular expression\n                |        Pattern pattern = Pattern.compile("%1$s"%2$s);\n                |        // Match regex against input\n                |        Matcher matcher = pattern.matcher(input);\n                |        // Use results...\n                |        return matcher.matches();\n                |    }\n                |}');
-    }
-  });
   JavaCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     var $receiver = Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
     return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
@@ -416,23 +402,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function KotlinCodeGenerator() {
-    SimpleReplacingCodeGenerator.call(this);
+    SimpleReplacingCodeGenerator.call(this, 'Kotlin', 'kotlin', 'fun useRegex(input: String): Boolean {\n    val regex = Regex(pattern = "%1$s"%2$s)\n    return regex.matches(input)\n}');
   }
-  Object.defineProperty(KotlinCodeGenerator.prototype, 'languageName', {
-    get: function () {
-      return 'Kotlin';
-    }
-  });
-  Object.defineProperty(KotlinCodeGenerator.prototype, 'highlightLanguage', {
-    get: function () {
-      return 'kotlin';
-    }
-  });
-  Object.defineProperty(KotlinCodeGenerator.prototype, 'templateCode', {
-    get: function () {
-      return 'fun useRegex(input: String): Boolean {\n    val regex = Regex(pattern = "%1$s"%2$s)\n    return regex.matches(input)\n}';
-    }
-  });
   KotlinCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     var $receiver = Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
     return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
@@ -454,27 +425,12 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function PhpCodeGenerator() {
-    SimpleReplacingCodeGenerator.call(this);
+    SimpleReplacingCodeGenerator.call(this, 'PHP', 'php', "<?php\nfunction useRegex($input) {\n    $regex = '/%1$s/%2$s';\n    return preg_match($regex, $input);\n}\n?>");
   }
-  Object.defineProperty(PhpCodeGenerator.prototype, 'languageName', {
-    get: function () {
-      return 'PHP';
-    }
-  });
-  Object.defineProperty(PhpCodeGenerator.prototype, 'highlightLanguage', {
-    get: function () {
-      return 'php';
-    }
-  });
   PhpCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     var $receiver = Regex_init("([\\\\'])").replace_x2uqeu$(pattern, '\\$1');
     return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
   };
-  Object.defineProperty(PhpCodeGenerator.prototype, 'templateCode', {
-    get: function () {
-      return "<?php\nfunction useRegex($input) {\n    $regex = '/%1$s/%2$s';\n    return preg_match($regex, $input);\n}\n?>";
-    }
-  });
   PhpCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
     return this.combineOptions_1rvtm9$(options, 'i', 'm', 's');
   };
@@ -484,23 +440,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function JavaScriptCodeGenerator() {
-    SimpleReplacingCodeGenerator.call(this);
+    SimpleReplacingCodeGenerator.call(this, 'JavaScript', 'javascript', 'function useRegex(input) {\n    let regex = /%1$s/%2$s;\n    return regex.test(input);\n}');
   }
-  Object.defineProperty(JavaScriptCodeGenerator.prototype, 'languageName', {
-    get: function () {
-      return 'JavaScript';
-    }
-  });
-  Object.defineProperty(JavaScriptCodeGenerator.prototype, 'highlightLanguage', {
-    get: function () {
-      return 'javascript';
-    }
-  });
-  Object.defineProperty(JavaScriptCodeGenerator.prototype, 'templateCode', {
-    get: function () {
-      return 'function useRegex(input) {\n    let regex = /%1$s/%2$s;\n    return regex.test(input);\n}';
-    }
-  });
   JavaScriptCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     return Regex_init('\t').replace_x2uqeu$(pattern, '\\t');
   };
@@ -518,23 +459,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function CSharpCodeGenerator() {
-    SimpleReplacingCodeGenerator.call(this);
+    SimpleReplacingCodeGenerator.call(this, 'C#', 'csharp', 'using System;\nusing System.Text.RegularExpressions;\n\npublic class Sample\n{\n    public static void useRegex(String input)\n    {\n        Regex regex = new Regex("%1$s"%2$s);\n        return regex.IsMatch(input);\n    }\n}');
   }
-  Object.defineProperty(CSharpCodeGenerator.prototype, 'languageName', {
-    get: function () {
-      return 'C#';
-    }
-  });
-  Object.defineProperty(CSharpCodeGenerator.prototype, 'highlightLanguage', {
-    get: function () {
-      return 'csharp';
-    }
-  });
-  Object.defineProperty(CSharpCodeGenerator.prototype, 'templateCode', {
-    get: function () {
-      return 'using System;\nusing System.Text.RegularExpressions;\n\npublic class Sample\n{\n    public static void useRegex(String input)\n    {\n        Regex regex = new Regex("%1$s"%2$s);\n        return regex.IsMatch(input);\n    }\n}';
-    }
-  });
   CSharpCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     var $receiver = Regex_init('([\\\\"])').replace_x2uqeu$(pattern, '\\$1');
     return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
@@ -551,23 +477,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function RubyCodeGenerator() {
-    SimpleReplacingCodeGenerator.call(this);
+    SimpleReplacingCodeGenerator.call(this, 'Ruby', 'ruby', "def use_regex(input)\n    regex = Regexp.new('%1$s'%2$s)\n    regex.match input\nend");
   }
-  Object.defineProperty(RubyCodeGenerator.prototype, 'languageName', {
-    get: function () {
-      return 'Ruby';
-    }
-  });
-  Object.defineProperty(RubyCodeGenerator.prototype, 'highlightLanguage', {
-    get: function () {
-      return 'ruby';
-    }
-  });
-  Object.defineProperty(RubyCodeGenerator.prototype, 'templateCode', {
-    get: function () {
-      return "def use_regex(input)\n    regex = Regexp.new('%1$s'%2$s)\n    regex.match input\nend";
-    }
-  });
   RubyCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
     var $receiver = Regex_init("([\\\\'])").replace_x2uqeu$(pattern, '\\$1');
     return Regex_init('\t').replace_x2uqeu$($receiver, '\\t');
@@ -650,9 +561,34 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function RecognizerCombiner$Companion() {
     RecognizerCombiner$Companion_instance = this;
   }
+  function RecognizerCombiner$Companion$combine$lambda(closure$indices) {
+    return function (it) {
+      return to(closure$indices.get_za3lpa$(it), closure$indices.get_za3lpa$(it + 1 | 0));
+    };
+  }
+  function RecognizerCombiner$Companion$combine$lambda_0(closure$inputText) {
+    return function (it) {
+      var $receiver = closure$inputText;
+      var startIndex = it.first;
+      var endIndex = it.second;
+      return $receiver.substring(startIndex, endIndex);
+    };
+  }
+  function RecognizerCombiner$Companion$combine$lambda_1(this$RecognizerCombiner$) {
+    return function (it) {
+      return this$RecognizerCombiner$.escapeForRegex_0(it);
+    };
+  }
+  function RecognizerCombiner$Companion$combine$lambda_2(closure$options) {
+    return function (it) {
+      var tmp$ = closure$options.onlyPatterns;
+      if (tmp$) {
+        tmp$ = it.length > 0;
+      }
+      return tmp$ ? '.*' : it;
+    };
+  }
   RecognizerCombiner$Companion.prototype.combine_9yx9zl$ = function (inputText, selectedMatches, options) {
-    if (options === void 0)
-      options = new RecognizerCombiner$Options();
     var orderedMatches = sortedWith(selectedMatches, RecognizerMatch$Companion_getInstance().comparator);
     var indices = mutableListOf([0]);
     var destination = ArrayList_init();
@@ -673,61 +609,36 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     indices.addAll_brywnq$(destination_0);
     indices.add_11rb$(inputText.length);
-    var $receiver = step(until(0, indices.size), 2);
-    var destination_1 = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
+    var staticValues = toMutableList(map(map(map(map(asSequence(step(until(0, indices.size), 2)), RecognizerCombiner$Companion$combine$lambda(indices)), RecognizerCombiner$Companion$combine$lambda_0(inputText)), RecognizerCombiner$Companion$combine$lambda_1(this)), RecognizerCombiner$Companion$combine$lambda_2(options)));
+    var start;
+    var end;
+    if (options.matchWholeLine) {
+      start = '^';
+      end = '$';
+    }
+     else {
+      start = '';
+      end = '';
+      staticValues.set_wxm5ur$(0, '');
+      staticValues.set_wxm5ur$(staticValues.size - 1 | 0, '');
+    }
     var tmp$_1;
-    tmp$_1 = $receiver.iterator();
-    while (tmp$_1.hasNext()) {
-      var item = tmp$_1.next();
-      destination_1.add_11rb$(to(indices.get_za3lpa$(item), indices.get_za3lpa$(item + 1 | 0)));
-    }
-    var destination_2 = ArrayList_init_0(collectionSizeOrDefault(destination_1, 10));
-    var tmp$_2;
-    tmp$_2 = destination_1.iterator();
-    while (tmp$_2.hasNext()) {
-      var item_0 = tmp$_2.next();
-      var tmp$_3 = destination_2.add_11rb$;
-      var startIndex = item_0.first;
-      var endIndex = item_0.second;
-      tmp$_3.call(destination_2, inputText.substring(startIndex, endIndex));
-    }
-    var destination_3 = ArrayList_init_0(collectionSizeOrDefault(destination_2, 10));
-    var tmp$_4;
-    tmp$_4 = destination_2.iterator();
-    while (tmp$_4.hasNext()) {
-      var item_1 = tmp$_4.next();
-      destination_3.add_11rb$(this.escapeRegex_0(item_1));
-    }
-    var destination_4 = ArrayList_init_0(collectionSizeOrDefault(destination_3, 10));
-    var tmp$_5;
-    tmp$_5 = destination_3.iterator();
-    while (tmp$_5.hasNext()) {
-      var item_2 = tmp$_5.next();
-      var tmp$_6 = destination_4.add_11rb$;
-      var tmp$_7 = options.onlyPatterns;
-      if (tmp$_7) {
-        tmp$_7 = item_2.length > 0;
-      }
-      tmp$_6.call(destination_4, tmp$_7 ? '.*' : item_2);
-    }
-    var staticValues = destination_4;
-    var tmp$_8;
     var iterator = staticValues.iterator();
     if (!iterator.hasNext())
       throw UnsupportedOperationException_init("Empty collection can't be reduced.");
     var index = 1;
     var accumulator = iterator.next();
     while (iterator.hasNext()) {
-      var index_0 = checkIndexOverflow((tmp$_8 = index, index = tmp$_8 + 1 | 0, tmp$_8));
+      var index_0 = checkIndexOverflow((tmp$_1 = index, index = tmp$_1 + 1 | 0, tmp$_1));
       var acc = accumulator;
       var s = iterator.next();
       accumulator = acc + ((index_0 - 1 | 0) < orderedMatches.size ? orderedMatches.get_za3lpa$(index_0 - 1 | 0).recognizer.outputPattern : '') + s;
     }
     var pattern = accumulator;
-    return new RecognizerCombiner$RegularExpression('^' + pattern + '$');
+    return new RecognizerCombiner$RegularExpression(start + pattern + end);
   };
-  RecognizerCombiner$Companion.prototype.escapeRegex_0 = function (input) {
-    return Regex_init('([.\\\\^$\\[{}()*?+])').replace_x2uqeu$(input, '\\$1');
+  RecognizerCombiner$Companion.prototype.escapeForRegex_0 = function ($receiver) {
+    return Regex_init('([.\\\\^$\\[{}()*?+])').replace_x2uqeu$($receiver, '\\$1');
   };
   RecognizerCombiner$Companion.$metadata$ = {
     kind: Kind_OBJECT,
@@ -741,9 +652,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     return RecognizerCombiner$Companion_instance;
   }
-  function RecognizerCombiner$Options(onlyPatterns, caseSensitive, dotMatchesLineBreaks, multiline) {
+  function RecognizerCombiner$Options(onlyPatterns, matchWholeLine, caseSensitive, dotMatchesLineBreaks, multiline) {
     if (onlyPatterns === void 0)
       onlyPatterns = false;
+    if (matchWholeLine === void 0)
+      matchWholeLine = true;
     if (caseSensitive === void 0)
       caseSensitive = true;
     if (dotMatchesLineBreaks === void 0)
@@ -751,6 +664,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     if (multiline === void 0)
       multiline = false;
     this.onlyPatterns = onlyPatterns;
+    this.matchWholeLine = matchWholeLine;
     this.caseSensitive = caseSensitive;
     this.dotMatchesLineBreaks = dotMatchesLineBreaks;
     this.multiline = multiline;
@@ -764,30 +678,34 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return this.onlyPatterns;
   };
   RecognizerCombiner$Options.prototype.component2 = function () {
-    return this.caseSensitive;
+    return this.matchWholeLine;
   };
   RecognizerCombiner$Options.prototype.component3 = function () {
-    return this.dotMatchesLineBreaks;
+    return this.caseSensitive;
   };
   RecognizerCombiner$Options.prototype.component4 = function () {
+    return this.dotMatchesLineBreaks;
+  };
+  RecognizerCombiner$Options.prototype.component5 = function () {
     return this.multiline;
   };
-  RecognizerCombiner$Options.prototype.copy_nyyhg$ = function (onlyPatterns, caseSensitive, dotMatchesLineBreaks, multiline) {
-    return new RecognizerCombiner$Options(onlyPatterns === void 0 ? this.onlyPatterns : onlyPatterns, caseSensitive === void 0 ? this.caseSensitive : caseSensitive, dotMatchesLineBreaks === void 0 ? this.dotMatchesLineBreaks : dotMatchesLineBreaks, multiline === void 0 ? this.multiline : multiline);
+  RecognizerCombiner$Options.prototype.copy_yys257$ = function (onlyPatterns, matchWholeLine, caseSensitive, dotMatchesLineBreaks, multiline) {
+    return new RecognizerCombiner$Options(onlyPatterns === void 0 ? this.onlyPatterns : onlyPatterns, matchWholeLine === void 0 ? this.matchWholeLine : matchWholeLine, caseSensitive === void 0 ? this.caseSensitive : caseSensitive, dotMatchesLineBreaks === void 0 ? this.dotMatchesLineBreaks : dotMatchesLineBreaks, multiline === void 0 ? this.multiline : multiline);
   };
   RecognizerCombiner$Options.prototype.toString = function () {
-    return 'Options(onlyPatterns=' + Kotlin.toString(this.onlyPatterns) + (', caseSensitive=' + Kotlin.toString(this.caseSensitive)) + (', dotMatchesLineBreaks=' + Kotlin.toString(this.dotMatchesLineBreaks)) + (', multiline=' + Kotlin.toString(this.multiline)) + ')';
+    return 'Options(onlyPatterns=' + Kotlin.toString(this.onlyPatterns) + (', matchWholeLine=' + Kotlin.toString(this.matchWholeLine)) + (', caseSensitive=' + Kotlin.toString(this.caseSensitive)) + (', dotMatchesLineBreaks=' + Kotlin.toString(this.dotMatchesLineBreaks)) + (', multiline=' + Kotlin.toString(this.multiline)) + ')';
   };
   RecognizerCombiner$Options.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.onlyPatterns) | 0;
+    result = result * 31 + Kotlin.hashCode(this.matchWholeLine) | 0;
     result = result * 31 + Kotlin.hashCode(this.caseSensitive) | 0;
     result = result * 31 + Kotlin.hashCode(this.dotMatchesLineBreaks) | 0;
     result = result * 31 + Kotlin.hashCode(this.multiline) | 0;
     return result;
   };
   RecognizerCombiner$Options.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.onlyPatterns, other.onlyPatterns) && Kotlin.equals(this.caseSensitive, other.caseSensitive) && Kotlin.equals(this.dotMatchesLineBreaks, other.dotMatchesLineBreaks) && Kotlin.equals(this.multiline, other.multiline)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.onlyPatterns, other.onlyPatterns) && Kotlin.equals(this.matchWholeLine, other.matchWholeLine) && Kotlin.equals(this.caseSensitive, other.caseSensitive) && Kotlin.equals(this.dotMatchesLineBreaks, other.dotMatchesLineBreaks) && Kotlin.equals(this.multiline, other.multiline)))));
   };
   function RecognizerCombiner$RegularExpression(pattern) {
     this.pattern = pattern;
@@ -832,53 +750,19 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function RecognizerMatch(ranges, inputPart, recognizer) {
     RecognizerMatch$Companion_getInstance();
-    this.ranges = ranges;
     this.inputPart = inputPart;
     this.recognizer = recognizer;
-    if (this.ranges.isEmpty()) {
+    this.ranges = null;
+    this.first = 0;
+    this.last_0 = 0;
+    this.length = 0;
+    if (ranges.isEmpty()) {
       throw RuntimeException_init('RecognizerMatch without ranges is not allowed.');
     }
-    var $receiver = this.ranges;
-    var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
-    var tmp$;
-    tmp$ = $receiver.iterator();
-    while (tmp$.hasNext()) {
-      var item = tmp$.next();
-      destination.add_11rb$(item.first);
-    }
-    this.first = ensureNotNull(min(destination));
-    var $receiver_0 = this.ranges;
-    var destination_0 = ArrayList_init_0(collectionSizeOrDefault($receiver_0, 10));
-    var tmp$_0;
-    tmp$_0 = $receiver_0.iterator();
-    while (tmp$_0.hasNext()) {
-      var item_0 = tmp$_0.next();
-      destination_0.add_11rb$(item_0.last);
-    }
-    this.last_0 = ensureNotNull(max(destination_0));
+    this.ranges = sortedWith(ranges, compareBy([RecognizerMatch_init$lambda, RecognizerMatch_init$lambda_0]));
+    this.first = this.ranges.get_za3lpa$(0).first;
+    this.last_0 = this.ranges.get_za3lpa$(this.ranges.size - 1 | 0).last;
     this.length = this.last_0 - this.first + 1 | 0;
-  }
-  function RecognizerMatch$Companion() {
-    RecognizerMatch$Companion_instance = this;
-    this.comparator = compareBy([RecognizerMatch$Companion$comparator$lambda, RecognizerMatch$Companion$comparator$lambda_0]);
-  }
-  function RecognizerMatch$Companion$comparator$lambda(it) {
-    return it.first;
-  }
-  function RecognizerMatch$Companion$comparator$lambda_0(it) {
-    return -it.length | 0;
-  }
-  RecognizerMatch$Companion.$metadata$ = {
-    kind: Kind_OBJECT,
-    simpleName: 'Companion',
-    interfaces: []
-  };
-  var RecognizerMatch$Companion_instance = null;
-  function RecognizerMatch$Companion_getInstance() {
-    if (RecognizerMatch$Companion_instance === null) {
-      new RecognizerMatch$Companion();
-    }
-    return RecognizerMatch$Companion_instance;
   }
   RecognizerMatch.prototype.intersect_hdji9c$ = function (other) {
     var $receiver = this.ranges;
@@ -918,35 +802,96 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
      while (false);
     return any$result;
   };
+  RecognizerMatch.prototype.forEach_b4k9x1$ = function (action) {
+    var $receiver = this.ranges;
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      var list = element;
+      addAll(destination, list);
+    }
+    var tmp$_0;
+    tmp$_0 = destination.iterator();
+    while (tmp$_0.hasNext()) {
+      var element_0 = tmp$_0.next();
+      action(element_0);
+    }
+  };
+  RecognizerMatch.prototype.hasSameRangesAs_hdji9c$ = function (other) {
+    if (this.ranges.size !== other.ranges.size) {
+      return false;
+    }
+    var $receiver = this.ranges;
+    var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
+    var tmp$, tmp$_0;
+    var index = 0;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      var tmp$_1 = destination.add_11rb$;
+      var index_0 = checkIndexOverflow((tmp$_0 = index, index = tmp$_0 + 1 | 0, tmp$_0));
+      tmp$_1.call(destination, item != null ? item.equals(other.ranges.get_za3lpa$(index_0)) : null);
+    }
+    var all$result;
+    all$break: do {
+      var tmp$_2;
+      if (Kotlin.isType(destination, Collection) && destination.isEmpty()) {
+        all$result = true;
+        break all$break;
+      }
+      tmp$_2 = destination.iterator();
+      while (tmp$_2.hasNext()) {
+        var element = tmp$_2.next();
+        if (!element) {
+          all$result = false;
+          break all$break;
+        }
+      }
+      all$result = true;
+    }
+     while (false);
+    return all$result;
+  };
+  RecognizerMatch.prototype.equals = function (other) {
+    return Kotlin.isType(other, RecognizerMatch) && equals(this.recognizer, other.recognizer) && this.hasSameRangesAs_hdji9c$(other);
+  };
   RecognizerMatch.prototype.toString = function () {
     return '[' + this.first + '+' + this.length + '] (' + this.recognizer.name + ': ' + this.recognizer.outputPattern + ') ' + this.inputPart;
   };
+  function RecognizerMatch$Companion() {
+    RecognizerMatch$Companion_instance = this;
+    this.comparator = compareBy([RecognizerMatch$Companion$comparator$lambda, RecognizerMatch$Companion$comparator$lambda_0]);
+  }
+  function RecognizerMatch$Companion$comparator$lambda(it) {
+    return it.first;
+  }
+  function RecognizerMatch$Companion$comparator$lambda_0(it) {
+    return -it.length | 0;
+  }
+  RecognizerMatch$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var RecognizerMatch$Companion_instance = null;
+  function RecognizerMatch$Companion_getInstance() {
+    if (RecognizerMatch$Companion_instance === null) {
+      new RecognizerMatch$Companion();
+    }
+    return RecognizerMatch$Companion_instance;
+  }
+  function RecognizerMatch_init$lambda(it) {
+    return it.first;
+  }
+  function RecognizerMatch_init$lambda_0(it) {
+    return it.last;
+  }
   RecognizerMatch.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'RecognizerMatch',
     interfaces: []
-  };
-  RecognizerMatch.prototype.component1 = function () {
-    return this.ranges;
-  };
-  RecognizerMatch.prototype.component2 = function () {
-    return this.inputPart;
-  };
-  RecognizerMatch.prototype.component3 = function () {
-    return this.recognizer;
-  };
-  RecognizerMatch.prototype.copy_c4pwzn$ = function (ranges, inputPart, recognizer) {
-    return new RecognizerMatch(ranges === void 0 ? this.ranges : ranges, inputPart === void 0 ? this.inputPart : inputPart, recognizer === void 0 ? this.recognizer : recognizer);
-  };
-  RecognizerMatch.prototype.hashCode = function () {
-    var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.ranges) | 0;
-    result = result * 31 + Kotlin.hashCode(this.inputPart) | 0;
-    result = result * 31 + Kotlin.hashCode(this.recognizer) | 0;
-    return result;
-  };
-  RecognizerMatch.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.ranges, other.ranges) && Kotlin.equals(this.inputPart, other.inputPart) && Kotlin.equals(this.recognizer, other.recognizer)))));
   };
   function SimpleRecognizer(name, outputPattern, description, active, searchPattern, mainGroupIndex, mainGroupName) {
     if (description === void 0)
@@ -1182,7 +1127,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     parent.appendChild(element);
     return element;
   };
-  HtmlHelper.prototype.toggleClass_g7pq4p$ = function (element, selected, className) {
+  HtmlHelper.prototype.toggleClass_g5b9vm$ = function (element, selected, className) {
     if (selected)
       addClass(element, [className]);
     else
@@ -1212,18 +1157,45 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'LinkHandler',
     interfaces: []
   };
+  function visitAndFinalize$lambda(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function span$lambda($receiver) {
+    return Unit;
+  }
+  function Comparator$ObjectLiteral_0(closure$comparison) {
+    this.closure$comparison = closure$comparison;
+  }
+  Comparator$ObjectLiteral_0.prototype.compare = function (a, b) {
+    return this.closure$comparison(a, b);
+  };
+  Comparator$ObjectLiteral_0.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
+  function compareBy$lambda_0(closure$comparator, closure$selector) {
+    return function (a, b) {
+      var comparator = closure$comparator;
+      var selector = closure$selector;
+      return comparator.compare(selector(a), selector(b));
+    };
+  }
   var CLASS_MATCH_ROW;
   var CLASS_MATCH_ITEM;
   var CLASS_ITEM_SELECTED;
+  var CLASS_CHAR_SELECTED;
   var CLASS_ITEM_NOT_AVAILABLE;
   var EVENT_CLICK;
   var EVENT_INPUT;
+  var EVENT_MOUSE_ENTER;
+  var EVENT_MOUSE_LEAVE;
   var ID_INPUT_ELEMENT;
   var ID_TEXT_DISPLAY;
   var ID_RESULT_DISPLAY;
   var ID_ROW_CONTAINER;
   var ID_CONTAINER_INPUT;
   var ID_CHECK_ONLY_MATCHES;
+  var ID_CHECK_WHOLELINE;
   var ID_CHECK_CASE_INSENSITIVE;
   var ID_CHECK_DOT_MATCHES_LINE_BRAKES;
   var ID_CHECK_MULTILINE;
@@ -1232,9 +1204,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var ID_DIV_LANGUAGES;
   var ID_ANCHOR_REGEX101;
   var ID_ANCHOR_REGEXR;
-  function get_characterUnits($receiver) {
-    return $receiver.toString() + 'ch';
-  }
   function HtmlPage(presenter) {
     this.presenter_0 = presenter;
     this.textInput_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_INPUT_ELEMENT);
@@ -1244,6 +1213,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.buttonCopy_0 = HtmlHelper_getInstance().getButtonById_y4putb$(ID_BUTTON_COPY);
     this.buttonHelp_0 = HtmlHelper_getInstance().getAnchorById_y4putb$(ID_BUTTON_HELP);
     this.checkOnlyMatches_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_ONLY_MATCHES);
+    this.checkWholeLine_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_WHOLELINE);
     this.checkCaseInsensitive_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_CASE_INSENSITIVE);
     this.checkDotAll_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_DOT_MATCHES_LINE_BRAKES);
     this.checkMultiline_0 = HtmlHelper_getInstance().getInputById_y4putb$(ID_CHECK_MULTILINE);
@@ -1252,6 +1222,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.anchorRegexr_0 = new LinkHandler(HtmlHelper_getInstance().getAnchorById_y4putb$(ID_ANCHOR_REGEXR), new UrlGenerator('Regexr', 'https://regexr.com/?expression=%1$s&text='));
     this.recognizerMatchToRow_0 = LinkedHashMap_init();
     this.recognizerMatchToElements_0 = LinkedHashMap_init();
+    this.inputCharacterSpans_0 = emptyList();
     var $receiver = CodeGenerator$Companion_getInstance().all;
     var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
     var tmp$;
@@ -1269,12 +1240,10 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.checkDotAll_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_3(this));
     this.checkMultiline_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_4(this));
     this.checkOnlyMatches_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_5(this));
+    this.checkWholeLine_0.addEventListener(EVENT_INPUT, HtmlPage_init$lambda_6(this));
   }
-  HtmlPage.prototype.get_row_0 = function ($receiver) {
-    return this.recognizerMatchToRow_0.get_11rb$($receiver);
-  };
-  HtmlPage.prototype.get_div_0 = function ($receiver) {
-    return this.recognizerMatchToElements_0.get_11rb$($receiver);
+  HtmlPage.prototype.get_characterUnits_0 = function ($receiver) {
+    return $receiver.toString() + 'ch';
   };
   HtmlPage.prototype.hideCopyButton = function () {
     jQuery(this.buttonCopy_0).parent().remove();
@@ -1290,12 +1259,36 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       this.textInput_0.value = value;
     }
   });
+  function HtmlPage$set_HtmlPage$displayText$lambda$lambda(closure$it) {
+    return function ($receiver) {
+      $receiver.unaryPlus_pdl1vz$(String.fromCharCode(unboxChar(closure$it)));
+      return Unit;
+    };
+  }
   Object.defineProperty(HtmlPage.prototype, 'displayText', {
     get: function () {
       return this.textDisplay_0.innerText;
     },
     set: function (value) {
-      this.textDisplay_0.innerText = value;
+      var destination = ArrayList_init_0(value.length);
+      var tmp$;
+      tmp$ = iterator(value);
+      while (tmp$.hasNext()) {
+        var item = unboxChar(tmp$.next());
+        var tmp$_0 = destination.add_11rb$;
+        var it = toBoxedChar(item);
+        var $receiver = get_create(document);
+        var tmp$_1;
+        tmp$_0.call(destination, Kotlin.isType(tmp$_1 = visitTagAndFinalize(new SPAN_init(attributesMapOf('class', 'rg-char'), $receiver), $receiver, visitAndFinalize$lambda(HtmlPage$set_HtmlPage$displayText$lambda$lambda(it))), HTMLSpanElement_0) ? tmp$_1 : throwCCE());
+      }
+      this.inputCharacterSpans_0 = toList_0(destination);
+      clear(this.textDisplay_0);
+      var tmp$_2;
+      tmp$_2 = this.inputCharacterSpans_0.iterator();
+      while (tmp$_2.hasNext()) {
+        var element = tmp$_2.next();
+        this.textDisplay_0.appendChild(element);
+      }
     }
   });
   Object.defineProperty(HtmlPage.prototype, 'resultText', {
@@ -1308,7 +1301,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       this.anchorRegexr_0.setPattern_wa467u$(value, this.options);
     }
   });
-  function HtmlPage$showResults$getCssClass(closure$classes, closure$index) {
+  function HtmlPage$showResults$nextCssClass(closure$classes, closure$index) {
     return function () {
       var tmp$;
       return 'bg-' + closure$classes.get_za3lpa$((tmp$ = closure$index.v, closure$index.v = tmp$ + 1 | 0, tmp$) % closure$classes.size);
@@ -1317,17 +1310,64 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function HtmlPage$showResults$getElementTitle(match) {
     return match.recognizer.name + ' (' + match.inputPart + ')';
   }
-  function HtmlPage$showResults$lambda$lambda(this$HtmlPage, closure$match) {
+  function HtmlPage$showResults$lambda$lambda$lambda(this$HtmlPage, closure$selected) {
     return function (it) {
-      this$HtmlPage.presenter_0.onSuggestionClick_hdji9c$(closure$match);
+      HtmlHelper_getInstance().toggleClass_g5b9vm$(this$HtmlPage.inputCharacterSpans_0.get_za3lpa$(it), closure$selected, CLASS_CHAR_SELECTED);
       return Unit;
     };
   }
-  HtmlPage.prototype.showResults_oz4rjz$ = function (matches) {
+  function HtmlPage$showResults$lambda$lambda(closure$element, closure$pres, this$HtmlPage) {
+    return function (selected) {
+      HtmlHelper_getInstance().toggleClass_g5b9vm$(closure$element, selected, CLASS_ITEM_SELECTED);
+      closure$pres.recognizerMatch.forEach_b4k9x1$(HtmlPage$showResults$lambda$lambda$lambda(this$HtmlPage, selected));
+      return Unit;
+    };
+  }
+  function HtmlPage$showResults$lambda$lambda_0(closure$element) {
+    return function (deactivated) {
+      HtmlHelper_getInstance().toggleClass_g5b9vm$(closure$element, deactivated, CLASS_ITEM_NOT_AVAILABLE);
+      return Unit;
+    };
+  }
+  function HtmlPage$showResults$lambda$lambda_1(this$HtmlPage, closure$pres) {
+    return function (it) {
+      this$HtmlPage.presenter_0.onSuggestionClick_80u3g5$(closure$pres);
+      return Unit;
+    };
+  }
+  function HtmlPage$showResults$lambda$lambda$lambda_0(this$HtmlPage, closure$cssClass) {
+    return function (it) {
+      addClass(this$HtmlPage.inputCharacterSpans_0.get_za3lpa$(it), [closure$cssClass]);
+      return Unit;
+    };
+  }
+  function HtmlPage$showResults$lambda$lambda_2(closure$pres, this$HtmlPage, closure$cssClass) {
+    return function (it) {
+      if (closure$pres.availableForHighlight) {
+        closure$pres.recognizerMatch.forEach_b4k9x1$(HtmlPage$showResults$lambda$lambda$lambda_0(this$HtmlPage, closure$cssClass));
+      }
+      return Unit;
+    };
+  }
+  function HtmlPage$showResults$lambda$lambda$lambda_1(this$HtmlPage, closure$cssClass) {
+    return function (it) {
+      removeClass(this$HtmlPage.inputCharacterSpans_0.get_za3lpa$(it), [closure$cssClass]);
+      return Unit;
+    };
+  }
+  function HtmlPage$showResults$lambda$lambda_3(closure$pres, this$HtmlPage, closure$cssClass) {
+    return function (it) {
+      if (closure$pres.availableForHighlight) {
+        closure$pres.recognizerMatch.forEach_b4k9x1$(HtmlPage$showResults$lambda$lambda$lambda_1(this$HtmlPage, closure$cssClass));
+      }
+      return Unit;
+    };
+  }
+  HtmlPage.prototype.showResults_c712f4$ = function (matches) {
     var tmp$;
     var index = {v: 0};
     var classes = listOf(['primary', 'success', 'danger', 'warning']);
-    var getCssClass = HtmlPage$showResults$getCssClass(classes, index);
+    var nextCssClass = HtmlPage$showResults$nextCssClass(classes, index);
     var getElementTitle = HtmlPage$showResults$getElementTitle;
     clear(this.rowContainer_0);
     this.recognizerMatchToRow_0.clear();
@@ -1346,14 +1386,21 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     tmp$_1 = matches.iterator();
     while (tmp$_1.hasNext()) {
       var element = tmp$_1.next();
-      var rowElement = rowElements.get_za3lpa$(ensureNotNull(this.get_row_0(element)));
+      var rowElement = rowElements.get_za3lpa$(ensureNotNull(this.recognizerMatchToRow_0.get_11rb$(element)));
       var element_0 = this.createMatchElement_0(rowElement);
       this.recognizerMatchToElements_0.put_xwzc9p$(element, element_0);
-      addClass(element_0, [getCssClass()]);
-      element_0.style.width = get_characterUnits(element.inputPart.length);
-      element_0.style.left = get_characterUnits(element.first);
-      element_0.title = getElementTitle(element);
-      element_0.addEventListener(EVENT_CLICK, HtmlPage$showResults$lambda$lambda(this, element));
+      var cssClass = nextCssClass();
+      addClass(element_0, [cssClass]);
+      element_0.style.width = this.get_characterUnits_0(element.recognizerMatch.inputPart.length);
+      element_0.style.left = this.get_characterUnits_0(element.recognizerMatch.first);
+      element_0.title = getElementTitle(element.recognizerMatch);
+      element.onSelectedChanged = HtmlPage$showResults$lambda$lambda(element_0, element, this);
+      element.onDeactivatedChanged = HtmlPage$showResults$lambda$lambda_0(element_0);
+      HtmlHelper_getInstance().toggleClass_g5b9vm$(element_0, element.selected, CLASS_ITEM_SELECTED);
+      HtmlHelper_getInstance().toggleClass_g5b9vm$(element_0, element.deactivated, CLASS_ITEM_NOT_AVAILABLE);
+      element_0.addEventListener(EVENT_CLICK, HtmlPage$showResults$lambda$lambda_1(this, element));
+      element_0.addEventListener(EVENT_MOUSE_ENTER, HtmlPage$showResults$lambda$lambda_2(element, this, cssClass));
+      element_0.addEventListener(EVENT_MOUSE_LEAVE, HtmlPage$showResults$lambda$lambda_3(element, this, cssClass));
     }
   };
   function HtmlPage$distributeToRows$createNextLine(closure$lines) {
@@ -1362,16 +1409,19 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return closure$lines.size - 1 | 0;
     };
   }
+  function HtmlPage$distributeToRows$lambda(it) {
+    return it.recognizerMatch;
+  }
   HtmlPage.prototype.distributeToRows_0 = function (matches) {
     var lines = ArrayList_init();
     var createNextLine = HtmlPage$distributeToRows$createNextLine(lines);
-    var $receiver = sortedWith(matches, RecognizerMatch$Companion_getInstance().comparator);
+    var $receiver = sortedWith(matches, new Comparator$ObjectLiteral_0(compareBy$lambda_0(RecognizerMatch$Companion_getInstance().comparator, HtmlPage$distributeToRows$lambda)));
     var destination = ArrayList_init();
     var tmp$;
     tmp$ = $receiver.iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      var $receiver_0 = element.ranges;
+      var $receiver_0 = element.recognizerMatch.ranges;
       var destination_0 = ArrayList_init_0(collectionSizeOrDefault($receiver_0, 10));
       var tmp$_0;
       tmp$_0 = $receiver_0.iterator();
@@ -1417,21 +1467,9 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   HtmlPage.prototype.createMatchElement_0 = function (parent) {
     return HtmlHelper_getInstance().createDivElement_9utdl7$(parent, [CLASS_MATCH_ITEM]);
   };
-  HtmlPage.prototype.select_n54ctl$ = function (match, selected) {
-    var tmp$;
-    if ((tmp$ = this.get_div_0(match)) != null) {
-      HtmlHelper_getInstance().toggleClass_g7pq4p$(tmp$, selected, CLASS_ITEM_SELECTED);
-    }
-  };
-  HtmlPage.prototype.disable_n54ctl$ = function (match, disabled) {
-    var tmp$;
-    if ((tmp$ = this.get_div_0(match)) != null) {
-      HtmlHelper_getInstance().toggleClass_g7pq4p$(tmp$, disabled, CLASS_ITEM_NOT_AVAILABLE);
-    }
-  };
   Object.defineProperty(HtmlPage.prototype, 'options', {
     get: function () {
-      return new RecognizerCombiner$Options(this.checkOnlyMatches_0.checked, this.checkCaseInsensitive_0.checked, this.checkDotAll_0.checked, this.checkMultiline_0.checked);
+      return new RecognizerCombiner$Options(this.checkOnlyMatches_0.checked, this.checkWholeLine_0.checked, this.checkCaseInsensitive_0.checked, this.checkDotAll_0.checked, this.checkMultiline_0.checked);
     }
   });
   HtmlPage.prototype.showGeneratedCodeForPattern_61zpoe$ = function (pattern) {
@@ -1441,7 +1479,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     while (tmp$.hasNext()) {
       var element = tmp$.next();
       var tmp$_0;
-      (tmp$_0 = this.languageDisplays_0.get_11rb$(element)) != null ? (tmp$_0.setSnippet_eos4sh$(element.generateCode_wa467u$(pattern, options)), Unit) : null;
+      (tmp$_0 = this.languageDisplays_0.get_11rb$(element)) != null ? (tmp$_0.setSnippet_kygme1$(element.generateCode_wa467u$(pattern, options)), Unit) : null;
     }
     Prism.highlightAll();
   };
@@ -1493,12 +1531,18 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
+  function HtmlPage_init$lambda_6(this$HtmlPage) {
+    return function (it) {
+      this$HtmlPage.presenter_0.onOptionsChange_ow7xd4$(this$HtmlPage.options);
+      return Unit;
+    };
+  }
   HtmlPage.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'HtmlPage',
     interfaces: [DisplayContract$View]
   };
-  function visitAndFinalize$lambda(closure$block) {
+  function visitAndFinalize$lambda_0(closure$block) {
     return function ($receiver) {
       closure$block($receiver);
       return Unit;
@@ -1507,7 +1551,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function div$lambda($receiver) {
     return Unit;
   }
-  function visitAndFinalize$lambda_0(closure$block) {
+  function visitAndFinalize$lambda_1(closure$block) {
     return function ($receiver) {
       closure$block($receiver);
       return Unit;
@@ -1560,7 +1604,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     var tmp$, tmp$_0;
     var $receiver = get_create(document);
     var tmp$_1;
-    parent.appendChild(Kotlin.isType(tmp$_1 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', 'card'), $receiver), $receiver, visitAndFinalize$lambda(LanguageCard_init$lambda(this))), HTMLDivElement_0) ? tmp$_1 : throwCCE());
+    parent.appendChild(Kotlin.isType(tmp$_1 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', 'card'), $receiver), $receiver, visitAndFinalize$lambda_0(LanguageCard_init$lambda(this))), HTMLDivElement_0) ? tmp$_1 : throwCCE());
     this.codeElement_0 = Kotlin.isType(tmp$ = document.getElementById(this.codeElementId_0), HTMLElement) ? tmp$ : throwCCE();
     this.bodyElement_0 = Kotlin.isType(tmp$_0 = document.getElementById(this.bodyElementId_0), HTMLElement) ? tmp$_0 : throwCCE();
     jQuery(this.bodyElement_0).on('shown.bs.collapse', LanguageCard_init$lambda_0(this));
@@ -1590,7 +1634,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       localStorage.setItem(this.shownPropertyName_0, value.toString());
     }
   });
-  LanguageCard.prototype.setSnippet_eos4sh$ = function (snippet) {
+  LanguageCard.prototype.setSnippet_kygme1$ = function (snippet) {
     this.code_0 = snippet.snippet;
     var tmp$;
     tmp$ = this.warnings_0.iterator();
@@ -1617,7 +1661,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   LanguageCard.prototype.createWarning_0 = function (text) {
     var $receiver = get_create(document);
-    return visitTagAndFinalize(new P_init(attributesMapOf('class', 'alert alert-warning rounded m-2'), $receiver), $receiver, visitAndFinalize$lambda_0(LanguageCard$createWarning$lambda(text)));
+    return visitTagAndFinalize(new P_init(attributesMapOf('class', 'alert alert-warning rounded m-2'), $receiver), $receiver, visitAndFinalize$lambda_1(LanguageCard$createWarning$lambda(text)));
   };
   Object.defineProperty(LanguageCard.prototype, 'code_0', {
     get: function () {
@@ -1732,9 +1776,80 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'LanguageCard',
     interfaces: []
   };
+  Delegates$observable$ObjectLiteral.prototype = Object.create(ObservableProperty.prototype);
+  Delegates$observable$ObjectLiteral.prototype.constructor = Delegates$observable$ObjectLiteral;
+  function Delegates$observable$ObjectLiteral(closure$onChange, initialValue_0) {
+    this.closure$onChange = closure$onChange;
+    ObservableProperty.call(this, initialValue_0);
+  }
+  Delegates$observable$ObjectLiteral.prototype.afterChange_jxtfl0$ = function (property, oldValue, newValue) {
+    this.closure$onChange(property, oldValue, newValue);
+  };
+  Delegates$observable$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [ObservableProperty]};
+  function RecognizerMatchPresentation(recognizerMatch, selected, deactivated, onSelectedChanged, onDeactivatedChanged) {
+    if (selected === void 0)
+      selected = false;
+    if (deactivated === void 0)
+      deactivated = false;
+    if (onSelectedChanged === void 0)
+      onSelectedChanged = RecognizerMatchPresentation_init$lambda;
+    if (onDeactivatedChanged === void 0)
+      onDeactivatedChanged = RecognizerMatchPresentation_init$lambda_0;
+    this.recognizerMatch = recognizerMatch;
+    this.onSelectedChanged = onSelectedChanged;
+    this.onDeactivatedChanged = onDeactivatedChanged;
+    this.selected_uhii8s$_0 = new Delegates$observable$ObjectLiteral(RecognizerMatchPresentation$selected$lambda(this), selected);
+    this.deactivated_3w2zw3$_0 = new Delegates$observable$ObjectLiteral(RecognizerMatchPresentation$deactivated$lambda(this), deactivated);
+  }
+  var RecognizerMatchPresentation$selected_metadata = new PropertyMetadata('selected');
+  Object.defineProperty(RecognizerMatchPresentation.prototype, 'selected', {
+    get: function () {
+      return this.selected_uhii8s$_0.getValue_lrcp0p$(this, RecognizerMatchPresentation$selected_metadata);
+    },
+    set: function (selected) {
+      this.selected_uhii8s$_0.setValue_9rddgb$(this, RecognizerMatchPresentation$selected_metadata, selected);
+    }
+  });
+  var RecognizerMatchPresentation$deactivated_metadata = new PropertyMetadata('deactivated');
+  Object.defineProperty(RecognizerMatchPresentation.prototype, 'deactivated', {
+    get: function () {
+      return this.deactivated_3w2zw3$_0.getValue_lrcp0p$(this, RecognizerMatchPresentation$deactivated_metadata);
+    },
+    set: function (deactivated) {
+      this.deactivated_3w2zw3$_0.setValue_9rddgb$(this, RecognizerMatchPresentation$deactivated_metadata, deactivated);
+    }
+  });
+  Object.defineProperty(RecognizerMatchPresentation.prototype, 'availableForHighlight', {
+    get: function () {
+      return !this.deactivated && !this.selected;
+    }
+  });
+  function RecognizerMatchPresentation_init$lambda(it) {
+    return Unit;
+  }
+  function RecognizerMatchPresentation_init$lambda_0(it) {
+    return Unit;
+  }
+  function RecognizerMatchPresentation$selected$lambda(this$RecognizerMatchPresentation) {
+    return function (f, f_0, new_0) {
+      this$RecognizerMatchPresentation.onSelectedChanged(new_0);
+      return Unit;
+    };
+  }
+  function RecognizerMatchPresentation$deactivated$lambda(this$RecognizerMatchPresentation) {
+    return function (f, f_0, new_0) {
+      this$RecognizerMatchPresentation.onDeactivatedChanged(new_0);
+      return Unit;
+    };
+  }
+  RecognizerMatchPresentation.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'RecognizerMatchPresentation',
+    interfaces: []
+  };
   function SimplePresenter() {
     this.view_0 = new HtmlPage(this);
-    this.matches_0 = LinkedHashMap_init();
+    this.matches_0 = emptyList();
     if (equals(navigator.clipboard, undefined)) {
       this.view_0.hideCopyButton();
     }
@@ -1744,6 +1859,26 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return this.view_0.inputText;
     }
   });
+  SimplePresenter.prototype.toPresentation_0 = function ($receiver) {
+    var tmp$;
+    var $receiver_0 = this.matches_0;
+    var firstOrNull$result;
+    firstOrNull$break: do {
+      var tmp$_0;
+      tmp$_0 = $receiver_0.iterator();
+      while (tmp$_0.hasNext()) {
+        var element = tmp$_0.next();
+        var tmp$_1;
+        if ((tmp$_1 = element.recognizerMatch) != null ? tmp$_1.equals($receiver) : null) {
+          firstOrNull$result = element;
+          break firstOrNull$break;
+        }
+      }
+      firstOrNull$result = null;
+    }
+     while (false);
+    return (tmp$ = firstOrNull$result) != null ? tmp$ : new RecognizerMatchPresentation($receiver);
+  };
   SimplePresenter.prototype.recognizeMatches_61zpoe$ = function (input) {
     if (input === void 0)
       input = this.currentTextInput;
@@ -1765,19 +1900,17 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.view_0.showUserGuide_6taknv$(true);
   };
   SimplePresenter.prototype.onInputChanges_61zpoe$ = function (newInput) {
-    this.matches_0.clear();
-    var tmp$ = this.matches_0;
     var $receiver = this.findMatches_0(newInput);
     var destination = ArrayList_init_0(collectionSizeOrDefault($receiver, 10));
-    var tmp$_0;
-    tmp$_0 = $receiver.iterator();
-    while (tmp$_0.hasNext()) {
-      var item = tmp$_0.next();
-      destination.add_11rb$(to(item, false));
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      destination.add_11rb$(this.toPresentation_0(item));
     }
-    tmp$.putAll_a2k3zr$(toMap(destination));
+    this.matches_0 = destination;
     this.view_0.displayText = newInput;
-    this.view_0.showResults_oz4rjz$(this.matches_0.keys);
+    this.view_0.showResults_c712f4$(this.matches_0);
     this.computeOutputPattern_0();
   };
   SimplePresenter.prototype.findMatches_0 = function (input) {
@@ -1800,21 +1933,52 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     return destination_0;
   };
-  SimplePresenter.prototype.onSuggestionClick_hdji9c$ = function (match) {
-    var tmp$, tmp$_0;
-    if (this.deactivatedMatches_0.contains_11rb$(match)) {
+  SimplePresenter.prototype.onSuggestionClick_80u3g5$ = function (match) {
+    if (match.deactivated) {
       return;
     }
+    match.selected = !match.selected;
     var $receiver = this.matches_0;
-    var value = !((tmp$ = this.matches_0.get_11rb$(match)) != null ? tmp$ : false);
-    $receiver.put_xwzc9p$(match, value);
-    this.view_0.select_n54ctl$(match, (tmp$_0 = this.matches_0.get_11rb$(match)) != null ? tmp$_0 : false);
-    var disabledMatches = this.deactivatedMatches_0;
-    var tmp$_1;
-    tmp$_1 = this.matches_0.keys.iterator();
-    while (tmp$_1.hasNext()) {
-      var element = tmp$_1.next();
-      this.view_0.disable_n54ctl$(element, disabledMatches.contains_11rb$(element));
+    var destination = ArrayList_init();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (!element.selected)
+        destination.add_11rb$(element);
+    }
+    var tmp$_0;
+    tmp$_0 = destination.iterator();
+    loop_label: while (tmp$_0.hasNext()) {
+      var element_0 = tmp$_0.next();
+      var $receiver_0 = this.matches_0;
+      var destination_0 = ArrayList_init();
+      var tmp$_1;
+      tmp$_1 = $receiver_0.iterator();
+      while (tmp$_1.hasNext()) {
+        var element_1 = tmp$_1.next();
+        if (element_1.selected)
+          destination_0.add_11rb$(element_1);
+      }
+      var any$result;
+      any$break: do {
+        var tmp$_2;
+        if (Kotlin.isType(destination_0, Collection) && destination_0.isEmpty()) {
+          any$result = false;
+          break any$break;
+        }
+        tmp$_2 = destination_0.iterator();
+        while (tmp$_2.hasNext()) {
+          var element_2 = tmp$_2.next();
+          if (element_0.recognizerMatch.intersect_hdji9c$(element_2.recognizerMatch)) {
+            any$result = true;
+            break any$break;
+          }
+        }
+        any$result = false;
+      }
+       while (false);
+      element_0.deactivated = any$result;
     }
     this.computeOutputPattern_0();
   };
@@ -1825,84 +1989,25 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     var tmp$ = RecognizerCombiner$Companion_getInstance();
     var tmp$_0 = this.view_0.inputText;
     var $receiver = this.matches_0;
-    var destination = LinkedHashMap_init();
+    var destination = ArrayList_init();
     var tmp$_1;
-    tmp$_1 = $receiver.entries.iterator();
+    tmp$_1 = $receiver.iterator();
     while (tmp$_1.hasNext()) {
       var element = tmp$_1.next();
-      if (element.value) {
-        destination.put_xwzc9p$(element.key, element.value);
-      }
+      if (element.selected)
+        destination.add_11rb$(element);
     }
-    var destination_0 = ArrayList_init_0(destination.size);
+    var destination_0 = ArrayList_init_0(collectionSizeOrDefault(destination, 10));
     var tmp$_2;
-    tmp$_2 = destination.entries.iterator();
+    tmp$_2 = destination.iterator();
     while (tmp$_2.hasNext()) {
       var item = tmp$_2.next();
-      destination_0.add_11rb$(item.key);
+      destination_0.add_11rb$(item.recognizerMatch);
     }
     var result = tmp$.combine_9yx9zl$(tmp$_0, toList_0(destination_0), this.view_0.options);
     this.view_0.resultText = result.pattern;
     this.view_0.showGeneratedCodeForPattern_61zpoe$(result.pattern);
   };
-  Object.defineProperty(SimplePresenter.prototype, 'deactivatedMatches_0', {
-    get: function () {
-      var $receiver = this.matches_0;
-      var destination = LinkedHashMap_init();
-      var tmp$;
-      tmp$ = $receiver.entries.iterator();
-      while (tmp$.hasNext()) {
-        var element = tmp$.next();
-        if (element.value) {
-          destination.put_xwzc9p$(element.key, element.value);
-        }
-      }
-      var destination_0 = ArrayList_init_0(destination.size);
-      var tmp$_0;
-      tmp$_0 = destination.entries.iterator();
-      while (tmp$_0.hasNext()) {
-        var item = tmp$_0.next();
-        destination_0.add_11rb$(item.key);
-      }
-      var selectedMatches = toList_0(destination_0);
-      var $receiver_0 = this.matches_0.keys;
-      var destination_1 = ArrayList_init();
-      var tmp$_1;
-      tmp$_1 = $receiver_0.iterator();
-      while (tmp$_1.hasNext()) {
-        var element_0 = tmp$_1.next();
-        if (!selectedMatches.contains_11rb$(element_0))
-          destination_1.add_11rb$(element_0);
-      }
-      var destination_2 = ArrayList_init();
-      var tmp$_2;
-      tmp$_2 = destination_1.iterator();
-      loop_label: while (tmp$_2.hasNext()) {
-        var element_1 = tmp$_2.next();
-        var any$result;
-        any$break: do {
-          var tmp$_3;
-          if (Kotlin.isType(selectedMatches, Collection) && selectedMatches.isEmpty()) {
-            any$result = false;
-            break any$break;
-          }
-          tmp$_3 = selectedMatches.iterator();
-          while (tmp$_3.hasNext()) {
-            var element_2 = tmp$_3.next();
-            if (element_2.intersect_hdji9c$(element_1)) {
-              any$result = true;
-              break any$break;
-            }
-          }
-          any$result = false;
-        }
-         while (false);
-        if (any$result)
-          destination_2.add_11rb$(element_1);
-      }
-      return toSet(destination_2);
-    }
-  });
   SimplePresenter.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'SimplePresenter',
@@ -1941,8 +2046,8 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   Object.defineProperty(CodeGenerator, 'Companion', {
     get: CodeGenerator$Companion_getInstance
   });
+  CodeGenerator.GeneratedSnippet = CodeGenerator$GeneratedSnippet;
   package$regex_0.CodeGenerator = CodeGenerator;
-  package$regex_0.GeneratedSnippet = GeneratedSnippet;
   package$regex_0.SimpleReplacingCodeGenerator = SimpleReplacingCodeGenerator;
   package$regex_0.UrlGenerator = UrlGenerator;
   package$regex_0.JavaCodeGenerator = JavaCodeGenerator;
@@ -2010,6 +2115,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return CLASS_ITEM_SELECTED;
     }
   });
+  Object.defineProperty(package$ui, 'CLASS_CHAR_SELECTED', {
+    get: function () {
+      return CLASS_CHAR_SELECTED;
+    }
+  });
   Object.defineProperty(package$ui, 'CLASS_ITEM_NOT_AVAILABLE', {
     get: function () {
       return CLASS_ITEM_NOT_AVAILABLE;
@@ -2023,6 +2133,16 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   Object.defineProperty(package$ui, 'EVENT_INPUT', {
     get: function () {
       return EVENT_INPUT;
+    }
+  });
+  Object.defineProperty(package$ui, 'EVENT_MOUSE_ENTER', {
+    get: function () {
+      return EVENT_MOUSE_ENTER;
+    }
+  });
+  Object.defineProperty(package$ui, 'EVENT_MOUSE_LEAVE', {
+    get: function () {
+      return EVENT_MOUSE_LEAVE;
     }
   });
   Object.defineProperty(package$ui, 'ID_INPUT_ELEMENT', {
@@ -2053,6 +2173,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   Object.defineProperty(package$ui, 'ID_CHECK_ONLY_MATCHES', {
     get: function () {
       return ID_CHECK_ONLY_MATCHES;
+    }
+  });
+  Object.defineProperty(package$ui, 'ID_CHECK_WHOLELINE', {
+    get: function () {
+      return ID_CHECK_WHOLELINE;
     }
   });
   Object.defineProperty(package$ui, 'ID_CHECK_CASE_INSENSITIVE', {
@@ -2095,9 +2220,10 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return ID_ANCHOR_REGEXR;
     }
   });
-  package$ui.HtmlPage = HtmlPage;
   $$importsForInline$$['kotlinx-html-js'] = $module$kotlinx_html_js;
+  package$ui.HtmlPage = HtmlPage;
   package$ui.LanguageCard = LanguageCard;
+  package$ui.RecognizerMatchPresentation = RecognizerMatchPresentation;
   package$ui.SimplePresenter = SimplePresenter;
   Object.defineProperty(SimpleReplacingCodeGenerator.prototype, 'uniqueName', Object.getOwnPropertyDescriptor(CodeGenerator.prototype, 'uniqueName'));
   KEY_LAST_VERSION = 'user.lastVersion';
@@ -2111,15 +2237,19 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   CLASS_MATCH_ROW = 'rg-match-row';
   CLASS_MATCH_ITEM = 'rg-match-item';
   CLASS_ITEM_SELECTED = 'rg-item-selected';
+  CLASS_CHAR_SELECTED = 'rg-char-selected';
   CLASS_ITEM_NOT_AVAILABLE = 'rg-item-not-available';
   EVENT_CLICK = 'click';
   EVENT_INPUT = 'input';
+  EVENT_MOUSE_ENTER = 'mouseenter';
+  EVENT_MOUSE_LEAVE = 'mouseleave';
   ID_INPUT_ELEMENT = 'rg_raw_input_text';
   ID_TEXT_DISPLAY = 'rg_text_display';
   ID_RESULT_DISPLAY = 'rg_result_display';
   ID_ROW_CONTAINER = 'rg_row_container';
   ID_CONTAINER_INPUT = 'rg_input_container';
   ID_CHECK_ONLY_MATCHES = 'rg_onlymatches';
+  ID_CHECK_WHOLELINE = 'rg_matchwholeline';
   ID_CHECK_CASE_INSENSITIVE = 'rg_caseinsensitive';
   ID_CHECK_DOT_MATCHES_LINE_BRAKES = 'rg_dotmatcheslinebreakes';
   ID_CHECK_MULTILINE = 'rg_multiline';

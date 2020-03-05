@@ -43,6 +43,10 @@
   border: 1px solid green;
 }
 
+.rg-char-selected {
+  background: lightgray !important;
+}
+
 .rg-item-selected {
   background-color: white !important;
   border: 1px solid gray;
