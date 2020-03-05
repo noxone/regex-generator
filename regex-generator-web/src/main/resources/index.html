@@ -60,8 +60,7 @@
                 <h5>Which parts of the text are interesting for you?</h5>
                 <div class="row no-gutters bg-white border rounded p-2" id="rg_result_container">
                     <div class="rg-match-container">
-                        <div id="rg_text_display" class="rg-text-display"><span>T</span><span>h</span><span>i</span><span>s</span> is just an #example text with "some
-                            strings".</div>
+                        <div id="rg_text_display" class="rg-text-display"><span>T</span><span>h</span><span>i</span><span>s</span> is just an #example text with "some strings".</div>
                         <div id="rg_row_container">
                             <div class="rg-match-row">
                                 <div class="rg-match-item rg-match-item-red" style="width: 23ch; left: 0ch;"
@@ -124,19 +123,37 @@
                     <div class="col-12 col-sm-4 col-md-3 col-lg-2">
                         <button class="btn btn-primary" id="rg_button_copy">Copy regex</button>
                     </div>
-                    <div id="rg_div_onlymatch_container" class="col-12 col-sm-8 col-md-9 col-lg-10 mt-3 mt-sm-0 form-group">
-                        <div class="rg-check-row">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="rg_onlymatches"
-                                    aria-describedby="rg_onlymatches_help">
-                                <label class="custom-control-label" for="rg_onlymatches">Generate only
-                                    patterns</label>
+                    <div id="rg_div_onlymatch_container"
+                        class="col-12 col-sm-8 col-md-9 col-lg-10 mt-3 mt-sm-0 form-group">
+                        <div class="card p-3">
+                            <div class="form-group">
+                                <div class="rg-check-row">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="rg_onlymatches"
+                                            aria-describedby="rg_onlymatches_help">
+                                        <label class="custom-control-label" for="rg_onlymatches">Generate only
+                                            patterns</label>
+                                    </div>
+                                    <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
+                                        When checked then generated regular expression will only contain the
+                                        patterns you chose in step 2. Otherwise all the characters between the
+                                        patterns will be copied.
+                                    </small>
+                                </div>
                             </div>
-                            <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
-                                When checked then generated regular expression will only contain the
-                                patterns you chose in step 2. Otherwise all the characters between the
-                                patterns will be copied.
-                            </small>
+                            <div class="form-group" style="display: none;">
+                                <div class="rg-check-row">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="rg_matchwholeline"
+                                            aria-describedby="rg_matchwholeline_help">
+                                        <label class="custom-control-label" for="rg_matchwholeline">Match whole
+                                            line</label>
+                                    </div>
+                                    <small id="rg_matchwholeline_help" class="form-text text-muted mt-0">
+                                        Do you want the generated regular expression to match the while input?
+                                    </small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
