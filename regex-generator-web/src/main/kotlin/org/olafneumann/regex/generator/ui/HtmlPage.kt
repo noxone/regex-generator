@@ -34,6 +34,7 @@ const val ID_RESULT_DISPLAY = "rg_result_display"
 const val ID_ROW_CONTAINER = "rg_row_container"
 const val ID_CONTAINER_INPUT = "rg_input_container"
 const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
+const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
 const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
 const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
 const val ID_CHECK_MULTILINE = "rg_multiline"
@@ -57,6 +58,7 @@ class HtmlPage(
     private val buttonCopy = HtmlHelper.getButtonById(ID_BUTTON_COPY)
     private val buttonHelp = HtmlHelper.getAnchorById(ID_BUTTON_HELP)
     private val checkOnlyMatches = HtmlHelper.getInputById(ID_CHECK_ONLY_MATCHES)
+    private val checkWholeLine = HtmlHelper.getInputById(ID_CHECK_WHOLELINE)
     private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
@@ -90,6 +92,7 @@ class HtmlPage(
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+        checkWholeLine.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
     }
 
     override fun hideCopyButton() {
@@ -213,6 +216,7 @@ class HtmlPage(
     override val options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
             onlyPatterns = checkOnlyMatches.checked,
+            matchWholeLine = checkWholeLine.checked,
             caseSensitive = checkCaseInsensitive.checked,
             dotMatchesLineBreaks = checkDotAll.checked,
             multiline = checkMultiline.checked
