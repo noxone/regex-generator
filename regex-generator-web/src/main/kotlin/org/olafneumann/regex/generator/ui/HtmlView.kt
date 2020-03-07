@@ -6,10 +6,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
-import kotlinx.html.onClick
-import org.olafneumann.regex.generator.js.Driver
-import org.olafneumann.regex.generator.js.createStepDefinition
-import org.olafneumann.regex.generator.js.jQuery
+import org.olafneumann.regex.generator.js.*
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.UrlGenerator
@@ -244,45 +241,52 @@ class HtmlView(
 
     override fun showUserGuide(initialStep: Boolean) {
         driver.reset()
-        val steps = arrayOf(
-            createStepDefinition(
-                "#rg-title",
-                "New to Regex Generator",
-                "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
-                "right"
-            ),
-            createStepDefinition(
-                "#$ID_CONTAINER_INPUT",
-                "Sample",
-                "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
-                "bottom-center"
-            ),
-            createStepDefinition(
-                "#rg_result_container",
-                "Recognition",
-                "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
-                "top-center"
-            ),
-            createStepDefinition(
-                "#$ID_ROW_CONTAINER",
-                "Suggestions",
-                "Click one or more of suggested patterns...",
-                "top"
-            ),
-            createStepDefinition(
-                "#rg_result_display_box",
-                "Result",
-                "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
-                "top-center"
-            ),
-            createStepDefinition(
-                "#$ID_DIV_LANGUAGES",
-                "Language snippets",
-                "We will also generate snippets for some languages that show you, how to use the regular expression in your favourite language.",
-                "top-left"
+        driver.defineSteps(
+            listOf(
+                StepDefinition(
+                    "#rg-title", Popover(
+                        "New to Regex Generator",
+                        "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
+                        "right"
+                    )
+                ),
+                StepDefinition(
+                    "#$ID_CONTAINER_INPUT", Popover(
+                        "Sample",
+                        "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
+                        "bottom-center"
+                    )
+                ),
+                StepDefinition(
+                    "#rg_result_container", Popover(
+                        "Recognition",
+                        "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
+                        "top-center"
+                    )
+                ),
+                StepDefinition(
+                    "#$ID_ROW_CONTAINER", Popover(
+                        "Suggestions",
+                        "Click one or more of suggested patterns...",
+                        "top"
+                    )
+                ),
+                StepDefinition(
+                    "#rg_result_display_box", Popover(
+                        "Result",
+                        "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
+                        "top-center"
+                    )
+                ),
+                StepDefinition(
+                    "#$ID_DIV_LANGUAGES", Popover(
+                        "Language snippets",
+                        "We will also generate snippets for some languages that show you, how to use the regular expression in your favourite language.",
+                        "top-left"
+                    )
+                )
             )
         )
-        driver.defineSteps(steps)
         driver.start(if (initialStep) 0 else 1)
     }
 }

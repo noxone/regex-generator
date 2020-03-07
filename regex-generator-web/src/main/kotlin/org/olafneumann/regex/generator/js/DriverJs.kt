@@ -1,14 +1,18 @@
 package org.olafneumann.regex.generator.js
 
-fun createStepDefinition(element: String, title: String, description: String, position: String): dynamic {
-    val stepDefinition: dynamic = js("{}")
-    stepDefinition.element = element
-    stepDefinition.popover = js("{}")
-    stepDefinition.popover.title = title
-    stepDefinition.popover.description = description
-    stepDefinition.popover.position = position
-    return stepDefinition
-}
+data class StepDefinition(
+    val element: String,
+    val popover: Popover
+)
+
+data class Popover(
+    val title: String,
+    val description: String,
+    val position: String
+)
+
+fun Driver.defineSteps(stepDefinitions: List<StepDefinition>) =
+    defineSteps(stepDefinitions.map { it.asDynamic() }.toTypedArray())
 
 external class Driver(options: dynamic) {
     /** Checks if the driver is active or not */
