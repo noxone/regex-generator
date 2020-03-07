@@ -9,7 +9,7 @@ interface DisplayContract {
         var displayText: String
         var resultText: String
 
-        val options: RecognizerCombiner.Options
+        var options: RecognizerCombiner.Options
 
         fun hideCopyButton()
         fun selectInputText()

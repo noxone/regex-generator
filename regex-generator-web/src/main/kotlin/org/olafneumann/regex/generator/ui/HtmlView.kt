@@ -221,7 +221,7 @@ class HtmlView(
     private fun createRowElement(): HTMLDivElement =
         HtmlHelper.createDivElement(rowContainer, CLASS_MATCH_ROW)
 
-    override val options: RecognizerCombiner.Options
+    override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
             onlyPatterns = checkOnlyMatches.checked,
             matchWholeLine = checkWholeLine.checked,
@@ -229,6 +229,13 @@ class HtmlView(
             dotMatchesLineBreaks = checkDotAll.checked,
             multiline = checkMultiline.checked
         )
+    set(value) {
+        checkOnlyMatches.checked = value.onlyPatterns
+        checkWholeLine.checked = value.matchWholeLine
+        checkCaseInsensitive.checked = value.caseSensitive
+        checkDotAll.checked = value.dotMatchesLineBreaks
+        checkMultiline.checked = value.multiline
+    }
 
 
     override fun showGeneratedCodeForPattern(pattern: String) {
