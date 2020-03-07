@@ -18,34 +18,6 @@ import kotlin.dom.addClass
 import kotlin.dom.clear
 import kotlin.dom.removeClass
 
-
-const val CLASS_MATCH_ROW = "rg-match-row"
-const val CLASS_MATCH_ITEM = "rg-match-item"
-const val CLASS_ITEM_SELECTED = "rg-item-selected"
-const val CLASS_CHAR_SELECTED = "rg-char-selected"
-const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
-
-const val EVENT_CLICK = "click"
-const val EVENT_INPUT = "input"
-const val EVENT_MOUSE_ENTER = "mouseenter"
-const val EVENT_MOUSE_LEAVE = "mouseleave"
-
-const val ID_INPUT_ELEMENT = "rg_raw_input_text"
-const val ID_TEXT_DISPLAY = "rg_text_display"
-const val ID_RESULT_DISPLAY = "rg_result_display"
-const val ID_ROW_CONTAINER = "rg_row_container"
-const val ID_CONTAINER_INPUT = "rg_input_container"
-const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
-const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
-const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
-const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
-const val ID_CHECK_MULTILINE = "rg_multiline"
-const val ID_BUTTON_COPY = "rg_button_copy"
-const val ID_BUTTON_HELP = "rg_button_show_help"
-const val ID_DIV_LANGUAGES = "rg_language_accordion"
-const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
-const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
-
 class HtmlView(
     private val presenter: DisplayContract.Controller
 ) : DisplayContract.View {
@@ -295,6 +267,35 @@ class HtmlView(
             )
         )
         driver.start(if (initialStep) 0 else 1)
+    }
+
+    companion object {
+        const val CLASS_MATCH_ROW = "rg-match-row"
+        const val CLASS_MATCH_ITEM = "rg-match-item"
+        const val CLASS_ITEM_SELECTED = "rg-item-selected"
+        const val CLASS_CHAR_SELECTED = "rg-char-selected"
+        const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
+
+        const val EVENT_CLICK = "click"
+        const val EVENT_INPUT = "input"
+        const val EVENT_MOUSE_ENTER = "mouseenter"
+        const val EVENT_MOUSE_LEAVE = "mouseleave"
+
+        const val ID_INPUT_ELEMENT = "rg_raw_input_text"
+        const val ID_TEXT_DISPLAY = "rg_text_display"
+        const val ID_RESULT_DISPLAY = "rg_result_display"
+        const val ID_ROW_CONTAINER = "rg_row_container"
+        const val ID_CONTAINER_INPUT = "rg_input_container"
+        const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
+        const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
+        const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
+        const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
+        const val ID_CHECK_MULTILINE = "rg_multiline"
+        const val ID_BUTTON_COPY = "rg_button_copy"
+        const val ID_BUTTON_HELP = "rg_button_show_help"
+        const val ID_DIV_LANGUAGES = "rg_language_accordion"
+        const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
+        const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
     }
 }
 
