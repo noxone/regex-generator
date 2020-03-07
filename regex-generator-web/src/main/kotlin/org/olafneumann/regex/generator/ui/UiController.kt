@@ -20,6 +20,10 @@ class UiController : DisplayContract.Controller {
             view.hideCopyButton()
         }
 
+        // handle the cookie banner
+        CookieBanner.initialize()
+
+        // Prepare UI
         view.options = ApplicationSettings.viewOptions
     }
 

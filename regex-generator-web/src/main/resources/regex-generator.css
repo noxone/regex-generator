@@ -2,6 +2,10 @@
   display: none;
 }
 
+.rg-banner-consent .btn {
+  height: 2.3em;
+}
+
 .rg-text-display {
   white-space: pre;
 }
