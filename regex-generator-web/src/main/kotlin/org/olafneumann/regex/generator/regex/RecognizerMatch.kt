@@ -40,9 +40,6 @@ class RecognizerMatch(
                 && recognizer == other.recognizer
                 && hasSameRangesAs(other)
 
-    override fun toString(): String =
-        "[$first+$length] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
-
     override fun hashCode(): Int {
         var result = inputPart.hashCode()
         result = 31 * result + recognizer.hashCode()

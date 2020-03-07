@@ -6,7 +6,7 @@ data class Configuration(
     companion object {
         // val config = js("require('settings.json')") as Configuration
         val default = Configuration(
-            recognizers = listOf(
+            recognizers = listOf<Recognizer>(
                 SimpleRecognizer("number", "[0-9]+"),
                 SimpleRecognizer("date", "[0-9]{4}-[0-9]{2}-[0-9]{2}"),
                 SimpleRecognizer("real", "[0-9]*\\.[0-9]+"),
@@ -21,7 +21,12 @@ data class Configuration(
                 SimpleRecognizer("String 2", "\"([^\"]|\\\\')*\""),
                 SimpleRecognizer("Hashtag", "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
                 SimpleRecognizer("loglevel", "(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)"),
-                SimpleRecognizer("Characters", "[a-zA-Z]+")
+                SimpleRecognizer("Characters", "[a-zA-Z]+"),
+                BracketedRecognizer(
+                    "String 3",
+                    searchPattern = "(\\[)([^\\]]*)(])",
+                    outputPatterns = listOf("\\[", "\\]")
+                )
             )
         )
     }
