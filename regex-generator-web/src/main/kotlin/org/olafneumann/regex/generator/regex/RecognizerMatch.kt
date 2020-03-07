@@ -14,7 +14,7 @@ class RecognizerMatch(
 
     init {
         if (ranges.isEmpty()) {
-            throw kotlin.IllegalArgumentException("RecognizerMatch without ranges is not allowed.")
+            throw IllegalArgumentException("RecognizerMatch without ranges is not allowed.")
         }
         this.ranges = ranges.sortedWith(compareBy({ it.first }, { it.last }))
         this.first = this.ranges[0].first
@@ -42,6 +42,16 @@ class RecognizerMatch(
 
     override fun toString(): String =
         "[$first+$length] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
+
+    override fun hashCode(): Int {
+        var result = inputPart.hashCode()
+        result = 31 * result + recognizer.hashCode()
+        result = 31 * result + ranges.hashCode()
+        result = 31 * result + first
+        result = 31 * result + last
+        result = 31 * result + length
+        return result
+    }
 }
 
 

@@ -19,6 +19,8 @@ class UiController : DisplayContract.Controller {
         if (navigator.clipboard == undefined) {
             view.hideCopyButton()
         }
+
+        view.options = ApplicationSettings.viewOptions
     }
 
     private fun Collection<RecognizerMatch>.toPresentation(): MatchPresenter =
@@ -34,10 +36,6 @@ class UiController : DisplayContract.Controller {
         view.inputText = input
         onInputChanges(input)
         view.selectInputText()
-    }
-
-    fun setOptions(options: RecognizerCombiner.Options) {
-        view.options = options
     }
 
     override fun onButtonCopyClick() {
@@ -89,6 +87,7 @@ class UiController : DisplayContract.Controller {
     }
 
     override fun onOptionsChange(options: RecognizerCombiner.Options) {
+        ApplicationSettings.viewOptions = options
         computeOutputPattern()
     }
 

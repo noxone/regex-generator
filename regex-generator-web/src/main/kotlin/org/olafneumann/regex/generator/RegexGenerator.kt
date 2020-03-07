@@ -2,8 +2,6 @@ package org.olafneumann.regex.generator
 
 import org.olafneumann.regex.generator.ui.ApplicationSettings
 import org.olafneumann.regex.generator.ui.UiController
-import org.w3c.dom.set
-import kotlin.browser.localStorage
 import kotlin.browser.window
 
 fun main() {
