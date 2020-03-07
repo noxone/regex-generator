@@ -242,7 +242,7 @@ class HtmlView(
         val options = options
         CodeGenerator.all
             .forEach { languageDisplays[it]?.setSnippet(it.generateCode(pattern, options)) }
-        js("Prism.highlightAll();")
+        Prism.highlightAll()
     }
 
 
