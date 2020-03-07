@@ -25,10 +25,19 @@ class UiController : DisplayContract.Controller {
         matches.findLast { it.recognizerMatches.containsAll(this)
                 && this.containsAll(it.recognizerMatches) } ?: MatchPresenter(this)
 
-    fun recognizeMatches(input: String = currentTextInput) {
+    fun initialize() {
+        val initialInput = if (currentTextInput.isBlank()) VAL_EXAMPLE_INPUT else currentTextInput
+        recognizeMatches(initialInput)
+    }
+
+    private fun recognizeMatches(input: String = currentTextInput) {
         view.inputText = input
         onInputChanges(input)
         view.selectInputText()
+    }
+
+    fun setOptions(options: RecognizerCombiner.Options) {
+        view.options = options
     }
 
     override fun onButtonCopyClick() {
@@ -92,5 +101,9 @@ class UiController : DisplayContract.Controller {
         )
         view.resultText = result.pattern
         view.showGeneratedCodeForPattern(result.pattern)
+    }
+
+    companion object {
+        const val VAL_EXAMPLE_INPUT = "2020-03-12T13:34:56.123Z INFO  [org.example.Class]: This is a #simple #logline containing a 'value'."
     }
 }
