@@ -51,7 +51,7 @@
 .rg-match-item-overlay {
   z-index: 2;
   display: none;
-  top: 0.6em;
+  top: 0.69em;
   position: relative;
   width: max-content;
   padding: 0.2em;

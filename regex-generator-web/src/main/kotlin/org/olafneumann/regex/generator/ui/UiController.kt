@@ -27,9 +27,11 @@ class UiController : DisplayContract.Controller {
         view.options = ApplicationSettings.viewOptions
     }
 
-    private fun Collection<RecognizerMatch>.toPresentation(): MatchPresenter =
-        matches.findLast { it.recognizerMatches.containsAll(this)
-                && this.containsAll(it.recognizerMatches) } ?: MatchPresenter(this)
+    private fun List<RecognizerMatch>.toPresentation(): MatchPresenter =
+        matches.findLast {
+            it.recognizerMatches.containsAll(this)
+                    && this.containsAll(it.recognizerMatches)
+        } ?: MatchPresenter(this)
 
     fun initialize() {
         val initialInput = if (currentTextInput.isBlank()) VAL_EXAMPLE_INPUT else currentTextInput
@@ -75,17 +77,11 @@ class UiController : DisplayContract.Controller {
             return
         }
         // determine selected state of the presenter
-        matchPresenter.selected = !matchPresenter.selected
+        matchPresenter.selectedMatch = if (matchPresenter.selected) null else recognizerMatch
         // find matches to disable
+        val selectedMatches = matches.filter { it.selected }
         matches.filter { !it.selected }
-            .forEach { unselected ->
-                unselected.deactivated = matches.filter { it.selected }
-                    // TODO fix iterator
-                    .any { selected ->
-                        unselected.recognizerMatches.iterator().next()
-                            .intersect(selected.recognizerMatches.iterator().next())
-                    }
-            }
+            .forEach { match -> match.deactivated = selectedMatches.any { match.intersect(it) } }
 
         computeOutputPattern()
     }
@@ -98,8 +94,7 @@ class UiController : DisplayContract.Controller {
     private fun computeOutputPattern() {
         val result = RecognizerCombiner.combine(
             view.inputText,
-            // TODO fix iterator
-            matches.filter { it.selected }.map { it.recognizerMatches.iterator().next() }.toList(),
+            matches.mapNotNull { it.selectedMatch }.toList(),
             view.options
         )
         view.resultText = result.pattern
@@ -107,6 +102,7 @@ class UiController : DisplayContract.Controller {
     }
 
     companion object {
-        const val VAL_EXAMPLE_INPUT = "2020-03-12T13:34:56.123Z INFO  [org.example.Class]: This is a #simple #logline containing a 'value'."
+        const val VAL_EXAMPLE_INPUT =
+            "2020-03-12T13:34:56.123Z INFO  [org.example.Class]: This is a #simple #logline containing a 'value'."
     }
 }

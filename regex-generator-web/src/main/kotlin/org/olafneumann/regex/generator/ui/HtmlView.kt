@@ -125,9 +125,19 @@ class HtmlView(
                         div(classes = "rg-recognizer") {
                             a {
                                 +match.recognizer.name
-                                onClickFunction = { presenter.onSuggestionClick(match) }
+                                onClickFunction = { event ->
+                                    presenter.onSuggestionClick(match)
+                                    event.stopPropagation()
+                                }
                             }
                         }
+                    }
+                }
+                onClickFunction = {
+                    if (pres.selected) {
+                        pres.selectedMatch?.let { presenter.onSuggestionClick(it) }
+                    } else if (pres.recognizerMatches.size == 1) {
+                        presenter.onSuggestionClick(pres.recognizerMatches.iterator().next())
                     }
                 }
             }
@@ -141,20 +151,13 @@ class HtmlView(
             // add listeners to handle display correctly
             pres.onSelectedChanged = { selected ->
                 HtmlHelper.toggleClass(element, selected, CLASS_ITEM_SELECTED)
-                pres.forEach {
-                    HtmlHelper.toggleClass(
-                        inputCharacterSpans[it],
-                        selected,
-                        CLASS_CHAR_SELECTED
-                    )
-                }
+                pres.forEach { HtmlHelper.toggleClass(inputCharacterSpans[it], selected, CLASS_CHAR_SELECTED) }
             }
             pres.onDeactivatedChanged =
                 { deactivated -> HtmlHelper.toggleClass(element, deactivated, CLASS_ITEM_NOT_AVAILABLE) }
             HtmlHelper.toggleClass(element, pres.selected, CLASS_ITEM_SELECTED)
             HtmlHelper.toggleClass(element, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
             // add listeners to react on user input
-            //element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
             element.addEventListener(
                 EVENT_MOUSE_ENTER,
                 {
@@ -201,13 +204,13 @@ class HtmlView(
             dotMatchesLineBreaks = checkDotAll.checked,
             multiline = checkMultiline.checked
         )
-    set(value) {
-        checkOnlyMatches.checked = value.onlyPatterns
-        checkWholeLine.checked = value.matchWholeLine
-        checkCaseInsensitive.checked = value.caseSensitive
-        checkDotAll.checked = value.dotMatchesLineBreaks
-        checkMultiline.checked = value.multiline
-    }
+        set(value) {
+            checkOnlyMatches.checked = value.onlyPatterns
+            checkWholeLine.checked = value.matchWholeLine
+            checkCaseInsensitive.checked = value.caseSensitive
+            checkDotAll.checked = value.dotMatchesLineBreaks
+            checkMultiline.checked = value.multiline
+        }
 
 
     override fun showGeneratedCodeForPattern(pattern: String) {

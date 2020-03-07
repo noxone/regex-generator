@@ -5,13 +5,14 @@ import org.olafneumann.regex.generator.util.HasRange
 import kotlin.properties.Delegates
 
 class MatchPresenter(
-    val recognizerMatches: Collection<RecognizerMatch>,
-    selected: Boolean = false,
+    val recognizerMatches: List<RecognizerMatch>,
+    selectedMatch: RecognizerMatch? = null,
     deactivated: Boolean = false,
     var onSelectedChanged: (Boolean) -> Unit = {},
     var onDeactivatedChanged: (Boolean) -> Unit = {}
 ) : HasRange {
     val ranges: List<IntRange>
+
     init {
         if (recognizerMatches.isEmpty()) {
             throw IllegalArgumentException("Empty MatchPresenter is not allowed.")
@@ -29,10 +30,13 @@ class MatchPresenter(
     override val last = ranges.last().last
     override val length = last - first + 1
 
-    var selected: Boolean by Delegates.observable(selected)
-    { _, _, new -> onSelectedChanged(new) }
+    //private var _selected: Boolean by Delegates.observable(selected) { _, _, new -> onSelectedChanged(new) }
+    var selectedMatch: RecognizerMatch? by Delegates.observable(selectedMatch)
+    { _, _, new -> onSelectedChanged(new != null) }
+    val selected get() = this.selectedMatch != null
     var deactivated: Boolean by Delegates.observable(deactivated)
     { _, _, new -> onDeactivatedChanged(new) }
+
 
     val availableForHighlight: Boolean get() = !deactivated && !selected
 
