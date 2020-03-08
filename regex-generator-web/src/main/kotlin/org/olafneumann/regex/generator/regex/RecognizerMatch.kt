@@ -27,11 +27,6 @@ class RecognizerMatch(
         this.length = last - first + 1
     }
 
-    // TODO remove this method!!!!
-    fun intersect(other: RecognizerMatch): Boolean =
-        ranges.flatMap { thisRange -> other.ranges.map { otherRange -> thisRange to otherRange } }
-            .any { it.first.intersect(it.second).isNotEmpty() }
-
     fun hasSameRangesAs(other: RecognizerMatch): Boolean {
         if (ranges.size != other.ranges.size) {
             return false
