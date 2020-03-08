@@ -25,7 +25,9 @@ data class Configuration(
                 SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)"),
                 SimpleRecognizer("One character", "[a-zA-Z]"),
                 SimpleRecognizer("Multiple characters", "[a-zA-Z]+"),
-                BracketedRecognizer("Square Brackets", "\\[", "[^\\]]*", "]", "(\\[)([^\\]]*)(])"),
+                BracketedRecognizer("Round brackets", "\\(", "[^)]*", "\\)", "(\\()([^)]*)(\\))"),
+                BracketedRecognizer("Square brackets", "\\[", "[^\\]]*", "]", "(\\[)([^\\]]*)(])"),
+                BracketedRecognizer("Curly braces", "\\{", "[^}]*", "}", "(\\{)([^}]*)(})"),
                 BracketedRecognizer("String (quotation mark)", "\"", "[^\"]*", "\"", "(\")([^\"]*)(\")"),
                 BracketedRecognizer("String (apostrophe)", "'", "[^']*", "'", "(')([^']*)(')")
             )

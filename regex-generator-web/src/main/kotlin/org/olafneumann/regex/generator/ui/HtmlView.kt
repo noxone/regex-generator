@@ -6,6 +6,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
+import kotlinx.html.style
 import org.olafneumann.regex.generator.js.*
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
@@ -148,6 +149,10 @@ class HtmlView(
             element.addClass(cssClass)
             element.style.left = pres.first.toCharacterUnits()
             element.style.width = pres.length.toCharacterUnits()
+            if (pres.ranges.size == 2) {
+                element.style.borderLeftWidth = (pres.ranges[0].last - pres.ranges[0].first + 1).toCharacterUnits()
+                element.style.borderRightWidth = (pres.ranges[1].last - pres.ranges[1].first + 1).toCharacterUnits()
+            }
             // add listeners to handle display correctly
             pres.onSelectedChanged = { selected ->
                 HtmlHelper.toggleClass(element, selected, CLASS_ITEM_SELECTED)
