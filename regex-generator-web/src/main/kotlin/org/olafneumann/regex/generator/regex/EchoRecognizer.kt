@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.regex
 
-data class EchoRecognizer(
+class EchoRecognizer(
     override val name: String,
-    val pattern: String,
+    private val pattern: String,
     override val description: String? = null,
     override val active: Boolean = true,
     private val priority: Int = 0

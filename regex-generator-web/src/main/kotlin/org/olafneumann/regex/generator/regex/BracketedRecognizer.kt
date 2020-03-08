@@ -1,10 +1,10 @@
 package org.olafneumann.regex.generator.regex
 
-data class BracketedRecognizer(
+class BracketedRecognizer(
     override val name: String,
-    val startPattern: String,
-    val centerPattern: String,
-    val endPattern: String,
+    private val startPattern: String,
+    private val centerPattern: String,
+    private val endPattern: String,
     private val searchPattern: String,
     private val startGroupIndex: Int = 1,
     private val endGroupIndex: Int = 3,

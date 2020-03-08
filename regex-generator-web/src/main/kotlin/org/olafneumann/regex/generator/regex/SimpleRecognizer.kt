@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.regex
 
-data class SimpleRecognizer(
+class SimpleRecognizer(
     override val name: String,
-    val outputPattern: String,
+    private val outputPattern: String,
     override val description: String? = null,
     override val active: Boolean = true,
     private val searchPattern: String? = null,
