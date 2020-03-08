@@ -37,7 +37,7 @@ If you're missing a language, just create a generator and open a pull-request or
 
 ### Patterns
 
-At the current stage there are ~10 patterns integrated in ``regex generator``. It would be great if this number would grow to support a wide range of use cases. Feel free to suggest new patterns via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=add-pattern.md&title=).
+At the current stage there are ~20 patterns integrated in ``regex generator``. It would be great if this number would grow to support a wide range of use cases. Feel free to suggest new patterns via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=add-pattern.md&title=).
 
 ## More ideas
 
