@@ -1,18 +1,25 @@
 package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.util.HasRange
+
 class RecognizerMatch(
+    val patterns: List<String>,
     ranges: List<IntRange>,
-    val inputPart: String,
-    val recognizer: Recognizer
-) {
+    private val recognizer: Recognizer,
+    val title: String,
+    val priority: Int = 0
+) : HasRange {
     val ranges: List<IntRange>
-    val first: Int
-    private val last: Int
-    val length: Int
+    override val first: Int
+    override val last: Int
+    override val length: Int
 
     init {
         if (ranges.isEmpty()) {
-            throw RuntimeException("RecognizerMatch without ranges is not allowed.")
+            throw IllegalArgumentException("RecognizerMatch without ranges is not allowed.")
+        }
+        if (ranges.size != patterns.size) {
+            throw IllegalArgumentException("You must provide an equal amount of ranges and patterns")
         }
         this.ranges = ranges.sortedWith(compareBy({ it.first }, { it.last }))
         this.first = this.ranges[0].first
@@ -20,11 +27,10 @@ class RecognizerMatch(
         this.length = last - first + 1
     }
 
+    // TODO remove this method!!!!
     fun intersect(other: RecognizerMatch): Boolean =
         ranges.flatMap { thisRange -> other.ranges.map { otherRange -> thisRange to otherRange } }
             .any { it.first.intersect(it.second).isNotEmpty() }
-
-    fun forEach(action: (Int) -> Unit) = ranges.flatMap { it.asIterable() }.forEach { action(it) }
 
     fun hasSameRangesAs(other: RecognizerMatch): Boolean {
         if (ranges.size != other.ranges.size) {
@@ -39,12 +45,21 @@ class RecognizerMatch(
                 && recognizer == other.recognizer
                 && hasSameRangesAs(other)
 
-    override fun toString(): String =
-        "[$first+$length] (${recognizer.name}: ${recognizer.outputPattern}) $inputPart"
-
-    companion object {
-        val comparator = compareBy<RecognizerMatch>({ it.first }, { -it.length })
+    override fun hashCode(): Int {
+        var result = recognizer.hashCode()
+        result = 31 * result + patterns.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + ranges.hashCode()
+        result = 31 * result + first
+        result = 31 * result + last
+        result = 31 * result + length
+        return result
     }
+
+    data class PatternWithRange(
+        val pattern: String,
+        val range: IntRange
+    )
 }
 
 

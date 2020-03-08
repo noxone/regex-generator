@@ -9,7 +9,6 @@ import org.olafneumann.regex.generator.regex.CodeGenerator.GeneratedSnippet
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.Node
 import kotlin.browser.document
-import kotlin.browser.localStorage
 
 internal class LanguageCard(
     private val codeGenerator: CodeGenerator,
@@ -46,11 +45,9 @@ internal class LanguageCard(
         jQuery(bodyElement).on("hidden.bs.collapse") { shown = false }
     }
 
-    // TODO move all localStorage-access to separate storage class
-    private val shownPropertyName: String get() = "language.${codeGenerator.uniqueName}.expanded"
     private var shown: Boolean
-        get() = localStorage.getItem(shownPropertyName)?.toBoolean() ?: false
-        set(value) = localStorage.setItem(shownPropertyName, value.toString())
+        get() = ApplicationSettings.isLanguageExpanded(codeGenerator.uniqueName)
+        set(value) = ApplicationSettings.setLanguageExpanded(codeGenerator.uniqueName, value)
 
     fun setSnippet(snippet: GeneratedSnippet) {
         code = snippet.snippet

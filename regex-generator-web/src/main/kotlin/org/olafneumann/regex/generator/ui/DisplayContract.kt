@@ -9,21 +9,21 @@ interface DisplayContract {
         var displayText: String
         var resultText: String
 
-        val options: RecognizerCombiner.Options
+        var options: RecognizerCombiner.Options
 
         fun hideCopyButton()
         fun selectInputText()
-        fun showResults(matches: Collection<RecognizerMatchPresentation>)
+        fun showResults(matches: Collection<MatchPresenter>)
 
         fun showUserGuide(initialStep: Boolean)
         fun showGeneratedCodeForPattern(pattern: String)
     }
 
-    interface Presenter {
+    interface Controller {
         fun onButtonCopyClick()
         fun onButtonHelpClick()
         fun onInputChanges(newInput: String)
-        fun onSuggestionClick(match: RecognizerMatchPresentation)
+        fun onSuggestionClick(recognizerMatch: RecognizerMatch)
         fun onOptionsChange(options: RecognizerCombiner.Options)
     }
 }

@@ -7,42 +7,34 @@ import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.removeClass
 
-const val ELEMENT_DIV = "div"
-const val ELEMENT_BUTTON = "button"
-const val ELEMENT_PRE = "pre"
-const val ELEMENT_CODE = "code"
+private const val ELEMENT_DIV = "div"
+private const val ELEMENT_BUTTON = "button"
+private const val ELEMENT_PRE = "pre"
+private const val ELEMENT_CODE = "code"
 
-object HtmlHelper {
-    internal fun getDivById(id: String): HTMLDivElement {
+internal object HtmlHelper {
+    private fun <T : Node> ensureClassCast(id: String, type: String, getter: (String) -> T): T {
         try {
-            return document.getElementById(id) as HTMLDivElement
+            return getter(id)
         } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find div with id '$id'.", e)
+            throw RuntimeException("Unable to find $type with id '$id'.", e)
         }
+    }
+
+    internal fun getDivById(id: String): HTMLDivElement {
+        return ensureClassCast(id, "div") { document.getElementById(it) as HTMLDivElement }
     }
 
     internal fun getInputById(id: String): HTMLInputElement {
-        try {
-            return document.getElementById(id) as HTMLInputElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find input with id '$id'.", e)
-        }
+        return ensureClassCast(id, "input") { document.getElementById(it) as HTMLInputElement }
     }
 
     internal fun getButtonById(id: String): HTMLButtonElement {
-        try {
-            return document.getElementById(id) as HTMLButtonElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find button with id '$id'.", e)
-        }
+        return ensureClassCast(id, "button") { document.getElementById(it) as HTMLButtonElement }
     }
 
     internal fun getAnchorById(id: String): HTMLAnchorElement {
-        try {
-            return document.getElementById(id) as HTMLAnchorElement
-        } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find link with id '$id'.", e)
-        }
+        return ensureClassCast(id, "link") { document.getElementById(it) as HTMLAnchorElement }
     }
 
     internal fun createDivElement(parent: Node, vararg classNames: String): HTMLDivElement =

@@ -1,14 +1,17 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.html.a
+import kotlinx.html.div
 import kotlinx.html.dom.create
+import kotlinx.html.js.div
+import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
-import org.olafneumann.regex.generator.js.Driver
-import org.olafneumann.regex.generator.js.createStepDefinition
-import org.olafneumann.regex.generator.js.jQuery
+import kotlinx.html.style
+import org.olafneumann.regex.generator.js.*
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.UrlGenerator
+import org.olafneumann.regex.generator.util.HasRange
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLSpanElement
 import kotlin.browser.document
@@ -16,39 +19,11 @@ import kotlin.dom.addClass
 import kotlin.dom.clear
 import kotlin.dom.removeClass
 
-
-const val CLASS_MATCH_ROW = "rg-match-row"
-const val CLASS_MATCH_ITEM = "rg-match-item"
-const val CLASS_ITEM_SELECTED = "rg-item-selected"
-const val CLASS_CHAR_SELECTED = "rg-char-selected"
-const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
-
-const val EVENT_CLICK = "click"
-const val EVENT_INPUT = "input"
-const val EVENT_MOUSE_ENTER = "mouseenter"
-const val EVENT_MOUSE_LEAVE = "mouseleave"
-
-const val ID_INPUT_ELEMENT = "rg_raw_input_text"
-const val ID_TEXT_DISPLAY = "rg_text_display"
-const val ID_RESULT_DISPLAY = "rg_result_display"
-const val ID_ROW_CONTAINER = "rg_row_container"
-const val ID_CONTAINER_INPUT = "rg_input_container"
-const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
-const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
-const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
-const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
-const val ID_CHECK_MULTILINE = "rg_multiline"
-const val ID_BUTTON_COPY = "rg_button_copy"
-const val ID_BUTTON_HELP = "rg_button_show_help"
-const val ID_DIV_LANGUAGES = "rg_language_accordion"
-const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
-const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
-
-class HtmlPage(
-    private val presenter: DisplayContract.Presenter
+class HtmlView(
+    private val presenter: DisplayContract.Controller
 ) : DisplayContract.View {
     // extend other classes
-    private val Int.characterUnits: String get() = "${this}ch"
+    private fun Int.toCharacterUnits() = "${this}ch"
 
     // HTML elements we need to change
     private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
@@ -74,8 +49,8 @@ class HtmlPage(
     )
 
     // Stuff needed to display the regex
-    private val recognizerMatchToRow = mutableMapOf<RecognizerMatchPresentation, Int>()
-    private val recognizerMatchToElements = mutableMapOf<RecognizerMatchPresentation, HTMLDivElement>()
+    private val recognizerMatchToRow = mutableMapOf<MatchPresenter, Int>()
+    private val recognizerMatchToElements = mutableMapOf<MatchPresenter, HTMLDivElement>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     private val languageDisplays = CodeGenerator.all
@@ -125,13 +100,11 @@ class HtmlPage(
             anchorRegexr.setPattern(value, options)
         }
 
-    override fun showResults(matches: Collection<RecognizerMatchPresentation>) {
+    override fun showResults(matches: Collection<MatchPresenter>) {
         // TODO remove CSS class iterator
         var index = 0
         val classes = listOf("primary", "success", "danger", "warning")
         fun nextCssClass() = "bg-${classes[index++ % classes.size]}"
-
-        fun getElementTitle(match: RecognizerMatch) = "${match.recognizer.name} (${match.inputPart})"
 
         rowContainer.clear()
         recognizerMatchToRow.clear()
@@ -147,57 +120,75 @@ class HtmlPage(
         matches.forEach { pres ->
             // create the corresponding regex element
             val rowElement = rowElements[recognizerMatchToRow[pres]!!]
-            val element = createMatchElement(rowElement)
+            val element = document.create.div(classes = CLASS_MATCH_ITEM) {
+                div(classes = "rg-match-item-overlay") {
+                    pres.recognizerMatches.forEach { match ->
+                        div(classes = "rg-recognizer") {
+                            a {
+                                +match.title
+                                onClickFunction = { event ->
+                                    presenter.onSuggestionClick(match)
+                                    event.stopPropagation()
+                                }
+                            }
+                        }
+                    }
+                }
+                onClickFunction = {
+                    if (pres.selected) {
+                        pres.selectedMatch?.let { presenter.onSuggestionClick(it) }
+                    } else if (pres.recognizerMatches.size == 1) {
+                        presenter.onSuggestionClick(pres.recognizerMatches.iterator().next())
+                    }
+                }
+            }
+            rowElement.appendChild(element)
             recognizerMatchToElements[pres] = element
             // adjust styling
             val cssClass = nextCssClass()
             element.addClass(cssClass)
-            element.style.width = pres.recognizerMatch.inputPart.length.characterUnits
-            element.style.left = pres.recognizerMatch.first.characterUnits
-            element.title = getElementTitle(pres.recognizerMatch)
+            element.style.left = pres.first.toCharacterUnits()
+            element.style.width = pres.length.toCharacterUnits()
+            if (pres.ranges.size == 2) {
+                element.style.borderLeftWidth = (pres.ranges[0].last - pres.ranges[0].first + 1).toCharacterUnits()
+                element.style.borderRightWidth = (pres.ranges[1].last - pres.ranges[1].first + 1).toCharacterUnits()
+            }
             // add listeners to handle display correctly
             pres.onSelectedChanged = { selected ->
                 HtmlHelper.toggleClass(element, selected, CLASS_ITEM_SELECTED)
-                pres.recognizerMatch.forEach {
-                    HtmlHelper.toggleClass(
-                        inputCharacterSpans[it],
-                        selected,
-                        CLASS_CHAR_SELECTED
-                    )
-                }
+                pres.forEach { HtmlHelper.toggleClass(inputCharacterSpans[it], selected, CLASS_CHAR_SELECTED) }
             }
             pres.onDeactivatedChanged =
                 { deactivated -> HtmlHelper.toggleClass(element, deactivated, CLASS_ITEM_NOT_AVAILABLE) }
             HtmlHelper.toggleClass(element, pres.selected, CLASS_ITEM_SELECTED)
             HtmlHelper.toggleClass(element, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
             // add listeners to react on user input
-            element.addEventListener(EVENT_CLICK, { presenter.onSuggestionClick(pres) })
             element.addEventListener(
                 EVENT_MOUSE_ENTER,
                 {
                     if (pres.availableForHighlight) {
-                        pres.recognizerMatch.forEach { inputCharacterSpans[it].addClass(cssClass) }
+                        pres.forEach { inputCharacterSpans[it].addClass(cssClass) }
                     }
                 })
             element.addEventListener(
                 EVENT_MOUSE_LEAVE,
                 {
                     if (pres.availableForHighlight) {
-                        pres.recognizerMatch.forEach { inputCharacterSpans[it].removeClass(cssClass) }
+                        pres.forEach { inputCharacterSpans[it].removeClass(cssClass) }
                     }
                 })
         }
     }
 
-    private fun distributeToRows(matches: Collection<RecognizerMatchPresentation>): Map<RecognizerMatchPresentation, Int> {
+    private fun distributeToRows(matches: Collection<MatchPresenter>): Map<MatchPresenter, Int> {
         val lines = mutableListOf<Int>()
         fun createNextLine(): Int {
             lines.add(0)
             return lines.size - 1
         }
         return matches
-            .sortedWith(compareBy(RecognizerMatch.comparator) { it.recognizerMatch })
-            .flatMap { pres -> pres.recognizerMatch.ranges.map { pres to it } }
+            .sortedWith(MatchPresenter.comparator)
+            .flatMap { pres -> pres.ranges.map { pres to it } }
             .map { pair ->
                 val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }
                 val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
@@ -210,10 +201,7 @@ class HtmlPage(
     private fun createRowElement(): HTMLDivElement =
         HtmlHelper.createDivElement(rowContainer, CLASS_MATCH_ROW)
 
-    private fun createMatchElement(parent: HTMLDivElement): HTMLDivElement =
-        HtmlHelper.createDivElement(parent, CLASS_MATCH_ITEM)
-
-    override val options: RecognizerCombiner.Options
+    override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
             onlyPatterns = checkOnlyMatches.checked,
             matchWholeLine = checkWholeLine.checked,
@@ -221,58 +209,101 @@ class HtmlPage(
             dotMatchesLineBreaks = checkDotAll.checked,
             multiline = checkMultiline.checked
         )
+        set(value) {
+            checkOnlyMatches.checked = value.onlyPatterns
+            checkWholeLine.checked = value.matchWholeLine
+            checkCaseInsensitive.checked = value.caseSensitive
+            checkDotAll.checked = value.dotMatchesLineBreaks
+            checkMultiline.checked = value.multiline
+        }
 
 
     override fun showGeneratedCodeForPattern(pattern: String) {
         val options = options
         CodeGenerator.all
             .forEach { languageDisplays[it]?.setSnippet(it.generateCode(pattern, options)) }
-        js("Prism.highlightAll();")
+        Prism.highlightAll()
     }
 
 
     override fun showUserGuide(initialStep: Boolean) {
         driver.reset()
-        val steps = arrayOf(
-            createStepDefinition(
-                "#rg-title",
-                "New to Regex Generator",
-                "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
-                "right"
-            ),
-            createStepDefinition(
-                "#$ID_CONTAINER_INPUT",
-                "Sample",
-                "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
-                "bottom-center"
-            ),
-            createStepDefinition(
-                "#rg_result_container",
-                "Recognition",
-                "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
-                "top-center"
-            ),
-            createStepDefinition(
-                "#$ID_ROW_CONTAINER",
-                "Suggestions",
-                "Click one or more of suggested patterns...",
-                "top"
-            ),
-            createStepDefinition(
-                "#rg_result_display_box",
-                "Result",
-                "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
-                "top-center"
-            ),
-            createStepDefinition(
-                "#$ID_DIV_LANGUAGES",
-                "Language snippets",
-                "We will also generate snippets for some languages that show you, how to use the regular expression in your favourite language.",
-                "top-left"
+        driver.defineSteps(
+            listOf(
+                StepDefinition(
+                    "#rg-title", Popover(
+                        "New to Regex Generator",
+                        "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
+                        "right"
+                    )
+                ),
+                StepDefinition(
+                    "#$ID_CONTAINER_INPUT", Popover(
+                        "Sample",
+                        "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
+                        "bottom-center"
+                    )
+                ),
+                StepDefinition(
+                    "#rg_result_container", Popover(
+                        "Recognition",
+                        "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
+                        "top-center"
+                    )
+                ),
+                StepDefinition(
+                    "#$ID_ROW_CONTAINER", Popover(
+                        "Suggestions",
+                        "Click one or more of suggested patterns...",
+                        "top"
+                    )
+                ),
+                StepDefinition(
+                    "#rg_result_display_box", Popover(
+                        "Result",
+                        "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
+                        "top-center"
+                    )
+                ),
+                StepDefinition(
+                    "#$ID_DIV_LANGUAGES", Popover(
+                        "Language snippets",
+                        "We will also generate snippets for some languages that show you, how to use the regular expression in your favourite language.",
+                        "top-left"
+                    )
+                )
             )
         )
-        driver.defineSteps(steps)
         driver.start(if (initialStep) 0 else 1)
+    }
+
+    companion object {
+        const val CLASS_MATCH_ROW = "rg-match-row"
+        const val CLASS_MATCH_ITEM = "rg-match-item"
+        const val CLASS_ITEM_SELECTED = "rg-item-selected"
+        const val CLASS_CHAR_SELECTED = "rg-char-selected"
+        const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
+
+        const val EVENT_CLICK = "click"
+        const val EVENT_INPUT = "input"
+        const val EVENT_MOUSE_ENTER = "mouseenter"
+        const val EVENT_MOUSE_LEAVE = "mouseleave"
+
+        const val ID_INPUT_ELEMENT = "rg_raw_input_text"
+        const val ID_TEXT_DISPLAY = "rg_text_display"
+        const val ID_RESULT_DISPLAY = "rg_result_display"
+        const val ID_ROW_CONTAINER = "rg_row_container"
+        const val ID_CONTAINER_INPUT = "rg_input_container"
+        const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
+        const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
+        const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
+        const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
+        const val ID_CHECK_MULTILINE = "rg_multiline"
+        const val ID_BUTTON_COPY = "rg_button_copy"
+        const val ID_BUTTON_HELP = "rg_button_show_help"
+        const val ID_DIV_LANGUAGES = "rg_language_accordion"
+        const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
+        const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
     }
 }
 
