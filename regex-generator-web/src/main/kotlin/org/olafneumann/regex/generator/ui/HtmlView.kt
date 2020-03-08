@@ -182,7 +182,7 @@ class HtmlView(
             return lines.size - 1
         }
         return matches
-            .sortedWith(HasRange.comparator)
+            .sortedWith(MatchPresenter.comparator)
             .flatMap { pres -> pres.ranges.map { pres to it } }
             .map { pair ->
                 val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }

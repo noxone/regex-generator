@@ -6,7 +6,8 @@ class RecognizerMatch(
     val patterns: List<String>,
     ranges: List<IntRange>,
     private val recognizer: Recognizer,
-    val title: String
+    val title: String,
+    val priority: Int = 0
 ) : HasRange {
     val ranges: List<IntRange>
     override val first: Int

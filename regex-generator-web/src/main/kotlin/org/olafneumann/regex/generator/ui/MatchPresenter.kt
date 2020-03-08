@@ -30,6 +30,8 @@ class MatchPresenter(
     override val last = ranges.last().last
     override val length = last - first + 1
 
+    val priority = recognizerMatches.map { it.priority }.max()!!
+
     //private var _selected: Boolean by Delegates.observable(selected) { _, _, new -> onSelectedChanged(new) }
     var selectedMatch: RecognizerMatch? by Delegates.observable(selectedMatch)
     { _, _, new -> onSelectedChanged(new != null) }
@@ -45,4 +47,9 @@ class MatchPresenter(
             .any { it.first.intersect(it.second).isNotEmpty() }
 
     fun forEach(action: (Int) -> Unit) = ranges.flatMap { it.asIterable() }.forEach { action(it) }
+
+    companion object {
+        private val priority = compareByDescending<MatchPresenter> { it.priority }
+        val comparator = priority.then(HasRange.comparator)
+    }
 }

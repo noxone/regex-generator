@@ -7,6 +7,7 @@ data class Configuration(
         // val config = js("require('settings.json')") as Configuration
         val default = Configuration(
             recognizers = listOf<Recognizer>(
+                EchoRecognizer("Character", ".", priority = 1),
                 SimpleRecognizer("number", "[0-9]+"),
                 SimpleRecognizer("date", "[0-9]{4}-[0-9]{2}-[0-9]{2}"),
                 SimpleRecognizer("real", "[0-9]*\\.[0-9]+"),

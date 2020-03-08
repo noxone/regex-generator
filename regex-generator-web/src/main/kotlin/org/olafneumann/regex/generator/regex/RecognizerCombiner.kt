@@ -61,7 +61,7 @@ class RecognizerCombiner {
             return RegularExpression(options.getFrame().format(pattern))
         }
 
-        private fun String.escapeForRegex() = replace(Regex("([.\\\\^$\\[{}()*?+])"), "\\$1")
+        private fun String.escapeForRegex() = PatternHelper.escapeForRegex(this)
     }
 
     data class Options(
