@@ -9,38 +9,49 @@ class RecognizerCombiner {
             selectedMatches: Collection<RecognizerMatch>,
             options: Options
         ): RegularExpression {
-            val orderedMatches = selectedMatches.sortedWith(HasRange.comparator)
-
-            val indices = mutableListOf<Int>(0)
-            indices.addAll(orderedMatches
-                .flatMap { it.ranges }
-                .flatMap { listOf(it.first, it.last + 1) })
-            indices.add(inputText.length)
-
-            val staticValues = (0 until indices.size step 2)
-                .asSequence()
-                .map { indices[it] to indices[it + 1] }
-                .map { inputText.substring(it.first, it.second) }
-                .map { it.escapeForRegex() }
-                .map { if (options.onlyPatterns && it.isNotEmpty()) ".*" else it }
-                .toMutableList()
-
-            val start: String
-            val end: String
-            if (options.matchWholeLine) {
-                start = "^"
-                end = "$"
-            } else {
-                start = ""
-                end = ""
-                staticValues[0] = ""
-                staticValues[staticValues.size - 1] = ""
+            if (selectedMatches.isEmpty()) {
+                return RegularExpression(options.getFrame().format(inputText.escapeForRegex()))
             }
 
-            val pattern =
-                staticValues.reduceIndexed { index, acc, s -> "${acc}${if ((index - 1) < orderedMatches.size) orderedMatches[index - 1].recognizer.outputPattern else ""}${s}" }
+            val rangesToMatches = selectedMatches.flatMap { match -> match
+                .ranges.mapIndexed { index, range -> RangeToMatch(range, match.recognizer.outputPatterns[index]) } }
+                .sortedBy { it.range.first }
+                .toList()
 
-            return RegularExpression("$start$pattern$end")
+            val first = if (rangesToMatches.first().range.first > 0) {
+                if (options.onlyPatterns)
+                    ".*"
+                else
+                    inputText.substring(0, rangesToMatches.first().range.first).escapeForRegex()
+            } else {
+                ""
+            }
+            val last = if (rangesToMatches.last().range.last < inputText.length-1) {
+                if (options.onlyPatterns)
+                    ".*"
+                else
+                    inputText.substring(rangesToMatches.last().range.last + 1).escapeForRegex()
+            } else {
+                ""
+            }
+
+            val pattern = buildString {
+                append(first)
+                for (i in rangesToMatches.indices) {
+                    if (i > 0) {
+                        val range = IntRange(rangesToMatches[i - 1].range.last + 1, rangesToMatches[i].range.first - 1)
+                        if (options.onlyPatterns) {
+                            append(if(range.isEmpty()) {""} else {".*"})
+                        } else {
+                            append(inputText.substring(range).escapeForRegex())
+                        }
+                    }
+                    append(rangesToMatches[i].pattern)
+                }
+                append(last)
+            }
+
+            return RegularExpression(options.getFrame().format(pattern))
         }
 
         private fun String.escapeForRegex() = replace(Regex("([.\\\\^$\\[{}()*?+])"), "\\$1")
@@ -52,7 +63,25 @@ class RecognizerCombiner {
         val caseSensitive: Boolean = true,
         val dotMatchesLineBreaks: Boolean = false,
         val multiline: Boolean = false
+    ) {
+        internal fun getFrame() = if (matchWholeLine) {
+            Frame("^", "$")
+        } else {
+            Frame("", "")
+        }
+    }
+
+    internal data class RangeToMatch(
+        val range: IntRange,
+        val pattern: String
     )
+
+    internal data class Frame(
+        val start: String,
+        val end: String
+    ) {
+        internal fun format(pattern: String) = "$start$pattern$end"
+    }
 
     data class RegularExpression(
         val pattern: String
