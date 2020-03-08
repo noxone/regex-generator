@@ -124,7 +124,7 @@ class HtmlView(
                     pres.recognizerMatches.forEach { match ->
                         div(classes = "rg-recognizer") {
                             a {
-                                +match.recognizer.name
+                                +match.title
                                 onClickFunction = { event ->
                                     presenter.onSuggestionClick(match)
                                     event.stopPropagation()

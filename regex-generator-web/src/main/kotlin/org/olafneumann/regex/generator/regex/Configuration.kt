@@ -20,13 +20,11 @@ data class Configuration(
                 SimpleRecognizer("String 1", "'([^']|\\\\')*'"),
                 SimpleRecognizer("String 2", "\"([^\"]|\\\\')*\""),
                 SimpleRecognizer("Hashtag", "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
-                SimpleRecognizer("loglevel", "(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)"),
+                SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)"),
                 SimpleRecognizer("Characters", "[a-zA-Z]+"),
-                BracketedRecognizer(
-                    "String 3",
-                    searchPattern = "(\\[)([^\\]]*)(])",
-                    outputPatterns = listOf("\\[", "\\]")
-                )
+                BracketedRecognizer("Square Brackets", "\\[", "[^\\]]*", "]", "(\\[)([^\\]]*)(])"),
+                BracketedRecognizer("String (quotation mark)", "\"", "[^\"]*", "\"", "(\")([^\"]*)(\")"),
+                BracketedRecognizer("String (apostrophe)", "'", "[^']*", "'", "(')([^']*)(')")
             )
         )
     }

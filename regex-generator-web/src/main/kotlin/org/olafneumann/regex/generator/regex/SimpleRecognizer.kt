@@ -8,7 +8,6 @@ data class SimpleRecognizer(
     private val searchPattern: String? = null,
     private val mainGroupIndex: Int = 1
 ) : Recognizer {
-    override val outputPatterns = listOf(outputPattern)
     private val searchRegex by lazy { Regex(searchPattern?.replace("%s", outputPattern) ?: "($outputPattern)") }
 
 
@@ -16,9 +15,10 @@ data class SimpleRecognizer(
         searchRegex.findAll(input)
             .map { result ->
                 RecognizerMatch(
+                    patterns = listOf(outputPattern),
                     ranges = listOf(getMainGroupRange(result)),
-                    inputPart = getMainGroupValue(result),
-                    recognizer = this
+                    recognizer = this,
+                    title = name
                 )
             }.toList()
 

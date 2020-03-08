@@ -14,7 +14,7 @@ class RecognizerCombiner {
             }
 
             val rangesToMatches = selectedMatches.flatMap { match -> match
-                .ranges.mapIndexed { index, range -> RangeToMatch(range, match.recognizer.outputPatterns[index]) } }
+                .ranges.mapIndexed { index, range -> RangeToMatch(range, match.patterns[index]) } }
                 .sortedBy { it.range.first }
                 .toList()
 

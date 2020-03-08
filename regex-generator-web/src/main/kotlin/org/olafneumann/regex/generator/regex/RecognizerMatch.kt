@@ -3,9 +3,10 @@ package org.olafneumann.regex.generator.regex
 import org.olafneumann.regex.generator.util.HasRange
 
 class RecognizerMatch(
+    val patterns: List<String>,
     ranges: List<IntRange>,
-    val inputPart: String,
-    val recognizer: Recognizer
+    private val recognizer: Recognizer,
+    val title: String
 ) : HasRange {
     val ranges: List<IntRange>
     override val first: Int
@@ -15,6 +16,9 @@ class RecognizerMatch(
     init {
         if (ranges.isEmpty()) {
             throw IllegalArgumentException("RecognizerMatch without ranges is not allowed.")
+        }
+        if (ranges.size != patterns.size) {
+            throw IllegalArgumentException("You must provide an equal amount of ranges and patterns")
         }
         this.ranges = ranges.sortedWith(compareBy({ it.first }, { it.last }))
         this.first = this.ranges[0].first
@@ -41,14 +45,20 @@ class RecognizerMatch(
                 && hasSameRangesAs(other)
 
     override fun hashCode(): Int {
-        var result = inputPart.hashCode()
-        result = 31 * result + recognizer.hashCode()
+        var result = recognizer.hashCode()
+        result = 31 * result + patterns.hashCode()
+        result = 31 * result + title.hashCode()
         result = 31 * result + ranges.hashCode()
         result = 31 * result + first
         result = 31 * result + last
         result = 31 * result + length
         return result
     }
+
+    data class PatternWithRange(
+        val pattern: String,
+        val range: IntRange
+    )
 }
 
 
