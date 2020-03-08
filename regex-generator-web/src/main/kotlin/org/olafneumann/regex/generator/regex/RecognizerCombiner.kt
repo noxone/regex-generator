@@ -1,7 +1,5 @@
 package org.olafneumann.regex.generator.regex
 
-import org.olafneumann.regex.generator.util.HasRange
-
 class RecognizerCombiner {
     companion object {
         fun combine(
@@ -13,27 +11,30 @@ class RecognizerCombiner {
                 return RegularExpression(options.getFrame().format(inputText.escapeForRegex()))
             }
 
-            val rangesToMatches = selectedMatches.flatMap { match -> match
-                .ranges.mapIndexed { index, range -> RangeToMatch(range, match.patterns[index]) } }
+            val rangesToMatches = selectedMatches.flatMap { match ->
+                    match
+                        .ranges.mapIndexed { index, range -> RangeToMatch(range, match.patterns[index]) }
+                }
                 .sortedBy { it.range.first }
                 .toList()
 
-            val first = if (rangesToMatches.first().range.first > 0) {
-                if (options.onlyPatterns)
-                    ".*"
-                else
-                    inputText.substring(0, rangesToMatches.first().range.first).escapeForRegex()
-            } else {
-                ""
-            }
-            val last = if (rangesToMatches.last().range.last < inputText.length-1) {
-                if (options.onlyPatterns)
-                    ".*"
-                else
-                    inputText.substring(rangesToMatches.last().range.last + 1).escapeForRegex()
-            } else {
-                ""
-            }
+            fun makeOutput(hasLength: Boolean, options: Options, output: String) =
+                when {
+                    hasLength && options.onlyPatterns && options.matchWholeLine -> ".*"
+                    hasLength && !options.onlyPatterns -> output
+                    else -> ""
+                }
+
+            val first = makeOutput(
+                rangesToMatches.first().range.first > 0,
+                options,
+                inputText.substring(0, rangesToMatches.first().range.first).escapeForRegex()
+            )
+            val last = makeOutput(
+                rangesToMatches.last().range.last < inputText.length - 1,
+                options,
+                inputText.substring(rangesToMatches.last().range.last + 1).escapeForRegex()
+            )
 
             val pattern = buildString {
                 append(first)
@@ -41,7 +42,13 @@ class RecognizerCombiner {
                     if (i > 0) {
                         val range = IntRange(rangesToMatches[i - 1].range.last + 1, rangesToMatches[i].range.first - 1)
                         if (options.onlyPatterns) {
-                            append(if(range.isEmpty()) {""} else {".*"})
+                            append(
+                                if (range.isEmpty()) {
+                                    ""
+                                } else {
+                                    ".*"
+                                }
+                            )
                         } else {
                             append(inputText.substring(range).escapeForRegex())
                         }
