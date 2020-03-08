@@ -1,9 +1,9 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.js.navigator
-import org.olafneumann.regex.generator.regex.Configuration
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.regex.RecognizerRegistry
 import org.olafneumann.regex.generator.util.HasRange
 import kotlin.browser.window
 
@@ -12,7 +12,7 @@ class UiController : DisplayContract.Controller {
     private val view: DisplayContract.View = HtmlView(this)
     private var matches = listOf<MatchPresenter>()
 
-    val currentTextInput: String get() = view.inputText
+    private val currentTextInput: String get() = view.inputText
 
     init {
         // if copy is not available: remove copy button
@@ -54,19 +54,13 @@ class UiController : DisplayContract.Controller {
     fun showInitialUserGuide() = view.showUserGuide(true)
 
     override fun onInputChanges(newInput: String) {
-        val matchGroups = groupMatches(findMatches(newInput))
+        val matchGroups = groupMatches(RecognizerRegistry.findMatches(newInput))
         matches = matchGroups.map { it.toPresentation() }
 
         view.displayText = newInput
         view.showResults(matches)
         computeOutputPattern()
     }
-
-    private fun findMatches(input: String): List<RecognizerMatch> =
-        Configuration.default.recognizers
-            .filter { it.active }
-            .flatMap { it.findMatches(input) }
-            .sortedWith(HasRange.comparator)
 
     private fun groupMatches(matches: List<RecognizerMatch>) =
         matches.groupBy { it.ranges }.values
