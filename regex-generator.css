@@ -2,6 +2,10 @@
   display: none;
 }
 
+.rg-banner-consent .btn {
+  height: 2.3em;
+}
+
 .rg-text-display {
   white-space: pre;
 }
@@ -14,6 +18,7 @@
 .rg-match-container {
   overflow-x: auto;
   width: 100%;
+  padding-bottom: 1.5em;
 }
 
 .rg-match-row {
@@ -29,18 +34,42 @@
 }
 
 .rg-match-item-red {
-  background-color: red;
-  border: 1px solid red;
+  background-color: #da6772;
+  border: 1px solid #dc3545;
 }
 
 .rg-match-item-blue {
-  background-color: blue;
-  border: 1px solid blue;
+  background-color: #4da3ff;
+  border: 1px solid #007bff;
 }
 
 .rg-match-item-green {
-  background-color: green;
-  border: 1px solid green;
+  background-color: #5dbb73;
+  border: 1px solid #28a745;
+}
+
+.rg-match-item-yellow {
+  background-color: #ffda6a;
+  border: 1px solid #ffc107;
+}
+
+.rg-match-item-overlay {
+  z-index: 2;
+  display: none;
+  top: 0.69em;
+  position: relative;
+  width: max-content;
+  padding: 0.2em;
+  background-color: inherit;
+}
+
+.rg-match-item:hover .rg-match-item-overlay {
+  display: block;
+}
+
+.rg-match-item.rg-item-selected:hover .rg-match-item-overlay,
+.rg-match-item.rg-item-not-available:hover .rg-match-item-overlay {
+  display: none;
 }
 
 .rg-char-selected {
@@ -75,16 +104,15 @@ form * .rg-check-row {
   margin-left: -2em;
 }
 
-
 .rg-code-accordion .card-header {
-    padding: 0.3em;
+  padding: 0.3em;
 }
 
 .rg-code-accordion .card-body {
-    padding: 0.6em 1em;
+  padding: 0.6em 1em;
 }
 
 .rg-code-accordion pre {
-    margin: 0;
-    background-color: white;
+  margin: 0;
+  background-color: white;
 }
