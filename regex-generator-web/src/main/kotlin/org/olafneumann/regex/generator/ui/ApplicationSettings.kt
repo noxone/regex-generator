@@ -25,6 +25,13 @@ internal object ApplicationSettings {
         }
     }
 
+    init {
+        if (!hasUserConsent) {
+            loadIntermediateFromLocalStorage()
+            localStorage.clear()
+        }
+    }
+
     // Hiding local storage behind functions so we can disable storage if user does not consent
     private fun get(key: String) = intermediate[key] ?: localStorage.getItem(key)
     private fun set(key: String, value: String) {
