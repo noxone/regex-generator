@@ -5,7 +5,7 @@ import org.olafneumann.regex.generator.util.HasRange
 class RecognizerMatch(
     val patterns: List<String>,
     ranges: List<IntRange>,
-    private val recognizer: Recognizer,
+    val recognizer: Recognizer,
     val title: String,
     val priority: Int = 0
 ) : HasRange {

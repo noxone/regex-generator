@@ -74,11 +74,27 @@ object RecognizerRegistry {
         return matches
     }
 
-    private fun findRepetitions(matches: List<RecognizerMatch>): List<RecognizerMatch> {
-        return emptyList()
+    private fun findRepetitions(allMatches: List<RecognizerMatch>): List<RecognizerMatch> {
+        // In this case we will search for matches that appear at least three times in a row
+        // with a common distance and the same "separators"
+
+        return allMatches.groupBy { it.recognizer }
+            .values
+            .flatMap { findRepetitionsPerGroup(allMatches, it) }
     }
 
-    private fun combineClassesInBracketedRecognizers(): List<RecognizerMatch> {
+    private fun findRepetitionsPerGroup(
+        allMatches: List<RecognizerMatch>,
+        groupedMatches: List<RecognizerMatch>
+    ): List<RecognizerMatch> {
+        val distanceToPrevious= groupedMatches.mapIndexed { index, match ->
+            if (index == 0) {
+                match to Int.MIN_VALUE
+            } else {
+                match to (match.first - groupedMatches[index - 1].last)
+            }
+        }
+
         return emptyList()
     }
 }
