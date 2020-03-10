@@ -87,14 +87,36 @@ object RecognizerRegistry {
         allMatches: List<RecognizerMatch>,
         groupedMatches: List<RecognizerMatch>
     ): List<RecognizerMatch> {
-        val distanceToPrevious= groupedMatches.mapIndexed { index, match ->
+        val distances = groupedMatches.mapIndexedNotNull { index, match ->
             if (index == 0) {
-                match to Int.MIN_VALUE
+                null
             } else {
-                match to (match.first - groupedMatches[index - 1].last)
+                Distance.between(groupedMatches[index - 1], match)
             }
         }
 
+
+
         return emptyList()
+    }
+
+    data class Distance(
+        val first: Int,
+        val last: Int
+    ) {
+        val length get() = last - first + 1
+        private val range = IntRange(first, last)
+
+        //fun matchesInRange(matches: Collection<RecognizerMatch>) =
+        //    matches.filter { it.ranges.size == 1 }
+        //        .filter { it.ranges[0].isEmpty() }
+
+        fun hasSameDistanceAs(other: Distance) =
+            length == other.length
+
+        companion object {
+            fun between(predecessor: RecognizerMatch, successor: RecognizerMatch) =
+                Distance(predecessor.last + 1, successor.first - 1)
+        }
     }
 }
