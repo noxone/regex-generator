@@ -7,10 +7,6 @@ class RecognizerCombiner {
             selectedMatches: Collection<RecognizerMatch>,
             options: Options
         ): RegularExpression {
-            if (selectedMatches.isEmpty()) {
-                return RegularExpression(options.getFrame().format(inputText.escapeForRegex()))
-            }
-
             val rangesToMatches = selectedMatches.flatMap { match ->
                     match
                         .ranges.mapIndexed { index, range -> RangeToMatch(range, match.patterns[index]) }
@@ -18,26 +14,34 @@ class RecognizerCombiner {
                 .sortedBy { it.range.first }
                 .toList()
 
-            fun makeOutput(hasLength: Boolean, options: Options, output: String) =
+            fun makeOutput(hasLength: Boolean, options: Options, outputProvider: () -> String) =
                 when {
                     hasLength && options.onlyPatterns && options.matchWholeLine -> ".*"
-                    hasLength && !options.onlyPatterns -> output
+                    hasLength && !options.onlyPatterns -> outputProvider()
                     else -> ""
                 }
 
-            val first = makeOutput(
-                rangesToMatches.first().range.first > 0,
-                options,
+            val first = makeOutput(rangesToMatches.isNotEmpty() && rangesToMatches.first().range.first > 0, options) {
                 inputText.substring(0, rangesToMatches.first().range.first).escapeForRegex()
-            )
+            }
             val last = makeOutput(
-                rangesToMatches.last().range.last < inputText.length - 1,
-                options,
+                rangesToMatches.isNotEmpty() && rangesToMatches.last().range.last < inputText.length - 1,
+                options
+            ) {
                 inputText.substring(rangesToMatches.last().range.last + 1).escapeForRegex()
-            )
+            }
 
             val pattern = buildString {
                 append(first)
+                rangesToMatches.ifEmpty {
+                    append(
+                        if (options.onlyPatterns) {
+                            ".*"
+                        } else {
+                            inputText.escapeForRegex()
+                        }
+                    )
+                }
                 for (i in rangesToMatches.indices) {
                     if (i > 0) {
                         val range = IntRange(rangesToMatches[i - 1].range.last + 1, rangesToMatches[i].range.first - 1)

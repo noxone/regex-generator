@@ -5,7 +5,7 @@ import org.olafneumann.regex.generator.util.HasRange
 class RecognizerMatch(
     val patterns: List<String>,
     ranges: List<IntRange>,
-    private val recognizer: Recognizer,
+    val recognizer: Recognizer,
     val title: String,
     val priority: Int = 0
 ) : HasRange {
@@ -26,11 +26,6 @@ class RecognizerMatch(
         this.last = this.ranges[this.ranges.size - 1].last
         this.length = last - first + 1
     }
-
-    // TODO remove this method!!!!
-    fun intersect(other: RecognizerMatch): Boolean =
-        ranges.flatMap { thisRange -> other.ranges.map { otherRange -> thisRange to otherRange } }
-            .any { it.first.intersect(it.second).isNotEmpty() }
 
     fun hasSameRangesAs(other: RecognizerMatch): Boolean {
         if (ranges.size != other.ranges.size) {

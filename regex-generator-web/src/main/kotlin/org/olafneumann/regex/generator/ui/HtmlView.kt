@@ -6,12 +6,10 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
-import kotlinx.html.style
 import org.olafneumann.regex.generator.js.*
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.UrlGenerator
-import org.olafneumann.regex.generator.util.HasRange
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLSpanElement
 import kotlin.browser.document
@@ -187,7 +185,7 @@ class HtmlView(
             return lines.size - 1
         }
         return matches
-            .sortedWith(MatchPresenter.comparator)
+            .sortedWith(MatchPresenter.byPriorityAndPosition)
             .flatMap { pres -> pres.ranges.map { pres to it } }
             .map { pair ->
                 val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }

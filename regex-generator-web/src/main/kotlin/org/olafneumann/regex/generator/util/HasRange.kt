@@ -7,6 +7,6 @@ interface HasRange {
         get() = last - first + 1
 
     companion object {
-        val comparator = compareBy<HasRange>({ it.first }, { -it.length })
+        val byPosition = compareBy<HasRange>({ it.first }, { -it.length })
     }
 }

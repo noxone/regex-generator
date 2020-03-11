@@ -16,7 +16,7 @@
 }
 
 .rg-match-container {
-  overflow-x: auto;
+  /*overflow-x: auto;*/
   width: 100%;
   padding-bottom: 1.5em;
 }

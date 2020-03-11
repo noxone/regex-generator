@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.regex
 
-data class SimpleRecognizer(
+class SimpleRecognizer(
     override val name: String,
-    val outputPattern: String,
+    private val outputPattern: String,
     override val description: String? = null,
     override val active: Boolean = true,
     private val searchPattern: String? = null,
@@ -33,5 +33,17 @@ data class SimpleRecognizer(
             start = result.range.first + start,
             endInclusive = result.range.first + start + mainGroupValue.length - 1
         )
+    }
+
+    override fun equals(other: Any?) = other is SimpleRecognizer
+            && this.name == other.name
+            && this.outputPattern == other.outputPattern
+            && this.searchPattern == other.searchPattern
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + outputPattern.hashCode()
+        result = 31 * result + (searchPattern?.hashCode() ?: 0)
+        return result
     }
 }
