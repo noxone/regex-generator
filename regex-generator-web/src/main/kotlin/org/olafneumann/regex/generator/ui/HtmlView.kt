@@ -48,7 +48,6 @@ class HtmlView(
 
     // Stuff needed to display the regex
     private val recognizerMatchToRow = mutableMapOf<MatchPresenter, Int>()
-    private val recognizerMatchToElements = mutableMapOf<MatchPresenter, HTMLDivElement>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     private val languageDisplays = CodeGenerator.all
@@ -100,24 +99,27 @@ class HtmlView(
 
     override fun showResults(matches: Collection<MatchPresenter>) {
         // TODO remove CSS class iterator
-        var index = 0
+        val indices = mutableMapOf<Int, Int>()
         val classes = listOf("primary", "success", "danger", "warning")
-        fun nextCssClass() = "bg-${classes[index++ % classes.size]}"
+        fun nextCssClass(row: Int): String {
+            indices[row] = (indices[row] ?: row) + 1
+            return "bg-${classes[indices[row]!! % classes.size]}"
+        }
+
 
         rowContainer.clear()
         recognizerMatchToRow.clear()
-        recognizerMatchToElements.clear()
 
         // find the correct row for each match
         recognizerMatchToRow.putAll(distributeToRows(matches))
-        // Create row elements
-        val rowElements = (0..(recognizerMatchToRow.values.max() ?: 0))
-            .map { createRowElement() }
-            .toList()
-        // Create match elements
-        matches.forEach { pres ->
+        // Create HTML elements
+        val rowElements = mutableMapOf<Int, HTMLDivElement>()
+        recognizerMatchToRow.map {
+            rowElements[it.value] = rowElements[it.value] ?: createRowElement()
+            val rowElement = rowElements[it.value]!!
+            val pres = it.key
+
             // create the corresponding regex element
-            val rowElement = rowElements[recognizerMatchToRow[pres]!!]
             val element = document.create.div(classes = CLASS_MATCH_ITEM) {
                 div(classes = "rg-match-item-overlay") {
                     pres.recognizerMatches.forEach { match ->
@@ -141,9 +143,8 @@ class HtmlView(
                 }
             }
             rowElement.appendChild(element)
-            recognizerMatchToElements[pres] = element
             // adjust styling
-            val cssClass = nextCssClass()
+            val cssClass = nextCssClass(it.value)
             element.addClass(cssClass)
             element.style.left = pres.first.toCharacterUnits()
             element.style.width = pres.length.toCharacterUnits()

@@ -7,6 +7,8 @@ interface HasRange {
         get() = last - first + 1
 
     companion object {
-        val byPosition = compareBy<HasRange>({ it.first }, { -it.length })
+        private val byIndex = compareBy<HasRange> { it.first }
+        private val byLength = compareByDescending<HasRange> { it.length }
+        val byPosition = byIndex.then(byLength)
     }
 }
