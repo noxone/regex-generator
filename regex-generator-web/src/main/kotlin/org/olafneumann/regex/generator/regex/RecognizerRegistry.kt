@@ -71,24 +71,25 @@ object RecognizerRegistry {
             .sortedWith(HasRange.byPosition)
             .toMutableList()
 
-        matches.addAll(findRepetitions(matches))
+        matches.addAll(findRepetitions(matches).flatMap { it.findMatches(input) })
 
         return matches
     }
 
-    private fun findRepetitions(allMatches: List<RecognizerMatch>): List<RecognizerMatch> {
+    private fun findRepetitions(allMatches: List<RecognizerMatch>): Collection<Recognizer> {
         // In this case we will search for matches that appear at least three times in a row
         // with a common distance and the same "separators"
 
         return allMatches.groupBy { it.recognizer }
             .values
             .flatMap { findRepetitionsPerGroup(allMatches, it) }
+            .toSet()
     }
 
     private fun findRepetitionsPerGroup(
         allMatches: List<RecognizerMatch>,
         groupedMatches: List<RecognizerMatch>
-    ): List<RecognizerMatch> {
+    ): Collection<Recognizer> {
         val possibleRepetitions = groupedMatches.combine { left, right ->
             Distance.between(left, right).matchesInRange(allMatches)
         }.combine { left, right ->
@@ -98,20 +99,15 @@ object RecognizerRegistry {
         //return emptyList()
         return possibleRepetitions
             .filter { it.child.isNotEmpty() }
-            .map { combi ->
-                val startMatch = combi.leftParent.leftParent
-                val mainMatches = listOf(combi.child[0], combi.leftParent.rightParent)
-                RecognizerMatch(
-                    patterns = listOf(startMatch.patterns, mainMatches.flatMap { it.patterns }).flatten(),
-                    ranges = listOf(startMatch.ranges, mainMatches.flatMap { it.ranges }).flatten(),
-                    recognizer = RepeatingRecognizer(
-                        name = "Repetition",
-                        repetitionStart = startMatch.recognizer,
-                        repetitionMain = listOf(mainMatches[0].recognizer, mainMatches[1].recognizer)
-                    ),
-                    title = "Repetition"
+            .map { combination ->
+                val startMatch = combination.leftParent.leftParent
+                val mainMatches = listOf(combination.child[0], combination.leftParent.rightParent)
+                SimpleRecognizer(
+                    name = "Combi [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
+                    outputPattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)"
                 )
             }
+            .toSet()
     }
 
     private fun List<RecognizerMatch>.findSameMatchesWith(other: List<RecognizerMatch>): List<RecognizerMatch> {

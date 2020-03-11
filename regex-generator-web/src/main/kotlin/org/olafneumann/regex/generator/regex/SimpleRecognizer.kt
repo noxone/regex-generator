@@ -34,4 +34,16 @@ class SimpleRecognizer(
             endInclusive = result.range.first + start + mainGroupValue.length - 1
         )
     }
+
+    override fun equals(other: Any?) = other is SimpleRecognizer
+            && this.name == other.name
+            && this.outputPattern == other.outputPattern
+            && this.searchPattern == other.searchPattern
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + outputPattern.hashCode()
+        result = 31 * result + (searchPattern?.hashCode() ?: 0)
+        return result
+    }
 }
