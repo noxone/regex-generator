@@ -104,7 +104,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>${main.class}</mainClass>
+                                    <mainClass>org.olafneumann.regex.generator.RegexGeneratorUIKt</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
