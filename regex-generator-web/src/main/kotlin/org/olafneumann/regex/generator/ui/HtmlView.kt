@@ -10,8 +10,7 @@ import org.olafneumann.regex.generator.js.*
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.UrlGenerator
-import org.w3c.dom.HTMLDivElement
-import org.w3c.dom.HTMLSpanElement
+import org.w3c.dom.*
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
@@ -24,25 +23,25 @@ class HtmlView(
     private fun Int.toCharacterUnits() = "${this}ch"
 
     // HTML elements we need to change
-    private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
-    private val textDisplay = HtmlHelper.getDivById(ID_TEXT_DISPLAY)
-    private val rowContainer = HtmlHelper.getDivById(ID_ROW_CONTAINER)
-    private val resultDisplay = HtmlHelper.getDivById(ID_RESULT_DISPLAY)
-    private val buttonCopy = HtmlHelper.getButtonById(ID_BUTTON_COPY)
-    private val buttonHelp = HtmlHelper.getAnchorById(ID_BUTTON_HELP)
-    private val checkOnlyMatches = HtmlHelper.getInputById(ID_CHECK_ONLY_MATCHES)
-    private val checkWholeLine = HtmlHelper.getInputById(ID_CHECK_WHOLELINE)
-    private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
-    private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
-    private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
-    private val containerLanguages = HtmlHelper.getDivById(ID_DIV_LANGUAGES)
+    private val textInput = HtmlHelper.getElementById<HTMLInputElement>(ID_INPUT_ELEMENT)
+    private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_TEXT_DISPLAY)
+    private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(ID_ROW_CONTAINER)
+    private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_RESULT_DISPLAY)
+    private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_COPY)
+    private val buttonHelp = HtmlHelper.getElementById<HTMLAnchorElement>(ID_BUTTON_HELP)
+    private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_ONLY_MATCHES)
+    private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_WHOLELINE)
+    private val checkCaseInsensitive = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_CASE_INSENSITIVE)
+    private val checkDotAll = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
+    private val checkMultiline = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_MULTILINE)
+    private val containerLanguages = HtmlHelper.getElementById<HTMLDivElement>(ID_DIV_LANGUAGES)
 
     private val anchorRegex101 = LinkHandler(
-        HtmlHelper.getAnchorById(ID_ANCHOR_REGEX101),
+        HtmlHelper.getElementById(ID_ANCHOR_REGEX101),
         UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s")
     )
     private val anchorRegexr = LinkHandler(
-        HtmlHelper.getAnchorById(ID_ANCHOR_REGEXR),
+        HtmlHelper.getElementById(ID_ANCHOR_REGEXR),
         UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
     )
 
@@ -198,7 +197,7 @@ class HtmlView(
 
 
     private fun createRowElement(): HTMLDivElement =
-        HtmlHelper.createDivElement(rowContainer, CLASS_MATCH_ROW)
+        rowContainer.appendChild(document.create.div(classes = CLASS_MATCH_ROW)) as HTMLDivElement
 
     override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
