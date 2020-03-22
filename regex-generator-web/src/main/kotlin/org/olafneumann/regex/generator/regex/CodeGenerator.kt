@@ -80,10 +80,15 @@ internal open class UrlGenerator(
     urlTemplate: String,
     private val valueForCaseInsensitive: String? = "i",
     private val valueForDotAll: String? = "s",
-    private val valueForMultiline: String? = "m"
+    private val valueForMultiline: String? = "m",
+    private val additionCharactersToEscape: List<Char> = emptyList()
 ) : SimpleReplacingCodeGenerator(linkName, linkName, urlTemplate) {
+    private fun String.escape(chars: List<Char>): String =
+        if (chars.isEmpty()) this
+        else replace(chars.first().toString(), "\\${chars.first()}").escape(chars.drop(1))
+
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        encodeURIComponent(pattern)
+        encodeURIComponent(pattern.escape(additionCharactersToEscape))
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String =
         combineOptions(options, valueForCaseInsensitive, valueForMultiline, valueForDotAll)
@@ -104,7 +109,8 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
                 |        // Use results...
                 |        return matcher.matches();
                 |    }
-                |}""".trimMargin()) {
+                |}""".trimMargin()
+) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
@@ -125,7 +131,8 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
     templateCode = """fun useRegex(input: String): Boolean {
     val regex = Regex(pattern = "%1${'$'}s"%2${'$'}s)
     return regex.matches(input)
-}""") {
+}"""
+) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
@@ -155,7 +162,8 @@ function useRegex(${'$'}input) {
     ${'$'}regex = '/%1${'$'}s/%2${'$'}s';
     return preg_match(${'$'}regex, ${'$'}input);
 }
-?>""") {
+?>"""
+) {
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
 
@@ -169,7 +177,8 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
     templateCode = """function useRegex(input) {
     let regex = /%1${'$'}s/%2${'$'}s;
     return regex.test(input);
-}""") {
+}"""
+) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("\t"), "\\t")
@@ -197,7 +206,8 @@ public class Sample
         Regex regex = new Regex("%1${'$'}s"%2${'$'}s);
         return regex.IsMatch(input);
     }
-}""") {
+}"""
+) {
 
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
@@ -220,7 +230,8 @@ internal class RubyCodeGenerator : SimpleReplacingCodeGenerator(
     templateCode = """def use_regex(input)
     regex = Regexp.new('%1${'$'}s'%2${'$'}s)
     regex.match input
-end""") {
+end"""
+) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
@@ -239,7 +250,7 @@ end""") {
         if (options.multiline)
             warnings += "The Ruby regex engine does not support the MULTILINE option. Regex' are always treated as multiline."
         if (options.dotMatchesLineBreaks)
-            // https://riptutorial.com/regex/example/18156/dotall-modifier
+        // https://riptutorial.com/regex/example/18156/dotall-modifier
             warnings += "In Ruby, the DOTALL modifier equivalent is m, Regexp::MULTILINE modifier."
 
         return warnings
