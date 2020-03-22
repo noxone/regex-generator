@@ -38,7 +38,7 @@ class HtmlView(
 
     private val anchorRegex101 = LinkHandler(
         HtmlHelper.getElementById(ID_ANCHOR_REGEX101),
-        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s")
+        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s&delimiter=/")
     )
     private val anchorRegexr = LinkHandler(
         HtmlHelper.getElementById(ID_ANCHOR_REGEXR),
