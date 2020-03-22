@@ -14,9 +14,6 @@ internal object HtmlHelper {
             throw RuntimeException("Unable to find element with id '$id'.", e)
         }
     }
-
-    internal fun toggleClass(element: HTMLElement, selected: Boolean, className: String) =
-        element.classList.toggle(className, selected)
 }
 
 internal class LinkHandler(

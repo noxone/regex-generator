@@ -113,10 +113,10 @@ class HtmlView(
         recognizerMatchToRow.putAll(distributeToRows(matches))
         // Create HTML elements
         val rowElements = mutableMapOf<Int, HTMLDivElement>()
-        recognizerMatchToRow.map {
-            rowElements[it.value] = rowElements[it.value] ?: createRowElement()
-            val rowElement = rowElements[it.value]!!
-            val pres = it.key
+        recognizerMatchToRow.map { entry ->
+            rowElements[entry.value] = rowElements[entry.value] ?: createRowElement()
+            val rowElement = rowElements[entry.value]!!
+            val pres = entry.key
 
             // create the corresponding regex element
             val element = document.create.div(classes = CLASS_MATCH_ITEM) {
@@ -143,7 +143,7 @@ class HtmlView(
             }
             rowElement.appendChild(element)
             // adjust styling
-            val cssClass = nextCssClass(it.value)
+            val cssClass = nextCssClass(entry.value)
             element.addClass(cssClass)
             element.style.left = pres.first.toCharacterUnits()
             element.style.width = pres.length.toCharacterUnits()
@@ -153,26 +153,26 @@ class HtmlView(
             }
             // add listeners to handle display correctly
             pres.onSelectedChanged = { selected ->
-                HtmlHelper.toggleClass(element, selected, CLASS_ITEM_SELECTED)
-                pres.forEach { HtmlHelper.toggleClass(inputCharacterSpans[it], selected, CLASS_CHAR_SELECTED) }
+                element.classList.toggle(CLASS_ITEM_SELECTED, selected)
+                pres.forEachInRanges { inputCharacterSpans[it].classList.toggle(CLASS_CHAR_SELECTED, selected) }
             }
             pres.onDeactivatedChanged =
-                { deactivated -> HtmlHelper.toggleClass(element, deactivated, CLASS_ITEM_NOT_AVAILABLE) }
-            HtmlHelper.toggleClass(element, pres.selected, CLASS_ITEM_SELECTED)
-            HtmlHelper.toggleClass(element, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
+                { deactivated -> element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, deactivated) }
+            element.classList.toggle(CLASS_ITEM_SELECTED, pres.selected)
+            element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, pres.deactivated)
             // add listeners to react on user input
             element.addEventListener(
                 EVENT_MOUSE_ENTER,
                 {
                     if (pres.availableForHighlight) {
-                        pres.forEach { inputCharacterSpans[it].addClass(cssClass) }
+                        pres.forEachInRanges { inputCharacterSpans[it].addClass(cssClass) }
                     }
                 })
             element.addEventListener(
                 EVENT_MOUSE_LEAVE,
                 {
                     if (pres.availableForHighlight) {
-                        pres.forEach { inputCharacterSpans[it].removeClass(cssClass) }
+                        pres.forEachInRanges { inputCharacterSpans[it].removeClass(cssClass) }
                     }
                 })
         }
