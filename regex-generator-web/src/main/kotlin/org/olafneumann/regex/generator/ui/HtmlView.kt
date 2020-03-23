@@ -46,7 +46,7 @@ class HtmlView(
     )
 
     // Stuff needed to display the regex
-    private val recognizerMatchToRow = mutableMapOf<MatchPresenter, Int>()
+    private val matchPresenterToRowIndex = mutableMapOf<MatchPresenter, Int>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     private val languageDisplays = CodeGenerator.all
@@ -107,21 +107,20 @@ class HtmlView(
 
 
         rowContainer.clear()
-        recognizerMatchToRow.clear()
+        matchPresenterToRowIndex.clear()
 
         // find the correct row for each match
-        recognizerMatchToRow.putAll(distributeToRows(matches))
+        matchPresenterToRowIndex.putAll(distributeToRows(matches))
         // Create HTML elements
         val rowElements = mutableMapOf<Int, HTMLDivElement>()
-        recognizerMatchToRow.map { entry ->
-            rowElements[entry.value] = rowElements[entry.value] ?: createRowElement()
-            val rowElement = rowElements[entry.value]!!
-            val pres = entry.key
+        matchPresenterToRowIndex.map { (matchPresenter, rowIndex) ->
+            rowElements[rowIndex] = rowElements[rowIndex] ?: createRowElement()
+            val rowElement = rowElements[rowIndex]!!
 
             // create the corresponding regex element
             val element = document.create.div(classes = CLASS_MATCH_ITEM) {
                 div(classes = "rg-match-item-overlay") {
-                    pres.recognizerMatches.forEach { match ->
+                    matchPresenter.recognizerMatches.forEach { match ->
                         div(classes = "rg-recognizer") {
                             a {
                                 +match.title
@@ -134,45 +133,50 @@ class HtmlView(
                     }
                 }
                 onClickFunction = {
-                    if (pres.selected) {
-                        pres.selectedMatch?.let { presenter.onSuggestionClick(it) }
-                    } else if (pres.recognizerMatches.size == 1) {
-                        presenter.onSuggestionClick(pres.recognizerMatches.iterator().next())
+                    when {
+                        matchPresenter.selected ->
+                            matchPresenter.selectedMatch?.let { presenter.onSuggestionClick(it) }
+                        matchPresenter.recognizerMatches.size == 1 ->
+                            presenter.onSuggestionClick(matchPresenter.recognizerMatches.iterator().next())
                     }
                 }
             }
             rowElement.appendChild(element)
             // adjust styling
-            val cssClass = nextCssClass(entry.value)
+            val cssClass = nextCssClass(rowIndex)
             element.addClass(cssClass)
-            element.style.left = pres.first.toCharacterUnits()
-            element.style.width = pres.length.toCharacterUnits()
-            if (pres.ranges.size == 2) {
-                element.style.borderLeftWidth = (pres.ranges[0].last - pres.ranges[0].first + 1).toCharacterUnits()
-                element.style.borderRightWidth = (pres.ranges[1].last - pres.ranges[1].first + 1).toCharacterUnits()
+            element.style.left = matchPresenter.first.toCharacterUnits()
+            element.style.width = matchPresenter.length.toCharacterUnits()
+            if (matchPresenter.ranges.size == 2) {
+                element.style.borderLeftWidth =
+                    (matchPresenter.ranges[0].last - matchPresenter.ranges[0].first + 1).toCharacterUnits()
+                element.style.borderRightWidth =
+                    (matchPresenter.ranges[1].last - matchPresenter.ranges[1].first + 1).toCharacterUnits()
             }
             // add listeners to handle display correctly
-            pres.onSelectedChanged = { selected ->
+            matchPresenter.onSelectedChanged = { selected ->
                 element.classList.toggle(CLASS_ITEM_SELECTED, selected)
-                pres.forEachInRanges { inputCharacterSpans[it].classList.toggle(CLASS_CHAR_SELECTED, selected) }
+                matchPresenter.forEachIndexInRanges { index ->
+                    inputCharacterSpans[index].classList.toggle(CLASS_CHAR_SELECTED, selected)
+                }
             }
-            pres.onDeactivatedChanged =
+            matchPresenter.onDeactivatedChanged =
                 { deactivated -> element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, deactivated) }
-            element.classList.toggle(CLASS_ITEM_SELECTED, pres.selected)
-            element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, pres.deactivated)
+            element.classList.toggle(CLASS_ITEM_SELECTED, matchPresenter.selected)
+            element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated)
             // add listeners to react on user input
             element.addEventListener(
                 EVENT_MOUSE_ENTER,
                 {
-                    if (pres.availableForHighlight) {
-                        pres.forEachInRanges { inputCharacterSpans[it].addClass(cssClass) }
+                    if (matchPresenter.availableForHighlight) {
+                        matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
                     }
                 })
             element.addEventListener(
                 EVENT_MOUSE_LEAVE,
                 {
-                    if (pres.availableForHighlight) {
-                        pres.forEachInRanges { inputCharacterSpans[it].removeClass(cssClass) }
+                    if (matchPresenter.availableForHighlight) {
+                        matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
                     }
                 })
         }
