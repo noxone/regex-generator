@@ -1,14 +1,12 @@
 package org.olafneumann.regex.generator.views.javafx
 
-import org.olafneumann.regex.generator.models.Contact
-import org.olafneumann.regex.generator.views.html.contactsView
 import javafx.scene.web.WebView
+import org.olafneumann.regex.generator.RGProtocol
 import tornadofx.View
+import java.net.URL
+import java.nio.file.Paths
 
 class HTML5View : View() {
-    companion object {
-        fun resourceLink(path: String) = "${HTML5View::class.java.getResource(path)}"
-    }
 
     override val root = WebView()
 
@@ -18,7 +16,10 @@ class HTML5View : View() {
             // Atomatically set the title of the window as the HTML document title
             titleProperty.bind(engine.titleProperty())
             // Show all the contacts
-            engine.loadContent(contactsView(Contact.all()))
+            // engine.loadContent(contactsView(Contact.all()))
+
+            RGProtocol.registerRegexGeneratorProtocol()
+            engine.load(RGProtocol.toRegexGeneratorProtocol("index.html"))
         }
     }
 }

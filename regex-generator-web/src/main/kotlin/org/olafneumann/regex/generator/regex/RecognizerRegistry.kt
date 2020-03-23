@@ -5,7 +5,7 @@ import org.olafneumann.regex.generator.regex.BracketedRecognizer.CenterPattern
 
 object RecognizerRegistry {
     private val recognizers = listOf<Recognizer>(
-        EchoRecognizer("Character", ".", priority = 0),
+        EchoRecognizer("Character", ".", priority = 1),
         SimpleRecognizer("One whitespace", "\\s"),
         SimpleRecognizer("Whitespaces", "\\s+"),
         SimpleRecognizer("One character", "[a-zA-Z]"),
@@ -93,15 +93,15 @@ object RecognizerRegistry {
         val possibleRepetitions = groupedMatches.combine { left, right ->
             Distance.between(left, right).matchesInRange(allMatches)
         }.combine { left, right ->
-            left.child.findSameMatchesWith((right.child))
+            left.element.findSameMatchesWith((right.element))
         }
 
         //return emptyList()
         return possibleRepetitions
-            .filter { it.child.isNotEmpty() }
+            .filter { it.element.isNotEmpty() }
             .map { combination ->
                 val startMatch = combination.leftParent.leftParent
-                val mainMatches = listOf(combination.child[0], combination.leftParent.rightParent)
+                val mainMatches = listOf(combination.element[0], combination.leftParent.rightParent)
                 SimpleRecognizer(
                     name = "Combi [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
                     outputPattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)"
@@ -111,15 +111,29 @@ object RecognizerRegistry {
     }
 
     private fun List<RecognizerMatch>.findSameMatchesWith(other: List<RecognizerMatch>): List<RecognizerMatch> {
-        if (this.size == 1
-            && other.size == 1
-            && this.first().recognizer == other.first().recognizer
-        ) {
-            return listOf(this.first())
-        } else {
-            // TODO handle cases with more than one match...
+        if (isEmpty() || other.isEmpty()) {
             return emptyList()
         }
+        fun Collection<RecognizerMatch>.filterForRanges(count: Int) = filter { it.ranges.size == count }
+        fun Collection<RecognizerMatch>.mostLeft() = flatMap { it.ranges }.map { it.first }.min() ?: Int.MIN_VALUE
+        fun Collection<RecognizerMatch>.mostRight() = flatMap { it.ranges }.map { it.last }.max() ?: Int.MAX_VALUE
+        fun Collection<RecognizerMatch>.findFullMatch(first: Int, last: Int) =
+            filter { it.ranges[0].first == first && it.ranges[0].last == last }
+
+        val leftMatches = filterForRanges(1)
+        val rightMatches = other.filterForRanges(1)
+        val leftMin = leftMatches.mostLeft()
+        val leftMax = leftMatches.mostRight()
+        val rightMin = rightMatches.mostLeft()
+        val rightMax = rightMatches.mostRight()
+
+        // find repetitions with one separator
+        val leftPossibles = leftMatches.findFullMatch(leftMin, leftMax)
+        val rightPossibles = rightMatches.findFullMatch(rightMin, rightMax)
+        return leftPossibles.flatMap { left -> rightPossibles.map { right -> left to right } }
+            .filter { it.first.recognizer == it.second.recognizer }
+            .filter { it.first.recognizer !is EchoRecognizer || (it.first.recognizer is EchoRecognizer && it.first.patterns[0] == it.second.patterns[0]) }
+            .map { it.first }
     }
 
     private data class Distance(
@@ -141,7 +155,7 @@ object RecognizerRegistry {
         val rightIndex: Int,
         val leftParent: P,
         val rightParent: P,
-        var child: C
+        var element: C
     )
 
     private fun <X, C> List<X>.combine(combiner: (X, X) -> C) =

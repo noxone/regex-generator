@@ -10,8 +10,7 @@ import org.olafneumann.regex.generator.js.*
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.UrlGenerator
-import org.w3c.dom.HTMLDivElement
-import org.w3c.dom.HTMLSpanElement
+import org.w3c.dom.*
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.clear
@@ -24,31 +23,30 @@ class HtmlView(
     private fun Int.toCharacterUnits() = "${this}ch"
 
     // HTML elements we need to change
-    private val textInput = HtmlHelper.getInputById(ID_INPUT_ELEMENT)
-    private val textDisplay = HtmlHelper.getDivById(ID_TEXT_DISPLAY)
-    private val rowContainer = HtmlHelper.getDivById(ID_ROW_CONTAINER)
-    private val resultDisplay = HtmlHelper.getDivById(ID_RESULT_DISPLAY)
-    private val buttonCopy = HtmlHelper.getButtonById(ID_BUTTON_COPY)
-    private val buttonHelp = HtmlHelper.getAnchorById(ID_BUTTON_HELP)
-    private val checkOnlyMatches = HtmlHelper.getInputById(ID_CHECK_ONLY_MATCHES)
-    private val checkWholeLine = HtmlHelper.getInputById(ID_CHECK_WHOLELINE)
-    private val checkCaseInsensitive = HtmlHelper.getInputById(ID_CHECK_CASE_INSENSITIVE)
-    private val checkDotAll = HtmlHelper.getInputById(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
-    private val checkMultiline = HtmlHelper.getInputById(ID_CHECK_MULTILINE)
-    private val containerLanguages = HtmlHelper.getDivById(ID_DIV_LANGUAGES)
+    private val textInput = HtmlHelper.getElementById<HTMLInputElement>(ID_INPUT_ELEMENT)
+    private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_TEXT_DISPLAY)
+    private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(ID_ROW_CONTAINER)
+    private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_RESULT_DISPLAY)
+    private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_COPY)
+    private val buttonHelp = HtmlHelper.getElementById<HTMLAnchorElement>(ID_BUTTON_HELP)
+    private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_ONLY_MATCHES)
+    private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_WHOLELINE)
+    private val checkCaseInsensitive = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_CASE_INSENSITIVE)
+    private val checkDotAll = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
+    private val checkMultiline = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_MULTILINE)
+    private val containerLanguages = HtmlHelper.getElementById<HTMLDivElement>(ID_DIV_LANGUAGES)
 
     private val anchorRegex101 = LinkHandler(
-        HtmlHelper.getAnchorById(ID_ANCHOR_REGEX101),
-        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s")
+        HtmlHelper.getElementById(ID_ANCHOR_REGEX101),
+        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s&delimiter=/")
     )
     private val anchorRegexr = LinkHandler(
-        HtmlHelper.getAnchorById(ID_ANCHOR_REGEXR),
+        HtmlHelper.getElementById(ID_ANCHOR_REGEXR),
         UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
     )
 
     // Stuff needed to display the regex
-    private val recognizerMatchToRow = mutableMapOf<MatchPresenter, Int>()
-    private val recognizerMatchToElements = mutableMapOf<MatchPresenter, HTMLDivElement>()
+    private val matchPresenterToRowIndex = mutableMapOf<MatchPresenter, Int>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     private val languageDisplays = CodeGenerator.all
@@ -100,27 +98,29 @@ class HtmlView(
 
     override fun showResults(matches: Collection<MatchPresenter>) {
         // TODO remove CSS class iterator
-        var index = 0
+        val indices = mutableMapOf<Int, Int>()
         val classes = listOf("primary", "success", "danger", "warning")
-        fun nextCssClass() = "bg-${classes[index++ % classes.size]}"
+        fun nextCssClass(row: Int): String {
+            indices[row] = (indices[row] ?: row) + 1
+            return "bg-${classes[indices[row]!! % classes.size]}"
+        }
+
 
         rowContainer.clear()
-        recognizerMatchToRow.clear()
-        recognizerMatchToElements.clear()
+        matchPresenterToRowIndex.clear()
 
         // find the correct row for each match
-        recognizerMatchToRow.putAll(distributeToRows(matches))
-        // Create row elements
-        val rowElements = (0..(recognizerMatchToRow.values.max() ?: 0))
-            .map { createRowElement() }
-            .toList()
-        // Create match elements
-        matches.forEach { pres ->
+        matchPresenterToRowIndex.putAll(distributeToRows(matches))
+        // Create HTML elements
+        val rowElements = mutableMapOf<Int, HTMLDivElement>()
+        matchPresenterToRowIndex.map { (matchPresenter, rowIndex) ->
+            rowElements[rowIndex] = rowElements[rowIndex] ?: createRowElement()
+            val rowElement = rowElements[rowIndex]!!
+
             // create the corresponding regex element
-            val rowElement = rowElements[recognizerMatchToRow[pres]!!]
             val element = document.create.div(classes = CLASS_MATCH_ITEM) {
                 div(classes = "rg-match-item-overlay") {
-                    pres.recognizerMatches.forEach { match ->
+                    matchPresenter.recognizerMatches.forEach { match ->
                         div(classes = "rg-recognizer") {
                             a {
                                 +match.title
@@ -133,46 +133,50 @@ class HtmlView(
                     }
                 }
                 onClickFunction = {
-                    if (pres.selected) {
-                        pres.selectedMatch?.let { presenter.onSuggestionClick(it) }
-                    } else if (pres.recognizerMatches.size == 1) {
-                        presenter.onSuggestionClick(pres.recognizerMatches.iterator().next())
+                    when {
+                        matchPresenter.selected ->
+                            matchPresenter.selectedMatch?.let { presenter.onSuggestionClick(it) }
+                        matchPresenter.recognizerMatches.size == 1 ->
+                            presenter.onSuggestionClick(matchPresenter.recognizerMatches.iterator().next())
                     }
                 }
             }
             rowElement.appendChild(element)
-            recognizerMatchToElements[pres] = element
             // adjust styling
-            val cssClass = nextCssClass()
+            val cssClass = nextCssClass(rowIndex)
             element.addClass(cssClass)
-            element.style.left = pres.first.toCharacterUnits()
-            element.style.width = pres.length.toCharacterUnits()
-            if (pres.ranges.size == 2) {
-                element.style.borderLeftWidth = (pres.ranges[0].last - pres.ranges[0].first + 1).toCharacterUnits()
-                element.style.borderRightWidth = (pres.ranges[1].last - pres.ranges[1].first + 1).toCharacterUnits()
+            element.style.left = matchPresenter.first.toCharacterUnits()
+            element.style.width = matchPresenter.length.toCharacterUnits()
+            if (matchPresenter.ranges.size == 2) {
+                element.style.borderLeftWidth =
+                    (matchPresenter.ranges[0].last - matchPresenter.ranges[0].first + 1).toCharacterUnits()
+                element.style.borderRightWidth =
+                    (matchPresenter.ranges[1].last - matchPresenter.ranges[1].first + 1).toCharacterUnits()
             }
             // add listeners to handle display correctly
-            pres.onSelectedChanged = { selected ->
-                HtmlHelper.toggleClass(element, selected, CLASS_ITEM_SELECTED)
-                pres.forEach { HtmlHelper.toggleClass(inputCharacterSpans[it], selected, CLASS_CHAR_SELECTED) }
+            matchPresenter.onSelectedChanged = { selected ->
+                element.classList.toggle(CLASS_ITEM_SELECTED, selected)
+                matchPresenter.forEachIndexInRanges { index ->
+                    inputCharacterSpans[index].classList.toggle(CLASS_CHAR_SELECTED, selected)
+                }
             }
-            pres.onDeactivatedChanged =
-                { deactivated -> HtmlHelper.toggleClass(element, deactivated, CLASS_ITEM_NOT_AVAILABLE) }
-            HtmlHelper.toggleClass(element, pres.selected, CLASS_ITEM_SELECTED)
-            HtmlHelper.toggleClass(element, pres.deactivated, CLASS_ITEM_NOT_AVAILABLE)
+            matchPresenter.onDeactivatedChanged =
+                { deactivated -> element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, deactivated) }
+            element.classList.toggle(CLASS_ITEM_SELECTED, matchPresenter.selected)
+            element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated)
             // add listeners to react on user input
             element.addEventListener(
                 EVENT_MOUSE_ENTER,
                 {
-                    if (pres.availableForHighlight) {
-                        pres.forEach { inputCharacterSpans[it].addClass(cssClass) }
+                    if (matchPresenter.availableForHighlight) {
+                        matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
                     }
                 })
             element.addEventListener(
                 EVENT_MOUSE_LEAVE,
                 {
-                    if (pres.availableForHighlight) {
-                        pres.forEach { inputCharacterSpans[it].removeClass(cssClass) }
+                    if (matchPresenter.availableForHighlight) {
+                        matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
                     }
                 })
         }
@@ -197,7 +201,7 @@ class HtmlView(
 
 
     private fun createRowElement(): HTMLDivElement =
-        HtmlHelper.createDivElement(rowContainer, CLASS_MATCH_ROW)
+        rowContainer.appendChild(document.create.div(classes = CLASS_MATCH_ROW)) as HTMLDivElement
 
     override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(

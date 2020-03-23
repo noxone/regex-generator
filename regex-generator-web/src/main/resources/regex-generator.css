@@ -72,6 +72,10 @@
   display: none;
 }
 
+.rg-match-item-overlay a {
+  display: block;
+}
+
 .rg-char-selected {
   background: lightgray !important;
 }

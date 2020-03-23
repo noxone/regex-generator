@@ -46,7 +46,7 @@ class MatchPresenter(
         ranges.flatMap { thisRange -> other.ranges.map { otherRange -> thisRange to otherRange } }
             .any { it.first.intersect(it.second).isNotEmpty() }
 
-    fun forEach(action: (Int) -> Unit) = ranges.flatMap { it.asIterable() }.forEach { action(it) }
+    inline fun forEachIndexInRanges(action: (Int) -> Unit) = ranges.flatMap { it.asIterable() }.forEach { action(it) }
 
     companion object {
         private val byPriority = compareByDescending<MatchPresenter> { it.priority }
