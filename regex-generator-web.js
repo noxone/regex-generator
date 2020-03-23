@@ -30,13 +30,15 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var emptyList = Kotlin.kotlin.collections.emptyList_287e2$;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var joinToString = Kotlin.kotlin.collections.joinToString_fmv235$;
+  var first = Kotlin.kotlin.collections.first_2p1efm$;
+  var unboxChar = Kotlin.unboxChar;
+  var drop = Kotlin.kotlin.collections.drop_ba2ldo$;
   var trimMargin = Kotlin.kotlin.text.trimMargin_rjktp$;
   var sortedWith = Kotlin.kotlin.collections.sortedWith_eknfly$;
   var wrapFunction = Kotlin.wrapFunction;
   var Comparator = Kotlin.kotlin.Comparator;
   var map = Kotlin.kotlin.sequences.map_z5avom$;
   var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
-  var first = Kotlin.kotlin.collections.first_2p1efm$;
   var last = Kotlin.kotlin.collections.last_2p1efm$;
   var substring = Kotlin.kotlin.text.substring_fc3b62$;
   var checkIndexOverflow = Kotlin.kotlin.collections.checkIndexOverflow_za3lpa$;
@@ -48,24 +50,25 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var Collection = Kotlin.kotlin.collections.Collection;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
+  var min = Kotlin.kotlin.collections.min_exjks8$;
+  var max = Kotlin.kotlin.collections.max_exjks8$;
+  var to = Kotlin.kotlin.to_ujzrz7$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
   var Exception_init = Kotlin.kotlin.Exception_init_pdl1vj$;
   var toIntOrNull = Kotlin.kotlin.text.toIntOrNull_pdl1vz$;
   var toBoolean = Kotlin.kotlin.text.toBoolean_pdl1vz$;
   var Unit = Kotlin.kotlin.Unit;
-  var RuntimeException = Kotlin.kotlin.RuntimeException;
-  var ClassCastException = Kotlin.kotlin.ClassCastException;
   var throwCCE = Kotlin.throwCCE;
-  var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
-  var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
+  var RuntimeException_init_0 = Kotlin.kotlin.RuntimeException;
+  var ClassCastException = Kotlin.kotlin.ClassCastException;
+  var defineInlineFunction = Kotlin.defineInlineFunction;
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
-  var unboxChar = Kotlin.unboxChar;
   var clear = Kotlin.kotlin.dom.clear_asww5s$;
-  var max = Kotlin.kotlin.collections.max_exjks8$;
   var ensureNotNull = Kotlin.ensureNotNull;
   var set_onClickFunction = $module$kotlinx_html_js.kotlinx.html.js.set_onClickFunction_pszlq2$;
-  var to = Kotlin.kotlin.to_ujzrz7$;
+  var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
+  var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
   var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
   var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
   var SPAN_init = $module$kotlinx_html_js.kotlinx.html.SPAN;
@@ -487,20 +490,26 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'SimpleReplacingCodeGenerator',
     interfaces: [CodeGenerator]
   };
-  function UrlGenerator(linkName, urlTemplate, valueForCaseInsensitive, valueForDotAll, valueForMultiline) {
+  function UrlGenerator(linkName, urlTemplate, valueForCaseInsensitive, valueForDotAll, valueForMultiline, additionCharactersToEscape) {
     if (valueForCaseInsensitive === void 0)
       valueForCaseInsensitive = 'i';
     if (valueForDotAll === void 0)
       valueForDotAll = 's';
     if (valueForMultiline === void 0)
       valueForMultiline = 'm';
+    if (additionCharactersToEscape === void 0)
+      additionCharactersToEscape = emptyList();
     SimpleReplacingCodeGenerator.call(this, linkName, linkName, urlTemplate);
     this.valueForCaseInsensitive_0 = valueForCaseInsensitive;
     this.valueForDotAll_0 = valueForDotAll;
     this.valueForMultiline_0 = valueForMultiline;
+    this.additionCharactersToEscape_0 = additionCharactersToEscape;
   }
+  UrlGenerator.prototype.escape_0 = function ($receiver, chars) {
+    return chars.isEmpty() ? $receiver : this.escape_0(replace($receiver, String.fromCharCode(unboxChar(first(chars))), '\\' + String.fromCharCode(unboxChar(first(chars)))), drop(chars, 1));
+  };
   UrlGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
-    return encodeURIComponent(pattern);
+    return encodeURIComponent(this.escape_0(pattern, this.additionCharactersToEscape_0));
   };
   UrlGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
     return this.combineOptions_1rvtm9$(options, this.valueForCaseInsensitive_0, this.valueForMultiline_0, this.valueForDotAll_0);
@@ -1115,7 +1124,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   };
   function RecognizerRegistry() {
     RecognizerRegistry_instance = this;
-    this.recognizers_0 = listOf([new EchoRecognizer('Character', '.', void 0, void 0, 0), new SimpleRecognizer('One whitespace', '\\s'), new SimpleRecognizer('Whitespaces', '\\s+'), new SimpleRecognizer('One character', '[a-zA-Z]'), new SimpleRecognizer('Multiple characters', '[a-zA-Z]+'), new SimpleRecognizer('Digit', '\\d'), new SimpleRecognizer('Number', '[0-9]+'), new SimpleRecognizer('Decimal number', '[0-9]*\\.[0-9]+'), new SimpleRecognizer('Day', '(0?[1-9]|[12][0-9]|3[01])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Month', '(0?[1-9]|[1][0-2])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new SimpleRecognizer('Time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new SimpleRecognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new SimpleRecognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new SimpleRecognizer('Log level', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new BracketedRecognizer('Round brackets', '\\(', listOf_0(new BracketedRecognizer$CenterPattern('no round bracket', '[^)]*')), '\\)', '(\\()([^)]*)(\\))'), new BracketedRecognizer('Square brackets', '\\[', listOf_0(new BracketedRecognizer$CenterPattern('no square bracket', '[^\\]]*')), ']', '(\\[)([^\\]]*)(])'), new BracketedRecognizer('Curly braces', '\\{', listOf_0(new BracketedRecognizer$CenterPattern('no curly braces', '[^}]*')), '}', '(\\{)([^}]*)(})'), new BracketedRecognizer('String (quotation mark)', '"', listOf([new BracketedRecognizer$CenterPattern('no quotation mark', '[^"]*'), new BracketedRecognizer$CenterPattern('escaped quotation mark', '(?:[^"]|\\\\\')*')]), '"', '(")([^"]*)(")'), new BracketedRecognizer('String (apostrophe)', "'", listOf([new BracketedRecognizer$CenterPattern('no apostrophe', "[^']*"), new BracketedRecognizer$CenterPattern('escaped apostrophe', "(?:[^']|\\\\')*")]), "'", "(')([^']*)(')")]);
+    this.recognizers_0 = listOf([new EchoRecognizer('Character', '.', void 0, void 0, 1), new SimpleRecognizer('One whitespace', '\\s'), new SimpleRecognizer('Whitespaces', '\\s+'), new SimpleRecognizer('One character', '[a-zA-Z]'), new SimpleRecognizer('Multiple characters', '[a-zA-Z]+'), new SimpleRecognizer('Digit', '\\d'), new SimpleRecognizer('Number', '[0-9]+'), new SimpleRecognizer('Decimal number', '[0-9]*\\.[0-9]+'), new SimpleRecognizer('Day', '(0?[1-9]|[12][0-9]|3[01])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Month', '(0?[1-9]|[1][0-2])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new SimpleRecognizer('Time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new SimpleRecognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new SimpleRecognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new SimpleRecognizer('Log level', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new BracketedRecognizer('Round brackets', '\\(', listOf_0(new BracketedRecognizer$CenterPattern('no round bracket', '[^)]*')), '\\)', '(\\()([^)]*)(\\))'), new BracketedRecognizer('Square brackets', '\\[', listOf_0(new BracketedRecognizer$CenterPattern('no square bracket', '[^\\]]*')), ']', '(\\[)([^\\]]*)(])'), new BracketedRecognizer('Curly braces', '\\{', listOf_0(new BracketedRecognizer$CenterPattern('no curly braces', '[^}]*')), '}', '(\\{)([^}]*)(})'), new BracketedRecognizer('String (quotation mark)', '"', listOf([new BracketedRecognizer$CenterPattern('no quotation mark', '[^"]*'), new BracketedRecognizer$CenterPattern('escaped quotation mark', '(?:[^"]|\\\\\')*')]), '"', '(")([^"]*)(")'), new BracketedRecognizer('String (apostrophe)', "'", listOf([new BracketedRecognizer$CenterPattern('no apostrophe', "[^']*"), new BracketedRecognizer$CenterPattern('escaped apostrophe', "(?:[^']|\\\\')*")]), "'", "(')([^']*)(')")]);
   }
   RecognizerRegistry.prototype.findMatches_61zpoe$ = function (input) {
     var $receiver = this.recognizers_0;
@@ -1186,7 +1195,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   }
   function RecognizerRegistry$findRepetitionsPerGroup$lambda_0(this$RecognizerRegistry) {
     return function (left, right) {
-      return this$RecognizerRegistry.findSameMatchesWith_0(left.child, right.child);
+      return this$RecognizerRegistry.findSameMatchesWith_0(left.element, right.element);
     };
   }
   RecognizerRegistry.prototype.findRepetitionsPerGroup_0 = function (allMatches, groupedMatches) {
@@ -1196,7 +1205,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     tmp$ = possibleRepetitions.iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      if (!element.child.isEmpty())
+      if (!element.element.isEmpty())
         destination.add_11rb$(element);
     }
     var destination_0 = ArrayList_init(collectionSizeOrDefault(destination, 10));
@@ -1206,18 +1215,126 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       var item = tmp$_0.next();
       var tmp$_1 = destination_0.add_11rb$;
       var startMatch = item.leftParent.leftParent;
-      var mainMatches = listOf([item.child.get_za3lpa$(0), item.leftParent.rightParent]);
+      var mainMatches = listOf([item.element.get_za3lpa$(0), item.leftParent.rightParent]);
       tmp$_1.call(destination_0, new SimpleRecognizer('Combi [' + startMatch.recognizer.name + ' + ' + mainMatches.get_za3lpa$(0).recognizer.name + ']', '(' + startMatch.patterns.get_za3lpa$(0) + '(' + mainMatches.get_za3lpa$(0).patterns.get_za3lpa$(0) + mainMatches.get_za3lpa$(1).patterns.get_za3lpa$(0) + ')+)'));
     }
     return toSet(destination_0);
   };
-  RecognizerRegistry.prototype.findSameMatchesWith_0 = function ($receiver, other) {
-    if ($receiver.size === 1 && other.size === 1 && equals(first($receiver).recognizer, first(other).recognizer)) {
-      return listOf_0(first($receiver));
+  function RecognizerRegistry$findSameMatchesWith$filterForRanges($receiver, count) {
+    var destination = ArrayList_init_0();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (element.ranges.size === count)
+        destination.add_11rb$(element);
     }
-     else {
+    return destination;
+  }
+  function RecognizerRegistry$findSameMatchesWith$mostLeft($receiver) {
+    var tmp$;
+    var destination = ArrayList_init_0();
+    var tmp$_0;
+    tmp$_0 = $receiver.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
+      var list = element.ranges;
+      addAll(destination, list);
+    }
+    var destination_0 = ArrayList_init(collectionSizeOrDefault(destination, 10));
+    var tmp$_1;
+    tmp$_1 = destination.iterator();
+    while (tmp$_1.hasNext()) {
+      var item = tmp$_1.next();
+      destination_0.add_11rb$(item.first);
+    }
+    return (tmp$ = min(destination_0)) != null ? tmp$ : -2147483648;
+  }
+  function RecognizerRegistry$findSameMatchesWith$mostRight($receiver) {
+    var tmp$;
+    var destination = ArrayList_init_0();
+    var tmp$_0;
+    tmp$_0 = $receiver.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
+      var list = element.ranges;
+      addAll(destination, list);
+    }
+    var destination_0 = ArrayList_init(collectionSizeOrDefault(destination, 10));
+    var tmp$_1;
+    tmp$_1 = destination.iterator();
+    while (tmp$_1.hasNext()) {
+      var item = tmp$_1.next();
+      destination_0.add_11rb$(item.last);
+    }
+    return (tmp$ = max(destination_0)) != null ? tmp$ : 2147483647;
+  }
+  function RecognizerRegistry$findSameMatchesWith$findFullMatch($receiver, first, last) {
+    var destination = ArrayList_init_0();
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (element.ranges.get_za3lpa$(0).first === first && element.ranges.get_za3lpa$(0).last === last)
+        destination.add_11rb$(element);
+    }
+    return destination;
+  }
+  RecognizerRegistry.prototype.findSameMatchesWith_0 = function ($receiver, other) {
+    if ($receiver.isEmpty() || other.isEmpty()) {
       return emptyList();
     }
+    var filterForRanges = RecognizerRegistry$findSameMatchesWith$filterForRanges;
+    var mostLeft = RecognizerRegistry$findSameMatchesWith$mostLeft;
+    var mostRight = RecognizerRegistry$findSameMatchesWith$mostRight;
+    var findFullMatch = RecognizerRegistry$findSameMatchesWith$findFullMatch;
+    var leftMatches = filterForRanges($receiver, 1);
+    var rightMatches = filterForRanges(other, 1);
+    var leftMin = mostLeft(leftMatches);
+    var leftMax = mostRight(leftMatches);
+    var rightMin = mostLeft(rightMatches);
+    var rightMax = mostRight(rightMatches);
+    var leftPossibles = findFullMatch(leftMatches, leftMin, leftMax);
+    var rightPossibles = findFullMatch(rightMatches, rightMin, rightMax);
+    var destination = ArrayList_init_0();
+    var tmp$;
+    tmp$ = leftPossibles.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      var destination_0 = ArrayList_init(collectionSizeOrDefault(rightPossibles, 10));
+      var tmp$_0;
+      tmp$_0 = rightPossibles.iterator();
+      while (tmp$_0.hasNext()) {
+        var item = tmp$_0.next();
+        destination_0.add_11rb$(to(element, item));
+      }
+      var list = destination_0;
+      addAll(destination, list);
+    }
+    var destination_1 = ArrayList_init_0();
+    var tmp$_1;
+    tmp$_1 = destination.iterator();
+    while (tmp$_1.hasNext()) {
+      var element_0 = tmp$_1.next();
+      if (equals(element_0.first.recognizer, element_0.second.recognizer))
+        destination_1.add_11rb$(element_0);
+    }
+    var destination_2 = ArrayList_init_0();
+    var tmp$_2;
+    tmp$_2 = destination_1.iterator();
+    while (tmp$_2.hasNext()) {
+      var element_1 = tmp$_2.next();
+      if (!Kotlin.isType(element_1.first.recognizer, EchoRecognizer) || (Kotlin.isType(element_1.first.recognizer, EchoRecognizer) && equals(element_1.first.patterns.get_za3lpa$(0), element_1.second.patterns.get_za3lpa$(0))))
+        destination_2.add_11rb$(element_1);
+    }
+    var destination_3 = ArrayList_init(collectionSizeOrDefault(destination_2, 10));
+    var tmp$_3;
+    tmp$_3 = destination_2.iterator();
+    while (tmp$_3.hasNext()) {
+      var item_0 = tmp$_3.next();
+      destination_3.add_11rb$(item_0.first);
+    }
+    return destination_3;
   };
   function RecognizerRegistry$Distance(first, last) {
     RecognizerRegistry$Distance$Companion_getInstance();
@@ -1287,12 +1404,12 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   RecognizerRegistry$Distance.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.first, other.first) && Kotlin.equals(this.last, other.last)))));
   };
-  function RecognizerRegistry$Combination(leftIndex, rightIndex, leftParent, rightParent, child) {
+  function RecognizerRegistry$Combination(leftIndex, rightIndex, leftParent, rightParent, element) {
     this.leftIndex = leftIndex;
     this.rightIndex = rightIndex;
     this.leftParent = leftParent;
     this.rightParent = rightParent;
-    this.child = child;
+    this.element = element;
   }
   RecognizerRegistry$Combination.$metadata$ = {
     kind: Kind_CLASS,
@@ -1312,13 +1429,13 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return this.rightParent;
   };
   RecognizerRegistry$Combination.prototype.component5 = function () {
-    return this.child;
+    return this.element;
   };
-  RecognizerRegistry$Combination.prototype.copy_juhu02$ = function (leftIndex, rightIndex, leftParent, rightParent, child) {
-    return new RecognizerRegistry$Combination(leftIndex === void 0 ? this.leftIndex : leftIndex, rightIndex === void 0 ? this.rightIndex : rightIndex, leftParent === void 0 ? this.leftParent : leftParent, rightParent === void 0 ? this.rightParent : rightParent, child === void 0 ? this.child : child);
+  RecognizerRegistry$Combination.prototype.copy_juhu02$ = function (leftIndex, rightIndex, leftParent, rightParent, element) {
+    return new RecognizerRegistry$Combination(leftIndex === void 0 ? this.leftIndex : leftIndex, rightIndex === void 0 ? this.rightIndex : rightIndex, leftParent === void 0 ? this.leftParent : leftParent, rightParent === void 0 ? this.rightParent : rightParent, element === void 0 ? this.element : element);
   };
   RecognizerRegistry$Combination.prototype.toString = function () {
-    return 'Combination(leftIndex=' + Kotlin.toString(this.leftIndex) + (', rightIndex=' + Kotlin.toString(this.rightIndex)) + (', leftParent=' + Kotlin.toString(this.leftParent)) + (', rightParent=' + Kotlin.toString(this.rightParent)) + (', child=' + Kotlin.toString(this.child)) + ')';
+    return 'Combination(leftIndex=' + Kotlin.toString(this.leftIndex) + (', rightIndex=' + Kotlin.toString(this.rightIndex)) + (', leftParent=' + Kotlin.toString(this.leftParent)) + (', rightParent=' + Kotlin.toString(this.rightParent)) + (', element=' + Kotlin.toString(this.element)) + ')';
   };
   RecognizerRegistry$Combination.prototype.hashCode = function () {
     var result = 0;
@@ -1326,11 +1443,11 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     result = result * 31 + Kotlin.hashCode(this.rightIndex) | 0;
     result = result * 31 + Kotlin.hashCode(this.leftParent) | 0;
     result = result * 31 + Kotlin.hashCode(this.rightParent) | 0;
-    result = result * 31 + Kotlin.hashCode(this.child) | 0;
+    result = result * 31 + Kotlin.hashCode(this.element) | 0;
     return result;
   };
   RecognizerRegistry$Combination.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.leftIndex, other.leftIndex) && Kotlin.equals(this.rightIndex, other.rightIndex) && Kotlin.equals(this.leftParent, other.leftParent) && Kotlin.equals(this.rightParent, other.rightParent) && Kotlin.equals(this.child, other.child)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.leftIndex, other.leftIndex) && Kotlin.equals(this.rightIndex, other.rightIndex) && Kotlin.equals(this.leftParent, other.leftParent) && Kotlin.equals(this.rightParent, other.rightParent) && Kotlin.equals(this.element, other.element)))));
   };
   RecognizerRegistry.prototype.combine_0 = function ($receiver, combiner) {
     var $receiver_0 = until(1, $receiver.size);
@@ -1580,7 +1697,20 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     this.ID_DIV_COOKIE_0 = 'rg_container_cookie';
     this.ID_BTN_ACCEPT_0 = 'rg_btn_cookie_accept';
     this.ID_BTN_REJECT_0 = 'rg_btn_cookie_reject';
-    this.ctnCookie_0 = HtmlHelper_getInstance().getDivById_y4putb$(this.ID_DIV_COOKIE_0);
+    var id = this.ID_DIV_COOKIE_0;
+    var getElementById_359kph$result;
+    var tmp$;
+    try {
+      getElementById_359kph$result = Kotlin.isType(tmp$ = document.getElementById(id), HTMLDivElement) ? tmp$ : throwCCE();
+    }
+     catch (e) {
+      if (Kotlin.isType(e, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id + "'.", e);
+      }
+       else
+        throw e;
+    }
+    this.ctnCookie_0 = getElementById_359kph$result;
   }
   function CookieBanner$initialize$lambda(this$CookieBanner) {
     return function (it) {
@@ -1600,8 +1730,34 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       this.hideBanner_0();
     }
      else {
-      var btnAccept = HtmlHelper_getInstance().getButtonById_y4putb$(this.ID_BTN_ACCEPT_0);
-      var btnReject = HtmlHelper_getInstance().getButtonById_y4putb$(this.ID_BTN_REJECT_0);
+      var id = this.ID_BTN_ACCEPT_0;
+      var getElementById_359kph$result;
+      var tmp$;
+      try {
+        getElementById_359kph$result = Kotlin.isType(tmp$ = document.getElementById(id), HTMLButtonElement) ? tmp$ : throwCCE();
+      }
+       catch (e) {
+        if (Kotlin.isType(e, ClassCastException)) {
+          throw new RuntimeException_init_0("Unable to find element with id '" + id + "'.", e);
+        }
+         else
+          throw e;
+      }
+      var btnAccept = getElementById_359kph$result;
+      var id_0 = this.ID_BTN_REJECT_0;
+      var getElementById_359kph$result_0;
+      var tmp$_0;
+      try {
+        getElementById_359kph$result_0 = Kotlin.isType(tmp$_0 = document.getElementById(id_0), HTMLButtonElement) ? tmp$_0 : throwCCE();
+      }
+       catch (e_0) {
+        if (Kotlin.isType(e_0, ClassCastException)) {
+          throw new RuntimeException_init_0("Unable to find element with id '" + id_0 + "'.", e_0);
+        }
+         else
+          throw e_0;
+      }
+      var btnReject = getElementById_359kph$result_0;
       btnAccept.onclick = CookieBanner$initialize$lambda(this);
       btnReject.onclick = CookieBanner$initialize$lambda_0(this);
     }
@@ -1642,81 +1798,27 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'DisplayContract',
     interfaces: []
   };
-  var ELEMENT_DIV;
-  var ELEMENT_BUTTON;
-  var ELEMENT_PRE;
-  var ELEMENT_CODE;
   function HtmlHelper() {
     HtmlHelper_instance = this;
   }
-  HtmlHelper.prototype.ensureClassCast_0 = function (id, type, getter) {
-    try {
-      return getter(id);
-    }
-     catch (e) {
-      if (Kotlin.isType(e, ClassCastException)) {
-        throw new RuntimeException('Unable to find ' + type + " with id '" + id + "'.", e);
+  HtmlHelper.prototype.getElementById_359kph$ = defineInlineFunction('regex-generator-web.org.olafneumann.regex.generator.ui.HtmlHelper.getElementById_359kph$', wrapFunction(function () {
+    var throwCCE = Kotlin.throwCCE;
+    var RuntimeException_init = Kotlin.kotlin.RuntimeException;
+    var ClassCastException = Kotlin.kotlin.ClassCastException;
+    return function (T_0, isT, id) {
+      var tmp$;
+      try {
+        return isT(tmp$ = document.getElementById(id)) ? tmp$ : throwCCE();
       }
-       else
-        throw e;
-    }
-  };
-  function HtmlHelper$getDivById$lambda(it) {
-    var tmp$;
-    return Kotlin.isType(tmp$ = document.getElementById(it), HTMLDivElement) ? tmp$ : throwCCE();
-  }
-  HtmlHelper.prototype.getDivById_y4putb$ = function (id) {
-    return this.ensureClassCast_0(id, 'div', HtmlHelper$getDivById$lambda);
-  };
-  function HtmlHelper$getInputById$lambda(it) {
-    var tmp$;
-    return Kotlin.isType(tmp$ = document.getElementById(it), HTMLInputElement) ? tmp$ : throwCCE();
-  }
-  HtmlHelper.prototype.getInputById_y4putb$ = function (id) {
-    return this.ensureClassCast_0(id, 'input', HtmlHelper$getInputById$lambda);
-  };
-  function HtmlHelper$getButtonById$lambda(it) {
-    var tmp$;
-    return Kotlin.isType(tmp$ = document.getElementById(it), HTMLButtonElement) ? tmp$ : throwCCE();
-  }
-  HtmlHelper.prototype.getButtonById_y4putb$ = function (id) {
-    return this.ensureClassCast_0(id, 'button', HtmlHelper$getButtonById$lambda);
-  };
-  function HtmlHelper$getAnchorById$lambda(it) {
-    var tmp$;
-    return Kotlin.isType(tmp$ = document.getElementById(it), HTMLAnchorElement) ? tmp$ : throwCCE();
-  }
-  HtmlHelper.prototype.getAnchorById_y4putb$ = function (id) {
-    return this.ensureClassCast_0(id, 'link', HtmlHelper$getAnchorById$lambda);
-  };
-  HtmlHelper.prototype.createDivElement_9utdl7$ = function (parent, classNames) {
-    var tmp$;
-    return Kotlin.isType(tmp$ = this.createElement_0(parent, ELEMENT_DIV, classNames.slice()), HTMLDivElement) ? tmp$ : throwCCE();
-  };
-  HtmlHelper.prototype.createButtonElement_9utdl7$ = function (parent, classNames) {
-    var tmp$;
-    return Kotlin.isType(tmp$ = this.createElement_0(parent, ELEMENT_BUTTON, classNames.slice()), HTMLButtonElement) ? tmp$ : throwCCE();
-  };
-  HtmlHelper.prototype.createPreElement_9utdl7$ = function (parent, classNames) {
-    var tmp$;
-    return Kotlin.isType(tmp$ = this.createElement_0(parent, ELEMENT_PRE, classNames.slice()), HTMLPreElement) ? tmp$ : throwCCE();
-  };
-  HtmlHelper.prototype.createCodeElement_9utdl7$ = function (parent, classNames) {
-    var tmp$;
-    return Kotlin.isType(tmp$ = this.createElement_0(parent, ELEMENT_CODE, classNames.slice()), HTMLElement) ? tmp$ : throwCCE();
-  };
-  HtmlHelper.prototype.createElement_0 = function (parent, type, classNames) {
-    var element = document.createElement(type);
-    addClass(element, classNames.slice());
-    parent.appendChild(element);
-    return element;
-  };
-  HtmlHelper.prototype.toggleClass_g5b9vm$ = function (element, selected, className) {
-    if (selected)
-      addClass(element, [className]);
-    else
-      removeClass(element, [className]);
-  };
+       catch (e) {
+        if (Kotlin.isType(e, ClassCastException)) {
+          throw new RuntimeException_init("Unable to find element with id '" + id + "'.", e);
+        }
+         else
+          throw e;
+      }
+    };
+  }));
   HtmlHelper.$metadata$ = {
     kind: Kind_OBJECT,
     simpleName: 'HtmlHelper',
@@ -1780,29 +1882,210 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   function HtmlView(presenter) {
     HtmlView$Companion_getInstance();
     this.presenter_0 = presenter;
-    this.textInput_0 = HtmlHelper_getInstance().getInputById_y4putb$(HtmlView$Companion_getInstance().ID_INPUT_ELEMENT);
-    this.textDisplay_0 = HtmlHelper_getInstance().getDivById_y4putb$(HtmlView$Companion_getInstance().ID_TEXT_DISPLAY);
-    this.rowContainer_0 = HtmlHelper_getInstance().getDivById_y4putb$(HtmlView$Companion_getInstance().ID_ROW_CONTAINER);
-    this.resultDisplay_0 = HtmlHelper_getInstance().getDivById_y4putb$(HtmlView$Companion_getInstance().ID_RESULT_DISPLAY);
-    this.buttonCopy_0 = HtmlHelper_getInstance().getButtonById_y4putb$(HtmlView$Companion_getInstance().ID_BUTTON_COPY);
-    this.buttonHelp_0 = HtmlHelper_getInstance().getAnchorById_y4putb$(HtmlView$Companion_getInstance().ID_BUTTON_HELP);
-    this.checkOnlyMatches_0 = HtmlHelper_getInstance().getInputById_y4putb$(HtmlView$Companion_getInstance().ID_CHECK_ONLY_MATCHES);
-    this.checkWholeLine_0 = HtmlHelper_getInstance().getInputById_y4putb$(HtmlView$Companion_getInstance().ID_CHECK_WHOLELINE);
-    this.checkCaseInsensitive_0 = HtmlHelper_getInstance().getInputById_y4putb$(HtmlView$Companion_getInstance().ID_CHECK_CASE_INSENSITIVE);
-    this.checkDotAll_0 = HtmlHelper_getInstance().getInputById_y4putb$(HtmlView$Companion_getInstance().ID_CHECK_DOT_MATCHES_LINE_BRAKES);
-    this.checkMultiline_0 = HtmlHelper_getInstance().getInputById_y4putb$(HtmlView$Companion_getInstance().ID_CHECK_MULTILINE);
-    this.containerLanguages_0 = HtmlHelper_getInstance().getDivById_y4putb$(HtmlView$Companion_getInstance().ID_DIV_LANGUAGES);
-    this.anchorRegex101_0 = new LinkHandler(HtmlHelper_getInstance().getAnchorById_y4putb$(HtmlView$Companion_getInstance().ID_ANCHOR_REGEX101), new UrlGenerator('Regex101', 'https://regex101.com/?regex=%1$s&flags=g%2$s'));
-    this.anchorRegexr_0 = new LinkHandler(HtmlHelper_getInstance().getAnchorById_y4putb$(HtmlView$Companion_getInstance().ID_ANCHOR_REGEXR), new UrlGenerator('Regexr', 'https://regexr.com/?expression=%1$s&text='));
-    this.recognizerMatchToRow_0 = LinkedHashMap_init();
-    this.recognizerMatchToElements_0 = LinkedHashMap_init();
+    var id = HtmlView$Companion_getInstance().ID_INPUT_ELEMENT;
+    var getElementById_359kph$result;
+    var tmp$;
+    try {
+      getElementById_359kph$result = Kotlin.isType(tmp$ = document.getElementById(id), HTMLInputElement) ? tmp$ : throwCCE();
+    }
+     catch (e) {
+      if (Kotlin.isType(e, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id + "'.", e);
+      }
+       else
+        throw e;
+    }
+    this.textInput_0 = getElementById_359kph$result;
+    var id_0 = HtmlView$Companion_getInstance().ID_TEXT_DISPLAY;
+    var getElementById_359kph$result_0;
+    var tmp$_0;
+    try {
+      getElementById_359kph$result_0 = Kotlin.isType(tmp$_0 = document.getElementById(id_0), HTMLDivElement) ? tmp$_0 : throwCCE();
+    }
+     catch (e_0) {
+      if (Kotlin.isType(e_0, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_0 + "'.", e_0);
+      }
+       else
+        throw e_0;
+    }
+    this.textDisplay_0 = getElementById_359kph$result_0;
+    var id_1 = HtmlView$Companion_getInstance().ID_ROW_CONTAINER;
+    var getElementById_359kph$result_1;
+    var tmp$_1;
+    try {
+      getElementById_359kph$result_1 = Kotlin.isType(tmp$_1 = document.getElementById(id_1), HTMLDivElement) ? tmp$_1 : throwCCE();
+    }
+     catch (e_1) {
+      if (Kotlin.isType(e_1, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_1 + "'.", e_1);
+      }
+       else
+        throw e_1;
+    }
+    this.rowContainer_0 = getElementById_359kph$result_1;
+    var id_2 = HtmlView$Companion_getInstance().ID_RESULT_DISPLAY;
+    var getElementById_359kph$result_2;
+    var tmp$_2;
+    try {
+      getElementById_359kph$result_2 = Kotlin.isType(tmp$_2 = document.getElementById(id_2), HTMLDivElement) ? tmp$_2 : throwCCE();
+    }
+     catch (e_2) {
+      if (Kotlin.isType(e_2, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_2 + "'.", e_2);
+      }
+       else
+        throw e_2;
+    }
+    this.resultDisplay_0 = getElementById_359kph$result_2;
+    var id_3 = HtmlView$Companion_getInstance().ID_BUTTON_COPY;
+    var getElementById_359kph$result_3;
+    var tmp$_3;
+    try {
+      getElementById_359kph$result_3 = Kotlin.isType(tmp$_3 = document.getElementById(id_3), HTMLButtonElement) ? tmp$_3 : throwCCE();
+    }
+     catch (e_3) {
+      if (Kotlin.isType(e_3, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_3 + "'.", e_3);
+      }
+       else
+        throw e_3;
+    }
+    this.buttonCopy_0 = getElementById_359kph$result_3;
+    var id_4 = HtmlView$Companion_getInstance().ID_BUTTON_HELP;
+    var getElementById_359kph$result_4;
+    var tmp$_4;
+    try {
+      getElementById_359kph$result_4 = Kotlin.isType(tmp$_4 = document.getElementById(id_4), HTMLAnchorElement) ? tmp$_4 : throwCCE();
+    }
+     catch (e_4) {
+      if (Kotlin.isType(e_4, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_4 + "'.", e_4);
+      }
+       else
+        throw e_4;
+    }
+    this.buttonHelp_0 = getElementById_359kph$result_4;
+    var id_5 = HtmlView$Companion_getInstance().ID_CHECK_ONLY_MATCHES;
+    var getElementById_359kph$result_5;
+    var tmp$_5;
+    try {
+      getElementById_359kph$result_5 = Kotlin.isType(tmp$_5 = document.getElementById(id_5), HTMLInputElement) ? tmp$_5 : throwCCE();
+    }
+     catch (e_5) {
+      if (Kotlin.isType(e_5, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_5 + "'.", e_5);
+      }
+       else
+        throw e_5;
+    }
+    this.checkOnlyMatches_0 = getElementById_359kph$result_5;
+    var id_6 = HtmlView$Companion_getInstance().ID_CHECK_WHOLELINE;
+    var getElementById_359kph$result_6;
+    var tmp$_6;
+    try {
+      getElementById_359kph$result_6 = Kotlin.isType(tmp$_6 = document.getElementById(id_6), HTMLInputElement) ? tmp$_6 : throwCCE();
+    }
+     catch (e_6) {
+      if (Kotlin.isType(e_6, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_6 + "'.", e_6);
+      }
+       else
+        throw e_6;
+    }
+    this.checkWholeLine_0 = getElementById_359kph$result_6;
+    var id_7 = HtmlView$Companion_getInstance().ID_CHECK_CASE_INSENSITIVE;
+    var getElementById_359kph$result_7;
+    var tmp$_7;
+    try {
+      getElementById_359kph$result_7 = Kotlin.isType(tmp$_7 = document.getElementById(id_7), HTMLInputElement) ? tmp$_7 : throwCCE();
+    }
+     catch (e_7) {
+      if (Kotlin.isType(e_7, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_7 + "'.", e_7);
+      }
+       else
+        throw e_7;
+    }
+    this.checkCaseInsensitive_0 = getElementById_359kph$result_7;
+    var id_8 = HtmlView$Companion_getInstance().ID_CHECK_DOT_MATCHES_LINE_BRAKES;
+    var getElementById_359kph$result_8;
+    var tmp$_8;
+    try {
+      getElementById_359kph$result_8 = Kotlin.isType(tmp$_8 = document.getElementById(id_8), HTMLInputElement) ? tmp$_8 : throwCCE();
+    }
+     catch (e_8) {
+      if (Kotlin.isType(e_8, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_8 + "'.", e_8);
+      }
+       else
+        throw e_8;
+    }
+    this.checkDotAll_0 = getElementById_359kph$result_8;
+    var id_9 = HtmlView$Companion_getInstance().ID_CHECK_MULTILINE;
+    var getElementById_359kph$result_9;
+    var tmp$_9;
+    try {
+      getElementById_359kph$result_9 = Kotlin.isType(tmp$_9 = document.getElementById(id_9), HTMLInputElement) ? tmp$_9 : throwCCE();
+    }
+     catch (e_9) {
+      if (Kotlin.isType(e_9, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_9 + "'.", e_9);
+      }
+       else
+        throw e_9;
+    }
+    this.checkMultiline_0 = getElementById_359kph$result_9;
+    var id_10 = HtmlView$Companion_getInstance().ID_DIV_LANGUAGES;
+    var getElementById_359kph$result_10;
+    var tmp$_10;
+    try {
+      getElementById_359kph$result_10 = Kotlin.isType(tmp$_10 = document.getElementById(id_10), HTMLDivElement) ? tmp$_10 : throwCCE();
+    }
+     catch (e_10) {
+      if (Kotlin.isType(e_10, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_10 + "'.", e_10);
+      }
+       else
+        throw e_10;
+    }
+    this.containerLanguages_0 = getElementById_359kph$result_10;
+    var id_11 = HtmlView$Companion_getInstance().ID_ANCHOR_REGEX101;
+    var getElementById_359kph$result_11;
+    var tmp$_11;
+    try {
+      getElementById_359kph$result_11 = Kotlin.isType(tmp$_11 = document.getElementById(id_11), HTMLAnchorElement) ? tmp$_11 : throwCCE();
+    }
+     catch (e_11) {
+      if (Kotlin.isType(e_11, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_11 + "'.", e_11);
+      }
+       else
+        throw e_11;
+    }
+    this.anchorRegex101_0 = new LinkHandler(getElementById_359kph$result_11, new UrlGenerator('Regex101', 'https://regex101.com/?regex=%1$s&flags=g%2$s&delimiter=/'));
+    var id_12 = HtmlView$Companion_getInstance().ID_ANCHOR_REGEXR;
+    var getElementById_359kph$result_12;
+    var tmp$_12;
+    try {
+      getElementById_359kph$result_12 = Kotlin.isType(tmp$_12 = document.getElementById(id_12), HTMLAnchorElement) ? tmp$_12 : throwCCE();
+    }
+     catch (e_12) {
+      if (Kotlin.isType(e_12, ClassCastException)) {
+        throw new RuntimeException_init_0("Unable to find element with id '" + id_12 + "'.", e_12);
+      }
+       else
+        throw e_12;
+    }
+    this.anchorRegexr_0 = new LinkHandler(getElementById_359kph$result_12, new UrlGenerator('Regexr', 'https://regexr.com/?expression=%1$s&text='));
+    this.matchPresenterToRowIndex_0 = LinkedHashMap_init();
     this.inputCharacterSpans_0 = emptyList();
     var $receiver = CodeGenerator$Companion_getInstance().all;
     var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
-    var tmp$;
-    tmp$ = $receiver.iterator();
-    while (tmp$.hasNext()) {
-      var item = tmp$.next();
+    var tmp$_13;
+    tmp$_13 = $receiver.iterator();
+    while (tmp$_13.hasNext()) {
+      var item = tmp$_13.next();
       destination.add_11rb$(to(item, new LanguageCard(item, this.containerLanguages_0)));
     }
     this.languageDisplays_0 = toMap(destination);
@@ -1875,10 +2158,13 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       this.anchorRegexr_0.setPattern_wa467u$(value, this.options);
     }
   });
-  function HtmlView$showResults$nextCssClass(closure$classes, closure$index) {
-    return function () {
+  function HtmlView$showResults$nextCssClass(closure$indices, closure$classes) {
+    return function (row) {
       var tmp$;
-      return 'bg-' + closure$classes.get_za3lpa$((tmp$ = closure$index.v, closure$index.v = tmp$ + 1 | 0, tmp$) % closure$classes.size);
+      var $receiver = closure$indices;
+      var value = ((tmp$ = closure$indices.get_11rb$(row)) != null ? tmp$ : row) + 1 | 0;
+      $receiver.put_xwzc9p$(row, value);
+      return 'bg-' + closure$classes.get_za3lpa$(ensureNotNull(closure$indices.get_11rb$(row)) % closure$classes.size);
     };
   }
   function HtmlView$showResults$lambda$lambda$lambda$lambda$lambda$lambda$lambda(this$HtmlView, closure$match) {
@@ -1902,9 +2188,9 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
-  function HtmlView$showResults$lambda$lambda$lambda(closure$pres, this$HtmlView) {
+  function HtmlView$showResults$lambda$lambda$lambda(closure$matchPresenter, this$HtmlView) {
     return function ($receiver) {
-      var $receiver_0 = closure$pres.recognizerMatches;
+      var $receiver_0 = closure$matchPresenter.recognizerMatches;
       var tmp$;
       tmp$ = $receiver_0.iterator();
       while (tmp$.hasNext()) {
@@ -1915,119 +2201,147 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
       return Unit;
     };
   }
-  function HtmlView$showResults$lambda$lambda$lambda_0(closure$pres, this$HtmlView) {
+  function HtmlView$showResults$lambda$lambda$lambda_0(closure$matchPresenter, this$HtmlView) {
     return function (it) {
       var tmp$;
-      if (closure$pres.selected) {
-        if ((tmp$ = closure$pres.selectedMatch) != null) {
+      if (closure$matchPresenter.selected) {
+        if ((tmp$ = closure$matchPresenter.selectedMatch) != null) {
           this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(tmp$);
         }
       }
-       else if (closure$pres.recognizerMatches.size === 1) {
-        this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(closure$pres.recognizerMatches.iterator().next());
-      }
+       else if (closure$matchPresenter.recognizerMatches.size === 1)
+        this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(closure$matchPresenter.recognizerMatches.iterator().next());
       return Unit;
     };
   }
-  function HtmlView$showResults$lambda$lambda(closure$pres, this$HtmlView) {
+  function HtmlView$showResults$lambda$lambda(closure$matchPresenter, this$HtmlView) {
     return function ($receiver) {
       var classes = 'rg-match-item-overlay';
-      var block = HtmlView$showResults$lambda$lambda$lambda(closure$pres, this$HtmlView);
+      var block = HtmlView$showResults$lambda$lambda$lambda(closure$matchPresenter, this$HtmlView);
       visitTag(new DIV_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_0(block));
-      set_onClickFunction($receiver, HtmlView$showResults$lambda$lambda$lambda_0(closure$pres, this$HtmlView));
+      set_onClickFunction($receiver, HtmlView$showResults$lambda$lambda$lambda_0(closure$matchPresenter, this$HtmlView));
       return Unit;
     };
   }
-  function HtmlView$showResults$lambda$lambda$lambda_1(this$HtmlView, closure$selected) {
-    return function (it) {
-      HtmlHelper_getInstance().toggleClass_g5b9vm$(this$HtmlView.inputCharacterSpans_0.get_za3lpa$(it), closure$selected, HtmlView$Companion_getInstance().CLASS_CHAR_SELECTED);
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda_0(closure$element, closure$pres, this$HtmlView) {
+  function HtmlView$showResults$lambda$lambda_0(closure$element, closure$matchPresenter, this$HtmlView) {
     return function (selected) {
-      HtmlHelper_getInstance().toggleClass_g5b9vm$(closure$element, selected, HtmlView$Companion_getInstance().CLASS_ITEM_SELECTED);
-      closure$pres.forEach_b4k9x1$(HtmlView$showResults$lambda$lambda$lambda_1(this$HtmlView, selected));
+      closure$element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_SELECTED, selected);
+      var $this = closure$matchPresenter;
+      var $receiver = $this.ranges;
+      var destination = ArrayList_init_0();
+      var tmp$;
+      tmp$ = $receiver.iterator();
+      while (tmp$.hasNext()) {
+        var element = tmp$.next();
+        var list = element;
+        addAll(destination, list);
+      }
+      var tmp$_0;
+      tmp$_0 = destination.iterator();
+      while (tmp$_0.hasNext()) {
+        var element_0 = tmp$_0.next();
+        this$HtmlView.inputCharacterSpans_0.get_za3lpa$(element_0).classList.toggle(HtmlView$Companion_getInstance().CLASS_CHAR_SELECTED, selected);
+      }
       return Unit;
     };
   }
   function HtmlView$showResults$lambda$lambda_1(closure$element) {
     return function (deactivated) {
-      HtmlHelper_getInstance().toggleClass_g5b9vm$(closure$element, deactivated, HtmlView$Companion_getInstance().CLASS_ITEM_NOT_AVAILABLE);
+      closure$element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_NOT_AVAILABLE, deactivated);
       return Unit;
     };
   }
-  function HtmlView$showResults$lambda$lambda$lambda_2(this$HtmlView, closure$cssClass) {
+  function HtmlView$showResults$lambda$lambda_2(closure$matchPresenter, this$HtmlView, closure$cssClass) {
     return function (it) {
-      addClass(this$HtmlView.inputCharacterSpans_0.get_za3lpa$(it), [closure$cssClass]);
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda_2(closure$pres, this$HtmlView, closure$cssClass) {
-    return function (it) {
-      if (closure$pres.availableForHighlight) {
-        closure$pres.forEach_b4k9x1$(HtmlView$showResults$lambda$lambda$lambda_2(this$HtmlView, closure$cssClass));
+      if (closure$matchPresenter.availableForHighlight) {
+        var $this = closure$matchPresenter;
+        var $receiver = $this.ranges;
+        var destination = ArrayList_init_0();
+        var tmp$;
+        tmp$ = $receiver.iterator();
+        while (tmp$.hasNext()) {
+          var element = tmp$.next();
+          var list = element;
+          addAll(destination, list);
+        }
+        var tmp$_0;
+        tmp$_0 = destination.iterator();
+        while (tmp$_0.hasNext()) {
+          var element_0 = tmp$_0.next();
+          var this$HtmlView_0 = this$HtmlView;
+          var closure$cssClass_0 = closure$cssClass;
+          addClass(this$HtmlView_0.inputCharacterSpans_0.get_za3lpa$(element_0), [closure$cssClass_0]);
+        }
       }
       return Unit;
     };
   }
-  function HtmlView$showResults$lambda$lambda$lambda_3(this$HtmlView, closure$cssClass) {
+  function HtmlView$showResults$lambda$lambda_3(closure$matchPresenter, this$HtmlView, closure$cssClass) {
     return function (it) {
-      removeClass(this$HtmlView.inputCharacterSpans_0.get_za3lpa$(it), [closure$cssClass]);
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda_3(closure$pres, this$HtmlView, closure$cssClass) {
-    return function (it) {
-      if (closure$pres.availableForHighlight) {
-        closure$pres.forEach_b4k9x1$(HtmlView$showResults$lambda$lambda$lambda_3(this$HtmlView, closure$cssClass));
+      if (closure$matchPresenter.availableForHighlight) {
+        var $this = closure$matchPresenter;
+        var $receiver = $this.ranges;
+        var destination = ArrayList_init_0();
+        var tmp$;
+        tmp$ = $receiver.iterator();
+        while (tmp$.hasNext()) {
+          var element = tmp$.next();
+          var list = element;
+          addAll(destination, list);
+        }
+        var tmp$_0;
+        tmp$_0 = destination.iterator();
+        while (tmp$_0.hasNext()) {
+          var element_0 = tmp$_0.next();
+          var this$HtmlView_0 = this$HtmlView;
+          var closure$cssClass_0 = closure$cssClass;
+          removeClass(this$HtmlView_0.inputCharacterSpans_0.get_za3lpa$(element_0), [closure$cssClass_0]);
+        }
       }
       return Unit;
     };
   }
   HtmlView.prototype.showResults_70lhc2$ = function (matches) {
-    var tmp$;
-    var index = {v: 0};
+    var indices = LinkedHashMap_init();
     var classes = listOf(['primary', 'success', 'danger', 'warning']);
-    var nextCssClass = HtmlView$showResults$nextCssClass(classes, index);
+    var nextCssClass = HtmlView$showResults$nextCssClass(indices, classes);
     clear(this.rowContainer_0);
-    this.recognizerMatchToRow_0.clear();
-    this.recognizerMatchToElements_0.clear();
-    this.recognizerMatchToRow_0.putAll_a2k3zr$(this.distributeToRows_0(matches));
-    var $receiver = new IntRange(0, (tmp$ = max(this.recognizerMatchToRow_0.values)) != null ? tmp$ : 0);
-    var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
-    var tmp$_0;
-    tmp$_0 = $receiver.iterator();
-    while (tmp$_0.hasNext()) {
-      var item = tmp$_0.next();
-      destination.add_11rb$(this.createRowElement_0());
-    }
-    var rowElements = toList_0(destination);
-    var tmp$_1;
-    tmp$_1 = matches.iterator();
-    while (tmp$_1.hasNext()) {
-      var element = tmp$_1.next();
-      var rowElement = rowElements.get_za3lpa$(ensureNotNull(this.recognizerMatchToRow_0.get_11rb$(element)));
+    this.matchPresenterToRowIndex_0.clear();
+    this.matchPresenterToRowIndex_0.putAll_a2k3zr$(this.distributeToRows_0(matches));
+    var rowElements = LinkedHashMap_init();
+    var $receiver = this.matchPresenterToRowIndex_0;
+    var destination = ArrayList_init($receiver.size);
+    var tmp$;
+    tmp$ = $receiver.entries.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      var tmp$_0 = destination.add_11rb$;
+      var matchPresenter = item.key;
+      var rowIndex = item.value;
+      var tmp$_1;
+      var value = (tmp$_1 = rowElements.get_11rb$(rowIndex)) != null ? tmp$_1 : this.createRowElement_0();
+      rowElements.put_xwzc9p$(rowIndex, value);
+      var rowElement = ensureNotNull(rowElements.get_11rb$(rowIndex));
       var $receiver_0 = get_create(document);
       var classes_0 = HtmlView$Companion_getInstance().CLASS_MATCH_ITEM;
       var tmp$_2;
-      var element_0 = Kotlin.isType(tmp$_2 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', classes_0), $receiver_0), $receiver_0, visitAndFinalize$lambda_0(HtmlView$showResults$lambda$lambda(element, this))), HTMLDivElement_0) ? tmp$_2 : throwCCE();
-      rowElement.appendChild(element_0);
-      this.recognizerMatchToElements_0.put_xwzc9p$(element, element_0);
-      var cssClass = nextCssClass();
-      addClass(element_0, [cssClass]);
-      element_0.style.left = this.toCharacterUnits_0(element.first);
-      element_0.style.width = this.toCharacterUnits_0(element.length);
-      if (element.ranges.size === 2) {
-        element_0.style.borderLeftWidth = this.toCharacterUnits_0(element.ranges.get_za3lpa$(0).last - element.ranges.get_za3lpa$(0).first + 1 | 0);
-        element_0.style.borderRightWidth = this.toCharacterUnits_0(element.ranges.get_za3lpa$(1).last - element.ranges.get_za3lpa$(1).first + 1 | 0);
+      var element = Kotlin.isType(tmp$_2 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', classes_0), $receiver_0), $receiver_0, visitAndFinalize$lambda_0(HtmlView$showResults$lambda$lambda(matchPresenter, this))), HTMLDivElement_0) ? tmp$_2 : throwCCE();
+      rowElement.appendChild(element);
+      var cssClass = nextCssClass(rowIndex);
+      addClass(element, [cssClass]);
+      element.style.left = this.toCharacterUnits_0(matchPresenter.first);
+      element.style.width = this.toCharacterUnits_0(matchPresenter.length);
+      if (matchPresenter.ranges.size === 2) {
+        element.style.borderLeftWidth = this.toCharacterUnits_0(matchPresenter.ranges.get_za3lpa$(0).last - matchPresenter.ranges.get_za3lpa$(0).first + 1 | 0);
+        element.style.borderRightWidth = this.toCharacterUnits_0(matchPresenter.ranges.get_za3lpa$(1).last - matchPresenter.ranges.get_za3lpa$(1).first + 1 | 0);
       }
-      element.onSelectedChanged = HtmlView$showResults$lambda$lambda_0(element_0, element, this);
-      element.onDeactivatedChanged = HtmlView$showResults$lambda$lambda_1(element_0);
-      HtmlHelper_getInstance().toggleClass_g5b9vm$(element_0, element.selected, HtmlView$Companion_getInstance().CLASS_ITEM_SELECTED);
-      HtmlHelper_getInstance().toggleClass_g5b9vm$(element_0, element.deactivated, HtmlView$Companion_getInstance().CLASS_ITEM_NOT_AVAILABLE);
-      element_0.addEventListener(HtmlView$Companion_getInstance().EVENT_MOUSE_ENTER, HtmlView$showResults$lambda$lambda_2(element, this, cssClass));
-      element_0.addEventListener(HtmlView$Companion_getInstance().EVENT_MOUSE_LEAVE, HtmlView$showResults$lambda$lambda_3(element, this, cssClass));
+      matchPresenter.onSelectedChanged = HtmlView$showResults$lambda$lambda_0(element, matchPresenter, this);
+      matchPresenter.onDeactivatedChanged = HtmlView$showResults$lambda$lambda_1(element);
+      element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_SELECTED, matchPresenter.selected);
+      element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated);
+      element.addEventListener(HtmlView$Companion_getInstance().EVENT_MOUSE_ENTER, HtmlView$showResults$lambda$lambda_2(matchPresenter, this, cssClass));
+      element.addEventListener(HtmlView$Companion_getInstance().EVENT_MOUSE_LEAVE, HtmlView$showResults$lambda$lambda_3(matchPresenter, this, cssClass));
+      tmp$_0.call(destination, Unit);
     }
   };
   function HtmlView$distributeToRows$createNextLine(closure$lines) {
@@ -2086,7 +2400,12 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     return toMap(destination_1);
   };
   HtmlView.prototype.createRowElement_0 = function () {
-    return HtmlHelper_getInstance().createDivElement_9utdl7$(this.rowContainer_0, [HtmlView$Companion_getInstance().CLASS_MATCH_ROW]);
+    var tmp$;
+    var tmp$_0 = this.rowContainer_0;
+    var $receiver = get_create(document);
+    var classes = HtmlView$Companion_getInstance().CLASS_MATCH_ROW;
+    var tmp$_1;
+    return Kotlin.isType(tmp$ = tmp$_0.appendChild(Kotlin.isType(tmp$_1 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', classes), $receiver), $receiver, visitAndFinalize$lambda_0(div$lambda_0)), HTMLDivElement_0) ? tmp$_1 : throwCCE()), HTMLDivElement) ? tmp$ : throwCCE();
   };
   Object.defineProperty(HtmlView.prototype, 'options', {
     get: function () {
@@ -2584,23 +2903,27 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
      while (false);
     return any$result;
   };
-  MatchPresenter.prototype.forEach_b4k9x1$ = function (action) {
-    var $receiver = this.ranges;
-    var destination = ArrayList_init_0();
-    var tmp$;
-    tmp$ = $receiver.iterator();
-    while (tmp$.hasNext()) {
-      var element = tmp$.next();
-      var list = element;
-      addAll(destination, list);
-    }
-    var tmp$_0;
-    tmp$_0 = destination.iterator();
-    while (tmp$_0.hasNext()) {
-      var element_0 = tmp$_0.next();
-      action(element_0);
-    }
-  };
+  MatchPresenter.prototype.forEachIndexInRanges_b4k9x1$ = defineInlineFunction('regex-generator-web.org.olafneumann.regex.generator.ui.MatchPresenter.forEachIndexInRanges_b4k9x1$', wrapFunction(function () {
+    var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
+    var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
+    return function (action) {
+      var $receiver = this.ranges;
+      var destination = ArrayList_init();
+      var tmp$;
+      tmp$ = $receiver.iterator();
+      while (tmp$.hasNext()) {
+        var element = tmp$.next();
+        var list = element;
+        addAll(destination, list);
+      }
+      var tmp$_0;
+      tmp$_0 = destination.iterator();
+      while (tmp$_0.hasNext()) {
+        var element_0 = tmp$_0.next();
+        action(element_0);
+      }
+    };
+  }));
   function MatchPresenter$Companion() {
     MatchPresenter$Companion_instance = this;
     this.byPriority_0 = new Comparator$ObjectLiteral_1(compareByDescending$lambda(MatchPresenter$Companion$byPriority$lambda));
@@ -2846,6 +3169,38 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
     simpleName: 'UiController',
     interfaces: [DisplayContract$Controller]
   };
+  function Comparator$ObjectLiteral_2(closure$comparison) {
+    this.closure$comparison = closure$comparison;
+  }
+  Comparator$ObjectLiteral_2.prototype.compare = function (a, b) {
+    return this.closure$comparison(a, b);
+  };
+  Comparator$ObjectLiteral_2.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
+  var compareBy$lambda_1 = wrapFunction(function () {
+    var compareValues = Kotlin.kotlin.comparisons.compareValues_s00gnj$;
+    return function (closure$selector) {
+      return function (a, b) {
+        var selector = closure$selector;
+        return compareValues(selector(a), selector(b));
+      };
+    };
+  });
+  function Comparator$ObjectLiteral_3(closure$comparison) {
+    this.closure$comparison = closure$comparison;
+  }
+  Comparator$ObjectLiteral_3.prototype.compare = function (a, b) {
+    return this.closure$comparison(a, b);
+  };
+  Comparator$ObjectLiteral_3.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
+  var compareByDescending$lambda_0 = wrapFunction(function () {
+    var compareValues = Kotlin.kotlin.comparisons.compareValues_s00gnj$;
+    return function (closure$selector) {
+      return function (a, b) {
+        var selector = closure$selector;
+        return compareValues(selector(b), selector(a));
+      };
+    };
+  });
   function HasRange() {
     HasRange$Companion_getInstance();
   }
@@ -2856,13 +3211,15 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   });
   function HasRange$Companion() {
     HasRange$Companion_instance = this;
-    this.byPosition = compareBy([HasRange$Companion$byPosition$lambda, HasRange$Companion$byPosition$lambda_0]);
+    this.byIndex_0 = new Comparator$ObjectLiteral_2(compareBy$lambda_1(HasRange$Companion$byIndex$lambda));
+    this.byLength_0 = new Comparator$ObjectLiteral_3(compareByDescending$lambda_0(HasRange$Companion$byLength$lambda));
+    this.byPosition = then(this.byIndex_0, this.byLength_0);
   }
-  function HasRange$Companion$byPosition$lambda(it) {
+  function HasRange$Companion$byIndex$lambda(it) {
     return it.first;
   }
-  function HasRange$Companion$byPosition$lambda_0(it) {
-    return -it.length | 0;
+  function HasRange$Companion$byLength$lambda(it) {
+    return it.length;
   }
   HasRange$Companion.$metadata$ = {
     kind: Kind_OBJECT,
@@ -2931,6 +3288,7 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   Object.defineProperty(package$ui, 'ApplicationSettings', {
     get: ApplicationSettings_getInstance
   });
+  $$importsForInline$$['regex-generator-web'] = _;
   Object.defineProperty(package$ui, 'CookieBanner', {
     get: CookieBanner_getInstance
   });
@@ -2961,10 +3319,6 @@ this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
   var package$util = package$generator.util || (package$generator.util = {});
   package$util.HasRange = HasRange;
   Object.defineProperty(SimpleReplacingCodeGenerator.prototype, 'uniqueName', Object.getOwnPropertyDescriptor(CodeGenerator.prototype, 'uniqueName'));
-  ELEMENT_DIV = 'div';
-  ELEMENT_BUTTON = 'button';
-  ELEMENT_PRE = 'pre';
-  ELEMENT_CODE = 'code';
   main();
   Kotlin.defineModule('regex-generator-web', _);
   return _;
