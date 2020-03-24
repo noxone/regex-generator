@@ -6,4 +6,7 @@ import tornadofx.App
 
 class HTML5App : App(HTML5View::class)
 
-fun main(args: Array<String>) = Application.launch(HTML5App::class.java, *args)
+fun main(args: Array<String>) {
+    RegexGeneratorProtocol.registerRegexGeneratorProtocol()
+    Application.launch(HTML5App::class.java, *args)
+}
