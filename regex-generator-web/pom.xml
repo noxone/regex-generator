@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <artifactId>regex-generator</artifactId>
         <groupId>org.olafneumann</groupId>
+        <artifactId>regex-generator</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>regex-generator-web</artifactId>
     <packaging>jar</packaging>
@@ -37,13 +36,11 @@
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
-
         <plugins>
             <plugin>
-                <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
-
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -74,7 +71,8 @@
                             <includeArtifactIds>kotlin-stdlib-js</includeArtifactIds>
                             <outputDirectory>${project.build.outputDirectory}/lib</outputDirectory>
                             <includes>**\/*.js</includes>
-                            <excludes>**\/*.meta.js</excludes>                            <!-- we don't need meta.js files in runtime -->
+                            <excludes>**\/*.meta.js
+                            </excludes>                            <!-- we don't need meta.js files in runtime -->
                         </configuration>
                     </execution>
                     <execution>
@@ -87,7 +85,8 @@
                             <includeArtifactIds>kotlinx-html-js</includeArtifactIds>
                             <outputDirectory>${project.build.outputDirectory}/lib</outputDirectory>
                             <includes>**\/*.js</includes>
-                            <excludes>**\/*.meta.js</excludes>                            <!-- we don't need meta.js files in runtime -->
+                            <excludes>**\/*.meta.js
+                            </excludes>                            <!-- we don't need meta.js files in runtime -->
                         </configuration>
                     </execution>
                 </executions>
@@ -95,7 +94,6 @@
 
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>copy-docs</id>
@@ -110,12 +108,12 @@
                                 <resource>
                                     <directory>${basedir}/target/classes</directory>
                                     <includes>
-										<include>index.html</include>
+                                        <include>index.html</include>
                                         <include>regex-generator-web.js</include>
                                         <include>prism.js</include>
-										<include>lib/**/*</include>
+                                        <include>lib/**/*</include>
                                         <include>**/*.css</include>
-									</includes>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
@@ -124,22 +122,23 @@
             </plugin>
 
 
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-						<id>CNAME</id>
-						<phase>package</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
+                        <id>CNAME</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
                             <target>
-                                <echo message="Create CNAME" />
-                                <echo file="${basedir}/../${github.pages.directory}/CNAME"><![CDATA[${github.pages.cname}]]></echo>
+                                <echo message="Create CNAME"/>
+                                <echo file="${basedir}/../${github.pages.directory}/CNAME">
+                                    <![CDATA[${github.pages.cname}]]></echo>
                             </target>
-						</configuration>
-					</execution>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

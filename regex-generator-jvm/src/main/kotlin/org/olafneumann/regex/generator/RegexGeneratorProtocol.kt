@@ -2,6 +2,7 @@ package org.olafneumann.regex.generator
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.net.URL
 import java.net.URLConnection
@@ -9,21 +10,21 @@ import java.net.URLStreamHandler
 import java.net.URLStreamHandlerFactory
 import java.security.Permission
 
-class RGProtocol private constructor(url: URL) : URLConnection(url) {
+class RegexGeneratorProtocol private constructor(url: URL) : URLConnection(url) {
     private val data: ByteArray
+    private val extension: String
 
     init {
         val bos = ByteArrayOutputStream()
-
         val res = javaClass.getResource(getURL().file)
-        println("load: ${getURL().file}")
-        println(res)
-        println(res.toExternalForm())
+            ?: throw IOException("Cannot find resource ${getURL()}")
 
+        println("load: ${getURL().file}")
         res.openStream().use { it.copyTo(bos) }
 
-        // javaClass.getResourceAsStream(res.toExternalForm()).copyTo(bos)
         data = bos.toByteArray()
+        extension = EXTENSION_REGEX.matchEntire(getURL().file)?.groupValues?.get(1)
+            ?: throw RuntimeException("Unable to recognize file extension in '${getURL().file}'")
     }
 
     override fun connect() {
@@ -38,8 +39,7 @@ class RGProtocol private constructor(url: URL) : URLConnection(url) {
         }
 
     override fun getContentType(): String =
-        when (val extension = getURL().file.replace(Regex("^.*?([^.]+)\$"), "$1").toLowerCase()) {
-            "html" -> "text/html"
+        when (extension) {
             "jpg", "jpeg", "png", "gif" -> "image/$extension"
             "js" -> "application/javascript"
             else -> "text/$extension"
@@ -53,18 +53,19 @@ class RGProtocol private constructor(url: URL) : URLConnection(url) {
 
     override fun getInputStream(): InputStream = ByteArrayInputStream(data)
 
-    override fun getPermission(): Permission?  = null
+    override fun getPermission(): Permission? = null
 
     private class RGStreamHandler : URLStreamHandler() {
         override fun openConnection(url: URL?): URLConnection {
             if (url == null) {
                 throw NullPointerException("input URL is null")
             }
-            return RGProtocol(url)
+            return RegexGeneratorProtocol(url)
         }
     }
 
     companion object {
+        private val EXTENSION_REGEX = Regex("^.*?([^.]*)\$")
         private const val PROTOCOL = "regexgenerator"
 
         private val streamHandlerFactory = URLStreamHandlerFactory { protocol ->
