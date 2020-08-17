@@ -11,10 +11,10 @@ import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.UrlGenerator
 import org.w3c.dom.*
-import kotlin.browser.document
-import kotlin.dom.addClass
-import kotlin.dom.clear
-import kotlin.dom.removeClass
+import kotlinx.browser.document
+import kotlinx.dom.addClass
+import kotlinx.dom.clear
+import kotlinx.dom.removeClass
 
 class HtmlView(
     private val presenter: DisplayContract.Controller

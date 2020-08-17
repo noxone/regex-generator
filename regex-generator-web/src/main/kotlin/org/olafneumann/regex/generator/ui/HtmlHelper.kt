@@ -4,7 +4,7 @@ import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLElement
-import kotlin.browser.document
+import kotlinx.browser.document
 
 internal object HtmlHelper {
     internal inline fun <reified T : HTMLElement> getElementById(id: String): T {

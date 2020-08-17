@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator
 
 import org.olafneumann.regex.generator.ui.ApplicationSettings
 import org.olafneumann.regex.generator.ui.UiController
-import kotlin.browser.window
+import kotlinx.browser.window
 
 fun main() {
     try {

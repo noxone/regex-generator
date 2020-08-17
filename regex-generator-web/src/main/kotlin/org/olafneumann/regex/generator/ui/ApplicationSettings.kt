@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import kotlin.browser.localStorage
+import kotlinx.browser.localStorage
 import kotlin.collections.forEach
 import kotlin.collections.mutableMapOf
 import kotlin.collections.set
