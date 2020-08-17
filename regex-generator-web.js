@@ -48,25 +48,25 @@ if (typeof kotlin === 'undefined') {
   var Collection = Kotlin.kotlin.collections.Collection;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var toSet = Kotlin.kotlin.collections.toSet_7wnvza$;
-  var min = Kotlin.kotlin.collections.min_exjks8$;
-  var max = Kotlin.kotlin.collections.max_exjks8$;
+  var minOrNull = Kotlin.kotlin.collections.minOrNull_exjks8$;
+  var maxOrNull = Kotlin.kotlin.collections.maxOrNull_exjks8$;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var LinkedHashMap_init = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$;
   var Exception_init = Kotlin.kotlin.Exception_init_pdl1vj$;
   var toIntOrNull = Kotlin.kotlin.text.toIntOrNull_pdl1vz$;
-  var toBoolean = Kotlin.kotlin.text.toBoolean_pdl1vz$;
+  var toBoolean = Kotlin.kotlin.text.toBoolean_5cw0du$;
   var Unit = Kotlin.kotlin.Unit;
   var throwCCE = Kotlin.throwCCE;
   var RuntimeException_init_0 = Kotlin.kotlin.RuntimeException;
   var ClassCastException = Kotlin.kotlin.ClassCastException;
   var defineInlineFunction = Kotlin.defineInlineFunction;
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
-  var clear = Kotlin.kotlin.dom.clear_asww5s$;
+  var clear = Kotlin.kotlinx.dom.clear_asww5s$;
   var ensureNotNull = Kotlin.ensureNotNull;
   var set_onClickFunction = $module$kotlinx_html_js.kotlinx.html.js.set_onClickFunction_pszlq2$;
-  var addClass = Kotlin.kotlin.dom.addClass_hhb33f$;
-  var removeClass = Kotlin.kotlin.dom.removeClass_hhb33f$;
+  var addClass = Kotlin.kotlinx.dom.addClass_hhb33f$;
+  var removeClass = Kotlin.kotlinx.dom.removeClass_hhb33f$;
   var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
   var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
   var SPAN_init = $module$kotlinx_html_js.kotlinx.html.SPAN;
@@ -239,6 +239,7 @@ if (typeof kotlin === 'undefined') {
     }
   });
   Object.defineProperty(BracketedRecognizer.prototype, 'searchRegex_0', {
+    configurable: true,
     get: function () {
       return this.searchRegex_mjhmr5$_0.value;
     }
@@ -331,13 +332,6 @@ if (typeof kotlin === 'undefined') {
     simpleName: 'BracketedRecognizer',
     interfaces: [Recognizer]
   };
-  function Comparator$ObjectLiteral(closure$comparison) {
-    this.closure$comparison = closure$comparison;
-  }
-  Comparator$ObjectLiteral.prototype.compare = function (a, b) {
-    return this.closure$comparison(a, b);
-  };
-  Comparator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
   var compareBy$lambda = wrapFunction(function () {
     var compareValues = Kotlin.kotlin.comparisons.compareValues_s00gnj$;
     return function (closure$selector) {
@@ -352,7 +346,7 @@ if (typeof kotlin === 'undefined') {
   }
   function CodeGenerator$Companion() {
     CodeGenerator$Companion_instance = this;
-    this.all = sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavaScriptCodeGenerator(), new CSharpCodeGenerator(), new RubyCodeGenerator()]), new Comparator$ObjectLiteral(compareBy$lambda(CodeGenerator$Companion$all$lambda)));
+    this.all = sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavaScriptCodeGenerator(), new CSharpCodeGenerator(), new RubyCodeGenerator()]), new Comparator(compareBy$lambda(CodeGenerator$Companion$all$lambda)));
   }
   function CodeGenerator$Companion$all$lambda(it) {
     return it.languageName;
@@ -369,6 +363,7 @@ if (typeof kotlin === 'undefined') {
     }return CodeGenerator$Companion_instance;
   }
   Object.defineProperty(CodeGenerator.prototype, 'uniqueName', {
+    configurable: true,
     get: function () {
       return replace(replace(replace(this.languageName, '-', '_minus_'), '+', '_plus_'), '#', '_sharp_');
     }
@@ -693,13 +688,6 @@ if (typeof kotlin === 'undefined') {
     simpleName: 'Recognizer',
     interfaces: []
   };
-  function Comparator$ObjectLiteral_0(closure$comparison) {
-    this.closure$comparison = closure$comparison;
-  }
-  Comparator$ObjectLiteral_0.prototype.compare = function (a, b) {
-    return this.closure$comparison(a, b);
-  };
-  Comparator$ObjectLiteral_0.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
   var compareBy$lambda_0 = wrapFunction(function () {
     var compareValues = Kotlin.kotlin.comparisons.compareValues_s00gnj$;
     return function (closure$selector) {
@@ -760,12 +748,12 @@ if (typeof kotlin === 'undefined') {
       var list = destination_0;
       addAll(destination, list);
     }
-    var rangesToMatches = toList_0(sortedWith(destination, new Comparator$ObjectLiteral_0(compareBy$lambda_0(RecognizerCombiner$Companion$combine$lambda))));
+    var rangesToMatches = toList_0(sortedWith(destination, new Comparator(compareBy$lambda_0(RecognizerCombiner$Companion$combine$lambda))));
     var makeOutput = RecognizerCombiner$Companion$combine$makeOutput;
     var first_0 = makeOutput(!rangesToMatches.isEmpty() && first(rangesToMatches).range.first > 0, options, RecognizerCombiner$Companion$combine$lambda_0(inputText, rangesToMatches, this));
     var last_0 = makeOutput(!rangesToMatches.isEmpty() && last(rangesToMatches).range.last < (inputText.length - 1 | 0), options, RecognizerCombiner$Companion$combine$lambda_1(inputText, rangesToMatches, this));
     var $receiver_0 = StringBuilder_init();
-    $receiver_0.append_61zpoe$(first_0);
+    $receiver_0.append_pdl1vj$(first_0);
     if (rangesToMatches.isEmpty()) {
       var tmp$_1;
       if (options.onlyPatterns) {
@@ -773,7 +761,7 @@ if (typeof kotlin === 'undefined') {
       } else {
         tmp$_1 = this.escapeForRegex_0(inputText);
       }
-      $receiver_0.append_61zpoe$(tmp$_1);
+      $receiver_0.append_pdl1vj$(tmp$_1);
     }for (var i = 0; i !== rangesToMatches.size; ++i) {
       var tmp$_2;
       if (i > 0) {
@@ -784,13 +772,13 @@ if (typeof kotlin === 'undefined') {
           } else {
             tmp$_2 = '.*';
           }
-          $receiver_0.append_61zpoe$(tmp$_2);
+          $receiver_0.append_pdl1vj$(tmp$_2);
         } else {
-          $receiver_0.append_61zpoe$(this.escapeForRegex_0(substring(inputText, range)));
+          $receiver_0.append_pdl1vj$(this.escapeForRegex_0(substring(inputText, range)));
         }
-      }$receiver_0.append_61zpoe$(rangesToMatches.get_za3lpa$(i).pattern);
+      }$receiver_0.append_pdl1vj$(rangesToMatches.get_za3lpa$(i).pattern);
     }
-    $receiver_0.append_61zpoe$(last_0);
+    $receiver_0.append_pdl1vj$(last_0);
     var pattern = $receiver_0.toString();
     return new RecognizerCombiner$RegularExpression(options.getFrame_8be2vx$().format_y4putb$(pattern));
   };
@@ -938,6 +926,7 @@ if (typeof kotlin === 'undefined') {
     this.regex_8h9uer$_0 = lazy(RecognizerCombiner$RegularExpression$regex$lambda(this));
   }
   Object.defineProperty(RecognizerCombiner$RegularExpression.prototype, 'regex', {
+    configurable: true,
     get: function () {
       return this.regex_8h9uer$_0.value;
     }
@@ -995,16 +984,19 @@ if (typeof kotlin === 'undefined') {
     this.length_7nbd0q$_0 = this.last - this.first + 1 | 0;
   }
   Object.defineProperty(RecognizerMatch.prototype, 'first', {
+    configurable: true,
     get: function () {
       return this.first_d0jdhk$_0;
     }
   });
   Object.defineProperty(RecognizerMatch.prototype, 'last', {
+    configurable: true,
     get: function () {
       return this.last_gjomxy$_0;
     }
   });
   Object.defineProperty(RecognizerMatch.prototype, 'length', {
+    configurable: true,
     get: function () {
       return this.length_7nbd0q$_0;
     }
@@ -1220,7 +1212,7 @@ if (typeof kotlin === 'undefined') {
       var item = tmp$_1.next();
       destination_0.add_11rb$(item.first);
     }
-    return (tmp$ = min(destination_0)) != null ? tmp$ : -2147483648;
+    return (tmp$ = minOrNull(destination_0)) != null ? tmp$ : -2147483648;
   }
   function RecognizerRegistry$findSameMatchesWith$mostRight($receiver) {
     var tmp$;
@@ -1239,7 +1231,7 @@ if (typeof kotlin === 'undefined') {
       var item = tmp$_1.next();
       destination_0.add_11rb$(item.last);
     }
-    return (tmp$ = max(destination_0)) != null ? tmp$ : 2147483647;
+    return (tmp$ = maxOrNull(destination_0)) != null ? tmp$ : 2147483647;
   }
   function RecognizerRegistry$findSameMatchesWith$findFullMatch($receiver, first, last) {
     var destination = ArrayList_init_0();
@@ -1511,6 +1503,7 @@ if (typeof kotlin === 'undefined') {
     }
   });
   Object.defineProperty(SimpleRecognizer.prototype, 'searchRegex_0', {
+    configurable: true,
     get: function () {
       return this.searchRegex_btrjsy$_0.value;
     }
@@ -1611,6 +1604,7 @@ if (typeof kotlin === 'undefined') {
     this.set_1(this.KEY_LAST_VERSION_0, 3);
   };
   Object.defineProperty(ApplicationSettings.prototype, 'hasUserConsent', {
+    configurable: true,
     get: function () {
       var tmp$, tmp$_0;
       return (tmp$_0 = (tmp$ = this.get_0(this.KEY_CONSENT_0)) != null ? toBoolean(tmp$) : null) != null ? tmp$_0 : false;
@@ -1625,6 +1619,7 @@ if (typeof kotlin === 'undefined') {
     }
   });
   Object.defineProperty(ApplicationSettings.prototype, 'viewOptions', {
+    configurable: true,
     get: function () {
       var tmp$, tmp$_0;
       return (tmp$_0 = (tmp$ = this.get_0(this.KEY_COMBINER_OPTIONS_0)) != null ? JSON.parse(tmp$) : null) != null ? tmp$_0 : new RecognizerCombiner$Options();
@@ -2032,6 +2027,7 @@ if (typeof kotlin === 'undefined') {
     this.textInput_0.select();
   };
   Object.defineProperty(HtmlView.prototype, 'inputText', {
+    configurable: true,
     get: function () {
       return this.textInput_0.value;
     },
@@ -2046,6 +2042,7 @@ if (typeof kotlin === 'undefined') {
     };
   }
   Object.defineProperty(HtmlView.prototype, 'displayText', {
+    configurable: true,
     get: function () {
       return this.textDisplay_0.innerText;
     },
@@ -2072,6 +2069,7 @@ if (typeof kotlin === 'undefined') {
     }
   });
   Object.defineProperty(HtmlView.prototype, 'resultText', {
+    configurable: true,
     get: function () {
       return this.resultDisplay_0.innerText;
     },
@@ -2325,6 +2323,7 @@ if (typeof kotlin === 'undefined') {
     return Kotlin.isType(tmp$ = tmp$_0.appendChild(Kotlin.isType(tmp$_1 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', classes), $receiver), $receiver, visitAndFinalize$lambda_0(div$lambda_0)), HTMLDivElement_0) ? tmp$_1 : throwCCE()), HTMLDivElement) ? tmp$ : throwCCE();
   };
   Object.defineProperty(HtmlView.prototype, 'options', {
+    configurable: true,
     get: function () {
       return new RecognizerCombiner$Options(this.checkOnlyMatches_0.checked, this.checkWholeLine_0.checked, this.checkCaseInsensitive_0.checked, this.checkDotAll_0.checked, this.checkMultiline_0.checked);
     },
@@ -2512,16 +2511,19 @@ if (typeof kotlin === 'undefined') {
     jQuery(this.bodyElement_0).on('hidden.bs.collapse', LanguageCard_init$lambda_1(this));
   }
   Object.defineProperty(LanguageCard.prototype, 'bodyElementId_0', {
+    configurable: true,
     get: function () {
       return this.codeGenerator_0.uniqueName + '_body';
     }
   });
   Object.defineProperty(LanguageCard.prototype, 'codeElementId_0', {
+    configurable: true,
     get: function () {
       return this.codeGenerator_0.uniqueName + '_code';
     }
   });
   Object.defineProperty(LanguageCard.prototype, 'shown_0', {
+    configurable: true,
     get: function () {
       return ApplicationSettings_getInstance().isLanguageExpanded_61zpoe$(this.codeGenerator_0.uniqueName);
     },
@@ -2559,6 +2561,7 @@ if (typeof kotlin === 'undefined') {
     return visitTagAndFinalize(new P_init(attributesMapOf('class', 'alert alert-warning rounded m-2'), $receiver), $receiver, visitAndFinalize$lambda_2(LanguageCard$createWarning$lambda(text)));
   };
   Object.defineProperty(LanguageCard.prototype, 'code_0', {
+    configurable: true,
     get: function () {
       return this.codeElement_0.innerHTML;
     },
@@ -2578,19 +2581,19 @@ if (typeof kotlin === 'undefined') {
       var ch = element;
       switch (ch) {
         case 39:
-          $receiver_0.append_61zpoe$('&apos;');
+          $receiver_0.append_pdl1vj$('&apos;');
           break;
         case 34:
-          $receiver_0.append_61zpoe$('&quot');
+          $receiver_0.append_pdl1vj$('&quot');
           break;
         case 38:
-          $receiver_0.append_61zpoe$('&amp;');
+          $receiver_0.append_pdl1vj$('&amp;');
           break;
         case 60:
-          $receiver_0.append_61zpoe$('&lt;');
+          $receiver_0.append_pdl1vj$('&lt;');
           break;
         case 62:
-          $receiver_0.append_61zpoe$('&gt;');
+          $receiver_0.append_pdl1vj$('&gt;');
           break;
         default:$receiver_0.append_s8itvh$(ch);
           break;
@@ -2673,21 +2676,14 @@ if (typeof kotlin === 'undefined') {
   };
   Delegates$observable$ObjectLiteral.prototype = Object.create(ObservableProperty.prototype);
   Delegates$observable$ObjectLiteral.prototype.constructor = Delegates$observable$ObjectLiteral;
-  function Delegates$observable$ObjectLiteral(closure$onChange, initialValue_0) {
+  function Delegates$observable$ObjectLiteral(closure$onChange, initialValue) {
     this.closure$onChange = closure$onChange;
-    ObservableProperty.call(this, initialValue_0);
+    ObservableProperty.call(this, initialValue);
   }
   Delegates$observable$ObjectLiteral.prototype.afterChange_jxtfl0$ = function (property, oldValue, newValue) {
     this.closure$onChange(property, oldValue, newValue);
   };
   Delegates$observable$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [ObservableProperty]};
-  function Comparator$ObjectLiteral_1(closure$comparison) {
-    this.closure$comparison = closure$comparison;
-  }
-  Comparator$ObjectLiteral_1.prototype.compare = function (a, b) {
-    return this.closure$comparison(a, b);
-  };
-  Comparator$ObjectLiteral_1.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
   var compareByDescending$lambda = wrapFunction(function () {
     var compareValues = Kotlin.kotlin.comparisons.compareValues_s00gnj$;
     return function (closure$selector) {
@@ -2732,27 +2728,31 @@ if (typeof kotlin === 'undefined') {
       var item = tmp$_0.next();
       destination.add_11rb$(item.priority);
     }
-    this.priority = ensureNotNull(max(destination));
+    this.priority = ensureNotNull(maxOrNull(destination));
     this.selectedMatch_jdvp1$_0 = new Delegates$observable$ObjectLiteral(MatchPresenter$selectedMatch$lambda(this), selectedMatch);
     this.deactivated_26wo5h$_0 = new Delegates$observable$ObjectLiteral(MatchPresenter$deactivated$lambda(this), deactivated);
   }
   Object.defineProperty(MatchPresenter.prototype, 'first', {
+    configurable: true,
     get: function () {
       return this.first_s5fbd1$_0;
     }
   });
   Object.defineProperty(MatchPresenter.prototype, 'last', {
+    configurable: true,
     get: function () {
       return this.last_zuk3t$_0;
     }
   });
   Object.defineProperty(MatchPresenter.prototype, 'length', {
+    configurable: true,
     get: function () {
       return this.length_zdih89$_0;
     }
   });
   var MatchPresenter$selectedMatch_metadata = new PropertyMetadata('selectedMatch');
   Object.defineProperty(MatchPresenter.prototype, 'selectedMatch', {
+    configurable: true,
     get: function () {
       return this.selectedMatch_jdvp1$_0.getValue_lrcp0p$(this, MatchPresenter$selectedMatch_metadata);
     },
@@ -2761,12 +2761,14 @@ if (typeof kotlin === 'undefined') {
     }
   });
   Object.defineProperty(MatchPresenter.prototype, 'selected', {
+    configurable: true,
     get: function () {
       return this.selectedMatch != null;
     }
   });
   var MatchPresenter$deactivated_metadata = new PropertyMetadata('deactivated');
   Object.defineProperty(MatchPresenter.prototype, 'deactivated', {
+    configurable: true,
     get: function () {
       return this.deactivated_26wo5h$_0.getValue_lrcp0p$(this, MatchPresenter$deactivated_metadata);
     },
@@ -2775,6 +2777,7 @@ if (typeof kotlin === 'undefined') {
     }
   });
   Object.defineProperty(MatchPresenter.prototype, 'availableForHighlight', {
+    configurable: true,
     get: function () {
       return !this.deactivated && !this.selected;
     }
@@ -2838,7 +2841,7 @@ if (typeof kotlin === 'undefined') {
   }));
   function MatchPresenter$Companion() {
     MatchPresenter$Companion_instance = this;
-    this.byPriority_0 = new Comparator$ObjectLiteral_1(compareByDescending$lambda(MatchPresenter$Companion$byPriority$lambda));
+    this.byPriority_0 = new Comparator(compareByDescending$lambda(MatchPresenter$Companion$byPriority$lambda));
     this.byPriorityAndPosition = then(this.byPriority_0, HasRange$Companion_getInstance().byPosition);
   }
   function MatchPresenter$Companion$byPriority$lambda(it) {
@@ -2888,6 +2891,7 @@ if (typeof kotlin === 'undefined') {
     this.view_0.options = ApplicationSettings_getInstance().viewOptions;
   }
   Object.defineProperty(UiController.prototype, 'currentTextInput_0', {
+    configurable: true,
     get: function () {
       return this.view_0.inputText;
     }
@@ -3071,13 +3075,6 @@ if (typeof kotlin === 'undefined') {
     simpleName: 'UiController',
     interfaces: [DisplayContract$Controller]
   };
-  function Comparator$ObjectLiteral_2(closure$comparison) {
-    this.closure$comparison = closure$comparison;
-  }
-  Comparator$ObjectLiteral_2.prototype.compare = function (a, b) {
-    return this.closure$comparison(a, b);
-  };
-  Comparator$ObjectLiteral_2.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
   var compareBy$lambda_1 = wrapFunction(function () {
     var compareValues = Kotlin.kotlin.comparisons.compareValues_s00gnj$;
     return function (closure$selector) {
@@ -3087,13 +3084,6 @@ if (typeof kotlin === 'undefined') {
       };
     };
   });
-  function Comparator$ObjectLiteral_3(closure$comparison) {
-    this.closure$comparison = closure$comparison;
-  }
-  Comparator$ObjectLiteral_3.prototype.compare = function (a, b) {
-    return this.closure$comparison(a, b);
-  };
-  Comparator$ObjectLiteral_3.$metadata$ = {kind: Kind_CLASS, interfaces: [Comparator]};
   var compareByDescending$lambda_0 = wrapFunction(function () {
     var compareValues = Kotlin.kotlin.comparisons.compareValues_s00gnj$;
     return function (closure$selector) {
@@ -3107,14 +3097,15 @@ if (typeof kotlin === 'undefined') {
     HasRange$Companion_getInstance();
   }
   Object.defineProperty(HasRange.prototype, 'length', {
+    configurable: true,
     get: function () {
       return this.last - this.first + 1 | 0;
     }
   });
   function HasRange$Companion() {
     HasRange$Companion_instance = this;
-    this.byIndex_0 = new Comparator$ObjectLiteral_2(compareBy$lambda_1(HasRange$Companion$byIndex$lambda));
-    this.byLength_0 = new Comparator$ObjectLiteral_3(compareByDescending$lambda_0(HasRange$Companion$byLength$lambda));
+    this.byIndex_0 = new Comparator(compareBy$lambda_1(HasRange$Companion$byIndex$lambda));
+    this.byLength_0 = new Comparator(compareByDescending$lambda_0(HasRange$Companion$byLength$lambda));
     this.byPosition = then(this.byIndex_0, this.byLength_0);
   }
   function HasRange$Companion$byIndex$lambda(it) {
