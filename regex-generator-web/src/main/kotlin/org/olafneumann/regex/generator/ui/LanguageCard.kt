@@ -8,7 +8,7 @@ import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.CodeGenerator.GeneratedSnippet
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.Node
-import kotlin.browser.document
+import kotlinx.browser.document
 
 internal class LanguageCard(
     private val codeGenerator: CodeGenerator,

@@ -1,11 +1,10 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.navigator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
-import org.olafneumann.regex.generator.util.HasRange
-import kotlin.browser.window
 
 
 class UiController : DisplayContract.Controller {
@@ -45,6 +44,7 @@ class UiController : DisplayContract.Controller {
     }
 
     override fun onButtonCopyClick() {
+        // TODO move to view
         navigator.clipboard
             .writeText(view.resultText)
             .catch(onRejected = { window.alert("Could not copy text: $it") })
