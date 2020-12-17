@@ -21,7 +21,7 @@
         <github.pages.cname>regex-generator.olafneumann.org</github.pages.cname>
 
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.version>1.4.20</kotlin.version>
+        <kotlin.version>1.4.21</kotlin.version>
         <junit.version>4.13.1</junit.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
