@@ -12,7 +12,7 @@ interface CodeGenerator {
             , CSharpCodeGenerator()
             , RubyCodeGenerator()
             , GrepCodeGenerator()
-        ).sortedBy { it.languageName }
+        ).sortedBy { it.languageName.toLowerCase() }
     }
 
     val languageName: String
