@@ -120,3 +120,7 @@ form * .rg-check-row {
   margin: 0;
   background-color: white;
 }
+
+#rg_result_display {
+  white-space: pre;
+}
