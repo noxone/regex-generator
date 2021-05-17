@@ -203,7 +203,7 @@ internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("(['])"), "\\$1")
+        pattern.replace("'", "'\"'\"'")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options = options, valueForCaseInsensitive = "-i", separator = " ", prefix = " ")
