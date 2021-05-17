@@ -102,6 +102,8 @@ if (typeof kotlin === 'undefined') {
   PhpCodeGenerator.prototype.constructor = PhpCodeGenerator;
   JavaScriptCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   JavaScriptCodeGenerator.prototype.constructor = JavaScriptCodeGenerator;
+  GrepCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
+  GrepCodeGenerator.prototype.constructor = GrepCodeGenerator;
   CSharpCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   CSharpCodeGenerator.prototype.constructor = CSharpCodeGenerator;
   RubyCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
@@ -346,10 +348,10 @@ if (typeof kotlin === 'undefined') {
   }
   function CodeGenerator$Companion() {
     CodeGenerator$Companion_instance = this;
-    this.all = sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavaScriptCodeGenerator(), new CSharpCodeGenerator(), new RubyCodeGenerator()]), new Comparator(compareBy$lambda(CodeGenerator$Companion$all$lambda)));
+    this.all = sortedWith(listOf([new JavaCodeGenerator(), new KotlinCodeGenerator(), new PhpCodeGenerator(), new JavaScriptCodeGenerator(), new CSharpCodeGenerator(), new RubyCodeGenerator(), new GrepCodeGenerator()]), new Comparator(compareBy$lambda(CodeGenerator$Companion$all$lambda)));
   }
   function CodeGenerator$Companion$all$lambda(it) {
-    return it.languageName;
+    return it.languageName.toLowerCase();
   }
   CodeGenerator$Companion.$metadata$ = {
     kind: Kind_OBJECT,
@@ -562,7 +564,7 @@ if (typeof kotlin === 'undefined') {
     SimpleReplacingCodeGenerator.call(this, 'JavaScript', 'javascript', 'function useRegex(input) {\n    let regex = /%1$s/%2$s;\n    return regex.test(input);\n}');
   }
   JavaScriptCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
-    return Regex_init('\t').replace_x2uqeu$(pattern, '\\t');
+    return replace(pattern, '\t', '\\t');
   };
   JavaScriptCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
     return this.combineOptions_1rvtm9$(options, 'i', 'm', 's');
@@ -575,6 +577,29 @@ if (typeof kotlin === 'undefined') {
   JavaScriptCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'JavaScriptCodeGenerator',
+    interfaces: [SimpleReplacingCodeGenerator]
+  };
+  function GrepCodeGenerator() {
+    SimpleReplacingCodeGenerator.call(this, 'grep', 'bash', "grep -P%2$s '%1$s' [FILE...]");
+  }
+  GrepCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
+    return Regex_init("(['])").replace_x2uqeu$(pattern, '\\$1');
+  };
+  GrepCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
+    return this.combineOptions_1rvtm9$(options, '-i', void 0, void 0, void 0, ' ', ' ');
+  };
+  GrepCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
+    var messages = ArrayList_init_0();
+    if (options.dotMatchesLineBreaks)
+      messages.add_11rb$("The option 's' (dot matches line breaks) is not supported for grep.");
+    if (options.multiline)
+      messages.add_11rb$("The option 'm' (multiline) is not supported for grep.");
+    messages.add_11rb$('grep on mac OS does not support option -P (for Perl regex). To make it work, install a better grep (e.g. brew install grep). Most regex will work without -P.');
+    return messages;
+  };
+  GrepCodeGenerator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'GrepCodeGenerator',
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function CSharpCodeGenerator() {
@@ -3154,6 +3179,7 @@ if (typeof kotlin === 'undefined') {
   package$regex_0.KotlinCodeGenerator = KotlinCodeGenerator;
   package$regex_0.PhpCodeGenerator = PhpCodeGenerator;
   package$regex_0.JavaScriptCodeGenerator = JavaScriptCodeGenerator;
+  package$regex_0.GrepCodeGenerator = GrepCodeGenerator;
   package$regex_0.CSharpCodeGenerator = CSharpCodeGenerator;
   package$regex_0.RubyCodeGenerator = RubyCodeGenerator;
   package$regex_0.EchoRecognizer = EchoRecognizer;
