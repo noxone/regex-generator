@@ -11,7 +11,8 @@ interface CodeGenerator {
             , JavaScriptCodeGenerator()
             , CSharpCodeGenerator()
             , RubyCodeGenerator()
-        ).sortedBy { it.languageName }
+            , GrepCodeGenerator()
+        ).sortedBy { it.languageName.toLowerCase() }
     }
 
     val languageName: String
@@ -165,7 +166,9 @@ function useRegex(${'$'}input) {
 ?>"""
 ) {
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
+        pattern
+            .replace(Regex("([\\\\'])"), "\\$1")
+            .replace(Regex("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options, "i", "m", "s")
@@ -181,7 +184,7 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("\t"), "\\t")
+        pattern.replace("\t", "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options, "i", "m", "s")
@@ -195,21 +198,24 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
 
 internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "grep",
-    highlightLanguage = "shell",
-    templateCode = """let regex = /%1${'$'}s/%2${'$'}s;"""
+    highlightLanguage = "bash",
+    templateCode = """grep -P%2${'$'}s '%1${'$'}s' [FILE...]"""
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("\t"), "\\t")
+        pattern.replace(Regex("(['])"), "\\$1")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options = options, valueForCaseInsensitive = "-i", separator = " ", prefix = " ")
-        //combineOptions(options, "i", "m", "s")
 
     override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+        val messages = mutableListOf<String>()
         if (options.dotMatchesLineBreaks)
-            return listOf("The option 's' (dot matches line breaks) is not supported in Firefox and IE.")
-        return emptyList()
+            messages.add("The option 's' (dot matches line breaks) is not supported for grep.")
+        if (options.multiline)
+            messages.add("The option 'm' (multiline) is not supported for grep.")
+        messages.add("grep on mac OS does not support option -P (for Perl regex). To make it work, install a better grep (e.g. brew install grep). Most regex will work without -P.")
+        return messages
     }
 }
 
