@@ -85,7 +85,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>3.0.1</version>
                     <configuration>
                         <passphrase>${env.GPG_PASSPHRASE}</passphrase>
                         <useAgent>false</useAgent>
