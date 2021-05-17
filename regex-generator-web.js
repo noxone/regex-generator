@@ -102,8 +102,6 @@ if (typeof kotlin === 'undefined') {
   PhpCodeGenerator.prototype.constructor = PhpCodeGenerator;
   JavaScriptCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   JavaScriptCodeGenerator.prototype.constructor = JavaScriptCodeGenerator;
-  GrepCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
-  GrepCodeGenerator.prototype.constructor = GrepCodeGenerator;
   CSharpCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
   CSharpCodeGenerator.prototype.constructor = CSharpCodeGenerator;
   RubyCodeGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
@@ -577,25 +575,6 @@ if (typeof kotlin === 'undefined') {
   JavaScriptCodeGenerator.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'JavaScriptCodeGenerator',
-    interfaces: [SimpleReplacingCodeGenerator]
-  };
-  function GrepCodeGenerator() {
-    SimpleReplacingCodeGenerator.call(this, 'grep', 'shell', 'let regex = /%1$s/%2$s;');
-  }
-  GrepCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
-    return Regex_init('\t').replace_x2uqeu$(pattern, '\\t');
-  };
-  GrepCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
-    return this.combineOptions_1rvtm9$(options, '-i', void 0, void 0, void 0, ' ', ' ');
-  };
-  GrepCodeGenerator.prototype.getWarnings_wa467u$ = function (pattern, options) {
-    if (options.dotMatchesLineBreaks)
-      return listOf_0("The option 's' (dot matches line breaks) is not supported in Firefox and IE.");
-    return emptyList();
-  };
-  GrepCodeGenerator.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'GrepCodeGenerator',
     interfaces: [SimpleReplacingCodeGenerator]
   };
   function CSharpCodeGenerator() {
@@ -3175,7 +3154,6 @@ if (typeof kotlin === 'undefined') {
   package$regex_0.KotlinCodeGenerator = KotlinCodeGenerator;
   package$regex_0.PhpCodeGenerator = PhpCodeGenerator;
   package$regex_0.JavaScriptCodeGenerator = JavaScriptCodeGenerator;
-  package$regex_0.GrepCodeGenerator = GrepCodeGenerator;
   package$regex_0.CSharpCodeGenerator = CSharpCodeGenerator;
   package$regex_0.RubyCodeGenerator = RubyCodeGenerator;
   package$regex_0.EchoRecognizer = EchoRecognizer;
