@@ -166,7 +166,9 @@ function useRegex(${'$'}input) {
 ?>"""
 ) {
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
+        pattern
+            .replace(Regex("([\\\\'])"), "\\$1")
+            .replace(Regex("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options, "i", "m", "s")
@@ -182,7 +184,7 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("\t"), "\\t")
+        pattern.replace("\t", "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options, "i", "m", "s")
