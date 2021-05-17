@@ -1,0 +1,122 @@
+.rg-hidden {
+  display: none;
+}
+
+.rg-banner-consent .btn {
+  height: 2.3em;
+}
+
+.rg-text-display {
+  white-space: pre;
+}
+
+.rg-code,
+.rg-match-container {
+  font-family: Consolas, monospace;
+}
+
+.rg-match-container {
+  /*overflow-x: auto;*/
+  width: 100%;
+  padding-bottom: 1.5em;
+}
+
+.rg-match-row {
+  position: relative;
+  height: 0.7rem;
+  white-space: nowrap;
+}
+
+.rg-match-item {
+  position: absolute;
+  height: 0.7rem;
+  cursor: pointer;
+}
+
+.rg-match-item-red {
+  background-color: #da6772;
+  border: 1px solid #dc3545;
+}
+
+.rg-match-item-blue {
+  background-color: #4da3ff;
+  border: 1px solid #007bff;
+}
+
+.rg-match-item-green {
+  background-color: #5dbb73;
+  border: 1px solid #28a745;
+}
+
+.rg-match-item-yellow {
+  background-color: #ffda6a;
+  border: 1px solid #ffc107;
+}
+
+.rg-match-item-overlay {
+  z-index: 2;
+  display: none;
+  top: 0.69em;
+  position: relative;
+  width: max-content;
+  padding: 0.2em;
+  background-color: inherit;
+}
+
+.rg-match-item:hover .rg-match-item-overlay {
+  display: block;
+}
+
+.rg-match-item.rg-item-selected:hover .rg-match-item-overlay,
+.rg-match-item.rg-item-not-available:hover .rg-match-item-overlay {
+  display: none;
+}
+
+.rg-match-item-overlay a {
+  display: block;
+}
+
+.rg-char-selected {
+  background: lightgray !important;
+}
+
+.rg-item-selected {
+  background-color: white !important;
+  border: 1px solid gray;
+}
+
+.rg-item-not-available {
+  background-color: lightgray !important;
+  border: none;
+  cursor: not-allowed;
+}
+
+.rg-check-row {
+  margin-left: 1.4em;
+  padding-right: 3em;
+}
+
+form * .rg-check-row {
+  padding-right: 4em;
+}
+
+.rg-check-row .custom-control {
+  padding-left: 0;
+}
+
+.rg-check-row .custom-control .custom-control-input {
+  margin-left: -2em;
+}
+
+.rg-code-accordion .card-header {
+  padding: 0.3em;
+}
+
+.rg-code-accordion .card-body {
+  padding: 0.6em 1em;
+}
+
+.rg-code-accordion pre {
+  margin: 0;
+  background-color: white;
+}
