@@ -1,0 +1,32 @@
+
+name: Build Projects
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java-version:
+          - 8
+
+    name: Build with JDK ${{ matrix.java-version }}
+    steps:
+      - name: Cache Dependencies
+        uses: actions/cache@v2.1.5
+        with:
+          key: maven-dependencies
+          path: ~/.m2/repository
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: adopt
+          java-version: ${{ matrix.java-version }}
+      - name: "Clean & Package"
+        run: mvn clean package --update-snapshots --batch-mode
