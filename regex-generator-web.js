@@ -583,7 +583,7 @@ if (typeof kotlin === 'undefined') {
     SimpleReplacingCodeGenerator.call(this, 'grep', 'bash', "grep -P%2$s '%1$s' [FILE...]");
   }
   GrepCodeGenerator.prototype.transformPattern_wa467u$ = function (pattern, options) {
-    return Regex_init("(['])").replace_x2uqeu$(pattern, '\\$1');
+    return replace(pattern, "'", "'\"'\"'");
   };
   GrepCodeGenerator.prototype.generateOptionsCode_ow7xd4$ = function (options) {
     return this.combineOptions_1rvtm9$(options, '-i', void 0, void 0, void 0, ' ', ' ');
