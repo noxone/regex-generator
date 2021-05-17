@@ -198,7 +198,7 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
 
 internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "grep",
-    highlightLanguage = "shell",
+    highlightLanguage = "bash",
     templateCode = """grep -P%2${'$'}s '%1${'$'}s' [FILE...]"""
 ) {
 

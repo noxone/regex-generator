@@ -1,5 +1,5 @@
-/* PrismJS 1.19.0
-https://prismjs.com/download.html#themes=prism-coy&languages=markup+css+clike+javascript+csharp+java+kotlin+markup-templating+php+regex+ruby */
+/* PrismJS 1.23.0
+https://prismjs.com/download.html#themes=prism-coy&languages=markup+css+clike+javascript+bash+csharp+java+kotlin+markup-templating+php+regex+ruby */
 /**
  * prism.js Coy theme for JavaScript, CoffeeScript, CSS and HTML
  * Based on https://github.com/tshedor/workshop-wp-theme (Example: http://workshop.kansan.com/category/sessions/basics or http://workshop.timshedor.com/category/sessions/basics);
@@ -47,7 +47,7 @@ pre[class*="language-"]>code {
 	background-attachment: local;
 }
 
-code[class*="language"] {
+code[class*="language-"] {
 	max-height: inherit;
 	height: inherit;
 	padding: 0 1em;
@@ -95,7 +95,6 @@ pre[class*="language-"]:after {
 	transform: rotate(-2deg);
 }
 
-:not(pre) > code[class*="language-"]:after,
 pre[class*="language-"]:after {
 	right: 0.75em;
 	left: auto;
@@ -191,13 +190,6 @@ pre[class*="language-"]:after {
 		box-shadow: none;
 	}
 
-}
-
-/* Plugin styles */
-.token.tab:not(:empty):before,
-.token.cr:before,
-.token.lf:before {
-	color: #e0d7d1;
 }
 
 /* Plugin styles: Line Numbers */
