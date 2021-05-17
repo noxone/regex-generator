@@ -214,7 +214,7 @@ internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
             messages.add("The option 's' (dot matches line breaks) is not supported for grep.")
         if (options.multiline)
             messages.add("The option 'm' (multiline) is not supported for grep.")
-        messages.add("grep on mac OS does not support option -P (for Perl regex). To make it work, install a better grep (e.g. brew install grep). Most Regex will even work without -P.")
+        messages.add("grep on mac OS does not support option -P (for Perl regex). To make it work, install a better grep (e.g. brew install grep). Most regex will work without -P.")
         return messages
     }
 }
