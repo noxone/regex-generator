@@ -35,7 +35,7 @@
                 <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
                     <button id="rg_btn_cookie_reject" type="button" class="btn btn-danger">Reject</button>
                     <button id="rg_btn_cookie_accept" type="button" class="btn btn-success">Accept</button>
-                  </div>
+                </div>
             </div>
         </div>
 
@@ -70,7 +70,10 @@
                 <h5>Which parts of the text are interesting for you?</h5>
                 <div class="row no-gutters bg-white border rounded p-2" id="rg_result_container">
                     <div class="rg-match-container">
-                        <div id="rg_text_display" class="rg-text-display"><span>T</span><span>h</span><span>i</span><span>s</span> is just an #example text with "some strings".</div>
+                        <div id="rg_text_display" class="rg-text-display">
+                            <span>T</span><span>h</span><span>i</span><span>s</span> is just an #example text with "some
+                            strings".
+                        </div>
                         <div id="rg_row_container">
                             <div class="rg-match-row">
                                 <div class="rg-match-item rg-match-item-red" style="width: 23ch; left: 0ch;"
@@ -162,7 +165,7 @@
                                             line</label>
                                     </div>
                                     <small id="rg_matchwholeline_help" class="form-text text-muted mt-0">
-                                        Do you want the generated regular expression to match the whole input?
+                                        Would you like the generated regular expression to match all of the input?
                                     </small>
                                 </div>
                             </div>
@@ -196,8 +199,8 @@
                                     By default, all major regex engines match in case-sensitive mode. If you want
                                     patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
                                     to match in
-                                    case-insensitive fashion, we need to turn that feature on. <sup><a
-                                            href="https://www.rexegg.com/regex-modifiers.html#i"
+                                    case-insensitive fashion, we need to turn that feature on.&NonBreakingSpace;</nbsp>
+                                    <sup><a href="https://www.rexegg.com/regex-modifiers.html#i"
                                             target="_blank">*</a></sup>
                                 </small>
                             </div>
@@ -215,8 +218,8 @@
                                     match line break characters such as line feeds and
                                     carriage returns. If you want patterns such as <span
                                         class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
-                                    lines, we need to turn that feature on.
-                                    <sup><a href="https://www.rexegg.com/regex-modifiers.html#dotall"
+                                    lines, we need to turn that feature on.&NonBreakingSpace;<sup><a
+                                            href="https://www.rexegg.com/regex-modifiers.html#dotall"
                                             target="_blank">*</a></sup> </small>
                             </div>
                         </div>
@@ -237,8 +240,8 @@
                                         class="border rg-code p-1 bg-white">^Define</span> and <span
                                         class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
                                     (respectively) at the beginning and the end of each line, we need to turn that
-                                    feature on.
-                                    <sup><a href="https://www.rexegg.com/regex-modifiers.html#multiline"
+                                    feature on.&NonBreakingSpace;<sup><a
+                                            href="https://www.rexegg.com/regex-modifiers.html#multiline"
                                             target="_blank">*</a></sup> </small>
                             </div>
                         </div>
@@ -257,8 +260,8 @@
                         <p>The idea for this page comes from <a
                                 href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/"
                                 target="_blank">txt2re</a>,
-                            which has obviously been discontinued.</p>
-                        <p>The goal of this page is to give as many people as possible the opportunity to develop and
+                            which seems to be discontinued.</p>
+                        <p>The aim of this page is to give as many people as possible the opportunity to develop and
                             use regular expressions. Hopefully nobody has to call <span
                                 class="rg-code">substring()</span> anymore.</p>
                         <p>Find the project sources at <a href="https://github.com/noxone/regex-generator"
@@ -269,9 +272,12 @@
                     <div class="col-md-3 mb-md-0 mb-3">
                         <h5>Useful Regex Links</h5>
                         <ul class="list-unstyled">
-                            <li><a href="https://regex101.com/" target="_blank" id="rg_anchor_regex101">Regular Expressions 101</a></li>
-                            <li><a href="https://regexr.com/" target="_blank" id="rg_anchor_regexr">Regexr</a></li><!-- ?expression=abc&text=def -->
-                            <li><a href="https://www.regexplanet.com" target="_blank">RegexPlanet</a></li><!--?regex=abc&replacement=def-->
+                            <li><a href="https://regex101.com/" target="_blank" id="rg_anchor_regex101">Regular
+                                    Expressions 101</a></li>
+                            <li><a href="https://regexr.com/" target="_blank" id="rg_anchor_regexr">Regexr</a></li>
+                            <!-- ?expression=abc&text=def -->
+                            <li><a href="https://www.regexplanet.com" target="_blank">RegexPlanet</a></li>
+                            <!--?regex=abc&replacement=def-->
                             <li><a href="https://www.rexegg.com" target="_blank">RexEgg</a></li>
                         </ul>
                     </div>
@@ -288,7 +294,7 @@
 
             <!-- Copyright -->
             <div class="text-center pt-3">
-                &copy; 2020 Copyright <a href="https://github.com/noxone/" target="_blank">Olaf Neumann</a>
+                &copy; 2020-2021 Copyright <a href="https://github.com/noxone/" target="_blank">Olaf Neumann</a>
             </div>
         </footer>
     </div>
