@@ -122,5 +122,5 @@ form * .rg-check-row {
 }
 
 #rg_result_display {
-  white-space: pre;
+  white-space: pre-wrap;
 }
