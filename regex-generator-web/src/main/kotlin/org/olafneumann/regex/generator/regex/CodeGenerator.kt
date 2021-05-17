@@ -193,6 +193,26 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
     }
 }
 
+internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "grep",
+    highlightLanguage = "shell",
+    templateCode = """let regex = /%1${'$'}s/%2${'$'}s;"""
+) {
+
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(Regex("\t"), "\\t")
+
+    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+        combineOptions(options = options, valueForCaseInsensitive = "-i", separator = " ", prefix = " ")
+        //combineOptions(options, "i", "m", "s")
+
+    override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+        if (options.dotMatchesLineBreaks)
+            return listOf("The option 's' (dot matches line breaks) is not supported in Firefox and IE.")
+        return emptyList()
+    }
+}
+
 internal class CSharpCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "C#",
     highlightLanguage = "csharp",
