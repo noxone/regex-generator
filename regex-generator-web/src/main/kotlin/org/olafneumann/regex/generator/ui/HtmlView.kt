@@ -100,10 +100,9 @@ class HtmlView(
     override fun showResults(matches: Collection<MatchPresenter>) {
         // TODO remove CSS class iterator
         val indices = mutableMapOf<Int, Int>()
-        val classes = listOf("primary", "success", "danger", "warning")
         fun nextCssClass(row: Int): String {
             indices[row] = (indices[row] ?: row) + 1
-            return "bg-${classes[indices[row]!! % classes.size]}"
+            return MATCH_PRESENTER_CSS_CLASS[indices[row]!! % MATCH_PRESENTER_CSS_CLASS.size]
         }
 
 
@@ -115,84 +114,20 @@ class HtmlView(
         // Create HTML elements
         val rowElements = mutableMapOf<Int, HTMLDivElement>()
         matchPresenterToRowIndex.forEach {  (matchPresenter, rowIndex) ->
+            // assign required stuff
             rowElements[rowIndex] = rowElements[rowIndex] ?: createRowElement()
             val rowElement = rowElements[rowIndex]!!
-
-            // create the corresponding regex element
-            val element = document.create.div(classes = CLASS_MATCH_ITEM) {
-                div(classes = "rg-match-item-overlay") {
-                    matchPresenter.recognizerMatches.forEach { match ->
-                        div(classes = "rg-recognizer") {
-                            a {
-                                +match.title
-                                onClickFunction = { event ->
-                                    presenter.onSuggestionClick(match)
-                                    event.stopPropagation()
-                                }
-                            }
-                        }
-                    }
-                }
-                onClickFunction = {
-                    when {
-                        matchPresenter.selected ->
-                            matchPresenter.selectedMatch?.let { presenter.onSuggestionClick(it) }
-                        matchPresenter.recognizerMatches.size == 1 ->
-                            presenter.onSuggestionClick(matchPresenter.recognizerMatches.iterator().next())
-                    }
-                }
-            }
-            rowElement.appendChild(element)
-            // adjust styling
             val cssClass = nextCssClass(rowIndex)
-            element.addClass(cssClass)
-            element.style.left = matchPresenter.first.toCharacterUnits()
-            element.style.width = matchPresenter.length.toCharacterUnits()
-            if (matchPresenter.ranges.size == 2) {
-                element.style.borderLeftWidth =
-                    (matchPresenter.ranges[0].last - matchPresenter.ranges[0].first + 1).toCharacterUnits()
-                element.style.borderRightWidth =
-                    (matchPresenter.ranges[1].last - matchPresenter.ranges[1].first + 1).toCharacterUnits()
-            }
-            // add listeners to handle display correctly
-            matchPresenter.onSelectedChanged = { selected ->
-                element.classList.toggle(CLASS_ITEM_SELECTED, selected)
-                matchPresenter.forEachIndexInRanges { index ->
-                    inputCharacterSpans[index].classList.toggle(CLASS_CHAR_SELECTED, selected)
-                }
-            }
-            matchPresenter.onDeactivatedChanged =
-                { deactivated -> element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, deactivated) }
-            element.classList.toggle(CLASS_ITEM_SELECTED, matchPresenter.selected)
-            element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated)
-            // add listeners to react on user input
-            element.addEventListener(
-                EVENT_MOUSE_ENTER,
-                {
-                    if (matchPresenter.availableForHighlight) {
-                        matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
-                    }
-                })
-            element.addEventListener(
-                EVENT_MOUSE_LEAVE,
-                {
-                    if (matchPresenter.availableForHighlight) {
-                        matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
-                    }
-                })
+
+            // create the corresponding match presenter element
+            val element = createMatchPresenterElement(matchPresenter)
+            rowElement.appendChild(element)
+            applyCssStyling(matchPresenter, element, cssClass)
+            applyListenersForUserInput(matchPresenter, element, cssClass)
         }
 
-        // now compute the max height of the overlays
-        // use it to set the height of the step-2-field
-        // https://stackoverflow.com/questions/2345784/jquery-get-height-of-hidden-element-in-jquery
-        val recognizers = jQuery(".rg-match-item-overlay")
-        val previousCss = recognizers.attr("style")
-        recognizers.css("position:absolute;visibility:hidden;display:block !important;")
-        var height = 0
-        recognizers.each { jq -> height = max(height, jq.height()) }
-        recognizers.attr("style", previousCss ?: "")
-        val rowsHeight = jQuery(".rg-match-row").height() * rowElements.size
-        rowContainer.style.height = "${rowsHeight + height + 8}px"
+        // set the size of match presenter container
+        rowContainer.style.height = "${computeMatchPresenterAreaHeight(rowElements.size)}px"
     }
 
     private fun distributeToRows(matches: Collection<MatchPresenter>): Map<MatchPresenter, Int> {
@@ -212,9 +147,84 @@ class HtmlView(
             }.toMap()
     }
 
-
     private fun createRowElement(): HTMLDivElement =
         rowContainer.appendChild(document.create.div(classes = CLASS_MATCH_ROW)) as HTMLDivElement
+
+    private fun createMatchPresenterElement(matchPresenter: MatchPresenter): HTMLDivElement =
+        document.create.div(classes = CLASS_MATCH_ITEM) {
+            div(classes = "rg-match-item-overlay") {
+                matchPresenter.recognizerMatches.forEach { match ->
+                    div(classes = "rg-recognizer") {
+                        a {
+                            +match.title
+                            onClickFunction = { event ->
+                                presenter.onSuggestionClick(match)
+                                event.stopPropagation()
+                            }
+                        }
+                    }
+                }
+            }
+            onClickFunction = {
+                when {
+                    matchPresenter.selected ->
+                        matchPresenter.selectedMatch?.let { presenter.onSuggestionClick(it) }
+                    matchPresenter.recognizerMatches.size == 1 ->
+                        presenter.onSuggestionClick(matchPresenter.recognizerMatches.iterator().next())
+                }
+            }
+        }
+
+    private fun applyCssStyling(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
+        element.addClass(cssClass)
+        element.style.left = matchPresenter.first.toCharacterUnits()
+        element.style.width = matchPresenter.length.toCharacterUnits()
+        if (matchPresenter.ranges.size == 2) {
+            element.style.borderLeftWidth =
+                (matchPresenter.ranges[0].last - matchPresenter.ranges[0].first + 1).toCharacterUnits()
+            element.style.borderRightWidth =
+                (matchPresenter.ranges[1].last - matchPresenter.ranges[1].first + 1).toCharacterUnits()
+        }
+        element.classList.toggle(CLASS_ITEM_SELECTED, matchPresenter.selected)
+        element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated)
+        matchPresenter.onSelectedChanged = { selected ->
+            element.classList.toggle(CLASS_ITEM_SELECTED, selected)
+            matchPresenter.forEachIndexInRanges { index ->
+                inputCharacterSpans[index].classList.toggle(CLASS_CHAR_SELECTED, selected)
+            }
+        }
+        matchPresenter.onDeactivatedChanged =
+            { deactivated -> element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, deactivated) }
+    }
+
+    private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
+        element.addEventListener(
+            EVENT_MOUSE_ENTER,
+            {
+                if (matchPresenter.availableForHighlight) {
+                    matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
+                }
+            })
+        element.addEventListener(
+            EVENT_MOUSE_LEAVE,
+            {
+                if (matchPresenter.availableForHighlight) {
+                    matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
+                }
+            })
+    }
+
+    private fun computeMatchPresenterAreaHeight(numberOfRows: Int): Int {
+        // https://stackoverflow.com/questions/2345784/jquery-get-height-of-hidden-element-in-jquery
+        val recognizers = jQuery(".rg-match-item-overlay")
+        val previousCss = recognizers.attr("style")
+        recognizers.css("position:absolute;visibility:hidden;display:block !important;")
+        var maxHeightOfMatchPresenters = 0
+        recognizers.each { jq -> maxHeightOfMatchPresenters = max(maxHeightOfMatchPresenters, jq.height()) }
+        recognizers.attr("style", previousCss ?: "")
+        val rowsHeight = jQuery(".rg-match-row").height() * numberOfRows
+        return rowsHeight + maxHeightOfMatchPresenters + MAGIC_HEIGHT
+    }
 
     override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
@@ -319,6 +329,9 @@ class HtmlView(
         const val ID_DIV_LANGUAGES = "rg_language_accordion"
         const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
         const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
+
+        val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
+        const val MAGIC_HEIGHT = 8
 
         fun JQuery.each(function: (JQuery) -> Unit) =
             each { _, htmlElement -> function(jQuery(htmlElement)) }
