@@ -15,6 +15,7 @@ import kotlinx.browser.document
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
+import kotlin.math.max
 
 class HtmlView(
     private val presenter: DisplayContract.Controller
@@ -113,7 +114,7 @@ class HtmlView(
         matchPresenterToRowIndex.putAll(distributeToRows(matches))
         // Create HTML elements
         val rowElements = mutableMapOf<Int, HTMLDivElement>()
-        matchPresenterToRowIndex.map { (matchPresenter, rowIndex) ->
+        matchPresenterToRowIndex.forEach {  (matchPresenter, rowIndex) ->
             rowElements[rowIndex] = rowElements[rowIndex] ?: createRowElement()
             val rowElement = rowElements[rowIndex]!!
 
@@ -180,6 +181,18 @@ class HtmlView(
                     }
                 })
         }
+
+        // now compute the max height of the overlays
+        // use it to set the height of the step-2-field
+        // https://stackoverflow.com/questions/2345784/jquery-get-height-of-hidden-element-in-jquery
+        val recognizers = jQuery(".rg-match-item-overlay")
+        val previousCss = recognizers.attr("style")
+        recognizers.css("position:absolute;visibility:hidden;display:block !important;")
+        var height = 0
+        recognizers.each { jq -> height = max(height, jq.height()) }
+        recognizers.attr("style", previousCss ?: "")
+        val rowsHeight = jQuery(".rg-match-row").height() * rowElements.size
+        rowContainer.style.height = "${rowsHeight + height + 8}px"
     }
 
     private fun distributeToRows(matches: Collection<MatchPresenter>): Map<MatchPresenter, Int> {
@@ -306,6 +319,9 @@ class HtmlView(
         const val ID_DIV_LANGUAGES = "rg_language_accordion"
         const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
         const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
+
+        fun JQuery.each(function: (JQuery) -> Unit) =
+            each { _, htmlElement -> function(jQuery(htmlElement)) }
     }
 }
 
