@@ -127,7 +127,7 @@ class HtmlView(
             applyListenersForUserInput(matchPresenter, element, cssClass)
         }
 
-        animateResultDisplaySize(numberOfRows = rowElements.size)
+        animateResultDisplaySize(rows = rowElements)
     }
 
     private fun distributeToRows(matches: Collection<MatchPresenter>): Map<MatchPresenter, Int> {
@@ -214,21 +214,31 @@ class HtmlView(
             })
     }
 
-    private fun animateResultDisplaySize(numberOfRows: Int) {
-        val newHeight = "${computeMatchPresenterAreaHeight(numberOfRows)}px"
-        jQuery(rowContainer).animate(json("height" to newHeight), duration = 350)
+    private fun animateResultDisplaySize(rows: Map<Int, HTMLDivElement>) {
+        val newHeight = "${computeMatchPresenterAreaHeight(rows)}px"
+        val jqRowContainer = jQuery(rowContainer)
+        jqRowContainer.stop()
+        jqRowContainer.animate(json("height" to newHeight), duration = 350)
     }
 
-    private fun computeMatchPresenterAreaHeight(numberOfRows: Int): Int {
-        // https://stackoverflow.com/questions/2345784/jquery-get-height-of-hidden-element-in-jquery
-        val recognizers = jQuery(".rg-match-item-overlay")
-        val previousCss = recognizers.attr("style")
-        recognizers.css("position:absolute;visibility:hidden;display:block !important;")
-        var maxHeightOfMatchPresenters = 0
-        recognizers.each { jq -> maxHeightOfMatchPresenters = max(maxHeightOfMatchPresenters, jq.height()) }
-        recognizers.attr("style", previousCss ?: "")
-        val rowsHeight = jQuery(".rg-match-row").height() * numberOfRows
-        return rowsHeight + maxHeightOfMatchPresenters + MAGIC_HEIGHT
+    private fun computeMatchPresenterAreaHeight(rows: Map<Int, HTMLDivElement>): Int =
+        MAGIC_HEIGHT + (rows.map { computeMatchPresenterBottomLine(it.key, it.value) }
+            .maxOrNull() ?: 0)
+
+    private fun computeMatchPresenterBottomLine(rowIndex: Int, element: HTMLDivElement): Int {
+        val jqElement = jQuery(element)
+        val overlayHeight = getHeight(jqElement.find(".rg-match-item-overlay"))
+        val parentHeight = jqElement.height()
+        return overlayHeight + parentHeight * (rowIndex + 1)
+    }
+
+    private fun getHeight(elements: JQuery): Int {
+        val previousCss = elements.attr("style")
+        elements.css("position:absolute;visibility:hidden;display:block !important;")
+        var maxHeight = 0
+        elements.each { jq -> maxHeight = max(maxHeight, jq.height()) }
+        elements.attr("style", previousCss ?: "")
+        return maxHeight
     }
 
     override var options: RecognizerCombiner.Options

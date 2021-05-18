@@ -14,10 +14,13 @@ external class JQuery {
     fun parent(): JQuery
     fun remove(): JQuery
 
+    fun find(selector: String): JQuery
+
     fun attr(name: String, newValue: Any = definedExternally): Any?
     fun css(css: Any)
     fun height(): Int
     fun each(function: ((Int, HTMLElement) -> Unit))
 
     fun animate(properties: Json, duration: Int = definedExternally, easing: String = definedExternally)
+    fun stop()
 }
