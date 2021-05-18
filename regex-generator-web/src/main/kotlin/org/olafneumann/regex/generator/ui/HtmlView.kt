@@ -15,6 +15,7 @@ import kotlinx.browser.document
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
+import kotlin.js.json
 import kotlin.math.max
 
 class HtmlView(
@@ -126,8 +127,7 @@ class HtmlView(
             applyListenersForUserInput(matchPresenter, element, cssClass)
         }
 
-        // set the size of match presenter container
-        rowContainer.style.height = "${computeMatchPresenterAreaHeight(rowElements.size)}px"
+        animateResultDisplaySize(numberOfRows = rowElements.size)
     }
 
     private fun distributeToRows(matches: Collection<MatchPresenter>): Map<MatchPresenter, Int> {
@@ -212,6 +212,11 @@ class HtmlView(
                     matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
                 }
             })
+    }
+
+    private fun animateResultDisplaySize(numberOfRows: Int) {
+        val newHeight = "${computeMatchPresenterAreaHeight(numberOfRows)}px"
+        jQuery(rowContainer).animate(json("height" to newHeight), duration = 350)
     }
 
     private fun computeMatchPresenterAreaHeight(numberOfRows: Int): Int {
