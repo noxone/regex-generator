@@ -30,7 +30,7 @@ class MatchPresenter(
     override val last = ranges.last().last
     override val length = last - first + 1
 
-    val priority = recognizerMatches.map { it.priority }.maxOrNull()!!
+    val priority = recognizerMatches.maxOf { it.priority }
 
     //private var _selected: Boolean by Delegates.observable(selected) { _, _, new -> onSelectedChanged(new) }
     var selectedMatch: RecognizerMatch? by Delegates.observable(selectedMatch)

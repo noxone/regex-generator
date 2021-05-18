@@ -33,7 +33,7 @@ class UiController : DisplayContract.Controller {
         } ?: MatchPresenter(this)
 
     fun initialize() {
-        val initialInput = if (currentTextInput.isBlank()) VAL_EXAMPLE_INPUT else currentTextInput
+        val initialInput = currentTextInput.ifBlank { VAL_EXAMPLE_INPUT }
         recognizeMatches(initialInput)
     }
 
