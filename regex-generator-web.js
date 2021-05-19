@@ -64,11 +64,13 @@ if (typeof kotlin === 'undefined') {
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
   var clear = Kotlin.kotlinx.dom.clear_asww5s$;
   var ensureNotNull = Kotlin.ensureNotNull;
-  var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
   var set_onClickFunction = $module$kotlinx_html_js.kotlinx.html.js.set_onClickFunction_pszlq2$;
   var addClass = Kotlin.kotlinx.dom.addClass_hhb33f$;
   var removeClass = Kotlin.kotlinx.dom.removeClass_hhb33f$;
   var json = Kotlin.kotlin.js.json_pyyo18$;
+  var mapCapacity = Kotlin.kotlin.collections.mapCapacity_za3lpa$;
+  var coerceAtLeast = Kotlin.kotlin.ranges.coerceAtLeast_dqglrj$;
+  var LinkedHashMap_init_0 = Kotlin.kotlin.collections.LinkedHashMap_init_bwtc7$;
   var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
   var SPAN_init = $module$kotlinx_html_js.kotlinx.html.SPAN;
   var HTMLSpanElement_0 = HTMLSpanElement;
@@ -92,6 +94,7 @@ if (typeof kotlin === 'undefined') {
   var PropertyMetadata = Kotlin.PropertyMetadata;
   var intersect = Kotlin.kotlin.collections.intersect_q4559j$;
   var then = Kotlin.kotlin.comparisons.then_15rrmw$;
+  var NoSuchElementException_init = Kotlin.kotlin.NoSuchElementException_init;
   var ObservableProperty = Kotlin.kotlin.properties.ObservableProperty;
   var isBlank = Kotlin.kotlin.text.isBlank_gw00vp$;
   UrlGenerator.prototype = Object.create(SimpleReplacingCodeGenerator.prototype);
@@ -1070,36 +1073,6 @@ if (typeof kotlin === 'undefined') {
     result = (31 * result | 0) + this.length | 0;
     return result;
   };
-  function RecognizerMatch$PatternWithRange(pattern, range) {
-    this.pattern = pattern;
-    this.range = range;
-  }
-  RecognizerMatch$PatternWithRange.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'PatternWithRange',
-    interfaces: []
-  };
-  RecognizerMatch$PatternWithRange.prototype.component1 = function () {
-    return this.pattern;
-  };
-  RecognizerMatch$PatternWithRange.prototype.component2 = function () {
-    return this.range;
-  };
-  RecognizerMatch$PatternWithRange.prototype.copy_olwhvr$ = function (pattern, range) {
-    return new RecognizerMatch$PatternWithRange(pattern === void 0 ? this.pattern : pattern, range === void 0 ? this.range : range);
-  };
-  RecognizerMatch$PatternWithRange.prototype.toString = function () {
-    return 'PatternWithRange(pattern=' + Kotlin.toString(this.pattern) + (', range=' + Kotlin.toString(this.range)) + ')';
-  };
-  RecognizerMatch$PatternWithRange.prototype.hashCode = function () {
-    var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.pattern) | 0;
-    result = result * 31 + Kotlin.hashCode(this.range) | 0;
-    return result;
-  };
-  RecognizerMatch$PatternWithRange.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.pattern, other.pattern) && Kotlin.equals(this.range, other.range)))));
-  };
   function RecognizerMatch_init$lambda(it) {
     return it.first;
   }
@@ -1204,7 +1177,7 @@ if (typeof kotlin === 'undefined') {
       var tmp$_1 = destination_0.add_11rb$;
       var startMatch = item.leftParent.leftParent;
       var mainMatches = listOf([item.element.get_za3lpa$(0), item.leftParent.rightParent]);
-      tmp$_1.call(destination_0, new SimpleRecognizer('Combi [' + startMatch.recognizer.name + ' + ' + mainMatches.get_za3lpa$(0).recognizer.name + ']', '(' + startMatch.patterns.get_za3lpa$(0) + '(' + mainMatches.get_za3lpa$(0).patterns.get_za3lpa$(0) + mainMatches.get_za3lpa$(1).patterns.get_za3lpa$(0) + ')+)'));
+      tmp$_1.call(destination_0, new SimpleRecognizer('Combination [' + startMatch.recognizer.name + ' + ' + mainMatches.get_za3lpa$(0).recognizer.name + ']', '(' + startMatch.patterns.get_za3lpa$(0) + '(' + mainMatches.get_za3lpa$(0).patterns.get_za3lpa$(0) + mainMatches.get_za3lpa$(1).patterns.get_za3lpa$(0) + ')+)'));
     }
     return toSet(destination_0);
   };
@@ -2023,14 +1996,14 @@ if (typeof kotlin === 'undefined') {
     this.matchPresenterToRowIndex_0 = LinkedHashMap_init();
     this.inputCharacterSpans_0 = emptyList();
     var $receiver = CodeGenerator$Companion_getInstance().all;
-    var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
+    var result = LinkedHashMap_init_0(coerceAtLeast(mapCapacity(collectionSizeOrDefault($receiver, 10)), 16));
     var tmp$_13;
     tmp$_13 = $receiver.iterator();
     while (tmp$_13.hasNext()) {
-      var item = tmp$_13.next();
-      destination.add_11rb$(to(item, new LanguageCard(item, this.containerLanguages_0)));
+      var element = tmp$_13.next();
+      result.put_xwzc9p$(element, new LanguageCard(element, this.containerLanguages_0));
     }
-    this.languageDisplays_0 = toMap(destination);
+    this.languageDisplays_0 = result;
     this.driver_0 = new Driver({});
     this.textInput_0.addEventListener(HtmlView$Companion_getInstance().EVENT_INPUT, HtmlView_init$lambda(this));
     this.buttonCopy_0.addEventListener(HtmlView$Companion_getInstance().EVENT_CLICK, HtmlView_init$lambda_0(this));
@@ -2163,20 +2136,20 @@ if (typeof kotlin === 'undefined') {
       var list = destination_0;
       addAll(destination, list);
     }
-    var destination_1 = ArrayList_init(collectionSizeOrDefault(destination, 10));
+    var capacity = coerceAtLeast(mapCapacity(collectionSizeOrDefault(destination, 10)), 16);
+    var destination_1 = LinkedHashMap_init_0(capacity);
     var tmp$_1;
     tmp$_1 = destination.iterator();
     loop_label: while (tmp$_1.hasNext()) {
-      var item_0 = tmp$_1.next();
-      var tmp$_2 = destination_1.add_11rb$;
+      var element_0 = tmp$_1.next();
       var indexOfFirst$result;
       indexOfFirst$break: do {
-        var tmp$_3;
+        var tmp$_2;
         var index = 0;
-        tmp$_3 = lines.iterator();
-        while (tmp$_3.hasNext()) {
-          var item_1 = tmp$_3.next();
-          if (item_1 < item_0.second.first) {
+        tmp$_2 = lines.iterator();
+        while (tmp$_2.hasNext()) {
+          var item_0 = tmp$_2.next();
+          if (item_0 < element_0.second.first) {
             indexOfFirst$result = index;
             break indexOfFirst$break;
           }index = index + 1 | 0;
@@ -2186,10 +2159,11 @@ if (typeof kotlin === 'undefined') {
        while (false);
       var indexOfFreeLine = indexOfFirst$result;
       var line = indexOfFreeLine >= 0 ? indexOfFreeLine : createNextLine();
-      lines.set_wxm5ur$(line, item_0.second.last);
-      tmp$_2.call(destination_1, to(item_0.first, line));
+      lines.set_wxm5ur$(line, element_0.second.last);
+      var pair = to(element_0.first, line);
+      destination_1.put_xwzc9p$(pair.first, pair.second);
     }
-    return toMap(destination_1);
+    return destination_1;
   };
   HtmlView.prototype.createRowElement_0 = function () {
     var tmp$;
@@ -2800,15 +2774,16 @@ if (typeof kotlin === 'undefined') {
     this.first_s5fbd1$_0 = first(this.ranges).first;
     this.last_zuk3t$_0 = last(this.ranges).last;
     this.length_zdih89$_0 = this.last - this.first + 1 | 0;
-    var $receiver = this.recognizerMatches;
-    var destination = ArrayList_init(collectionSizeOrDefault($receiver, 10));
-    var tmp$_0;
-    tmp$_0 = $receiver.iterator();
-    while (tmp$_0.hasNext()) {
-      var item = tmp$_0.next();
-      destination.add_11rb$(item.priority);
-    }
-    this.priority = ensureNotNull(maxOrNull(destination));
+    var iterator = this.recognizerMatches.iterator();
+    if (!iterator.hasNext())
+      throw NoSuchElementException_init();
+    var maxValue = iterator.next().priority;
+    while (iterator.hasNext()) {
+      var v = iterator.next().priority;
+      if (Kotlin.compareTo(maxValue, v) < 0) {
+        maxValue = v;
+      }}
+    this.priority = maxValue;
     this.selectedMatch_jdvp1$_0 = new Delegates$observable$ObjectLiteral(MatchPresenter$selectedMatch$lambda(this), selectedMatch);
     this.deactivated_26wo5h$_0 = new Delegates$observable$ObjectLiteral(MatchPresenter$deactivated$lambda(this), deactivated);
   }
@@ -2994,7 +2969,8 @@ if (typeof kotlin === 'undefined') {
     return (tmp$ = lastOrNull$result) != null ? tmp$ : new MatchPresenter($receiver);
   };
   UiController.prototype.initialize = function () {
-    var initialInput = isBlank(this.currentTextInput_0) ? UiController$Companion_getInstance().VAL_EXAMPLE_INPUT : this.currentTextInput_0;
+    var $receiver = this.currentTextInput_0;
+    var initialInput = isBlank($receiver) ? UiController$Companion_getInstance().VAL_EXAMPLE_INPUT : $receiver;
     this.recognizeMatches_0(initialInput);
   };
   UiController.prototype.recognizeMatches_0 = function (input) {
@@ -3249,7 +3225,6 @@ if (typeof kotlin === 'undefined') {
   RecognizerCombiner.Frame = RecognizerCombiner$Frame;
   RecognizerCombiner.RegularExpression = RecognizerCombiner$RegularExpression;
   package$regex_0.RecognizerCombiner = RecognizerCombiner;
-  RecognizerMatch.PatternWithRange = RecognizerMatch$PatternWithRange;
   package$regex_0.RecognizerMatch = RecognizerMatch;
   Object.defineProperty(package$regex_0, 'RecognizerRegistry', {
     get: RecognizerRegistry_getInstance
