@@ -1,8 +1,8 @@
 if (typeof kotlin === 'undefined') {
-  throw new Error("Error loading module 'regex-generator-web'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'regex-generator-web'.");
+  throw new Error("Error loading module 'regex-generator'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'regex-generator'.");
 }if (typeof this['kotlinx-html-js'] === 'undefined') {
-  throw new Error("Error loading module 'regex-generator-web'. Its dependency 'kotlinx-html-js' was not found. Please, check whether 'kotlinx-html-js' is loaded prior to 'regex-generator-web'.");
-}this['regex-generator-web'] = function (_, Kotlin, $module$kotlinx_html_js) {
+  throw new Error("Error loading module 'regex-generator'. Its dependency 'kotlinx-html-js' was not found. Please, check whether 'kotlinx-html-js' is loaded prior to 'regex-generator'.");
+}this['regex-generator'] = function (_, Kotlin, $module$kotlinx_html_js) {
   'use strict';
   var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
   var toString = Kotlin.toString;
@@ -82,7 +82,7 @@ if (typeof kotlin === 'undefined') {
   var attributesMapOf_0 = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_alerag$;
   var A_init = $module$kotlinx_html_js.kotlinx.html.A;
   var visitTag = $module$kotlinx_html_js.kotlinx.html.visitTag_xwv8ym$;
-  var Math_0 = Math;
+  var JsMath = Math;
   var ButtonType = $module$kotlinx_html_js.kotlinx.html.ButtonType;
   var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
   var P_init = $module$kotlinx_html_js.kotlinx.html.P;
@@ -1086,7 +1086,7 @@ if (typeof kotlin === 'undefined') {
   };
   function RecognizerRegistry() {
     RecognizerRegistry_instance = this;
-    this.recognizers_0 = listOf([new EchoRecognizer('Character', '.', void 0, void 0, 1), new SimpleRecognizer('One whitespace', '\\s'), new SimpleRecognizer('Whitespaces', '\\s+'), new SimpleRecognizer('One character', '[a-zA-Z]'), new SimpleRecognizer('Multiple characters', '[a-zA-Z]+'), new SimpleRecognizer('Digit', '\\d'), new SimpleRecognizer('Number', '[0-9]+'), new SimpleRecognizer('Decimal number', '[0-9]*\\.[0-9]+'), new SimpleRecognizer('Day', '(0?[1-9]|[12][0-9]|3[01])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Month', '(0?[1-9]|[1][0-2])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new SimpleRecognizer('Time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new SimpleRecognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new SimpleRecognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new SimpleRecognizer('Log level', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new BracketedRecognizer('Round brackets', '\\(', listOf_0(new BracketedRecognizer$CenterPattern('no round bracket', '[^)]*')), '\\)', '(\\()([^)]*)(\\))'), new BracketedRecognizer('Square brackets', '\\[', listOf_0(new BracketedRecognizer$CenterPattern('no square bracket', '[^\\]]*')), ']', '(\\[)([^\\]]*)(])'), new BracketedRecognizer('Curly braces', '\\{', listOf_0(new BracketedRecognizer$CenterPattern('no curly braces', '[^}]*')), '}', '(\\{)([^}]*)(})'), new BracketedRecognizer('String (quotation mark)', '"', listOf([new BracketedRecognizer$CenterPattern('no quotation mark', '[^"]*'), new BracketedRecognizer$CenterPattern('escaped quotation mark', '(?:[^"]|\\\\\')*')]), '"', '(")([^"]*)(")'), new BracketedRecognizer('String (apostrophe)', "'", listOf([new BracketedRecognizer$CenterPattern('no apostrophe', "[^']*"), new BracketedRecognizer$CenterPattern('escaped apostrophe', "(?:[^']|\\\\')*")]), "'", "(')([^']*)(')")]);
+    this.recognizers_0 = listOf([new EchoRecognizer('Character', '.', void 0, void 0, 1), new SimpleRecognizer('One whitespace', '\\s'), new SimpleRecognizer('Whitespaces', '\\s+'), new SimpleRecognizer('One character', '[a-zA-Z]'), new SimpleRecognizer('Multiple characters', '[a-zA-Z]+'), new SimpleRecognizer('Digit', '\\d'), new SimpleRecognizer('Number', '[0-9]+'), new SimpleRecognizer('Decimal number', '[0-9]*\\.[0-9]+'), new SimpleRecognizer('Day', '(0?[1-9]|[12][0-9]|3[01])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Month', '(0?[1-9]|[1][0-2])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new SimpleRecognizer('Time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new SimpleRecognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new SimpleRecognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new SimpleRecognizer('Log level', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new BracketedRecognizer('Round brackets', '\\(', listOf_0(new BracketedRecognizer$CenterPattern('no round bracket', '[^)]*')), '\\)', '(\\()([^)]*)(\\))'), new BracketedRecognizer('Square brackets', '\\[', listOf_0(new BracketedRecognizer$CenterPattern('no square bracket', '[^\\]]*')), '\\]', '(\\[)([^\\]]*)(\\])'), new BracketedRecognizer('Curly braces', '\\{', listOf_0(new BracketedRecognizer$CenterPattern('no curly braces', '[^}]*')), '\\}', '(\\{)([^}]*)(\\})'), new BracketedRecognizer('String (quotation mark)', '"', listOf([new BracketedRecognizer$CenterPattern('no quotation mark', '[^"]*'), new BracketedRecognizer$CenterPattern('escaped quotation mark', '(?:[^"]|\\\\\')*')]), '"', '(")([^"]*)(")'), new BracketedRecognizer('String (apostrophe)', "'", listOf([new BracketedRecognizer$CenterPattern('no apostrophe', "[^']*"), new BracketedRecognizer$CenterPattern('escaped apostrophe', "(?:[^']|\\\\')*")]), "'", "(')([^']*)(')")]);
   }
   RecognizerRegistry.prototype.findMatches_61zpoe$ = function (input) {
     var $receiver = this.recognizers_0;
@@ -1747,7 +1747,7 @@ if (typeof kotlin === 'undefined') {
   function HtmlHelper() {
     HtmlHelper_instance = this;
   }
-  HtmlHelper.prototype.getElementById_359kph$ = defineInlineFunction('regex-generator-web.org.olafneumann.regex.generator.ui.HtmlHelper.getElementById_359kph$', wrapFunction(function () {
+  HtmlHelper.prototype.getElementById_359kph$ = defineInlineFunction('regex-generator.org.olafneumann.regex.generator.ui.HtmlHelper.getElementById_359kph$', wrapFunction(function () {
     var throwCCE = Kotlin.throwCCE;
     var RuntimeException_init = Kotlin.kotlin.RuntimeException;
     var ClassCastException = Kotlin.kotlin.ClassCastException;
@@ -2353,7 +2353,7 @@ if (typeof kotlin === 'undefined') {
       var tmp$ = closure$maxHeight;
       var a = closure$maxHeight.v;
       var b = jq.height();
-      tmp$.v = Math_0.max(a, b);
+      tmp$.v = JsMath.max(a, b);
       return Unit;
     };
   }
@@ -2873,7 +2873,7 @@ if (typeof kotlin === 'undefined') {
      while (false);
     return any$result;
   };
-  MatchPresenter.prototype.forEachIndexInRanges_b4k9x1$ = defineInlineFunction('regex-generator-web.org.olafneumann.regex.generator.ui.MatchPresenter.forEachIndexInRanges_b4k9x1$', wrapFunction(function () {
+  MatchPresenter.prototype.forEachIndexInRanges_b4k9x1$ = defineInlineFunction('regex-generator.org.olafneumann.regex.generator.ui.MatchPresenter.forEachIndexInRanges_b4k9x1$', wrapFunction(function () {
     var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
     var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
     return function (action) {
@@ -3235,7 +3235,7 @@ if (typeof kotlin === 'undefined') {
   Object.defineProperty(package$ui, 'ApplicationSettings', {
     get: ApplicationSettings_getInstance
   });
-  $$importsForInline$$['regex-generator-web'] = _;
+  $$importsForInline$$['regex-generator'] = _;
   Object.defineProperty(package$ui, 'CookieBanner', {
     get: CookieBanner_getInstance
   });
@@ -3267,8 +3267,8 @@ if (typeof kotlin === 'undefined') {
   package$util.HasRange = HasRange;
   Object.defineProperty(SimpleReplacingCodeGenerator.prototype, 'uniqueName', Object.getOwnPropertyDescriptor(CodeGenerator.prototype, 'uniqueName'));
   main();
-  Kotlin.defineModule('regex-generator-web', _);
+  Kotlin.defineModule('regex-generator', _);
   return _;
-}(typeof this['regex-generator-web'] === 'undefined' ? {} : this['regex-generator-web'], kotlin, this['kotlinx-html-js']);
+}(typeof this['regex-generator'] === 'undefined' ? {} : this['regex-generator'], kotlin, this['kotlinx-html-js']);
 
-//# sourceMappingURL=regex-generator-web.js.map
+//# sourceMappingURL=regex-generator.js.map
