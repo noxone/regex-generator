@@ -64,21 +64,23 @@ if (typeof kotlin === 'undefined') {
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
   var clear = Kotlin.kotlinx.dom.clear_asww5s$;
   var ensureNotNull = Kotlin.ensureNotNull;
+  var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
   var set_onClickFunction = $module$kotlinx_html_js.kotlinx.html.js.set_onClickFunction_pszlq2$;
   var addClass = Kotlin.kotlinx.dom.addClass_hhb33f$;
   var removeClass = Kotlin.kotlinx.dom.removeClass_hhb33f$;
-  var toMap = Kotlin.kotlin.collections.toMap_6hr0sd$;
+  var json = Kotlin.kotlin.js.json_pyyo18$;
   var attributesMapOf = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_jyasbz$;
   var SPAN_init = $module$kotlinx_html_js.kotlinx.html.SPAN;
   var HTMLSpanElement_0 = HTMLSpanElement;
   var visitTagAndFinalize = $module$kotlinx_html_js.kotlinx.html.visitTagAndFinalize_g9qte5$;
   var iterator = Kotlin.kotlin.text.iterator_gw00vp$;
   var toBoxedChar = Kotlin.toBoxedChar;
+  var DIV_init = $module$kotlinx_html_js.kotlinx.html.DIV;
+  var HTMLDivElement_0 = HTMLDivElement;
   var attributesMapOf_0 = $module$kotlinx_html_js.kotlinx.html.attributesMapOf_alerag$;
   var A_init = $module$kotlinx_html_js.kotlinx.html.A;
   var visitTag = $module$kotlinx_html_js.kotlinx.html.visitTag_xwv8ym$;
-  var DIV_init = $module$kotlinx_html_js.kotlinx.html.DIV;
-  var HTMLDivElement_0 = HTMLDivElement;
+  var Math_0 = Math;
   var ButtonType = $module$kotlinx_html_js.kotlinx.html.ButtonType;
   var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
   var P_init = $module$kotlinx_html_js.kotlinx.html.P;
@@ -201,9 +203,6 @@ if (typeof kotlin === 'undefined') {
       destination.add_11rb$(item);
     }
     $receiver.defineSteps(copyToArray(destination));
-  }
-  function jQuery(element) {
-    return $('#' + element.id);
   }
   function BracketedRecognizer(name, startPattern, centerPatterns, endPattern, searchPattern, startGroupIndex, endGroupIndex, description, active) {
     if (startGroupIndex === void 0)
@@ -1738,7 +1737,7 @@ if (typeof kotlin === 'undefined') {
     }
   };
   CookieBanner.prototype.hideBanner_0 = function () {
-    jQuery(this.ctnCookie_0).hide();
+    $(this.ctnCookie_0).hide();
   };
   CookieBanner.$metadata$ = {
     kind: Kind_OBJECT,
@@ -1823,6 +1822,15 @@ if (typeof kotlin === 'undefined') {
   function span$lambda($receiver) {
     return Unit;
   }
+  function visitAndFinalize$lambda_0(closure$block) {
+    return function ($receiver) {
+      closure$block($receiver);
+      return Unit;
+    };
+  }
+  function div$lambda($receiver) {
+    return Unit;
+  }
   function visit$lambda(closure$block) {
     return function ($receiver) {
       closure$block($receiver);
@@ -1833,15 +1841,6 @@ if (typeof kotlin === 'undefined') {
     return Unit;
   }
   function visit$lambda_0(closure$block) {
-    return function ($receiver) {
-      closure$block($receiver);
-      return Unit;
-    };
-  }
-  function div$lambda($receiver) {
-    return Unit;
-  }
-  function visitAndFinalize$lambda_0(closure$block) {
     return function ($receiver) {
       closure$block($receiver);
       return Unit;
@@ -2046,7 +2045,7 @@ if (typeof kotlin === 'undefined') {
     return $receiver.toString() + 'ch';
   };
   HtmlView.prototype.hideCopyButton = function () {
-    jQuery(this.buttonCopy_0).parent().remove();
+    $(this.buttonCopy_0).parent().remove();
   };
   HtmlView.prototype.selectInputText = function () {
     this.textInput_0.select();
@@ -2104,186 +2103,39 @@ if (typeof kotlin === 'undefined') {
       this.anchorRegexr_0.setPattern_wa467u$(value, this.options);
     }
   });
-  function HtmlView$showResults$nextCssClass(closure$indices, closure$classes) {
+  function HtmlView$showResults$nextCssClass(closure$indices) {
     return function (row) {
       var tmp$;
       var $receiver = closure$indices;
       var value = ((tmp$ = closure$indices.get_11rb$(row)) != null ? tmp$ : row) + 1 | 0;
       $receiver.put_xwzc9p$(row, value);
-      return 'bg-' + closure$classes.get_za3lpa$(ensureNotNull(closure$indices.get_11rb$(row)) % closure$classes.size);
-    };
-  }
-  function HtmlView$showResults$lambda$lambda$lambda$lambda$lambda$lambda$lambda(this$HtmlView, closure$match) {
-    return function (event) {
-      this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(closure$match);
-      event.stopPropagation();
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda$lambda$lambda$lambda$lambda(closure$match, this$HtmlView) {
-    return function ($receiver) {
-      $receiver.unaryPlus_pdl1vz$(closure$match.title);
-      set_onClickFunction($receiver, HtmlView$showResults$lambda$lambda$lambda$lambda$lambda$lambda$lambda(this$HtmlView, closure$match));
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda$lambda$lambda$lambda(closure$match, this$HtmlView) {
-    return function ($receiver) {
-      var block = HtmlView$showResults$lambda$lambda$lambda$lambda$lambda$lambda(closure$match, this$HtmlView);
-      visitTag(new A_init(attributesMapOf_0(['href', null, 'target', null, 'class', null]), $receiver.consumer), visit$lambda(block));
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda$lambda(closure$matchPresenter, this$HtmlView) {
-    return function ($receiver) {
-      var $receiver_0 = closure$matchPresenter.recognizerMatches;
-      var tmp$;
-      tmp$ = $receiver_0.iterator();
-      while (tmp$.hasNext()) {
-        var element = tmp$.next();
-        var this$HtmlView_0 = this$HtmlView;
-        visitTag(new DIV_init(attributesMapOf('class', 'rg-recognizer'), $receiver.consumer), visit$lambda_0(HtmlView$showResults$lambda$lambda$lambda$lambda$lambda(element, this$HtmlView_0)));
-      }
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda$lambda_0(closure$matchPresenter, this$HtmlView) {
-    return function (it) {
-      var tmp$;
-      if (closure$matchPresenter.selected) {
-        if ((tmp$ = closure$matchPresenter.selectedMatch) != null) {
-          this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(tmp$);
-        }} else if (closure$matchPresenter.recognizerMatches.size === 1)
-        this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(closure$matchPresenter.recognizerMatches.iterator().next());
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda(closure$matchPresenter, this$HtmlView) {
-    return function ($receiver) {
-      var classes = 'rg-match-item-overlay';
-      var block = HtmlView$showResults$lambda$lambda$lambda(closure$matchPresenter, this$HtmlView);
-      visitTag(new DIV_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_0(block));
-      set_onClickFunction($receiver, HtmlView$showResults$lambda$lambda$lambda_0(closure$matchPresenter, this$HtmlView));
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda_0(closure$element, closure$matchPresenter, this$HtmlView) {
-    return function (selected) {
-      closure$element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_SELECTED, selected);
-      var $this = closure$matchPresenter;
-      var $receiver = $this.ranges;
-      var destination = ArrayList_init_0();
-      var tmp$;
-      tmp$ = $receiver.iterator();
-      while (tmp$.hasNext()) {
-        var element = tmp$.next();
-        var list = element;
-        addAll(destination, list);
-      }
-      var tmp$_0;
-      tmp$_0 = destination.iterator();
-      while (tmp$_0.hasNext()) {
-        var element_0 = tmp$_0.next();
-        this$HtmlView.inputCharacterSpans_0.get_za3lpa$(element_0).classList.toggle(HtmlView$Companion_getInstance().CLASS_CHAR_SELECTED, selected);
-      }
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda_1(closure$element) {
-    return function (deactivated) {
-      closure$element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_NOT_AVAILABLE, deactivated);
-      return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda_2(closure$matchPresenter, this$HtmlView, closure$cssClass) {
-    return function (it) {
-      if (closure$matchPresenter.availableForHighlight) {
-        var $this = closure$matchPresenter;
-        var $receiver = $this.ranges;
-        var destination = ArrayList_init_0();
-        var tmp$;
-        tmp$ = $receiver.iterator();
-        while (tmp$.hasNext()) {
-          var element = tmp$.next();
-          var list = element;
-          addAll(destination, list);
-        }
-        var tmp$_0;
-        tmp$_0 = destination.iterator();
-        while (tmp$_0.hasNext()) {
-          var element_0 = tmp$_0.next();
-          var this$HtmlView_0 = this$HtmlView;
-          var closure$cssClass_0 = closure$cssClass;
-          addClass(this$HtmlView_0.inputCharacterSpans_0.get_za3lpa$(element_0), [closure$cssClass_0]);
-        }
-      }return Unit;
-    };
-  }
-  function HtmlView$showResults$lambda$lambda_3(closure$matchPresenter, this$HtmlView, closure$cssClass) {
-    return function (it) {
-      if (closure$matchPresenter.availableForHighlight) {
-        var $this = closure$matchPresenter;
-        var $receiver = $this.ranges;
-        var destination = ArrayList_init_0();
-        var tmp$;
-        tmp$ = $receiver.iterator();
-        while (tmp$.hasNext()) {
-          var element = tmp$.next();
-          var list = element;
-          addAll(destination, list);
-        }
-        var tmp$_0;
-        tmp$_0 = destination.iterator();
-        while (tmp$_0.hasNext()) {
-          var element_0 = tmp$_0.next();
-          var this$HtmlView_0 = this$HtmlView;
-          var closure$cssClass_0 = closure$cssClass;
-          removeClass(this$HtmlView_0.inputCharacterSpans_0.get_za3lpa$(element_0), [closure$cssClass_0]);
-        }
-      }return Unit;
+      return HtmlView$Companion_getInstance().MATCH_PRESENTER_CSS_CLASS.get_za3lpa$(ensureNotNull(closure$indices.get_11rb$(row)) % HtmlView$Companion_getInstance().MATCH_PRESENTER_CSS_CLASS.size);
     };
   }
   HtmlView.prototype.showResults_70lhc2$ = function (matches) {
     var indices = LinkedHashMap_init();
-    var classes = listOf(['primary', 'success', 'danger', 'warning']);
-    var nextCssClass = HtmlView$showResults$nextCssClass(indices, classes);
+    var nextCssClass = HtmlView$showResults$nextCssClass(indices);
     clear(this.rowContainer_0);
     this.matchPresenterToRowIndex_0.clear();
     this.matchPresenterToRowIndex_0.putAll_a2k3zr$(this.distributeToRows_0(matches));
     var rowElements = LinkedHashMap_init();
-    var $receiver = this.matchPresenterToRowIndex_0;
-    var destination = ArrayList_init($receiver.size);
     var tmp$;
-    tmp$ = $receiver.entries.iterator();
+    tmp$ = this.matchPresenterToRowIndex_0.entries.iterator();
     while (tmp$.hasNext()) {
-      var item = tmp$.next();
-      var tmp$_0 = destination.add_11rb$;
-      var matchPresenter = item.key;
-      var rowIndex = item.value;
-      var tmp$_1;
-      var value = (tmp$_1 = rowElements.get_11rb$(rowIndex)) != null ? tmp$_1 : this.createRowElement_0();
+      var element = tmp$.next();
+      var matchPresenter = element.key;
+      var rowIndex = element.value;
+      var tmp$_0;
+      var value = (tmp$_0 = rowElements.get_11rb$(rowIndex)) != null ? tmp$_0 : this.createRowElement_0();
       rowElements.put_xwzc9p$(rowIndex, value);
       var rowElement = ensureNotNull(rowElements.get_11rb$(rowIndex));
-      var $receiver_0 = get_create(document);
-      var classes_0 = HtmlView$Companion_getInstance().CLASS_MATCH_ITEM;
-      var tmp$_2;
-      var element = Kotlin.isType(tmp$_2 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', classes_0), $receiver_0), $receiver_0, visitAndFinalize$lambda_0(HtmlView$showResults$lambda$lambda(matchPresenter, this))), HTMLDivElement_0) ? tmp$_2 : throwCCE();
-      rowElement.appendChild(element);
       var cssClass = nextCssClass(rowIndex);
-      addClass(element, [cssClass]);
-      element.style.left = this.toCharacterUnits_0(matchPresenter.first);
-      element.style.width = this.toCharacterUnits_0(matchPresenter.length);
-      if (matchPresenter.ranges.size === 2) {
-        element.style.borderLeftWidth = this.toCharacterUnits_0(matchPresenter.ranges.get_za3lpa$(0).last - matchPresenter.ranges.get_za3lpa$(0).first + 1 | 0);
-        element.style.borderRightWidth = this.toCharacterUnits_0(matchPresenter.ranges.get_za3lpa$(1).last - matchPresenter.ranges.get_za3lpa$(1).first + 1 | 0);
-      }matchPresenter.onSelectedChanged = HtmlView$showResults$lambda$lambda_0(element, matchPresenter, this);
-      matchPresenter.onDeactivatedChanged = HtmlView$showResults$lambda$lambda_1(element);
-      element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_SELECTED, matchPresenter.selected);
-      element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated);
-      element.addEventListener(HtmlView$Companion_getInstance().EVENT_MOUSE_ENTER, HtmlView$showResults$lambda$lambda_2(matchPresenter, this, cssClass));
-      element.addEventListener(HtmlView$Companion_getInstance().EVENT_MOUSE_LEAVE, HtmlView$showResults$lambda$lambda_3(matchPresenter, this, cssClass));
-      tmp$_0.call(destination, Unit);
+      var element_0 = this.createMatchPresenterElement_0(matchPresenter);
+      rowElement.appendChild(element_0);
+      this.applyCssStyling_0(matchPresenter, element_0, cssClass);
+      this.applyListenersForUserInput_0(matchPresenter, element_0, cssClass);
     }
+    this.animateResultDisplaySize_0(rowElements);
   };
   function HtmlView$distributeToRows$createNextLine(closure$lines) {
     return function () {
@@ -2345,7 +2197,199 @@ if (typeof kotlin === 'undefined') {
     var $receiver = get_create(document);
     var classes = HtmlView$Companion_getInstance().CLASS_MATCH_ROW;
     var tmp$_1;
-    return Kotlin.isType(tmp$ = tmp$_0.appendChild(Kotlin.isType(tmp$_1 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', classes), $receiver), $receiver, visitAndFinalize$lambda_0(div$lambda_0)), HTMLDivElement_0) ? tmp$_1 : throwCCE()), HTMLDivElement) ? tmp$ : throwCCE();
+    return Kotlin.isType(tmp$ = tmp$_0.appendChild(Kotlin.isType(tmp$_1 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', classes), $receiver), $receiver, visitAndFinalize$lambda_0(div$lambda)), HTMLDivElement_0) ? tmp$_1 : throwCCE()), HTMLDivElement) ? tmp$ : throwCCE();
+  };
+  function HtmlView$createMatchPresenterElement$lambda$lambda$lambda$lambda$lambda$lambda(this$HtmlView, closure$match) {
+    return function (event) {
+      this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(closure$match);
+      event.stopPropagation();
+      return Unit;
+    };
+  }
+  function HtmlView$createMatchPresenterElement$lambda$lambda$lambda$lambda$lambda(closure$match, this$HtmlView) {
+    return function ($receiver) {
+      $receiver.unaryPlus_pdl1vz$(closure$match.title);
+      set_onClickFunction($receiver, HtmlView$createMatchPresenterElement$lambda$lambda$lambda$lambda$lambda$lambda(this$HtmlView, closure$match));
+      return Unit;
+    };
+  }
+  function HtmlView$createMatchPresenterElement$lambda$lambda$lambda$lambda(closure$match, this$HtmlView) {
+    return function ($receiver) {
+      var block = HtmlView$createMatchPresenterElement$lambda$lambda$lambda$lambda$lambda(closure$match, this$HtmlView);
+      visitTag(new A_init(attributesMapOf_0(['href', null, 'target', null, 'class', null]), $receiver.consumer), visit$lambda(block));
+      return Unit;
+    };
+  }
+  function HtmlView$createMatchPresenterElement$lambda$lambda(closure$matchPresenter, this$HtmlView) {
+    return function ($receiver) {
+      var $receiver_0 = closure$matchPresenter.recognizerMatches;
+      var tmp$;
+      tmp$ = $receiver_0.iterator();
+      while (tmp$.hasNext()) {
+        var element = tmp$.next();
+        var this$HtmlView_0 = this$HtmlView;
+        visitTag(new DIV_init(attributesMapOf('class', 'rg-recognizer'), $receiver.consumer), visit$lambda_0(HtmlView$createMatchPresenterElement$lambda$lambda$lambda$lambda(element, this$HtmlView_0)));
+      }
+      return Unit;
+    };
+  }
+  function HtmlView$createMatchPresenterElement$lambda$lambda_0(closure$matchPresenter, this$HtmlView) {
+    return function (it) {
+      var tmp$;
+      if (closure$matchPresenter.selected) {
+        if ((tmp$ = closure$matchPresenter.selectedMatch) != null) {
+          this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(tmp$);
+        }} else if (closure$matchPresenter.recognizerMatches.size === 1)
+        this$HtmlView.presenter_0.onSuggestionClick_hdji9c$(closure$matchPresenter.recognizerMatches.iterator().next());
+      return Unit;
+    };
+  }
+  function HtmlView$createMatchPresenterElement$lambda(closure$matchPresenter, this$HtmlView) {
+    return function ($receiver) {
+      var classes = 'rg-match-item-overlay';
+      var block = HtmlView$createMatchPresenterElement$lambda$lambda(closure$matchPresenter, this$HtmlView);
+      visitTag(new DIV_init(attributesMapOf('class', classes), $receiver.consumer), visit$lambda_0(block));
+      set_onClickFunction($receiver, HtmlView$createMatchPresenterElement$lambda$lambda_0(closure$matchPresenter, this$HtmlView));
+      return Unit;
+    };
+  }
+  HtmlView.prototype.createMatchPresenterElement_0 = function (matchPresenter) {
+    var $receiver = get_create(document);
+    var classes = HtmlView$Companion_getInstance().CLASS_MATCH_ITEM;
+    var tmp$;
+    return Kotlin.isType(tmp$ = visitTagAndFinalize(new DIV_init(attributesMapOf('class', classes), $receiver), $receiver, visitAndFinalize$lambda_0(HtmlView$createMatchPresenterElement$lambda(matchPresenter, this))), HTMLDivElement_0) ? tmp$ : throwCCE();
+  };
+  function HtmlView$applyCssStyling$lambda(closure$element, closure$matchPresenter, this$HtmlView) {
+    return function (selected) {
+      closure$element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_SELECTED, selected);
+      var $this = closure$matchPresenter;
+      var $receiver = $this.ranges;
+      var destination = ArrayList_init_0();
+      var tmp$;
+      tmp$ = $receiver.iterator();
+      while (tmp$.hasNext()) {
+        var element = tmp$.next();
+        var list = element;
+        addAll(destination, list);
+      }
+      var tmp$_0;
+      tmp$_0 = destination.iterator();
+      while (tmp$_0.hasNext()) {
+        var element_0 = tmp$_0.next();
+        this$HtmlView.inputCharacterSpans_0.get_za3lpa$(element_0).classList.toggle(HtmlView$Companion_getInstance().CLASS_CHAR_SELECTED, selected);
+      }
+      return Unit;
+    };
+  }
+  function HtmlView$applyCssStyling$lambda_0(closure$element) {
+    return function (deactivated) {
+      closure$element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_NOT_AVAILABLE, deactivated);
+      return Unit;
+    };
+  }
+  HtmlView.prototype.applyCssStyling_0 = function (matchPresenter, element, cssClass) {
+    addClass(element, [cssClass]);
+    element.style.left = this.toCharacterUnits_0(matchPresenter.first);
+    element.style.width = this.toCharacterUnits_0(matchPresenter.length);
+    if (matchPresenter.ranges.size === 2) {
+      element.style.borderLeftWidth = this.toCharacterUnits_0(matchPresenter.ranges.get_za3lpa$(0).last - matchPresenter.ranges.get_za3lpa$(0).first + 1 | 0);
+      element.style.borderRightWidth = this.toCharacterUnits_0(matchPresenter.ranges.get_za3lpa$(1).last - matchPresenter.ranges.get_za3lpa$(1).first + 1 | 0);
+    }element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_SELECTED, matchPresenter.selected);
+    element.classList.toggle(HtmlView$Companion_getInstance().CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated);
+    matchPresenter.onSelectedChanged = HtmlView$applyCssStyling$lambda(element, matchPresenter, this);
+    matchPresenter.onDeactivatedChanged = HtmlView$applyCssStyling$lambda_0(element);
+  };
+  function HtmlView$applyListenersForUserInput$lambda(closure$matchPresenter, this$HtmlView, closure$cssClass) {
+    return function (it) {
+      if (closure$matchPresenter.availableForHighlight) {
+        var $this = closure$matchPresenter;
+        var $receiver = $this.ranges;
+        var destination = ArrayList_init_0();
+        var tmp$;
+        tmp$ = $receiver.iterator();
+        while (tmp$.hasNext()) {
+          var element = tmp$.next();
+          var list = element;
+          addAll(destination, list);
+        }
+        var tmp$_0;
+        tmp$_0 = destination.iterator();
+        while (tmp$_0.hasNext()) {
+          var element_0 = tmp$_0.next();
+          var this$HtmlView_0 = this$HtmlView;
+          var closure$cssClass_0 = closure$cssClass;
+          addClass(this$HtmlView_0.inputCharacterSpans_0.get_za3lpa$(element_0), [closure$cssClass_0]);
+        }
+      }return Unit;
+    };
+  }
+  function HtmlView$applyListenersForUserInput$lambda_0(closure$matchPresenter, this$HtmlView, closure$cssClass) {
+    return function (it) {
+      if (closure$matchPresenter.availableForHighlight) {
+        var $this = closure$matchPresenter;
+        var $receiver = $this.ranges;
+        var destination = ArrayList_init_0();
+        var tmp$;
+        tmp$ = $receiver.iterator();
+        while (tmp$.hasNext()) {
+          var element = tmp$.next();
+          var list = element;
+          addAll(destination, list);
+        }
+        var tmp$_0;
+        tmp$_0 = destination.iterator();
+        while (tmp$_0.hasNext()) {
+          var element_0 = tmp$_0.next();
+          var this$HtmlView_0 = this$HtmlView;
+          var closure$cssClass_0 = closure$cssClass;
+          removeClass(this$HtmlView_0.inputCharacterSpans_0.get_za3lpa$(element_0), [closure$cssClass_0]);
+        }
+      }return Unit;
+    };
+  }
+  HtmlView.prototype.applyListenersForUserInput_0 = function (matchPresenter, element, cssClass) {
+    element.addEventListener(HtmlView$Companion_getInstance().EVENT_MOUSE_ENTER, HtmlView$applyListenersForUserInput$lambda(matchPresenter, this, cssClass));
+    element.addEventListener(HtmlView$Companion_getInstance().EVENT_MOUSE_LEAVE, HtmlView$applyListenersForUserInput$lambda_0(matchPresenter, this, cssClass));
+  };
+  HtmlView.prototype.animateResultDisplaySize_0 = function (rows) {
+    var newHeight = this.computeMatchPresenterAreaHeight_0(rows).toString() + 'px';
+    var jqRowContainer = $(this.rowContainer_0);
+    jqRowContainer.stop();
+    jqRowContainer.animate(json([to('height', newHeight)]), 350);
+  };
+  HtmlView.prototype.computeMatchPresenterAreaHeight_0 = function (rows) {
+    var tmp$;
+    var destination = ArrayList_init(rows.size);
+    var tmp$_0;
+    tmp$_0 = rows.entries.iterator();
+    while (tmp$_0.hasNext()) {
+      var item = tmp$_0.next();
+      destination.add_11rb$(this.computeMatchPresenterBottomLine_0(item.key, item.value));
+    }
+    return 8 + ((tmp$ = maxOrNull(destination)) != null ? tmp$ : 0) | 0;
+  };
+  HtmlView.prototype.computeMatchPresenterBottomLine_0 = function (rowIndex, element) {
+    var jqElement = $(element);
+    var overlayHeight = this.getHeight_0(jqElement.find('.rg-match-item-overlay'));
+    var parentHeight = jqElement.height();
+    return overlayHeight + Kotlin.imul(parentHeight, rowIndex + 1 | 0) | 0;
+  };
+  function HtmlView$getHeight$lambda(closure$maxHeight) {
+    return function (jq) {
+      var tmp$ = closure$maxHeight;
+      var a = closure$maxHeight.v;
+      var b = jq.height();
+      tmp$.v = Math_0.max(a, b);
+      return Unit;
+    };
+  }
+  HtmlView.prototype.getHeight_0 = function (elements) {
+    var previousCss = elements.attr('style');
+    elements.css('position:absolute;visibility:hidden;display:block !important;');
+    var maxHeight = {v: 0};
+    HtmlView$Companion_getInstance().each_nnoasy$(elements, HtmlView$getHeight$lambda(maxHeight));
+    elements.attr('style', previousCss != null ? previousCss : '');
+    return maxHeight.v;
   };
   Object.defineProperty(HtmlView.prototype, 'options', {
     configurable: true,
@@ -2402,7 +2446,18 @@ if (typeof kotlin === 'undefined') {
     this.ID_DIV_LANGUAGES = 'rg_language_accordion';
     this.ID_ANCHOR_REGEX101 = 'rg_anchor_regex101';
     this.ID_ANCHOR_REGEXR = 'rg_anchor_regexr';
+    this.MATCH_PRESENTER_CSS_CLASS = listOf(['bg-primary', 'bg-success', 'bg-danger', 'bg-warning']);
+    this.MAGIC_HEIGHT = 8;
   }
+  function HtmlView$Companion$each$lambda(closure$function) {
+    return function (f, htmlElement) {
+      closure$function($(htmlElement));
+      return Unit;
+    };
+  }
+  HtmlView$Companion.prototype.each_nnoasy$ = function ($receiver, function_0) {
+    $receiver.each(HtmlView$Companion$each$lambda(function_0));
+  };
   HtmlView$Companion.$metadata$ = {
     kind: Kind_OBJECT,
     simpleName: 'Companion',
@@ -2532,8 +2587,8 @@ if (typeof kotlin === 'undefined') {
     parent.appendChild(Kotlin.isType(tmp$_1 = visitTagAndFinalize(new DIV_init(attributesMapOf('class', 'card'), $receiver), $receiver, visitAndFinalize$lambda_1(LanguageCard_init$lambda(this))), HTMLDivElement_0) ? tmp$_1 : throwCCE());
     this.codeElement_0 = Kotlin.isType(tmp$ = document.getElementById(this.codeElementId_0), HTMLElement) ? tmp$ : throwCCE();
     this.bodyElement_0 = Kotlin.isType(tmp$_0 = document.getElementById(this.bodyElementId_0), HTMLElement) ? tmp$_0 : throwCCE();
-    jQuery(this.bodyElement_0).on('shown.bs.collapse', LanguageCard_init$lambda_0(this));
-    jQuery(this.bodyElement_0).on('hidden.bs.collapse', LanguageCard_init$lambda_1(this));
+    $(this.bodyElement_0).on('shown.bs.collapse', LanguageCard_init$lambda_0(this));
+    $(this.bodyElement_0).on('hidden.bs.collapse', LanguageCard_init$lambda_1(this));
   }
   Object.defineProperty(LanguageCard.prototype, 'bodyElementId_0', {
     configurable: true,
@@ -3164,7 +3219,6 @@ if (typeof kotlin === 'undefined') {
   package$js.StepDefinition = StepDefinition;
   package$js.Popover = Popover;
   package$js.defineSteps_es8tl7$ = defineSteps;
-  package$js.jQuery_lt8gi4$ = jQuery;
   BracketedRecognizer.CenterPattern = BracketedRecognizer$CenterPattern;
   var package$regex_0 = package$generator.regex || (package$generator.regex = {});
   package$regex_0.BracketedRecognizer = BracketedRecognizer;
