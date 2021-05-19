@@ -50,11 +50,6 @@ class RecognizerMatch(
         result = 31 * result + length
         return result
     }
-
-    data class PatternWithRange(
-        val pattern: String,
-        val range: IntRange
-    )
 }
 
 

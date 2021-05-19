@@ -42,7 +42,7 @@ internal object ApplicationSettings {
         }
     }
 
-    // conveniance
+    // convenience
     private fun set(key: String, value: Int) = set(key, value.toString())
     private fun set(key: String, value: Boolean) = set(key, value.toString())
 

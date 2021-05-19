@@ -4,7 +4,7 @@ import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.regex.BracketedRecognizer.CenterPattern
 
 object RecognizerRegistry {
-    private val recognizers = listOf<Recognizer>(
+    private val recognizers = listOf(
         EchoRecognizer("Character", ".", priority = 1),
         SimpleRecognizer("One whitespace", "\\s"),
         SimpleRecognizer("Whitespaces", "\\s+"),
@@ -103,7 +103,7 @@ object RecognizerRegistry {
                 val startMatch = combination.leftParent.leftParent
                 val mainMatches = listOf(combination.element[0], combination.leftParent.rightParent)
                 SimpleRecognizer(
-                    name = "Combi [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
+                    name = "Combination [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
                     outputPattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)"
                 )
             }

@@ -52,8 +52,7 @@ class HtmlView(
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     private val languageDisplays = CodeGenerator.all
-        .map { it to LanguageCard(it, containerLanguages) }
-        .toMap()
+        .associateWith { LanguageCard(it, containerLanguages) }
 
     private val driver = Driver(js("{}"))
 
@@ -139,12 +138,12 @@ class HtmlView(
         return matches
             .sortedWith(MatchPresenter.byPriorityAndPosition)
             .flatMap { pres -> pres.ranges.map { pres to it } }
-            .map { pair ->
+            .associate { pair ->
                 val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }
                 val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
                 lines[line] = pair.second.last
                 pair.first to line
-            }.toMap()
+            }
     }
 
     private fun createRowElement(): HTMLDivElement =
