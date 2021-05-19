@@ -5,19 +5,15 @@
     <groupId>org.olafneumann</groupId>
     <artifactId>regex-generator</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>RegexGenerator</name>
-
-    <modules>
-        <module>regex-generator-web</module>
-    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <github.pages.directory>gh-pages</github.pages.directory>
-        <github.pages.cname>regex-generator.olafneumann.org</github.pages.cname>
+        <github.pages.directory-name>gh-pages</github.pages.directory-name>
+        <github.pages.directory>${basedir}/${github.pages.directory-name}/</github.pages.directory>
 
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.version>1.4.32</kotlin.version>
@@ -32,6 +28,16 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-js</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-html-js</artifactId>
+            <version>0.7.2</version>
         </dependency>
     </dependencies>
 
@@ -187,5 +193,105 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${github.pages.directory}</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>js</goal>
+                        </goals>
+                        <configuration>
+                            <sourceMap>true
+                            </sourceMap> <!-- source map is useful for debugging in tools that support source maps -->
+                            <outputFile>${project.build.outputDirectory}/${project.artifactId}.js</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- unpack kotlin.js to target/classes/lib for example index.html -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>extract-kotlinjs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeArtifactIds>kotlin-stdlib-js</includeArtifactIds>
+                            <outputDirectory>${project.build.outputDirectory}/lib</outputDirectory>
+                            <includes>**\/*.js</includes>
+                            <excludes>**\/*.meta.js
+                            </excludes>                            <!-- we don't need meta.js files in runtime -->
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>extract-kotlinx-html-js</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeArtifactIds>kotlinx-html-js</includeArtifactIds>
+                            <outputDirectory>${project.build.outputDirectory}/lib</outputDirectory>
+                            <includes>**\/*.js</includes>
+                            <excludes>**\/*.meta.js
+                            </excludes>                            <!-- we don't need meta.js files in runtime -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-docs</id>
+                        <!-- here the phase you need -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${github.pages.directory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/target/classes</directory>
+                                    <includes>
+                                        <include>index.html</include>
+                                        <include>regex-generator.js</include>
+                                        <include>prism.js</include>
+                                        <include>lib/**/*</include>
+                                        <include>**/*.css</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
