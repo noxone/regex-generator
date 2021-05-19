@@ -13,16 +13,22 @@ object RecognizerRegistry {
         SimpleRecognizer("Digit", "\\d"),
         SimpleRecognizer("Number", "[0-9]+"),
         SimpleRecognizer("Decimal number", "[0-9]*\\.[0-9]+"),
+        SimpleRecognizer("Floating point number (with optional exponent)", "([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?"),
+        SimpleRecognizer("URL encoded character", "%[0-9A-Fa-f][0-9A-Fa-f]"),
         SimpleRecognizer("Day", "(0?[1-9]|[12][0-9]|3[01])", searchPattern = "(?:^|\\D)(%s)($|\\D)"),
         SimpleRecognizer("Month", "(0?[1-9]|[1][0-2])", searchPattern = "(?:^|\\D)(%s)($|\\D)"),
-        // TODO hour, minute/ second, degree
+        SimpleRecognizer("Hour", "(0?[0-9]|1[0-9]|2[0-3])", searchPattern = "(?:^|\\D)(%s)($|\\D)"),
+        SimpleRecognizer("Minute/ Second", "(0?[0-9]|[1-5][0-9])", searchPattern = "(?:^|\\D)(%s)($|\\D)"),
         SimpleRecognizer("Date", "[0-9]{4}-[0-9]{2}-[0-9]{2}"),
         SimpleRecognizer("Time", "[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?"),
         SimpleRecognizer(
             "ISO8601",
             "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?"
         ),
+        SimpleRecognizer("RFC2822 e-mail", "[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"),
+        SimpleRecognizer("IPv4 address","\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b"),
         SimpleRecognizer("Hashtag", "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
+        SimpleRecognizer("Simple CSS Color", "#(?:[a-f\\d]{3}){1,2}\\b"),
         SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)"),
         BracketedRecognizer(
             "Round brackets", "\\(",
