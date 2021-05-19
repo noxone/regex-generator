@@ -37,14 +37,14 @@ object RecognizerRegistry {
             listOf(
                 CenterPattern("no square bracket", "[^\\]]*")
                 //,CenterPattern("escaped square bracket", "(?:[^\\]]|\\\\\\])*")
-            ), "]", "(\\[)([^\\]]*)(])"
+            ), "\\]", "(\\[)([^\\]]*)(\\])"
         ),
         BracketedRecognizer(
             "Curly braces", "\\{",
             listOf(
                 CenterPattern("no curly braces", "[^}]*")
                 //,CenterPattern("escaped curly braces", "(?:[^}]|\\\\})*")
-            ), "}", "(\\{)([^}]*)(})"
+            ), "\\}", "(\\{)([^}]*)(\\})"
         ),
         BracketedRecognizer(
             "String (quotation mark)", "\"",
