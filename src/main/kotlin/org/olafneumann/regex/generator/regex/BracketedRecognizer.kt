@@ -13,17 +13,35 @@ class BracketedRecognizer(
 ) : Recognizer {
     private val searchRegex by lazy { Regex(searchPattern) }
 
-    override fun findMatches(input: String): List<RecognizerMatch> =
-        searchRegex.findAll(input)
-            .toList()
-            .flatMap { handleResult(input, it) }
+    override fun findMatches(input: String): Collection<RecognizerMatch> {
+        // TODO cache regex's
+        // add generic center patterns
+        val output = mutableSetOf<RecognizerMatch>()
+        var sizeBefore = 0
+        do {
+            sizeBefore = output.size
+            val startIndices = output.map { it.ranges[0].first + 1 }.ifEmpty { listOf(0) }
+            startIndices.forEach { startIndex ->
+                output.addAll(centerPatterns
+                    .associateWith { "(${startPattern})(${it.pattern})(${endPattern})" }
+                    .mapValues { Regex(it.value) }
+                    .mapValues { it.value.findAll(input = input, startIndex = startIndex).toList() }
+                    .mapValues { it.value.flatMap { result -> doStuff(input, it.key, result) } }
+                    .flatMap { it.value }
+                )
+            }
+        } while (output.size != sizeBefore)
+
+        // TODO restart search earlier if start and end pattern are equal
+        return output
+    }
 
     // TODO allow different center patterns
-    private fun handleResult(input: String, result: MatchResult): List<RecognizerMatch> {
+    private fun doStuff(input: String, centerPattern: CenterPattern, result: MatchResult): List<RecognizerMatch> {
         val startGroup = result.groups[startGroupIndex] ?: throw RuntimeException("start group cannot be found")
         val endGroup = result.groups[endGroupIndex] ?: throw RuntimeException("end group cannot be found")
-        val startIndex = getStartOfFirstGroup(input, startGroup.value)
-        val endIndex = getEndOfLastGroup(input, endGroup.value)
+        val startIndex = getStartOfFirstGroup(input, result.range.first, startGroup.value)
+        val endIndex = getEndOfLastGroup(input, result.range.last, endGroup.value)
         val startRange = IntRange(startIndex, startIndex + startGroup.value.length - 1)
         val centerRange = IntRange(startIndex + startGroup.value.length, endIndex - 1)
         val endRange = IntRange(endIndex, endIndex + endGroup.value.length - 1)
@@ -35,24 +53,19 @@ class BracketedRecognizer(
             recognizer = this,
             title = name
         )
-        // then the match for the inner stuff
-        val innerMatches = centerPatterns.map {centerPattern ->
-                RecognizerMatch(
-                    patterns = listOf(centerPattern.pattern),
-                    ranges = listOf(centerRange),
-                    recognizer = this,
-                    title = "$name (${centerPattern.title.ifEmpty { "center part" }})"
-                )
-            }
 
-        // combine all matches
-        val mutableList = mutableListOf(outerMatch)
-        mutableList.addAll(innerMatches)
-        return mutableList
+        val innerMatch = RecognizerMatch(
+            patterns = listOf(centerPattern.pattern),
+            ranges = listOf(centerRange),
+            recognizer = this,
+            title = "$name (${centerPattern.title.ifEmpty { "center part" }})"
+        )
+
+        return mutableListOf(outerMatch, innerMatch)
     }
 
-    private fun getStartOfFirstGroup(input: String, group: String) = input.indexOf(group)
-    private fun getEndOfLastGroup(input: String, group: String) = input.lastIndexOf(group)
+    private fun getStartOfFirstGroup(input: String, startIndex: Int, group: String) = input.indexOf(group, startIndex = startIndex)
+    private fun getEndOfLastGroup(input: String, endIndex: Int, group: String) = input.lastIndexOf(group, startIndex = endIndex)
 
     data class CenterPattern(
         val title: String,

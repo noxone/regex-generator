@@ -34,7 +34,6 @@ object RecognizerRegistry {
             "Round brackets", "\\(",
             listOf(
                 CenterPattern("no round bracket", "[^)]*")
-                //,CenterPattern("escaped round bracket", "(?:[^)]|\\\\))*")
             ),
             "\\)", "(\\()([^)]*)(\\))"
         ),
@@ -42,21 +41,19 @@ object RecognizerRegistry {
             "Square brackets", "\\[",
             listOf(
                 CenterPattern("no square bracket", "[^\\]]*")
-                //,CenterPattern("escaped square bracket", "(?:[^\\]]|\\\\\\])*")
             ), "\\]", "(\\[)([^\\]]*)(\\])"
         ),
         BracketedRecognizer(
             "Curly braces", "\\{",
             listOf(
                 CenterPattern("no curly braces", "[^}]*")
-                //,CenterPattern("escaped curly braces", "(?:[^}]|\\\\})*")
             ), "\\}", "(\\{)([^}]*)(\\})"
         ),
         BracketedRecognizer(
             "String (quotation mark)", "\"",
             listOf(
                 CenterPattern("no quotation mark", "[^\"]*"),
-                CenterPattern("escaped quotation mark", "(?:[^\"]|\\\\')*")
+                CenterPattern("escaped quotation mark", "(?:[^\\\\\"]|\\\\\\\\|\\\\\")*")
             ),
             "\"", "(\")([^\"]*)(\")"
         ),
@@ -64,7 +61,7 @@ object RecognizerRegistry {
             "String (apostrophe)", "'",
             listOf(
                 CenterPattern("no apostrophe", "[^']*"),
-                CenterPattern("escaped apostrophe", "(?:[^']|\\\\')*")
+                CenterPattern("escaped apostrophe", "(?:[^\\\\']|\\\\\\\\|\\\\')*")
             ),
             "'", "(')([^']*)(')"
         )
