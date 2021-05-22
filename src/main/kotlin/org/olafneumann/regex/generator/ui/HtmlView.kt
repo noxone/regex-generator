@@ -137,12 +137,11 @@ class HtmlView(
         }
         return matches
             .sortedWith(MatchPresenter.byPriorityAndPosition)
-            .flatMap { pres -> pres.ranges.map { pres to it } }
-            .associate { pair ->
-                val indexOfFreeLine = lines.indexOfFirst { it < pair.second.first }
+            .associateWith { presenter ->
+                val indexOfFreeLine = lines.indexOfFirst { it < presenter.first }
                 val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
-                lines[line] = pair.second.last
-                pair.first to line
+                lines[line] = presenter.last
+                line
             }
     }
 

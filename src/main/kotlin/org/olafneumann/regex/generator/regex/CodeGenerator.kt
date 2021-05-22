@@ -114,7 +114,7 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\\"])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String = combineOptions(
         options,
@@ -136,7 +136,7 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\\"])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String = combineOptions(
         options,
@@ -167,8 +167,8 @@ function useRegex(${'$'}input) {
 ) {
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern
-            .replace(Regex("([\\\\'])"), "\\$1")
-            .replace(Regex("\t"), "\\t")
+            .replace(RegexCache.get("([\\\\'])"), "\\$1")
+            .replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(options, "i", "m", "s")
@@ -237,7 +237,7 @@ public class Sample
 
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\\"])"), "\\$1").replace(Regex("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\\"])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(
@@ -260,7 +260,7 @@ end"""
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(Regex("([\\\\'])"), "\\$1").replace(Regex("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\'])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         combineOptions(

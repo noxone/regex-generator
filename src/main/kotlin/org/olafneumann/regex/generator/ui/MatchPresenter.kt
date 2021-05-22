@@ -26,18 +26,16 @@ class MatchPresenter(
         ranges = listOfMatches[0].ranges
     }
 
-    override val first = ranges.first().first
-    override val last = ranges.last().last
-    override val length = last - first + 1
+    override val first = ranges.minOf { it.first }
+    override val last = ranges.maxOf { it.last }
 
     val priority = recognizerMatches.maxOf { it.priority }
 
-    //private var _selected: Boolean by Delegates.observable(selected) { _, _, new -> onSelectedChanged(new) }
     var selectedMatch: RecognizerMatch? by Delegates.observable(selectedMatch)
-    { _, _, new -> onSelectedChanged(new != null) }
+        { _, _, new -> onSelectedChanged(new != null) }
     val selected get() = this.selectedMatch != null
     var deactivated: Boolean by Delegates.observable(deactivated)
-    { _, _, new -> onDeactivatedChanged(new) }
+        { _, _, new -> onDeactivatedChanged(new) }
 
 
     val availableForHighlight: Boolean get() = !deactivated && !selected
