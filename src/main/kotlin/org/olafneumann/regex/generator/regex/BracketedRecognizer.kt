@@ -11,7 +11,7 @@ class BracketedRecognizer(
     override val description: String? = null,
     override val active: Boolean = true
 ) : Recognizer {
-    private val searchRegex by lazy { RegexCache.get(searchPattern) }
+    private val searchRegex = RegexCache.get(searchPattern)
 
     override fun findMatches(input: String): Collection<RecognizerMatch> {
         // TODO cache regex's
