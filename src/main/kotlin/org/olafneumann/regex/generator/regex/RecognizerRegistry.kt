@@ -29,41 +29,48 @@ object RecognizerRegistry {
         SimpleRecognizer("IPv4 address","\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b"),
         SimpleRecognizer("Hashtag", "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
         SimpleRecognizer("Simple CSS Color", "#(?:[a-f\\d]{3}){1,2}\\b"),
-        SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)"),
+        SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|SEVERE|FATAL)"),
         BracketedRecognizer(
-            "Round brackets", "\\(",
-            listOf(
+            name = "Round brackets",
+            startPattern = "\\(",
+            endPattern = "\\)",
+            centerPatterns = listOf(
                 CenterPattern("no round bracket", "[^)]*")
             ),
-            "\\)", "(\\()([^)]*)(\\))"
         ),
         BracketedRecognizer(
-            "Square brackets", "\\[",
-            listOf(
+            name = "Square brackets",
+            startPattern = "\\[",
+            endPattern = "\\]",
+            centerPatterns = listOf(
                 CenterPattern("no square bracket", "[^\\]]*")
-            ), "\\]", "(\\[)([^\\]]*)(\\])"
+            )
         ),
         BracketedRecognizer(
-            "Curly braces", "\\{",
-            listOf(
+            name = "Curly braces",
+            startPattern = "\\{",
+            endPattern = "\\}",
+            centerPatterns = listOf(
                 CenterPattern("no curly braces", "[^}]*")
-            ), "\\}", "(\\{)([^}]*)(\\})"
+            )
         ),
         BracketedRecognizer(
-            "String (quotation mark)", "\"",
-            listOf(
+            name = "String (quotation mark)",
+            startPattern = "\"",
+            endPattern = "\"",
+            centerPatterns = listOf(
                 CenterPattern("no quotation mark", "[^\"]*"),
                 CenterPattern("escaped quotation mark", "(?:[^\\\\\"]|\\\\\\\\|\\\\\")*")
-            ),
-            "\"", "(\")([^\"]*)(\")"
+            )
         ),
         BracketedRecognizer(
-            "String (apostrophe)", "'",
-            listOf(
+            name = "String (apostrophe)",
+            startPattern = "'",
+            endPattern = "'",
+            centerPatterns = listOf(
                 CenterPattern("no apostrophe", "[^']*"),
                 CenterPattern("escaped apostrophe", "(?:[^\\\\']|\\\\\\\\|\\\\')*")
-            ),
-            "'", "(')([^']*)(')"
+            )
         )
     )
 

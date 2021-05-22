@@ -3,19 +3,16 @@ package org.olafneumann.regex.generator.regex
 class BracketedRecognizer(
     override val name: String,
     private val startPattern: String,
-    private val centerPatterns: List<CenterPattern>,
     private val endPattern: String,
-    private val searchPattern: String,
+    private val centerPatterns: List<CenterPattern>,
     private val startGroupIndex: Int = 1,
     private val endGroupIndex: Int = 3,
     override val description: String? = null,
     override val active: Boolean = true
 ) : Recognizer {
-    private val searchRegex = RegexCache.get(searchPattern)
-
     override fun findMatches(input: String): Collection<RecognizerMatch> {
         val output = mutableSetOf<RecognizerMatch>()
-        var sizeBefore = 0
+        var sizeBefore: Int
         do {
             sizeBefore = output.size
             val startIndices = output.map { it.ranges[0].first + 1 }.ifEmpty { listOf(0) }
