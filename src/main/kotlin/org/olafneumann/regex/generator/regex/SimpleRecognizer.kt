@@ -8,7 +8,7 @@ class SimpleRecognizer(
     private val searchPattern: String? = null,
     private val mainGroupIndex: Int = 1
 ) : Recognizer {
-    private val searchRegex by lazy { Regex(searchPattern?.replace("%s", outputPattern) ?: "($outputPattern)") }
+    private val searchRegex by lazy { RegexCache.get(searchPattern?.replace("%s", outputPattern) ?: "($outputPattern)") }
 
 
     override fun findMatches(input: String): List<RecognizerMatch> =

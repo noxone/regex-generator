@@ -11,7 +11,7 @@ class BracketedRecognizer(
     override val description: String? = null,
     override val active: Boolean = true
 ) : Recognizer {
-    private val searchRegex by lazy { Regex(searchPattern) }
+    private val searchRegex by lazy { RegexCache.get(searchPattern) }
 
     override fun findMatches(input: String): Collection<RecognizerMatch> {
         // TODO cache regex's
@@ -24,7 +24,7 @@ class BracketedRecognizer(
             startIndices.forEach { startIndex ->
                 output.addAll(centerPatterns
                     .associateWith { "(${startPattern})(${it.pattern})(${endPattern})" }
-                    .mapValues { Regex(it.value) }
+                    .mapValues { RegexCache.get(it.value) }
                     .mapValues { it.value.findAll(input = input, startIndex = startIndex).toList() }
                     .mapValues { it.value.flatMap { result -> doStuff(input, it.key, result) } }
                     .flatMap { it.value }

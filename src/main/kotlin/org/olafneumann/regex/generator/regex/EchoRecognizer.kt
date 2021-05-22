@@ -8,7 +8,7 @@ class EchoRecognizer(
     private val priority: Int = 0
 ) : Recognizer {
     override fun findMatches(input: String): List<RecognizerMatch> =
-        Regex(pattern).findAll(input)
+        RegexCache.get(pattern).findAll(input)
             .map { result ->
                 RecognizerMatch(
                     patterns = listOf(PatternHelper.escapeForRegex(result.value)),

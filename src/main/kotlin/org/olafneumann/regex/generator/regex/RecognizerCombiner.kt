@@ -97,6 +97,6 @@ class RecognizerCombiner {
     data class RegularExpression(
         val pattern: String
     ) {
-        val regex: Regex by lazy { Regex(pattern) }
+        val regex: Regex by lazy { RegexCache.get(pattern) }
     }
 }
