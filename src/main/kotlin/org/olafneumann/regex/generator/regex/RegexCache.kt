@@ -4,5 +4,5 @@ object RegexCache {
     private val patternToRegex = mutableMapOf<String, Regex>()
 
     fun get(pattern: String): Regex =
-        patternToRegex.getOrPut(pattern) { RegexCache.get(pattern) }
+        patternToRegex.getOrPut(pattern) { Regex(pattern) }
 }
