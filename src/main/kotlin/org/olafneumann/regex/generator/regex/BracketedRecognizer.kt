@@ -14,8 +14,6 @@ class BracketedRecognizer(
     private val searchRegex = RegexCache.get(searchPattern)
 
     override fun findMatches(input: String): Collection<RecognizerMatch> {
-        // TODO cache regex's
-        // add generic center patterns
         val output = mutableSetOf<RecognizerMatch>()
         var sizeBefore = 0
         do {
@@ -31,12 +29,9 @@ class BracketedRecognizer(
                 )
             }
         } while (output.size != sizeBefore)
-
-        // TODO restart search earlier if start and end pattern are equal
         return output
     }
 
-    // TODO allow different center patterns
     private fun doStuff(input: String, centerPattern: CenterPattern, result: MatchResult): List<RecognizerMatch> {
         val startGroup = result.groups[startGroupIndex] ?: throw RuntimeException("start group cannot be found")
         val endGroup = result.groups[endGroupIndex] ?: throw RuntimeException("end group cannot be found")
