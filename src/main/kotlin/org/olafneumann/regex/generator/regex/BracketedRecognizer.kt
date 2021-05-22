@@ -24,7 +24,7 @@ class BracketedRecognizer(
                     .associateWith { "(${startPattern})(${it.pattern})(${endPattern})" }
                     .mapValues { RegexCache.get(it.value) }
                     .mapValues { it.value.findAll(input = input, startIndex = startIndex).toList() }
-                    .mapValues { it.value.flatMap { result -> doStuff(input, it.key, result) } }
+                    .mapValues { it.value.flatMap { result -> createRecognizerMatches(input, it.key, result) } }
                     .flatMap { it.value }
                 )
             }
@@ -32,7 +32,7 @@ class BracketedRecognizer(
         return output
     }
 
-    private fun doStuff(input: String, centerPattern: CenterPattern, result: MatchResult): List<RecognizerMatch> {
+    private fun createRecognizerMatches(input: String, centerPattern: CenterPattern, result: MatchResult): List<RecognizerMatch> {
         val startGroup = result.groups[startGroupIndex] ?: throw RuntimeException("start group cannot be found")
         val endGroup = result.groups[endGroupIndex] ?: throw RuntimeException("end group cannot be found")
         val startIndex = getStartOfFirstGroup(input, result.range.first, startGroup.value)
