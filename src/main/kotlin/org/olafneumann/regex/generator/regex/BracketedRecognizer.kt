@@ -24,8 +24,7 @@ class BracketedRecognizer(
                     .associateWith { "(${startPattern})(${it.pattern})(${endPattern})" }
                     .mapValues { RegexCache.get(it.value) }
                     .mapValues { it.value.findAll(input = input, startIndex = startIndex).toList() }
-                    .mapValues { it.value.flatMap { result -> createRecognizerMatches(input, it.key, result) } }
-                    .flatMap { it.value }
+                    .flatMap { it.value.flatMap { result -> createRecognizerMatches(input, it.key, result) } }
                 )
             }
         } while (output.size != sizeBefore)
