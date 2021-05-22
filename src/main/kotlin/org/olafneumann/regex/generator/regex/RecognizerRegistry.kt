@@ -60,7 +60,8 @@ object RecognizerRegistry {
             endPattern = "\"",
             centerPatterns = listOf(
                 CenterPattern("no quotation mark", "[^\"]*"),
-                CenterPattern("escaped quotation mark", "(?:[^\\\\\"]|\\\\\\\\|\\\\\")*")
+                CenterPattern("backslash escaped quotation mark", """(?:[^\\"]|\\\\|\\")*"""),
+                CenterPattern("double escaped quotation mark", """(?:[^"]|"")*""")
             )
         ),
         BracketedRecognizer(
@@ -69,7 +70,8 @@ object RecognizerRegistry {
             endPattern = "'",
             centerPatterns = listOf(
                 CenterPattern("no apostrophe", "[^']*"),
-                CenterPattern("escaped apostrophe", "(?:[^\\\\']|\\\\\\\\|\\\\')*")
+                CenterPattern("backslash escaped apostrophe", """(?:[^\\']|\\\\|\\')*"""),
+                CenterPattern("double escaped apostrophe", """(?:[^']|'')*""")
             )
         )
     )
