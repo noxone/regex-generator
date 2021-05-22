@@ -31,39 +31,44 @@ object RecognizerRegistry {
         SimpleRecognizer("Simple CSS Color", "#(?:[a-f\\d]{3}){1,2}\\b"),
         SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)"),
         BracketedRecognizer(
-            "Round brackets", "\\(",
+            "Round brackets",
+            "\\(",
             listOf(
                 CenterPattern("no round bracket", "[^)]*")
             ),
-            "\\)", "(\\()([^)]*)(\\))"
+            "\\)"
         ),
         BracketedRecognizer(
-            "Square brackets", "\\[",
+            "Square brackets",
+            "\\[",
             listOf(
                 CenterPattern("no square bracket", "[^\\]]*")
-            ), "\\]", "(\\[)([^\\]]*)(\\])"
+            ), "\\]"
         ),
         BracketedRecognizer(
-            "Curly braces", "\\{",
+            "Curly braces",
+            "\\{",
             listOf(
                 CenterPattern("no curly braces", "[^}]*")
-            ), "\\}", "(\\{)([^}]*)(\\})"
+            ), "\\}"
         ),
         BracketedRecognizer(
-            "String (quotation mark)", "\"",
+            "String (quotation mark)",
+            "\"",
             listOf(
                 CenterPattern("no quotation mark", "[^\"]*"),
                 CenterPattern("escaped quotation mark", "(?:[^\\\\\"]|\\\\\\\\|\\\\\")*")
             ),
-            "\"", "(\")([^\"]*)(\")"
+            "\""
         ),
         BracketedRecognizer(
-            "String (apostrophe)", "'",
+            "String (apostrophe)",
+            "'",
             listOf(
                 CenterPattern("no apostrophe", "[^']*"),
                 CenterPattern("escaped apostrophe", "(?:[^\\\\']|\\\\\\\\|\\\\')*")
             ),
-            "'", "(')([^']*)(')"
+            "'"
         )
     )
 
