@@ -207,7 +207,7 @@ if (typeof kotlin === 'undefined') {
     }
     $receiver.defineSteps(copyToArray(destination));
   }
-  function BracketedRecognizer(name, startPattern, centerPatterns, endPattern, searchPattern, startGroupIndex, endGroupIndex, description, active) {
+  function BracketedRecognizer(name, startPattern, endPattern, centerPatterns, startGroupIndex, endGroupIndex, description, active) {
     if (startGroupIndex === void 0)
       startGroupIndex = 1;
     if (endGroupIndex === void 0)
@@ -218,14 +218,12 @@ if (typeof kotlin === 'undefined') {
       active = true;
     this.name_umq4d7$_0 = name;
     this.startPattern_0 = startPattern;
-    this.centerPatterns_0 = centerPatterns;
     this.endPattern_0 = endPattern;
-    this.searchPattern_0 = searchPattern;
+    this.centerPatterns_0 = centerPatterns;
     this.startGroupIndex_0 = startGroupIndex;
     this.endGroupIndex_0 = endGroupIndex;
     this.description_ffks6q$_0 = description;
     this.active_hu82o0$_0 = active;
-    this.searchRegex_0 = RegexCache_getInstance().get_61zpoe$(this.searchPattern_0);
   }
   Object.defineProperty(BracketedRecognizer.prototype, 'name', {
     get: function () {
@@ -244,7 +242,7 @@ if (typeof kotlin === 'undefined') {
   });
   BracketedRecognizer.prototype.findMatches_61zpoe$ = function (input) {
     var output = LinkedHashSet_init();
-    var sizeBefore = 0;
+    var sizeBefore;
     do {
       sizeBefore = output.size;
       var destination = ArrayList_init(collectionSizeOrDefault(output, 10));
@@ -1103,7 +1101,7 @@ if (typeof kotlin === 'undefined') {
   };
   function RecognizerRegistry() {
     RecognizerRegistry_instance = this;
-    this.recognizers_0 = listOf_0([new EchoRecognizer('Character', '.', void 0, void 0, 1), new SimpleRecognizer('One whitespace', '\\s'), new SimpleRecognizer('Whitespaces', '\\s+'), new SimpleRecognizer('One character', '[a-zA-Z]'), new SimpleRecognizer('Multiple characters', '[a-zA-Z]+'), new SimpleRecognizer('Digit', '\\d'), new SimpleRecognizer('Number', '[0-9]+'), new SimpleRecognizer('Decimal number', '[0-9]*\\.[0-9]+'), new SimpleRecognizer('Floating point number (with optional exponent)', '([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?'), new SimpleRecognizer('URL encoded character', '%[0-9A-Fa-f][0-9A-Fa-f]'), new SimpleRecognizer('Day', '(0?[1-9]|[12][0-9]|3[01])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Month', '(0?[1-9]|[1][0-2])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Hour', '(0?[0-9]|1[0-9]|2[0-3])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Minute/ Second', '(0?[0-9]|[1-5][0-9])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new SimpleRecognizer('Time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new SimpleRecognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new SimpleRecognizer('RFC2822 e-mail', "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"), new SimpleRecognizer('IPv4 address', '\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b'), new SimpleRecognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new SimpleRecognizer('Simple CSS Color', '#(?:[a-f\\d]{3}){1,2}\\b'), new SimpleRecognizer('Log level', '(TRACE|DEBUG|INFO|NOTICE|WARN|ERROR|SEVERE|FATAL)'), new BracketedRecognizer('Round brackets', '\\(', listOf(new BracketedRecognizer$CenterPattern('no round bracket', '[^)]*')), '\\)', '(\\()([^)]*)(\\))'), new BracketedRecognizer('Square brackets', '\\[', listOf(new BracketedRecognizer$CenterPattern('no square bracket', '[^\\]]*')), '\\]', '(\\[)([^\\]]*)(\\])'), new BracketedRecognizer('Curly braces', '\\{', listOf(new BracketedRecognizer$CenterPattern('no curly braces', '[^}]*')), '\\}', '(\\{)([^}]*)(\\})'), new BracketedRecognizer('String (quotation mark)', '"', listOf_0([new BracketedRecognizer$CenterPattern('no quotation mark', '[^"]*'), new BracketedRecognizer$CenterPattern('escaped quotation mark', '(?:[^\\\\"]|\\\\\\\\|\\\\")*')]), '"', '(")([^"]*)(")'), new BracketedRecognizer('String (apostrophe)', "'", listOf_0([new BracketedRecognizer$CenterPattern('no apostrophe', "[^']*"), new BracketedRecognizer$CenterPattern('escaped apostrophe', "(?:[^\\\\']|\\\\\\\\|\\\\')*")]), "'", "(')([^']*)(')")]);
+    this.recognizers_0 = listOf_0([new EchoRecognizer('Character', '.', void 0, void 0, 1), new SimpleRecognizer('One whitespace', '\\s'), new SimpleRecognizer('Whitespaces', '\\s+'), new SimpleRecognizer('One character', '[a-zA-Z]'), new SimpleRecognizer('Multiple characters', '[a-zA-Z]+'), new SimpleRecognizer('Digit', '\\d'), new SimpleRecognizer('Number', '[0-9]+'), new SimpleRecognizer('Decimal number', '[0-9]*\\.[0-9]+'), new SimpleRecognizer('Floating point number (with optional exponent)', '([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?'), new SimpleRecognizer('URL encoded character', '%[0-9A-Fa-f][0-9A-Fa-f]'), new SimpleRecognizer('Day', '(0?[1-9]|[12][0-9]|3[01])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Month', '(0?[1-9]|[1][0-2])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Hour', '(0?[0-9]|1[0-9]|2[0-3])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Minute/ Second', '(0?[0-9]|[1-5][0-9])', void 0, void 0, '(?:^|\\D)(%s)($|\\D)'), new SimpleRecognizer('Date', '[0-9]{4}-[0-9]{2}-[0-9]{2}'), new SimpleRecognizer('Time', '[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,3})?'), new SimpleRecognizer('ISO8601', '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?'), new SimpleRecognizer('RFC2822 e-mail', "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"), new SimpleRecognizer('IPv4 address', '\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b'), new SimpleRecognizer('Hashtag', "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"), new SimpleRecognizer('Simple CSS Color', '#(?:[a-f\\d]{3}){1,2}\\b'), new SimpleRecognizer('Log level', '(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|SEVERE|FATAL)'), new BracketedRecognizer('Round brackets', '\\(', '\\)', listOf(new BracketedRecognizer$CenterPattern('no round bracket', '[^)]*'))), new BracketedRecognizer('Square brackets', '\\[', '\\]', listOf(new BracketedRecognizer$CenterPattern('no square bracket', '[^\\]]*'))), new BracketedRecognizer('Curly braces', '\\{', '\\}', listOf(new BracketedRecognizer$CenterPattern('no curly braces', '[^}]*'))), new BracketedRecognizer('String (quotation mark)', '"', '"', listOf_0([new BracketedRecognizer$CenterPattern('no quotation mark', '[^"]*'), new BracketedRecognizer$CenterPattern('escaped quotation mark', '(?:[^\\\\"]|\\\\\\\\|\\\\")*')])), new BracketedRecognizer('String (apostrophe)', "'", "'", listOf_0([new BracketedRecognizer$CenterPattern('no apostrophe', "[^']*"), new BracketedRecognizer$CenterPattern('escaped apostrophe', "(?:[^\\\\']|\\\\\\\\|\\\\')*")]))]);
   }
   RecognizerRegistry.prototype.findMatches_61zpoe$ = function (input) {
     var $receiver = this.recognizers_0;
