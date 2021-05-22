@@ -3,8 +3,8 @@ package org.olafneumann.regex.generator.regex
 class BracketedRecognizer(
     override val name: String,
     private val startPattern: String,
-    private val centerPatterns: List<CenterPattern>,
     private val endPattern: String,
+    private val centerPatterns: List<CenterPattern>,
     private val startGroupIndex: Int = 1,
     private val endGroupIndex: Int = 3,
     override val description: String? = null,
