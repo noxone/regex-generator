@@ -49,7 +49,7 @@ class BracketedRecognizer(
             patterns = listOf(centerPattern.pattern),
             ranges = listOf(centerRange),
             recognizer = this,
-            title = "$name (${centerPattern.title.ifEmpty { "center part" }})"
+            title = "$name content (${centerPattern.title.ifEmpty { "center part" }})"
         )
 
         return mutableListOf(outerMatch, innerMatch)

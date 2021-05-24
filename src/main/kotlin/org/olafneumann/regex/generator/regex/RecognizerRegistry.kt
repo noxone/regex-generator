@@ -31,11 +31,11 @@ object RecognizerRegistry {
         SimpleRecognizer("Simple CSS Color", "#(?:[a-f\\d]{3}){1,2}\\b"),
         SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|SEVERE|FATAL)"),
         BracketedRecognizer(
-            name = "Round brackets",
+            name = "Parentheses",
             startPattern = "\\(",
             endPattern = "\\)",
             centerPatterns = listOf(
-                CenterPattern("no round bracket", "[^)]*")
+                CenterPattern("no parentheses", "[^)]*")
             ),
         ),
         BracketedRecognizer(
@@ -60,7 +60,8 @@ object RecognizerRegistry {
             endPattern = "\"",
             centerPatterns = listOf(
                 CenterPattern("no quotation mark", "[^\"]*"),
-                CenterPattern("escaped quotation mark", "(?:[^\\\\\"]|\\\\\\\\|\\\\\")*")
+                CenterPattern("backslash escaped quotation mark", """(?:[^\\"]|\\\\|\\")*"""),
+                CenterPattern("double escaped quotation mark", """(?:[^"]|"")*""")
             )
         ),
         BracketedRecognizer(
@@ -69,7 +70,8 @@ object RecognizerRegistry {
             endPattern = "'",
             centerPatterns = listOf(
                 CenterPattern("no apostrophe", "[^']*"),
-                CenterPattern("escaped apostrophe", "(?:[^\\\\']|\\\\\\\\|\\\\')*")
+                CenterPattern("backslash escaped apostrophe", """(?:[^\\']|\\\\|\\')*"""),
+                CenterPattern("double escaped apostrophe", """(?:[^']|'')*""")
             )
         )
     )
