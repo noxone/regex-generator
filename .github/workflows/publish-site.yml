@@ -20,6 +20,9 @@ jobs:
       - name: Set outputs
         id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Set up JDK 8
         uses: actions/setup-java@v2
@@ -48,4 +51,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: noxone/regexgenerator:latest,noxone/regexgenerator:${{ steps.vars.outputs.sha_short }}
+          tags: noxone/regexgenerator:latest,noxone/regexgenerator:${{ steps.date.outputs.date }}_${{ steps.vars.outputs.sha_short }}
