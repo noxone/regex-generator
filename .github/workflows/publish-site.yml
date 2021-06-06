@@ -1,21 +1,13 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Publish Page
 
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push events but only for the master branch
   push:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   publish:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Cache Dependencies
         uses: actions/cache@v2.1.5
@@ -23,7 +15,6 @@ jobs:
           key: maven-dependencies
           path: ~/.m2/repository
     
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
       - name: Set up JDK 8
@@ -34,11 +25,24 @@ jobs:
       - name: "Clean & Package"
         run: mvn clean package --batch-mode
 
+      # publish the generated page to github pages
       - name: Deploy Site
-        # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./gh-pages
           cname: regex-generator.olafneumann.org
+
+      # generate and publish docker image containing the generated page
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2.5.0
+        with:
+          context: .
+          push: true
+          tags: noxone/regexgenerator:latest
 
