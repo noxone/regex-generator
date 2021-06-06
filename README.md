@@ -8,11 +8,17 @@ Regex Generator tries to help you create a first version of a regular expression
 
 Hopefully nobody will need to use ``substring()`` anymore.
 
-## Demo
+## How to start
 
-Try [Regex Generator](https://noxone.github.io/regex-generator/) online.
+You may try [Regex Generator](https://noxone.github.io/regex-generator/) online.
 
-## How to install
+And you can also start it via docker. Just use the following command and find Regex Generator on port 80 of your local machine:
+
+```bash
+docker run -d -p 80:80 noxone/regexgenerator
+```
+
+## How to build
 
 1. Clone the project
 2. Execute ``mvn clean package`` in the project's root directory
