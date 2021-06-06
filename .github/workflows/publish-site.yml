@@ -15,8 +15,12 @@ jobs:
           key: maven-dependencies
           path: ~/.m2/repository
     
-      - uses: actions/checkout@v2
-      
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
       - name: Set up JDK 8
         uses: actions/setup-java@v2
         with:
@@ -44,5 +48,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: noxone/regexgenerator:latest
-
+          tags: noxone/regexgenerator:latest,noxone/regexgenerator:${{ steps.vars.outputs.sha_short }}
