@@ -12,7 +12,7 @@ Hopefully nobody will need to use ``substring()`` anymore.
 
 You may try [Regex Generator](https://noxone.github.io/regex-generator/) online.
 
-And you can also start it via docker. Just use the following command and find Regex Generator on port 80 of your local machine:
+And you can also start it via [docker](https://hub.docker.com/r/noxone/regexgenerator). Just use the following command and find Regex Generator on port 80 of your local machine:
 
 ```bash
 docker run -d -p 80:80 noxone/regexgenerator
