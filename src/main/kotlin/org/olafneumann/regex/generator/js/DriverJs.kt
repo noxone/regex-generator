@@ -14,6 +14,7 @@ data class Popover(
 fun Driver.defineSteps(stepDefinitions: List<StepDefinition>) =
     defineSteps(stepDefinitions.map { it.asDynamic() }.toTypedArray())
 
+@JsModule("driver.js")
 external class Driver(options: dynamic) {
     /** Checks if the driver is active or not */
     fun isActivated(): Boolean

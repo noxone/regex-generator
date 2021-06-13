@@ -3,6 +3,7 @@ package org.olafneumann.regex.generator
 import org.olafneumann.regex.generator.ui.ApplicationSettings
 import org.olafneumann.regex.generator.ui.UiController
 import kotlinx.browser.window
+import org.olafneumann.regex.generator.js.NPM
 
 fun main() {
     try {
@@ -14,6 +15,8 @@ fun main() {
 }
 
 private fun initRegexGenerator() {
+    NPM.importAll()
+
     // initialize presentation code
     val presenter = UiController()
     presenter.initialize()
