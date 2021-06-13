@@ -8,25 +8,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        java-version:
-          - 8
 
-    name: Build with JDK ${{ matrix.java-version }}
+    name: Build with JDK 11
     steps:
-      - name: Cache Dependencies
-        uses: actions/cache@v2.1.5
-        with:
-          key: maven-dependencies
-          path: ~/.m2/repository
       - name: Check out
         uses: actions/checkout@v2
-      - name: Set up JDK ${{ matrix.java-version }}
+      - name: Set Java
         uses: actions/setup-java@v2
         with:
           distribution: adopt
-          java-version: ${{ matrix.java-version }}
-      - name: "Clean & Package"
-        run: mvn clean package --update-snapshots --batch-mode
+          java-version: 11
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Run Gradle tasks
+        run: ./gradlew clean testPackageJson test browserDevelopmentWebpack
+      - name: Cleanup Gradle Cache
+          # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
+          # Restoring these files from a GitHub Actions cache might cause problems for future builds.
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
+
+      # build docker image
+      - name: Build Docker images
+        uses: docker/build-push-action@v2.5.0
+        with:
+          context: .
+          push: false
