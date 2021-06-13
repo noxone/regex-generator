@@ -30,3 +30,10 @@ jobs:
           java-version: ${{ matrix.java-version }}
       - name: "Clean & Package"
         run: mvn clean package --update-snapshots --batch-mode
+
+      # build docker image
+      - name: Build Docker images
+        uses: docker/build-push-action@v2.5.0
+        with:
+          context: .
+          push: false
