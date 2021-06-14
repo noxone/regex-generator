@@ -5,16 +5,21 @@ import org.olafneumann.regex.generator.ui.UiController
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.NPM
 
+
 fun main() {
+    window.onload = { initRegexGenerator() }
+}
+
+private fun initRegexGenerator() {
     try {
-        initRegexGenerator()
+        initRegexGenerator_unsafe()
     } catch (exception: Exception) {
         console.error(exception)
         window.alert("Unable to initialize RegexGenerator: ${exception.message}")
     }
 }
 
-private fun initRegexGenerator() {
+private fun initRegexGenerator_unsafe() {
     NPM.importAll()
 
     // initialize presentation code

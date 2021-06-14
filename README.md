@@ -25,11 +25,10 @@ docker run -d -p 80:80 noxone/regexgenerator
 ### Build
 
 1. Clone the project
-2. Execute 
+2. In the project's root directory execute
    ```bash
    gradlew clean build
    ```
-   in the project's root directory
 3. Find the output in directory ``./build/distributions/``
 
 ### Live Development
@@ -38,13 +37,13 @@ For a nice development experience use
 ```bash
 gradlew run --continuous
 ```
-So the page will automatically reload for every source file change.
+Using this command the page will reload automatically for every source file change.
 
 ## Project goal
 
-As written in the introduction the aim of the project is to enable everybody to use regular expressions instead of using ``substring()``. There are a lot of very nice tools to build, understand and even debug your regex. ``Regex Generator`` tries to add a little bit to these tools to give you at least a starting point how the regex you need might look like.
+As written in the introduction the aim of the project is to enable everybody to use regular expressions. The use of ``substring()`` is nearly always unnecessary and if code is written in a reasonable manner you won't need that method.
 
-If you have ideas to improve the functionality or how things might be easier for the user, feel free to open an issue.
+There are a lot of very nice tools to build, understand and even debug your regex. ``Regex Generator`` tries to add a little bit to these tools to give you at least a starting point how the regex you need might look like.
 
 Hopefully this regex generator continues to grow to eventually support a really wide range of functions and regular expressions.
 
