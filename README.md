@@ -26,17 +26,21 @@ docker run -d -p 80:80 noxone/regexgenerator
 
 1. Clone the project
 2. In the project's root directory execute
+
    ```bash
    gradlew clean build
    ```
+
 3. Find the output in directory ``./build/distributions/``
 
 ### Live Development
 
-For a nice development experience use 
+For a nice development experience use
+
 ```bash
 gradlew run --continuous
 ```
+
 Using this command the page will reload automatically for every source file change.
 
 ## Project goal
