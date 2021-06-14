@@ -28,7 +28,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Run Gradle tasks
-        run: ./gradlew clean testPackageJson test browserDevelopmentWebpack
+        run: ./gradlew clean testPackageJson test browserDevelopmentWebpack build
       - name: Cleanup Gradle Cache
           # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
           # Restoring these files from a GitHub Actions cache might cause problems for future builds.

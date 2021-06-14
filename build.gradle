@@ -7,11 +7,17 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://dl.bintray.com/kotlin/kotlin-js-wrappers/"
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
     implementation "org.jetbrains.kotlinx:kotlinx-html-js:0.7.3"
+    implementation "org.jetbrains:kotlin-extensions:1.0.1-pre.148-kotlin-1.4.30"
+
+    implementation npm("driver.js", "0.9.8")
 
     testImplementation "org.jetbrains.kotlin:kotlin-test-js"
 }
