@@ -83,6 +83,7 @@
 .rg-item-selected {
   background-color: white !important;
   border: 1px solid gray;
+  cursor: crosshair !important;
 }
 
 .rg-item-not-available {
