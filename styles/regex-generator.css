@@ -29,7 +29,7 @@
 .rg-match-item {
   position: absolute;
   height: 0.7rem;
-  cursor: pointer;
+  cursor: s-resize;
 }
 
 .rg-match-item-red {
@@ -60,6 +60,7 @@
   width: max-content;
   padding: 0.2em;
   background-color: inherit;
+  cursor: pointer;
 }
 
 .rg-match-item:hover .rg-match-item-overlay {
