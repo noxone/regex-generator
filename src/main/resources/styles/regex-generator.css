@@ -92,6 +92,10 @@
   cursor: not-allowed;
 }
 
+.rg-result-part:hover {
+    background-color: lightgray;
+}
+
 .rg-check-row {
   margin-left: 1.4em;
   padding-right: 3em;

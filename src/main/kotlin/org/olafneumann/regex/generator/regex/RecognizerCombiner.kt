@@ -18,17 +18,17 @@ class RecognizerCombiner {
         ): RegularExpression {
             val rangesToMatches = selectedMatches.flatMap { match ->
                     match.ranges
-                        .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index], fromInputText = false) }
+                        .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index]) }
                 }
                 .sortedBy { it.range.first }
                 .toList()
 
             return if (rangesToMatches.isEmpty()) {
                 if (options.onlyPatterns) {
-                    RegularExpression(mutableListOf(RegularExpressionPart(IntRange(0,2), ".*", fromInputText = false)).addWholeLineMatchingStuff(options))
+                    RegularExpression(mutableListOf(RegularExpressionPart(IntRange(0,2), ".*", title = "anything")).addWholeLineMatchingStuff(options))
                 } else {
                     val regex = inputText.escapeForRegex()
-                    RegularExpression(listOf(RegularExpressionPart(IntRange(0,regex.length), regex, fromInputText = true)).addWholeLineMatchingStuff(options))
+                    RegularExpression(listOf(RegularExpressionPart(IntRange(0,regex.length), regex, inputText)).addWholeLineMatchingStuff(options))
                 }
             } else {
                 // at this point we know, that rangesToMatches is not empty!
@@ -36,13 +36,37 @@ class RecognizerCombiner {
                 val hasContentAfterLastMatch = rangesToMatches.last().range.last < inputText.length - 1
 
                 val firstPart = when {
-                    hasContentBeforeFirstMatch && options.onlyPatterns -> RegularExpressionPart(IntRange(0, rangesToMatches.first().range.first - 1), ".*", fromInputText = false)
-                    hasContentBeforeFirstMatch && !options.onlyPatterns -> RegularExpressionPart(IntRange(0, rangesToMatches.first().range.first - 1), inputText.substring(0, rangesToMatches.first().range.first).escapeForRegex(), fromInputText = true)
+                    hasContentBeforeFirstMatch && options.onlyPatterns -> RegularExpressionPart(
+                        IntRange(
+                            0,
+                            rangesToMatches.first().range.first - 1
+                        ), ".*"
+                    )
+                    hasContentBeforeFirstMatch && !options.onlyPatterns -> {
+                        val text = inputText.substring(0, rangesToMatches.first().range.first)
+                        RegularExpressionPart(
+                            IntRange(0, rangesToMatches.first().range.first - 1),
+                            text.escapeForRegex(),
+                            text
+                        )
+                    }
                     else -> null
                 }
                 val lastPart = when {
-                    hasContentAfterLastMatch && options.onlyPatterns -> RegularExpressionPart(IntRange(0, rangesToMatches.last().range.last), ".*", fromInputText = false)
-                    hasContentAfterLastMatch && !options.onlyPatterns -> RegularExpressionPart(IntRange(0, rangesToMatches.last().range.last), inputText.substring(rangesToMatches.last().range.last + 1).escapeForRegex(), fromInputText = true)
+                    hasContentAfterLastMatch && options.onlyPatterns -> RegularExpressionPart(
+                        IntRange(
+                            0,
+                            rangesToMatches.last().range.last
+                        ), ".*", title = "anything"
+                    )
+                    hasContentAfterLastMatch && !options.onlyPatterns -> {
+                        val text = inputText.substring(rangesToMatches.last().range.last + 1)
+                        RegularExpressionPart(
+                            IntRange(0, rangesToMatches.last().range.last),
+                            text.escapeForRegex(),
+                            text
+                        )
+                    }
                     else -> null
                 }
 
@@ -52,7 +76,7 @@ class RecognizerCombiner {
 
         private fun List<RegularExpressionPart>.addWholeLineMatchingStuff(options: Options): List<RegularExpressionPart> {
             return if (options.matchWholeLine) {
-                listOf(RegularExpressionPart(IntRange.EMPTY, pattern = "^", fromInputText = false), *toTypedArray(), RegularExpressionPart(IntRange.EMPTY, pattern = "$", fromInputText = false))
+                listOf(RegularExpressionPart(IntRange.EMPTY, pattern = "^", title="Start of input"), *toTypedArray(), RegularExpressionPart(IntRange.EMPTY, pattern = "$", title = "End of input"))
             } else {
                 this
             }
@@ -66,12 +90,14 @@ class RecognizerCombiner {
 
             for (i in rangesToMatches.indices) {
                 if (i > 0) {
-                    val rangeBetween = IntRange(rangesToMatches[i - 1].range.last + 1, rangesToMatches[i].range.first - 1)
+                    val rangeBetween =
+                        IntRange(rangesToMatches[i - 1].range.last + 1, rangesToMatches[i].range.first - 1)
                     if (!rangeBetween.isEmpty()) {
                         val part = if (options.onlyPatterns) {
-                            RegularExpressionPart(rangeBetween, "*.", fromInputText = false)
+                            RegularExpressionPart(rangeBetween, "*.")
                         } else {
-                            RegularExpressionPart(rangeBetween, inputText.substring(rangeBetween).escapeForRegex(), fromInputText = true)
+                            val text = inputText.substring(rangeBetween)
+                            RegularExpressionPart(rangeBetween, text.escapeForRegex(), text)
                         }
                         parts.add(part)
                     }
@@ -100,9 +126,13 @@ class RecognizerCombiner {
     data class RegularExpressionPart(
         val range: IntRange,
         val pattern: String,
-        val fromInputText: Boolean,
-        val match: RecognizerMatch? = null
-    )
+        val originalText: String? = null,
+        val match: RecognizerMatch? = null,
+        val title: String? = match?.title ?: null
+    ) {
+        val fromInputText
+            get() = originalText != null
+    }
 
     data class RegularExpression(
         val parts: Collection<RegularExpressionPart>

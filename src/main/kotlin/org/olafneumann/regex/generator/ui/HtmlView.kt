@@ -16,6 +16,7 @@ import kotlinx.browser.window
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
+import kotlinx.html.title
 import kotlin.js.json
 import kotlin.math.max
 
@@ -260,6 +261,19 @@ class HtmlView(
         // display result
         currentRegex = pattern
         resultDisplay.innerText = pattern
+        resultDisplay.clear()
+        for (part in regex.parts) {
+            resultDisplay.append(
+                document.create.span(classes = "rg-result-part") {
+                    title = if (part.title != null) {
+                        "Recognizes \"${part.title}\""
+                    } else {
+                        if (part.originalText != null) "Recognizes exactly \"${part.originalText}\"" else ""
+                    }
+                    +part.pattern
+                }
+            )
+        }
 
         // update links
         anchorRegex101.setPattern(pattern, options)
