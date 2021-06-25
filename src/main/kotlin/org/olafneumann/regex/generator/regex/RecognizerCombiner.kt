@@ -1,68 +1,108 @@
 package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.regex.RecognizerCombiner.Companion.escapeForRegex
+
 class RecognizerCombiner {
     companion object {
-        fun combine(
+        fun combineMatches(
             inputText: String,
             selectedMatches: Collection<RecognizerMatch>,
             options: Options
         ): RegularExpression {
             val rangesToMatches = selectedMatches.flatMap { match ->
-                    match
-                        .ranges.mapIndexed { index, range -> RangeToMatch(range, match.patterns[index]) }
+                    match.ranges
+                        .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index], match = match) }
                 }
                 .sortedBy { it.range.first }
                 .toList()
 
-            fun makeOutput(hasLength: Boolean, options: Options, outputProvider: () -> String) =
-                when {
-                    hasLength && options.onlyPatterns && options.matchWholeLine -> ".*"
-                    hasLength && !options.onlyPatterns -> outputProvider()
-                    else -> ""
+            return if (rangesToMatches.isEmpty()) {
+                if (options.onlyPatterns) {
+                    RegularExpression(mutableListOf(RegularExpressionPart(IntRange(0,2), ".*", title = "anything")).addWholeLineMatchingStuff(options))
+                } else {
+                    val regex = inputText.escapeForRegex()
+                    RegularExpression(listOf(RegularExpressionPart(IntRange(0,regex.length), regex, inputText)).addWholeLineMatchingStuff(options))
                 }
+            } else {
+                // at this point we know, that rangesToMatches is not empty!
+                val hasContentBeforeFirstMatch = rangesToMatches.first().range.first > 0
+                val hasContentAfterLastMatch = rangesToMatches.last().range.last < inputText.length - 1
 
-            val first = makeOutput(rangesToMatches.isNotEmpty() && rangesToMatches.first().range.first > 0, options) {
-                inputText.substring(0, rangesToMatches.first().range.first).escapeForRegex()
-            }
-            val last = makeOutput(
-                rangesToMatches.isNotEmpty() && rangesToMatches.last().range.last < inputText.length - 1,
-                options
-            ) {
-                inputText.substring(rangesToMatches.last().range.last + 1).escapeForRegex()
-            }
-
-            val pattern = buildString {
-                append(first)
-                rangesToMatches.ifEmpty {
-                    append(
-                        if (options.onlyPatterns) {
-                            ".*"
-                        } else {
-                            inputText.escapeForRegex()
-                        }
+                val firstPart = when {
+                    hasContentBeforeFirstMatch && options.onlyPatterns -> RegularExpressionPart(
+                        IntRange(
+                            0,
+                            rangesToMatches.first().range.first - 1
+                        ), ".*", title = "anything"
                     )
-                }
-                for (i in rangesToMatches.indices) {
-                    if (i > 0) {
-                        val range = IntRange(rangesToMatches[i - 1].range.last + 1, rangesToMatches[i].range.first - 1)
-                        if (options.onlyPatterns) {
-                            append(
-                                if (range.isEmpty()) {
-                                    ""
-                                } else {
-                                    ".*"
-                                }
-                            )
-                        } else {
-                            append(inputText.substring(range).escapeForRegex())
-                        }
+                    hasContentBeforeFirstMatch && !options.onlyPatterns -> {
+                        val text = inputText.substring(0, rangesToMatches.first().range.first)
+                        RegularExpressionPart(
+                            IntRange(0, rangesToMatches.first().range.first - 1),
+                            text.escapeForRegex(),
+                            text
+                        )
                     }
-                    append(rangesToMatches[i].pattern)
+                    else -> null
                 }
-                append(last)
+                val lastPart = when {
+                    hasContentAfterLastMatch && options.onlyPatterns -> RegularExpressionPart(
+                        IntRange(
+                            0,
+                            rangesToMatches.last().range.last
+                        ), ".*", title = "anything"
+                    )
+                    hasContentAfterLastMatch && !options.onlyPatterns -> {
+                        val text = inputText.substring(rangesToMatches.last().range.last + 1)
+                        RegularExpressionPart(
+                            IntRange(0, rangesToMatches.last().range.last),
+                            text.escapeForRegex(),
+                            text
+                        )
+                    }
+                    else -> null
+                }
+
+                combineParts(firstPart, rangesToMatches, lastPart, inputText, options)
+            }
+        }
+
+        private fun List<RegularExpressionPart>.addWholeLineMatchingStuff(options: Options): List<RegularExpressionPart> {
+            return if (options.matchWholeLine) {
+                listOf(RegularExpressionPart(IntRange.EMPTY, pattern = "^", title="Start of input"), *toTypedArray(), RegularExpressionPart(IntRange.EMPTY, pattern = "$", title = "End of input"))
+            } else {
+                this
+            }
+        }
+
+        private fun combineParts(firstPart: RegularExpressionPart?, rangesToMatches: List<RegularExpressionPart>, lastPart: RegularExpressionPart?, inputText: String, options: Options): RegularExpression {
+            val parts = mutableListOf<RegularExpressionPart>()
+            if (options.matchWholeLine || firstPart?.fromInputText == true) {
+                firstPart?.let { parts.add(it) }
             }
 
-            return RegularExpression(options.getFrame().format(pattern))
+            for (i in rangesToMatches.indices) {
+                if (i > 0) {
+                    val rangeBetween =
+                        IntRange(rangesToMatches[i - 1].range.last + 1, rangesToMatches[i].range.first - 1)
+                    if (!rangeBetween.isEmpty()) {
+                        val part = if (options.onlyPatterns) {
+                            RegularExpressionPart(rangeBetween, "*.")
+                        } else {
+                            val text = inputText.substring(rangeBetween)
+                            RegularExpressionPart(rangeBetween, text.escapeForRegex(), text)
+                        }
+                        parts.add(part)
+                    }
+                }
+                parts.add(rangesToMatches[i])
+            }
+
+            if (options.matchWholeLine || lastPart?.fromInputText == true) {
+                lastPart?.let { parts.add(it) }
+            }
+
+            return RegularExpression(parts.addWholeLineMatchingStuff(options))
         }
 
         private fun String.escapeForRegex() = PatternHelper.escapeForRegex(this)
@@ -74,27 +114,23 @@ class RecognizerCombiner {
         val caseSensitive: Boolean = true,
         val dotMatchesLineBreaks: Boolean = false,
         val multiline: Boolean = false
-    ) {
-        internal fun getFrame() = if (matchWholeLine) {
-            Frame("^", "$")
-        } else {
-            Frame("", "")
-        }
-    }
-
-    internal data class RangeToMatch(
-        val range: IntRange,
-        val pattern: String
     )
 
-    internal data class Frame(
-        val start: String,
-        val end: String
+    data class RegularExpressionPart(
+        val range: IntRange,
+        val pattern: String,
+        val originalText: String? = null,
+        val match: RecognizerMatch? = null,
+        val title: String? = null
     ) {
-        internal fun format(pattern: String) = "$start$pattern$end"
+        val fromInputText
+            get() = originalText != null
     }
 
     data class RegularExpression(
-        val pattern: String
-    )
+        val parts: Collection<RegularExpressionPart>
+    ) {
+        val pattern
+            get() = parts.joinToString(separator = "") { it.pattern }
+    }
 }

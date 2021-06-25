@@ -83,12 +83,17 @@
 .rg-item-selected {
   background-color: white !important;
   border: 1px solid gray;
+  cursor: crosshair !important;
 }
 
 .rg-item-not-available {
   background-color: lightgray !important;
   border: none;
   cursor: not-allowed;
+}
+
+.rg-result-part:hover {
+    background-color: lightgray;
 }
 
 .rg-check-row {

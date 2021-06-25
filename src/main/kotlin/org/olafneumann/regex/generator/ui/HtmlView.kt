@@ -12,9 +12,11 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.UrlGenerator
 import org.w3c.dom.*
 import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
+import kotlinx.html.title
 import kotlin.js.json
 import kotlin.math.max
 
@@ -56,9 +58,15 @@ class HtmlView(
 
     private val driver = Driver(js("{}"))
 
+    private var currentRegex = ""
+
     init {
         textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
-        buttonCopy.addEventListener(EVENT_CLICK, { presenter.onButtonCopyClick() })
+        buttonCopy.addEventListener(EVENT_CLICK, {
+            navigator.clipboard
+                .writeText(currentRegex)
+                .catch(onRejected = { window.alert("Could not copy text: $it") })
+        })
         buttonHelp.addEventListener(EVENT_CLICK, { presenter.onButtonHelpClick() })
         checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
@@ -87,14 +95,6 @@ class HtmlView(
             inputCharacterSpans = value.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
             textDisplay.clear()
             inputCharacterSpans.forEach { textDisplay.appendChild(it) }
-        }
-
-    override var resultText: String
-        get() = resultDisplay.innerText
-        set(value) {
-            resultDisplay.innerText = value
-            anchorRegex101.setPattern(value, options)
-            anchorRegexr.setPattern(value, options)
         }
 
     override fun showResults(matches: Collection<MatchPresenter>) {
@@ -255,8 +255,29 @@ class HtmlView(
             checkMultiline.checked = value.multiline
         }
 
+    override fun setPattern(regex: RecognizerCombiner.RegularExpression) {
+        val pattern = regex.pattern
 
-    override fun showGeneratedCodeForPattern(pattern: String) {
+        // display result
+        currentRegex = pattern
+        resultDisplay.clear()
+        for (part in regex.parts) {
+            resultDisplay.append(
+                document.create.span(classes = "rg-result-part") {
+                    (part.match?.let { "Recognizes \"${it.title}\" using the highlighted regular expression" }
+                        ?: part.title?.let { "Recognizes \"${it}\"" }
+                        ?: part.originalText?.let { "Recognizes exactly \"${it}\"" })
+                        ?.let { title = it }
+                    +part.pattern
+                }
+            )
+        }
+
+        // update links
+        anchorRegex101.setPattern(pattern, options)
+        anchorRegexr.setPattern(pattern, options)
+
+        // update programming languages
         val options = options
         CodeGenerator.all
             .forEach { languageDisplays[it]?.setSnippet(it.generateCode(pattern, options)) }
