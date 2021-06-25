@@ -90,8 +90,9 @@ class HtmlView(
         checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkWholeLine.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+    }
 
-        // read sample text from URL
+    override fun applyInitParameters() {
         val params = URL(document.URL).searchParams
         val sampleText = params.get(SEARCH_SAMPLE_REGEX)?.ifBlank { null }
         sampleText?.let { inputText = it }
@@ -101,7 +102,6 @@ class HtmlView(
             matchWholeLineFlag = params.get(SEARCH_MATCH_WHOLE_LINE)?.ifBlank { null },
             regexFlags = params.get(SEARCH_FLAGS)?.ifBlank { null }
         )
-        console.log(parsedOptions)
         this.options = parsedOptions
     }
 
