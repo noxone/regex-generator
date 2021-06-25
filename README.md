@@ -10,7 +10,19 @@ Hopefully nobody will need to use ``substring()`` anymore.
 
 ### Online
 
-Just go to [Regex Generator](https://noxone.github.io/regex-generator/) and try it online.
+Just go to [Regex Generator](https://regex-generator.olafneumann.org/) and try it online.
+
+The page supports several search parameters to change the initial state of the options:
+
+- ``sampleText`` changes the initial sample text of the regex generator
+- ``flags`` changes the flags used to generate the language snippets. Any combination of the following characters are allowed:
+  - ``i`` case insensitive
+  - ``s`` dot matches line breaks
+  - ``m`` multiline
+- ``onlyPatterns`` this controls the "Generate only patterns" check box
+- ``matchWholeLine`` this controls the "Match whole line" check box
+
+Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=im%onlyPatterns=false&matchWholeLine=true]()
 
 ### Docker
 
@@ -19,6 +31,8 @@ You can also start it via [docker](https://hub.docker.com/r/noxone/regexgenerato
 ```bash
 docker run -d -p 80:80 noxone/regexgenerator
 ```
+
+Of course the docker version supports the same search parameters as the actual website.
 
 ## Development
 
