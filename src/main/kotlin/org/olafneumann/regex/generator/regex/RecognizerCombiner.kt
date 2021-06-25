@@ -33,7 +33,7 @@ class RecognizerCombiner {
                         IntRange(
                             0,
                             rangesToMatches.first().range.first - 1
-                        ), ".*"
+                        ), ".*", title = "anything"
                     )
                     hasContentBeforeFirstMatch && !options.onlyPatterns -> {
                         val text = inputText.substring(0, rangesToMatches.first().range.first)
