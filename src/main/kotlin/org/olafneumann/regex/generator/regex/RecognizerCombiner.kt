@@ -18,7 +18,7 @@ class RecognizerCombiner {
         ): RegularExpression {
             val rangesToMatches = selectedMatches.flatMap { match ->
                     match.ranges
-                        .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index]) }
+                        .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index], match = match) }
                 }
                 .sortedBy { it.range.first }
                 .toList()
@@ -128,7 +128,7 @@ class RecognizerCombiner {
         val pattern: String,
         val originalText: String? = null,
         val match: RecognizerMatch? = null,
-        val title: String? = match?.title ?: null
+        val title: String? = null
     ) {
         val fromInputText
             get() = originalText != null

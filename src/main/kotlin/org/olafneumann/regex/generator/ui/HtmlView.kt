@@ -265,11 +265,11 @@ class HtmlView(
         for (part in regex.parts) {
             resultDisplay.append(
                 document.create.span(classes = "rg-result-part") {
-                    title = if (part.title != null) {
-                        "Recognizes \"${part.title}\""
-                    } else {
-                        if (part.originalText != null) "Recognizes exactly \"${part.originalText}\"" else ""
-                    }
+                    title =
+                        part.match?.let { "Recognizes \"${part.match.title}\" using the highlighted regular expression" }
+                            ?: part.title?.let { "Recognizes \"${it}\"" }
+                            ?: part.originalText?.let { "Recognizes exactly \"${it}\"" }
+                            ?: ""
                     +part.pattern
                 }
             )
