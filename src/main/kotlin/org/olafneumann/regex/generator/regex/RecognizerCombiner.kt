@@ -4,13 +4,6 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner.Companion.escape
 
 class RecognizerCombiner {
     companion object {
-        private fun makeOutput(hasLength: Boolean, options: Options, outputProvider: () -> String) =
-            when {
-                hasLength && options.onlyPatterns && options.matchWholeLine -> ".*"
-                hasLength && !options.onlyPatterns -> outputProvider()
-                else -> ""
-            }
-
         fun combineMatches(
             inputText: String,
             selectedMatches: Collection<RecognizerMatch>,
