@@ -2,24 +2,24 @@ package org.olafneumann.regex.generator.regex
 
 class RecognizerCombiner {
     companion object {
+        private fun makeOutput(hasLength: Boolean, options: Options, outputProvider: () -> String) =
+            when {
+                hasLength && options.onlyPatterns && options.matchWholeLine -> ".*"
+                hasLength && !options.onlyPatterns -> outputProvider()
+                else -> ""
+            }
+
         fun combine(
             inputText: String,
             selectedMatches: Collection<RecognizerMatch>,
             options: Options
         ): RegularExpression {
             val rangesToMatches = selectedMatches.flatMap { match ->
-                    match
-                        .ranges.mapIndexed { index, range -> RangeToMatch(range, match.patterns[index]) }
+                    match.ranges
+                        .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index]) }
                 }
                 .sortedBy { it.range.first }
                 .toList()
-
-            fun makeOutput(hasLength: Boolean, options: Options, outputProvider: () -> String) =
-                when {
-                    hasLength && options.onlyPatterns && options.matchWholeLine -> ".*"
-                    hasLength && !options.onlyPatterns -> outputProvider()
-                    else -> ""
-                }
 
             val first = makeOutput(rangesToMatches.isNotEmpty() && rangesToMatches.first().range.first > 0, options) {
                 inputText.substring(0, rangesToMatches.first().range.first).escapeForRegex()
@@ -31,6 +31,7 @@ class RecognizerCombiner {
                 inputText.substring(rangesToMatches.last().range.last + 1).escapeForRegex()
             }
 
+            val parts = mutableListOf<RegularExpressionPart>()
             val pattern = buildString {
                 append(first)
                 rangesToMatches.ifEmpty {
@@ -64,7 +65,7 @@ class RecognizerCombiner {
 
             return RegularExpression(options.getFrame().format(pattern))
         }
-
+        
         private fun String.escapeForRegex() = PatternHelper.escapeForRegex(this)
     }
 
@@ -82,11 +83,6 @@ class RecognizerCombiner {
         }
     }
 
-    internal data class RangeToMatch(
-        val range: IntRange,
-        val pattern: String
-    )
-
     internal data class Frame(
         val start: String,
         val end: String
@@ -94,7 +90,13 @@ class RecognizerCombiner {
         internal fun format(pattern: String) = "$start$pattern$end"
     }
 
+    data class RegularExpressionPart(
+        val range: IntRange,
+        val pattern: String,
+        val match: RecognizerMatch?
+    )
+
     data class RegularExpression(
-        val pattern: String
+        val parts: MutableCollection<RegularExpressionPart>
     )
 }
