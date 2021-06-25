@@ -43,13 +43,6 @@ class UiController : DisplayContract.Controller {
         view.selectInputText()
     }
 
-    override fun onButtonCopyClick() {
-        // TODO move to view
-        navigator.clipboard
-            .writeText(view.resultText)
-            .catch(onRejected = { window.alert("Could not copy text: $it") })
-    }
-
     override fun onButtonHelpClick() = view.showUserGuide(false)
     fun showInitialUserGuide() = view.showUserGuide(true)
 
@@ -91,8 +84,7 @@ class UiController : DisplayContract.Controller {
             matches.mapNotNull { it.selectedMatch }.toList(),
             view.options
         )
-        view.resultText = result.pattern
-        view.showGeneratedCodeForPattern(result.pattern)
+        view.setPattern(result)
     }
 
     companion object {

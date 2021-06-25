@@ -7,7 +7,6 @@ interface DisplayContract {
     interface View {
         var inputText: String
         var displayText: String
-        var resultText: String
 
         var options: RecognizerCombiner.Options
 
@@ -16,11 +15,10 @@ interface DisplayContract {
         fun showResults(matches: Collection<MatchPresenter>)
 
         fun showUserGuide(initialStep: Boolean)
-        fun showGeneratedCodeForPattern(pattern: String)
+        fun setPattern(regex: RecognizerCombiner.RegularExpression)
     }
 
     interface Controller {
-        fun onButtonCopyClick()
         fun onButtonHelpClick()
         fun onInputChanges(newInput: String)
         fun onSuggestionClick(recognizerMatch: RecognizerMatch)
