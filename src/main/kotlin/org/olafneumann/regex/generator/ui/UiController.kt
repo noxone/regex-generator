@@ -24,6 +24,7 @@ class UiController : DisplayContract.Controller {
 
         // Prepare UI
         view.options = ApplicationSettings.viewOptions
+        view.applyInitParameters()
     }
 
     private fun List<RecognizerMatch>.toPresentation(): MatchPresenter =

@@ -10,6 +10,7 @@ interface DisplayContract {
 
         var options: RecognizerCombiner.Options
 
+        fun applyInitParameters()
         fun hideCopyButton()
         fun selectInputText()
         fun showResults(matches: Collection<MatchPresenter>)

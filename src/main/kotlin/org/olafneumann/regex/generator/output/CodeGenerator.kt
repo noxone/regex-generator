@@ -64,7 +64,7 @@ internal abstract class SimpleReplacingCodeGenerator(
         mapper: (option: String) -> String = { s -> s }
     ): String {
         val optionList = mutableListOf<String>()
-        if (options.caseSensitive && valueForCaseInsensitive != null)
+        if (options.caseInsensitive && valueForCaseInsensitive != null)
             optionList += valueForCaseInsensitive
         if (options.dotMatchesLineBreaks && valueForDotAll != null)
             optionList += valueForDotAll

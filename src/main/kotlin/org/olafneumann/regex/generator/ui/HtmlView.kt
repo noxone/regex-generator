@@ -17,6 +17,7 @@ import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
 import kotlinx.html.title
+import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.math.max
 
@@ -60,6 +61,22 @@ class HtmlView(
 
     private var currentRegex = ""
 
+    override var options: RecognizerCombiner.Options
+        get() = RecognizerCombiner.Options(
+            onlyPatterns = checkOnlyMatches.checked,
+            matchWholeLine = checkWholeLine.checked,
+            caseInsensitive = checkCaseInsensitive.checked,
+            dotMatchesLineBreaks = checkDotAll.checked,
+            multiline = checkMultiline.checked
+        )
+        set(value) {
+            checkOnlyMatches.checked = value.onlyPatterns
+            checkWholeLine.checked = value.matchWholeLine
+            checkCaseInsensitive.checked = value.caseInsensitive
+            checkDotAll.checked = value.dotMatchesLineBreaks
+            checkMultiline.checked = value.multiline
+        }
+
     init {
         textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
         buttonCopy.addEventListener(EVENT_CLICK, {
@@ -73,6 +90,19 @@ class HtmlView(
         checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkWholeLine.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+    }
+
+    override fun applyInitParameters() {
+        val params = URL(document.URL).searchParams
+        val sampleText = params.get(SEARCH_SAMPLE_REGEX)?.ifBlank { null }
+        sampleText?.let { inputText = it }
+
+        val parsedOptions = RecognizerCombiner.Options.parseSearchParams(
+            onlyPatternFlag = params.get(SEARCH_ONLY_PATTERNS)?.ifBlank { null },
+            matchWholeLineFlag = params.get(SEARCH_MATCH_WHOLE_LINE)?.ifBlank { null },
+            regexFlags = params.get(SEARCH_FLAGS)
+        )
+        this.options = parsedOptions
     }
 
     override fun hideCopyButton() {
@@ -239,22 +269,6 @@ class HtmlView(
         return maxHeight
     }
 
-    override var options: RecognizerCombiner.Options
-        get() = RecognizerCombiner.Options(
-            onlyPatterns = checkOnlyMatches.checked,
-            matchWholeLine = checkWholeLine.checked,
-            caseSensitive = checkCaseInsensitive.checked,
-            dotMatchesLineBreaks = checkDotAll.checked,
-            multiline = checkMultiline.checked
-        )
-        set(value) {
-            checkOnlyMatches.checked = value.onlyPatterns
-            checkWholeLine.checked = value.matchWholeLine
-            checkCaseInsensitive.checked = value.caseSensitive
-            checkDotAll.checked = value.dotMatchesLineBreaks
-            checkMultiline.checked = value.multiline
-        }
-
     override fun setPattern(regex: RecognizerCombiner.RegularExpression) {
         val pattern = regex.pattern
 
@@ -363,6 +377,11 @@ class HtmlView(
         const val ID_DIV_LANGUAGES = "rg_language_accordion"
         const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
         const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
+
+        const val SEARCH_SAMPLE_REGEX = "sampleText"
+        const val SEARCH_FLAGS = "flags"
+        const val SEARCH_ONLY_PATTERNS = "onlyPatterns"
+        const val SEARCH_MATCH_WHOLE_LINE = "matchWholeLine"
 
         val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
         const val MAGIC_HEIGHT = 8
