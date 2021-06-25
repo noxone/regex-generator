@@ -86,7 +86,7 @@ class UiController : DisplayContract.Controller {
     }
 
     private fun computeOutputPattern() {
-        val result = RecognizerCombiner.combine(
+        val result = RecognizerCombiner.combineMatches(
             view.inputText,
             matches.mapNotNull { it.selectedMatch }.toList(),
             view.options
