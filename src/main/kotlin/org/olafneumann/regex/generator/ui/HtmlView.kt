@@ -100,7 +100,7 @@ class HtmlView(
         val parsedOptions = RecognizerCombiner.Options.parseSearchParams(
             onlyPatternFlag = params.get(SEARCH_ONLY_PATTERNS)?.ifBlank { null },
             matchWholeLineFlag = params.get(SEARCH_MATCH_WHOLE_LINE)?.ifBlank { null },
-            regexFlags = params.get(SEARCH_FLAGS)?.ifBlank { null }
+            regexFlags = params.get(SEARCH_FLAGS)
         )
         this.options = parsedOptions
     }

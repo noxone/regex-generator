@@ -22,7 +22,7 @@ The page supports several search parameters to change the initial state of the o
 - ``onlyPatterns`` this controls the "Generate only patterns" check box
 - ``matchWholeLine`` this controls the "Match whole line" check box
 
-Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=im%onlyPatterns=false&matchWholeLine=true]()
+Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=im&onlyPatterns=false&matchWholeLine=true]()
 
 ### Docker
 
