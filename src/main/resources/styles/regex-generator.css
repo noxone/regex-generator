@@ -29,7 +29,7 @@
 .rg-match-item {
   position: absolute;
   height: 0.7rem;
-  cursor: s-resize;
+  cursor: url('../images/cursor-rg-match-item-16.png') 8 10, auto;
 }
 
 .rg-match-item-red {
