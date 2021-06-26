@@ -129,3 +129,8 @@ form * .rg-check-row {
 #rg_result_display {
   white-space: pre-wrap;
 }
+
+.rg-share-link {
+  overflow-x: auto;
+  white-space: nowrap;
+}

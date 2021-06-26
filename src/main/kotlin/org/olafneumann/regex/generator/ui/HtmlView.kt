@@ -34,12 +34,14 @@ class HtmlView(
     private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_RESULT_DISPLAY)
     private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_COPY)
     private val buttonHelp = HtmlHelper.getElementById<HTMLAnchorElement>(ID_BUTTON_HELP)
+    private val buttonShareLink = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_SHARE_LINK)
     private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_ONLY_MATCHES)
     private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_WHOLELINE)
     private val checkCaseInsensitive = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_MULTILINE)
     private val containerLanguages = HtmlHelper.getElementById<HTMLDivElement>(ID_DIV_LANGUAGES)
+    private val textShareLink = HtmlHelper.getElementById<HTMLDivElement>(ID_TEXT_SHARE_LINK)
 
     private val anchorRegex101 = LinkHandler(
         HtmlHelper.getElementById(ID_ANCHOR_REGEX101),
@@ -377,6 +379,8 @@ class HtmlView(
         const val ID_DIV_LANGUAGES = "rg_language_accordion"
         const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
         const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
+        const val ID_BUTTON_SHARE_LINK = "rg_button_copy_share_link"
+        const val ID_TEXT_SHARE_LINK = "rg_result_link"
 
         const val SEARCH_SAMPLE_REGEX = "sampleText"
         const val SEARCH_FLAGS = "flags"
