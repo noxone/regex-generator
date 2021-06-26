@@ -83,7 +83,7 @@
 .rg-item-selected {
   background-color: white !important;
   border: 1px solid gray;
-  cursor: crosshair !important;
+  cursor: url('../images/cursor-rg-match-selection-delete-32.png'), auto;
 }
 
 .rg-item-not-available {
