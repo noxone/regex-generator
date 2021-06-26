@@ -83,15 +83,15 @@ class HtmlView(
         }
 
     init {
-        textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
+        textInput.oninput = { presenter.onInputChanges(inputText) }
         buttonCopy.onclick = { copyToClipboard(currentRegex) }
         buttonShareLink.onclick = { copyToClipboard(textShare.text) }
-        buttonHelp.addEventListener(EVENT_CLICK, { presenter.onButtonHelpClick() })
-        checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-        checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-        checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-        checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-        checkWholeLine.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+        buttonHelp.onclick = { presenter.onButtonHelpClick() }
+        checkCaseInsensitive.oninput = { presenter.onOptionsChange(options) }
+        checkDotAll.oninput = { presenter.onOptionsChange(options) }
+        checkMultiline.oninput = { presenter.onOptionsChange(options) }
+        checkOnlyMatches.oninput = { presenter.onOptionsChange(options) }
+        checkWholeLine.oninput = { presenter.onOptionsChange(options) }
     }
 
     override fun applyInitParameters() {
@@ -228,20 +228,16 @@ class HtmlView(
     }
 
     private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
-        element.addEventListener(
-            EVENT_MOUSE_ENTER,
-            {
+        element.onmouseenter = {
                 if (matchPresenter.availableForHighlight) {
                     matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
                 }
-            })
-        element.addEventListener(
-            EVENT_MOUSE_LEAVE,
-            {
+            }
+        element.onmouseleave = {
                 if (matchPresenter.availableForHighlight) {
                     matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
                 }
-            })
+            }
     }
 
     private fun animateResultDisplaySize(rows: Map<Int, HTMLDivElement>) {
@@ -361,11 +357,6 @@ class HtmlView(
         const val CLASS_ITEM_SELECTED = "rg-item-selected"
         const val CLASS_CHAR_SELECTED = "rg-char-selected"
         const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
-
-        const val EVENT_CLICK = "click"
-        const val EVENT_INPUT = "input"
-        const val EVENT_MOUSE_ENTER = "mouseenter"
-        const val EVENT_MOUSE_LEAVE = "mouseleave"
 
         const val ID_INPUT_ELEMENT = "rg_raw_input_text"
         const val ID_TEXT_DISPLAY = "rg_text_display"
