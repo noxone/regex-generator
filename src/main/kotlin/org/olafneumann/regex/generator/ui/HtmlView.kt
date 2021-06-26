@@ -41,7 +41,6 @@ class HtmlView(
     private val checkDotAll = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_MULTILINE)
     private val containerLanguages = HtmlHelper.getElementById<HTMLDivElement>(ID_DIV_LANGUAGES)
-    private val textShareLink = HtmlHelper.getElementById<HTMLDivElement>(ID_TEXT_SHARE_LINK)
 
     private val anchorRegex101 = LinkHandler(
         HtmlHelper.getElementById(ID_ANCHOR_REGEX101),
@@ -50,6 +49,10 @@ class HtmlView(
     private val anchorRegexr = LinkHandler(
         HtmlHelper.getElementById(ID_ANCHOR_REGEXR),
         UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
+    )
+    private val textShare = TextHandler(
+        HtmlHelper.getElementById(ID_TEXT_SHARE_LINK),
+        UrlGenerator("ShareLink", "https://regex-generator.olafneumann.org/?sampleText=%1\$s&flags=%2\$s")
     )
 
     // Stuff needed to display the regex
@@ -81,11 +84,8 @@ class HtmlView(
 
     init {
         textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
-        buttonCopy.addEventListener(EVENT_CLICK, {
-            navigator.clipboard
-                .writeText(currentRegex)
-                .catch(onRejected = { window.alert("Could not copy text: $it") })
-        })
+        buttonCopy.onclick = { copyToClipboard(currentRegex) }
+        buttonShareLink.onclick = { copyToClipboard(textShare.text) }
         buttonHelp.addEventListener(EVENT_CLICK, { presenter.onButtonHelpClick() })
         checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
         checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
@@ -292,6 +292,9 @@ class HtmlView(
         // update links
         anchorRegex101.setPattern(pattern, options)
         anchorRegexr.setPattern(pattern, options)
+
+        // update share-link
+        textShare.setPattern(inputText, options)
 
         // update programming languages
         val options = options

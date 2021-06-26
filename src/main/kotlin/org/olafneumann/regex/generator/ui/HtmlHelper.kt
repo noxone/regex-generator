@@ -24,3 +24,14 @@ internal class LinkHandler(
         link.href = codeGenerator.generateCode(pattern, options).snippet
     }
 }
+
+internal class TextHandler(
+    private val element: HTMLElement,
+    private val codeGenerator: CodeGenerator
+) {
+    fun setPattern(pattern: String, options: RecognizerCombiner.Options) {
+        element.innerText = "${codeGenerator.generateCode(pattern, options).snippet}&onlyPatterns=${options.onlyPatterns}&matchWholeLine=${options.matchWholeLine}"
+    }
+
+    val text get() = element.innerText
+}
