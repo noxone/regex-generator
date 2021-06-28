@@ -114,7 +114,7 @@ class HtmlView(
     private fun applyInitSelection() {
         val params = URL(document.URL).searchParams
 
-        val selections = params.get("selection")
+        val selections = params.get(SEARCH_SELECTION)
             ?.split(",")
             ?.map { it.split("|") }
             ?.associate { it[0].toInt() to decodeURIComponent(it[1]) }
@@ -405,6 +405,7 @@ class HtmlView(
         const val SEARCH_FLAGS = "flags"
         const val SEARCH_ONLY_PATTERNS = "onlyPatterns"
         const val SEARCH_MATCH_WHOLE_LINE = "matchWholeLine"
+        const val SEARCH_SELECTION = "selection"
 
         val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
         const val MAGIC_HEIGHT = 8

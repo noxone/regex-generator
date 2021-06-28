@@ -13,7 +13,7 @@ internal object HtmlHelper {
         try {
             return document.getElementById(id) as T
         } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find element with id '$id'.", e)
+            throw RuntimeException("Unable to find element with id '${id}'.", e)
         }
     }
 }
@@ -34,7 +34,7 @@ internal class TextHandler(
     fun setPattern(pattern: String, options: RecognizerCombiner.Options, selectedMatches: Collection<RecognizerMatch>) {
         val selection = selectedMatches.map { "${it.ranges[0].first}|${it.recognizer.name}" }
             .joinToString(separator = ",") { encodeURIComponent(it) }
-        element.innerText = "${codeGenerator.generateCode(pattern, options).snippet}&onlyPatterns=${options.onlyPatterns}&matchWholeLine=${options.matchWholeLine}&selection=${selection}"
+        element.innerText = "${codeGenerator.generateCode(pattern, options).snippet}&${HtmlView.SEARCH_ONLY_PATTERNS}=${options.onlyPatterns}&${HtmlView.SEARCH_MATCH_WHOLE_LINE}=${options.matchWholeLine}&${HtmlView.SEARCH_SELECTION}=${selection}"
     }
 
     val text get() = element.innerText
