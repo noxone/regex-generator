@@ -7,6 +7,7 @@ object RecognizerRegistry {
     private val recognizers = listOf(
         EchoRecognizer("Character", ".", priority = 10),
         EchoRecognizer("Exact number", "[0-9]{2,}"),
+        EchoRecognizer("Repeating character", "(.)\\1{2,}", outputRegexBuilder = "%1\$s+"),
         SimpleRecognizer("One whitespace", "\\s"),
         SimpleRecognizer("Whitespaces", "\\s+"),
         SimpleRecognizer("One character", "[a-zA-Z]"),
