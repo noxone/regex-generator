@@ -115,9 +115,12 @@ class HtmlView(
         val params = URL(document.URL).searchParams
 
         val selections = params.get(SEARCH_SELECTION)
+            ?.ifBlank { null }
             ?.split(",")
             ?.map { it.split("|") }
-            ?.associate { it[0].toInt() to decodeURIComponent(it[1]) }
+            ?.associate {
+                console.log(it)
+                it[0].toInt() to decodeURIComponent(it[1]) }
         if (selections != null) {
             presenter.matchPresenters
                 .forEach { presenter ->

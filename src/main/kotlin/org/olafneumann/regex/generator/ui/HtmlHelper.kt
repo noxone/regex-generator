@@ -5,8 +5,10 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLElement
 import kotlinx.browser.document
+import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.w3c.dom.url.URL
 
 internal object HtmlHelper {
     internal inline fun <reified T : HTMLElement> getElementById(id: String): T {
@@ -34,7 +36,18 @@ internal class TextHandler(
     fun setPattern(pattern: String, options: RecognizerCombiner.Options, selectedMatches: Collection<RecognizerMatch>) {
         val selection = selectedMatches.map { "${it.ranges[0].first}|${it.recognizer.name}" }
             .joinToString(separator = ",") { encodeURIComponent(it) }
-        element.innerText = "${codeGenerator.generateCode(pattern, options).snippet}&${HtmlView.SEARCH_ONLY_PATTERNS}=${options.onlyPatterns}&${HtmlView.SEARCH_MATCH_WHOLE_LINE}=${options.matchWholeLine}&${HtmlView.SEARCH_SELECTION}=${selection}"
+        val shareUrlString = "${codeGenerator.generateCode(pattern, options).snippet}&${HtmlView.SEARCH_ONLY_PATTERNS}=${options.onlyPatterns}&${HtmlView.SEARCH_MATCH_WHOLE_LINE}=${options.matchWholeLine}&${HtmlView.SEARCH_SELECTION}=${selection}"
+        val url = URL(shareUrlString)
+        url.protocol = window.location.protocol
+        url.hostname = window.location.hostname
+        url.port = window.location.port
+
+        element.innerText = url.toString()
+        updateDocumentSearchQuery(url)
+    }
+
+    private fun updateDocumentSearchQuery(url: URL) {
+        window.history.pushState(data = null, title = "Regex Generator", url = url.toString())
     }
 
     val text get() = element.innerText
