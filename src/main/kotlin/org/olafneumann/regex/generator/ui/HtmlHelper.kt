@@ -43,11 +43,13 @@ internal class TextHandler(
         url.port = window.location.port
 
         element.innerText = url.toString()
-        updateDocumentSearchQuery(url)
+        updateDocumentSearchQuery(url, pattern)
     }
 
-    private fun updateDocumentSearchQuery(url: URL) {
-        window.history.pushState(data = null, title = "Regex Generator", url = url.toString())
+    private fun updateDocumentSearchQuery(url: URL, sampleText: String) {
+        val title = "Regex Generator \"${sampleText}\""
+        document.title = title
+        window.history.pushState(data = null, title = title, url = url.toString())
     }
 
     val text get() = element.innerText
