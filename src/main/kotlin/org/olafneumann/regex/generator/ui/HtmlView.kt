@@ -12,6 +12,7 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.UrlGenerator
 import org.w3c.dom.*
 import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
@@ -97,10 +98,8 @@ class HtmlView(
         val params = URL(document.URL).searchParams
 
         val parsedOptions = RecognizerCombiner.Options.parseSearchParams(
-            onlyPatternFlag = params.get(SEARCH_ONLY_PATTERNS)
-                ?.ifBlank { null },
-            matchWholeLineFlag = params.get(SEARCH_MATCH_WHOLE_LINE)
-                ?.ifBlank { null },
+            onlyPatternFlag = params.get(SEARCH_ONLY_PATTERNS)?.ifBlank { null },
+            matchWholeLineFlag = params.get(SEARCH_MATCH_WHOLE_LINE)?.ifBlank { null },
             regexFlags = params.get(SEARCH_FLAGS)
         )
         this.options = parsedOptions
@@ -109,9 +108,25 @@ class HtmlView(
             ?.ifBlank { null }
             ?.let { inputText = it }
 
+        window.setTimeout({ applyInitSelection() })
+    }
 
+    private fun applyInitSelection() {
+        val params = URL(document.URL).searchParams
 
-        // ?sampleText=2020-03-12T13%3A34%3A56.123Z%20INFO%20%20%5Borg.example.Class%5D%3A%20This%20is%20a%20%23simple%20%23logline%20containing%20a%20'value'.&flags=i&onlyPatterns=false&matchWholeLine=true&selection=0%7CISO8601,31%7CSquare%20brackets,32%7CSquare%20brackets
+        val selections = params.get("selection")
+            ?.split(",")
+            ?.map { it.split("|") }
+            ?.associate { it[0].toInt() to decodeURIComponent(it[1]) }
+        if (selections != null) {
+            presenter.matchPresenters
+                .forEach { presenter ->
+                    val selectionName = selections[presenter.ranges[0].first]
+                    presenter.recognizerMatches.firstOrNull { it.recognizer.name == selectionName }
+                        ?.let { presenter.selectedMatch = it }
+                }
+            presenter.updatePresentation()
+        }
     }
 
     override fun hideCopyButton() {
@@ -278,7 +293,7 @@ class HtmlView(
         showResultRegex(regex)
 
         // update share-link
-        textShare.setPattern(inputText, options, presenter.getSelectedMatches())
+        textShare.setPattern(inputText, options, presenter.selectedRecognizerMatches)
 
         // update links
         currentPattern = regex.pattern

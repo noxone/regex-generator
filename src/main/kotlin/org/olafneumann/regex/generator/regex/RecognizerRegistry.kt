@@ -5,7 +5,8 @@ import org.olafneumann.regex.generator.regex.BracketedRecognizer.CenterPattern
 
 object RecognizerRegistry {
     private val recognizers = listOf(
-        EchoRecognizer("Character", ".", priority = 1),
+        EchoRecognizer("Character", ".", priority = 10),
+        EchoRecognizer("Exact number", "[0-9]{2,}"),
         SimpleRecognizer("One whitespace", "\\s"),
         SimpleRecognizer("Whitespaces", "\\s+"),
         SimpleRecognizer("One character", "[a-zA-Z]"),

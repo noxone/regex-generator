@@ -8,7 +8,7 @@ import org.olafneumann.regex.generator.regex.RecognizerRegistry
 
 class UiController : DisplayContract.Controller {
     private val view: DisplayContract.View = HtmlView(this)
-    private var matchPresenters = listOf<MatchPresenter>()
+    override var matchPresenters = listOf<MatchPresenter>()
 
     private val currentTextInput: String get() = view.inputText
 
@@ -63,6 +63,11 @@ class UiController : DisplayContract.Controller {
         }
         // determine selected state of the presenter
         matchPresenter.selectedMatch = if (matchPresenter.selected) null else recognizerMatch
+
+        updatePresentation()
+    }
+
+    override fun updatePresentation() {
         // find matches to disable
         val selectedMatches = matchPresenters.filter { it.selected }
         matchPresenters.filter { !it.selected }
@@ -70,6 +75,7 @@ class UiController : DisplayContract.Controller {
 
         computeOutputPattern()
     }
+
 
     override fun onOptionsChange(options: RecognizerCombiner.Options) {
         ApplicationSettings.viewOptions = options
@@ -85,8 +91,9 @@ class UiController : DisplayContract.Controller {
         view.setPattern(result)
     }
 
-    override fun getMatches(): Collection<RecognizerMatch> = matchPresenters.flatMap { it.recognizerMatches }
-    override fun getSelectedMatches(): Collection<RecognizerMatch> = matchPresenters.mapNotNull { it.selectedMatch }
+    override val allRecognizerMatcher: Collection<RecognizerMatch> get() = matchPresenters.flatMap { it.recognizerMatches }
+    override val selectedRecognizerMatches: Collection<RecognizerMatch> get() = matchPresenters.mapNotNull { it.selectedMatch }
+
 
     companion object {
         const val VAL_EXAMPLE_INPUT =
