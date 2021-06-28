@@ -24,6 +24,9 @@ interface DisplayContract {
         fun onInputChanges(newInput: String)
         fun onSuggestionClick(recognizerMatch: RecognizerMatch)
         fun onOptionsChange(options: RecognizerCombiner.Options)
+
+        fun getMatches(): Collection<RecognizerMatch>
+        fun getSelectedMatches(): Collection<RecognizerMatch>
     }
 }
 

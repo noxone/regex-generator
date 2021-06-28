@@ -12,7 +12,6 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.UrlGenerator
 import org.w3c.dom.*
 import kotlinx.browser.document
-import kotlinx.browser.window
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
@@ -64,7 +63,7 @@ class HtmlView(
 
     private val driver = Driver(js("{}"))
 
-    private var currentRegex = ""
+    private var currentPattern = ""
 
     override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
@@ -84,7 +83,7 @@ class HtmlView(
 
     init {
         textInput.oninput = { presenter.onInputChanges(inputText) }
-        buttonCopy.onclick = { copyToClipboard(currentRegex) }
+        buttonCopy.onclick = { copyToClipboard(currentPattern) }
         buttonShareLink.onclick = { copyToClipboard(textShare.text) }
         buttonHelp.onclick = { presenter.onButtonHelpClick() }
         checkCaseInsensitive.oninput = { presenter.onOptionsChange(options) }
@@ -96,15 +95,23 @@ class HtmlView(
 
     override fun applyInitParameters() {
         val params = URL(document.URL).searchParams
-        val sampleText = params.get(SEARCH_SAMPLE_REGEX)?.ifBlank { null }
-        sampleText?.let { inputText = it }
 
         val parsedOptions = RecognizerCombiner.Options.parseSearchParams(
-            onlyPatternFlag = params.get(SEARCH_ONLY_PATTERNS)?.ifBlank { null },
-            matchWholeLineFlag = params.get(SEARCH_MATCH_WHOLE_LINE)?.ifBlank { null },
+            onlyPatternFlag = params.get(SEARCH_ONLY_PATTERNS)
+                ?.ifBlank { null },
+            matchWholeLineFlag = params.get(SEARCH_MATCH_WHOLE_LINE)
+                ?.ifBlank { null },
             regexFlags = params.get(SEARCH_FLAGS)
         )
         this.options = parsedOptions
+
+        params.get(SEARCH_SAMPLE_REGEX)
+            ?.ifBlank { null }
+            ?.let { inputText = it }
+
+
+
+        // ?sampleText=2020-03-12T13%3A34%3A56.123Z%20INFO%20%20%5Borg.example.Class%5D%3A%20This%20is%20a%20%23simple%20%23logline%20containing%20a%20'value'.&flags=i&onlyPatterns=false&matchWholeLine=true&selection=0%7CISO8601,31%7CSquare%20brackets,32%7CSquare%20brackets
     }
 
     override fun hideCopyButton() {
@@ -268,35 +275,38 @@ class HtmlView(
     }
 
     override fun setPattern(regex: RecognizerCombiner.RegularExpression) {
-        val pattern = regex.pattern
-
-        // display result
-        currentRegex = pattern
-        resultDisplay.clear()
-        for (part in regex.parts) {
-            resultDisplay.append(
-                document.create.span(classes = "rg-result-part") {
-                    (part.match?.let { "Recognizes \"${it.title}\" using the highlighted regular expression" }
-                        ?: part.title?.let { "Recognizes \"${it}\"" }
-                        ?: part.originalText?.let { "Recognizes exactly \"${it}\"" })
-                        ?.let { title = it }
-                    +part.pattern
-                }
-            )
-        }
-
-        // update links
-        anchorRegex101.setPattern(pattern, options)
-        anchorRegexr.setPattern(pattern, options)
+        showResultRegex(regex)
 
         // update share-link
-        textShare.setPattern(inputText, options)
+        textShare.setPattern(inputText, options, presenter.getSelectedMatches())
+
+        // update links
+        currentPattern = regex.pattern
+        anchorRegex101.setPattern(currentPattern, options)
+        anchorRegexr.setPattern(currentPattern, options)
 
         // update programming languages
         val options = options
         CodeGenerator.all
-            .forEach { languageDisplays[it]?.setSnippet(it.generateCode(pattern, options)) }
+            .forEach { languageDisplays[it]?.setSnippet(it.generateCode(currentPattern, options)) }
         Prism.highlightAll()
+    }
+
+    private fun showResultRegex(regex: RecognizerCombiner.RegularExpression) {
+        resultDisplay.clear()
+        for (part in regex.parts) {
+            resultDisplay.append(
+                document.create.span(classes = "rg-result-part") {
+                    title = when {
+                        part.match != null -> "Recognizes \"${part.match.title}\" using the highlighted regular expression"
+                        part.title != null -> "Recognizes \"${part.title}\""
+                        part.originalText != null -> "Recognizes exactly \"${part.originalText}\""
+                        else -> ""
+                    }
+                    +part.pattern
+                }
+            )
+        }
     }
 
 
