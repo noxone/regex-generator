@@ -107,8 +107,6 @@ object RecognizerCombiner {
         }
     }
 
-    private fun String.escapeForRegex() = PatternHelper.escapeForRegex(this)
-
     data class Options(
         val onlyPatterns: Boolean = DEFAULT_ONLY_PATTERN,
         val matchWholeLine: Boolean = DEFAULT_MATCH_WHOLE_LINE,
@@ -127,10 +125,10 @@ object RecognizerCombiner {
                 val onlyPatterns = onlyPatternFlag?.let { it.toBoolean() } ?: DEFAULT_ONLY_PATTERN
                 val matchWholeLine = matchWholeLineFlag?.let { it.toBoolean() } ?: DEFAULT_MATCH_WHOLE_LINE
                 val caseInsensitive =
-                    regexFlags?.let { it.contains(char = 'i', ignoreCase = true) } ?: DEFAULT_CASE_INSENSITIVE
+                    regexFlags?.contains(char = 'i', ignoreCase = true) ?: DEFAULT_CASE_INSENSITIVE
                 val dotMatchesLineBreaks =
-                    regexFlags?.let { it.contains(char = 's', ignoreCase = true) } ?: DEFAULT_DOT_MATCHES_LINE_BREAKS
-                val multiline = regexFlags?.let { it.contains(char = 'm', ignoreCase = true) } ?: DEFAULT_MULTILINE
+                    regexFlags?.contains(char = 's', ignoreCase = true) ?: DEFAULT_DOT_MATCHES_LINE_BREAKS
+                val multiline = regexFlags?.contains(char = 'm', ignoreCase = true) ?: DEFAULT_MULTILINE
                 return Options(
                     onlyPatterns = onlyPatterns,
                     matchWholeLine = matchWholeLine,
