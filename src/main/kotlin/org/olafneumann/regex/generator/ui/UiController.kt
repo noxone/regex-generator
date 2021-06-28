@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.ui
 
 import kotlinx.browser.window
-import org.olafneumann.regex.generator.js.navigator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
@@ -9,13 +8,13 @@ import org.olafneumann.regex.generator.regex.RecognizerRegistry
 
 class UiController : DisplayContract.Controller {
     private val view: DisplayContract.View = HtmlView(this)
-    private var matches = listOf<MatchPresenter>()
+    override var matchPresenters = listOf<MatchPresenter>()
 
     private val currentTextInput: String get() = view.inputText
 
     init {
         // if copy is not available: remove copy button
-        if (navigator.clipboard == undefined) {
+        if (window.navigator.clipboard == undefined) {
             view.hideCopyButton()
         }
 
@@ -28,7 +27,7 @@ class UiController : DisplayContract.Controller {
     }
 
     private fun List<RecognizerMatch>.toPresentation(): MatchPresenter =
-        matches.findLast {
+        matchPresenters.findLast {
             it.recognizerMatches.containsAll(this)
                     && this.containsAll(it.recognizerMatches)
         } ?: MatchPresenter(this)
@@ -48,31 +47,35 @@ class UiController : DisplayContract.Controller {
     fun showInitialUserGuide() = view.showUserGuide(true)
 
     override fun onInputChanges(newInput: String) {
-        val matchGroups = groupMatches(RecognizerRegistry.findMatches(newInput))
-        matches = matchGroups.map { it.toPresentation() }
+        val matches = RecognizerRegistry.findMatches(newInput)
+        val matchGroups = matches.groupBy { it.ranges }.values
+        matchPresenters = matchGroups.map { it.toPresentation() }
 
         view.displayText = newInput
-        view.showResults(matches)
+        view.showResults(matchPresenters)
         computeOutputPattern()
     }
 
-    private fun groupMatches(matches: List<RecognizerMatch>) =
-        matches.groupBy { it.ranges }.values
-
     override fun onSuggestionClick(recognizerMatch: RecognizerMatch) {
-        val matchPresenter = matches.find { it.recognizerMatches.contains(recognizerMatch) }
+        val matchPresenter = matchPresenters.find { it.recognizerMatches.contains(recognizerMatch) }
         if (matchPresenter == null || matchPresenter.deactivated) {
             return
         }
         // determine selected state of the presenter
         matchPresenter.selectedMatch = if (matchPresenter.selected) null else recognizerMatch
+
+        updatePresentation()
+    }
+
+    override fun updatePresentation() {
         // find matches to disable
-        val selectedMatches = matches.filter { it.selected }
-        matches.filter { !it.selected }
+        val selectedMatches = matchPresenters.filter { it.selected }
+        matchPresenters.filter { !it.selected }
             .forEach { match -> match.deactivated = selectedMatches.any { match.intersect(it) } }
 
         computeOutputPattern()
     }
+
 
     override fun onOptionsChange(options: RecognizerCombiner.Options) {
         ApplicationSettings.viewOptions = options
@@ -82,11 +85,15 @@ class UiController : DisplayContract.Controller {
     private fun computeOutputPattern() {
         val result = RecognizerCombiner.combineMatches(
             view.inputText,
-            matches.mapNotNull { it.selectedMatch }.toList(),
+            matchPresenters.mapNotNull { it.selectedMatch }.toList(),
             view.options
         )
         view.setPattern(result)
     }
+
+    override val allRecognizerMatcher: Collection<RecognizerMatch> get() = matchPresenters.flatMap { it.recognizerMatches }
+    override val selectedRecognizerMatches: Collection<RecognizerMatch> get() = matchPresenters.mapNotNull { it.selectedMatch }
+
 
     companion object {
         const val VAL_EXAMPLE_INPUT =

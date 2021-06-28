@@ -34,6 +34,7 @@ class HtmlView(
     private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_RESULT_DISPLAY)
     private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_COPY)
     private val buttonHelp = HtmlHelper.getElementById<HTMLAnchorElement>(ID_BUTTON_HELP)
+    private val buttonShareLink = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_SHARE_LINK)
     private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_ONLY_MATCHES)
     private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_WHOLELINE)
     private val checkCaseInsensitive = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_CASE_INSENSITIVE)
@@ -49,6 +50,10 @@ class HtmlView(
         HtmlHelper.getElementById(ID_ANCHOR_REGEXR),
         UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
     )
+    private val textShare = TextHandler(
+        HtmlHelper.getElementById(ID_TEXT_SHARE_LINK),
+        UrlGenerator("ShareLink", "https://regex-generator.olafneumann.org/?sampleText=%1\$s&flags=%2\$s")
+    )
 
     // Stuff needed to display the regex
     private val matchPresenterToRowIndex = mutableMapOf<MatchPresenter, Int>()
@@ -59,7 +64,7 @@ class HtmlView(
 
     private val driver = Driver(js("{}"))
 
-    private var currentRegex = ""
+    private var currentPattern = ""
 
     override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
@@ -78,24 +83,19 @@ class HtmlView(
         }
 
     init {
-        textInput.addEventListener(EVENT_INPUT, { presenter.onInputChanges(inputText) })
-        buttonCopy.addEventListener(EVENT_CLICK, {
-            navigator.clipboard
-                .writeText(currentRegex)
-                .catch(onRejected = { window.alert("Could not copy text: $it") })
-        })
-        buttonHelp.addEventListener(EVENT_CLICK, { presenter.onButtonHelpClick() })
-        checkCaseInsensitive.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-        checkDotAll.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-        checkMultiline.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-        checkOnlyMatches.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
-        checkWholeLine.addEventListener(EVENT_INPUT, { presenter.onOptionsChange(options) })
+        textInput.oninput = { presenter.onInputChanges(inputText) }
+        buttonCopy.onclick = { copyToClipboard(currentPattern) }
+        buttonShareLink.onclick = { copyToClipboard(textShare.text) }
+        buttonHelp.onclick = { presenter.onButtonHelpClick() }
+        checkCaseInsensitive.oninput = { presenter.onOptionsChange(options) }
+        checkDotAll.oninput = { presenter.onOptionsChange(options) }
+        checkMultiline.oninput = { presenter.onOptionsChange(options) }
+        checkOnlyMatches.oninput = { presenter.onOptionsChange(options) }
+        checkWholeLine.oninput = { presenter.onOptionsChange(options) }
     }
 
     override fun applyInitParameters() {
         val params = URL(document.URL).searchParams
-        val sampleText = params.get(SEARCH_SAMPLE_REGEX)?.ifBlank { null }
-        sampleText?.let { inputText = it }
 
         val parsedOptions = RecognizerCombiner.Options.parseSearchParams(
             onlyPatternFlag = params.get(SEARCH_ONLY_PATTERNS)?.ifBlank { null },
@@ -103,6 +103,30 @@ class HtmlView(
             regexFlags = params.get(SEARCH_FLAGS)
         )
         this.options = parsedOptions
+
+        params.get(SEARCH_SAMPLE_REGEX)
+            ?.ifBlank { null }
+            ?.let { inputText = it }
+
+        window.setTimeout({ applyInitSelection() })
+    }
+
+    private fun applyInitSelection() {
+        val params = URL(document.URL).searchParams
+
+        val selections = params.get("selection")
+            ?.split(",")
+            ?.map { it.split("|") }
+            ?.associate { it[0].toInt() to decodeURIComponent(it[1]) }
+        if (selections != null) {
+            presenter.matchPresenters
+                .forEach { presenter ->
+                    val selectionName = selections[presenter.ranges[0].first]
+                    presenter.recognizerMatches.firstOrNull { it.recognizer.name == selectionName }
+                        ?.let { presenter.selectedMatch = it }
+                }
+            presenter.updatePresentation()
+        }
     }
 
     override fun hideCopyButton() {
@@ -226,20 +250,16 @@ class HtmlView(
     }
 
     private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
-        element.addEventListener(
-            EVENT_MOUSE_ENTER,
-            {
+        element.onmouseenter = {
                 if (matchPresenter.availableForHighlight) {
                     matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
                 }
-            })
-        element.addEventListener(
-            EVENT_MOUSE_LEAVE,
-            {
+            }
+        element.onmouseleave = {
                 if (matchPresenter.availableForHighlight) {
                     matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
                 }
-            })
+            }
     }
 
     private fun animateResultDisplaySize(rows: Map<Int, HTMLDivElement>) {
@@ -270,32 +290,38 @@ class HtmlView(
     }
 
     override fun setPattern(regex: RecognizerCombiner.RegularExpression) {
-        val pattern = regex.pattern
+        showResultRegex(regex)
 
-        // display result
-        currentRegex = pattern
-        resultDisplay.clear()
-        for (part in regex.parts) {
-            resultDisplay.append(
-                document.create.span(classes = "rg-result-part") {
-                    (part.match?.let { "Recognizes \"${it.title}\" using the highlighted regular expression" }
-                        ?: part.title?.let { "Recognizes \"${it}\"" }
-                        ?: part.originalText?.let { "Recognizes exactly \"${it}\"" })
-                        ?.let { title = it }
-                    +part.pattern
-                }
-            )
-        }
+        // update share-link
+        textShare.setPattern(inputText, options, presenter.selectedRecognizerMatches)
 
         // update links
-        anchorRegex101.setPattern(pattern, options)
-        anchorRegexr.setPattern(pattern, options)
+        currentPattern = regex.pattern
+        anchorRegex101.setPattern(currentPattern, options)
+        anchorRegexr.setPattern(currentPattern, options)
 
         // update programming languages
         val options = options
         CodeGenerator.all
-            .forEach { languageDisplays[it]?.setSnippet(it.generateCode(pattern, options)) }
+            .forEach { languageDisplays[it]?.setSnippet(it.generateCode(currentPattern, options)) }
         Prism.highlightAll()
+    }
+
+    private fun showResultRegex(regex: RecognizerCombiner.RegularExpression) {
+        resultDisplay.clear()
+        for (part in regex.parts) {
+            resultDisplay.append(
+                document.create.span(classes = "rg-result-part") {
+                    title = when {
+                        part.match != null -> "Recognizes \"${part.match.title}\" using the highlighted regular expression"
+                        part.title != null -> "Recognizes \"${part.title}\""
+                        part.originalText != null -> "Recognizes exactly \"${part.originalText}\""
+                        else -> ""
+                    }
+                    +part.pattern
+                }
+            )
+        }
     }
 
 
@@ -357,11 +383,6 @@ class HtmlView(
         const val CLASS_CHAR_SELECTED = "rg-char-selected"
         const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
 
-        const val EVENT_CLICK = "click"
-        const val EVENT_INPUT = "input"
-        const val EVENT_MOUSE_ENTER = "mouseenter"
-        const val EVENT_MOUSE_LEAVE = "mouseleave"
-
         const val ID_INPUT_ELEMENT = "rg_raw_input_text"
         const val ID_TEXT_DISPLAY = "rg_text_display"
         const val ID_RESULT_DISPLAY = "rg_result_display"
@@ -377,6 +398,8 @@ class HtmlView(
         const val ID_DIV_LANGUAGES = "rg_language_accordion"
         const val ID_ANCHOR_REGEX101 = "rg_anchor_regex101"
         const val ID_ANCHOR_REGEXR = "rg_anchor_regexr"
+        const val ID_BUTTON_SHARE_LINK = "rg_button_copy_share_link"
+        const val ID_TEXT_SHARE_LINK = "rg_result_link"
 
         const val SEARCH_SAMPLE_REGEX = "sampleText"
         const val SEARCH_FLAGS = "flags"

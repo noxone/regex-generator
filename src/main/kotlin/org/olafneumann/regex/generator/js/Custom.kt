@@ -1,14 +1,10 @@
 package org.olafneumann.regex.generator.js
 
-import kotlin.js.Promise
-
-external val navigator: Navigator
-
-open external class Navigator {
-    val clipboard: Clipboard
-}
-external class Clipboard {
-    fun writeText(text: String): Promise<Any>
-}
+import kotlinx.browser.window
 
 external fun encodeURIComponent(input: String): String
+external fun decodeURIComponent(input: String): String
+
+fun copyToClipboard(text: String) = window.navigator.clipboard
+    .writeText(text)
+    .catch(onRejected = { window.alert("Could not copy text: $it") })

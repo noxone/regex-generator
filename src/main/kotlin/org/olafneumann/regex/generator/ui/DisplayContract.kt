@@ -24,6 +24,11 @@ interface DisplayContract {
         fun onInputChanges(newInput: String)
         fun onSuggestionClick(recognizerMatch: RecognizerMatch)
         fun onOptionsChange(options: RecognizerCombiner.Options)
+        fun updatePresentation()
+
+        val matchPresenters: Collection<MatchPresenter>
+        val allRecognizerMatcher: Collection<RecognizerMatch>
+        val selectedRecognizerMatches: Collection<RecognizerMatch>
     }
 }
 

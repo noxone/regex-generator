@@ -29,7 +29,7 @@
 .rg-match-item {
   position: absolute;
   height: 0.7rem;
-  cursor: s-resize;
+  cursor: url('../images/cursor-rg-match-item-16.png') 8 10, auto;
 }
 
 .rg-match-item-red {
@@ -83,7 +83,7 @@
 .rg-item-selected {
   background-color: white !important;
   border: 1px solid gray;
-  cursor: crosshair !important;
+  cursor: url('../images/cursor-rg-match-selection-delete-32.png'), auto;
 }
 
 .rg-item-not-available {
@@ -128,4 +128,9 @@ form * .rg-check-row {
 
 #rg_result_display {
   white-space: pre-wrap;
+}
+
+.rg-share-link {
+  overflow-x: auto;
+  white-space: nowrap;
 }
