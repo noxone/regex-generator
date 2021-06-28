@@ -23,7 +23,7 @@ The page supports several search parameters to change the initial state of the o
 - ``matchWholeLine`` this controls the "Match whole line" check box
 - ``selection`` controls the matches that have been selected by the user
 
-Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=im&onlyPatterns=false&matchWholeLine=true]()
+Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=im&onlyPatterns=false&matchWholeLine=true&selection=5%7CMultiple%20characters](https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=im&onlyPatterns=false&matchWholeLine=true&selection=5%7CMultiple%20characters)
 
 ### Docker
 
