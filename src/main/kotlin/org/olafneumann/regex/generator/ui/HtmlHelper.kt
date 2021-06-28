@@ -49,7 +49,7 @@ internal class TextHandler(
     private fun updateDocumentSearchQuery(url: URL, sampleText: String) {
         val title = "Regex Generator \"${sampleText}\""
         document.title = title
-        window.history.pushState(data = null, title = title, url = url.toString())
+        window.history.replaceState(data = null, title = title, url = url.toString())
     }
 
     val text get() = element.innerText
