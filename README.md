@@ -58,6 +58,11 @@ gradlew run --continuous
 
 Using this command the page will reload automatically for every source file change.
 
+### Detekt report
+
+Detekt is a code style checker for Kotlin.
+You can find the Detekt report [here](https://regex-generator.olafneumann.org/reports/detekt.html).
+
 ## Project goal
 
 As written in the introduction the aim of the project is to enable everybody to use regular expressions. The use of ``substring()`` is nearly always unnecessary and if code is written in a reasonable manner you won't need that method.
