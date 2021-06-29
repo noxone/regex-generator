@@ -130,6 +130,7 @@ class HtmlView(
                 }
             presenter.updatePresentation()
         }
+        textShare.updateSearchPattern = true
     }
 
     override fun hideCopyButton() {

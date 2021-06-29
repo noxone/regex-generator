@@ -33,17 +33,29 @@ internal class TextHandler(
     private val element: HTMLElement,
     private val codeGenerator: CodeGenerator
 ) {
+    var updateSearchPattern = false
+
     fun setPattern(pattern: String, options: RecognizerCombiner.Options, selectedMatches: Collection<RecognizerMatch>) {
         val selection = selectedMatches.map { "${it.ranges[0].first}|${it.recognizer.name}" }
             .joinToString(separator = ",") { encodeURIComponent(it) }
-        val shareUrlString = "${codeGenerator.generateCode(pattern, options).snippet}&${HtmlView.SEARCH_ONLY_PATTERNS}=${options.onlyPatterns}&${HtmlView.SEARCH_MATCH_WHOLE_LINE}=${options.matchWholeLine}&${HtmlView.SEARCH_SELECTION}=${selection}"
+        val searchAddition = mapOf(
+            HtmlView.SEARCH_ONLY_PATTERNS to options.onlyPatterns,
+            HtmlView.SEARCH_MATCH_WHOLE_LINE to options.matchWholeLine,
+            HtmlView.SEARCH_SELECTION to selection)
+            .map { "${it.key}=${it.value}" }
+            .joinToString(separator = "&")
+
+        val shareUrlString = "${codeGenerator.generateCode(pattern, options).snippet}&${searchAddition}"
+
         val url = URL(shareUrlString)
         url.protocol = window.location.protocol
         url.hostname = window.location.hostname
         url.port = window.location.port
 
         element.innerText = url.toString()
-        updateDocumentSearchQuery(url, pattern)
+        if (updateSearchPattern) {
+            updateDocumentSearchQuery(url, pattern)
+        }
     }
 
     private fun updateDocumentSearchQuery(url: URL, sampleText: String) {
