@@ -28,7 +28,11 @@ class BracketedRecognizer(
         return output
     }
 
-    private fun createRecognizerMatches(input: String, centerPattern: CenterPattern, result: MatchResult): List<RecognizerMatch> {
+    private fun createRecognizerMatches(
+        input: String,
+        centerPattern: CenterPattern,
+        result: MatchResult
+    ): List<RecognizerMatch> {
         val startGroup = result.groups[startGroupIndex] ?: throw RuntimeException("start group cannot be found")
         val endGroup = result.groups[endGroupIndex] ?: throw RuntimeException("end group cannot be found")
         val startIndex = getStartOfFirstGroup(input, result.range.first, startGroup.value)
@@ -55,8 +59,10 @@ class BracketedRecognizer(
         return mutableListOf(outerMatch, innerMatch)
     }
 
-    private fun getStartOfFirstGroup(input: String, startIndex: Int, group: String) = input.indexOf(group, startIndex = startIndex)
-    private fun getEndOfLastGroup(input: String, endIndex: Int, group: String) = input.lastIndexOf(group, startIndex = endIndex)
+    private fun getStartOfFirstGroup(input: String, startIndex: Int, group: String) =
+        input.indexOf(group, startIndex = startIndex)
+    private fun getEndOfLastGroup(input: String, endIndex: Int, group: String) =
+        input.lastIndexOf(group, startIndex = endIndex)
 
     data class CenterPattern(
         val title: String,

@@ -25,7 +25,8 @@ class SimpleRecognizer(
     private fun getMainGroupValue(result: MatchResult) =
         result.groups[mainGroupIndex]?.value ?: throw Exception("Unable to find group with index ${mainGroupIndex}.")
 
-    // the JS-Regex do not support positions for groups... so we need to use a quite bad work-around (that will not always work)
+    // the JS-Regex do not support positions for groups...
+    // so we need to use a quite bad work-around (that will not always work)
     private fun getMainGroupRange(result: MatchResult): IntRange {
         val mainGroupValue = getMainGroupValue(result)
         val start = result.value.indexOf(mainGroupValue)

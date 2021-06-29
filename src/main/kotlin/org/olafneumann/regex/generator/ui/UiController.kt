@@ -91,8 +91,10 @@ class UiController : DisplayContract.Controller {
         view.setPattern(result)
     }
 
-    override val allRecognizerMatcher: Collection<RecognizerMatch> get() = matchPresenters.flatMap { it.recognizerMatches }
-    override val selectedRecognizerMatches: Collection<RecognizerMatch> get() = matchPresenters.mapNotNull { it.selectedMatch }
+    override val allRecognizerMatcher: Collection<RecognizerMatch>
+        get() = matchPresenters.flatMap { it.recognizerMatches }
+    override val selectedRecognizerMatches: Collection<RecognizerMatch>
+        get() = matchPresenters.mapNotNull { it.selectedMatch }
 
 
     companion object {

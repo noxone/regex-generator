@@ -1,3 +1,4 @@
+@file:Suppress("MaxLineLength")
 package org.olafneumann.regex.generator.regex
 
 import org.olafneumann.regex.generator.util.HasRange

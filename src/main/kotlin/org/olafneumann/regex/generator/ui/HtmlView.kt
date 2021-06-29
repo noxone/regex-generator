@@ -329,7 +329,7 @@ class HtmlView(
             resultDisplay.append(
                 document.create.span(classes = "rg-result-part") {
                     title = when {
-                        part.match != null -> "Recognizes \"${part.match.title}\" using the highlighted regular expression"
+                        part.match != null -> "Recognizes \"${part.match.title}\" using the highlighted regex"
                         part.title != null -> "Recognizes \"${part.title}\""
                         part.originalText != null -> "Recognizes exactly \"${part.originalText}\""
                         else -> ""
@@ -348,21 +348,24 @@ class HtmlView(
                 StepDefinition(
                     "#rg-title", Popover(
                         "New to Regex Generator",
-                        "Hi! It looks like you're new to <em>Regex Generator</em>. Let us show you how to use this tool.",
+                        "Hi! It looks like you're new to <em>Regex Generator</em>. " +
+                                "Let us show you how to use this tool.",
                         "right"
                     )
                 ),
                 StepDefinition(
                     "#$ID_CONTAINER_INPUT", Popover(
                         "Sample",
-                        "In the first step we need an example, so please write or paste an example of the text you want to recognize with your regex.",
+                        "In the first step we need an example, so please write or paste an example of the " +
+                                "text you want to recognize with your regex.",
                         "bottom-center"
                     )
                 ),
                 StepDefinition(
                     "#rg_result_container", Popover(
                         "Recognition",
-                        "Regex Generator will immediately analyze your text and suggest common patterns you may use.",
+                        "Regex Generator will immediately analyze your text and suggest common patterns " +
+                                "you may use.",
                         "top-center"
                     )
                 ),
@@ -376,14 +379,16 @@ class HtmlView(
                 StepDefinition(
                     "#rg_result_display_box", Popover(
                         "Result",
-                        "... and we will generate a first <em>regular expression</em> for you. It should be able to match your input text.",
+                        "... and we will generate a first <em>regular expression</em> for you. " +
+                                "It should be able to match your input text.",
                         "top-center"
                     )
                 ),
                 StepDefinition(
                     "#$ID_DIV_LANGUAGES", Popover(
                         "Language snippets",
-                        "We will also generate snippets for some languages that show you, how to use the regular expression in your favourite language.",
+                        "We will also generate snippets for some languages that show you, how to use the " +
+                                "regular expression in your favourite language.",
                         "top-left"
                     )
                 )
