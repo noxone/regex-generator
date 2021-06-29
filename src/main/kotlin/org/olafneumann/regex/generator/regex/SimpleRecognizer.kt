@@ -23,7 +23,8 @@ class SimpleRecognizer(
             }.toList()
 
     private fun getMainGroupValue(result: MatchResult) =
-        result.groups[mainGroupIndex]?.value ?: throw Exception("Unable to find group with index ${mainGroupIndex}.")
+        result.groups[mainGroupIndex]?.value
+            ?: throw RecognizerException("Unable to find group with index ${mainGroupIndex}.")
 
     // the JS-Regex do not support positions for groups...
     // so we need to use a quite bad work-around (that will not always work)

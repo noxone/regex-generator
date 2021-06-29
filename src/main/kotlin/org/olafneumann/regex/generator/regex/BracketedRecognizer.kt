@@ -33,8 +33,8 @@ class BracketedRecognizer(
         centerPattern: CenterPattern,
         result: MatchResult
     ): List<RecognizerMatch> {
-        val startGroup = result.groups[startGroupIndex] ?: throw RuntimeException("start group cannot be found")
-        val endGroup = result.groups[endGroupIndex] ?: throw RuntimeException("end group cannot be found")
+        val startGroup = result.groups[startGroupIndex] ?: throw RecognizerException("start group cannot be found")
+        val endGroup = result.groups[endGroupIndex] ?: throw RecognizerException("end group cannot be found")
         val startIndex = getStartOfFirstGroup(input, result.range.first, startGroup.value)
         val endIndex = getEndOfLastGroup(input, result.range.last, endGroup.value)
         val startRange = IntRange(startIndex, startIndex + startGroup.value.length - 1)
