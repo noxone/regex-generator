@@ -5,11 +5,13 @@ class BracketedRecognizer(
     private val startPattern: String,
     private val endPattern: String,
     private val centerPatterns: List<CenterPattern>,
-    private val startGroupIndex: Int = 1,
-    private val endGroupIndex: Int = 3,
-    override val description: String? = null,
-    override val active: Boolean = true
+    override val description: String? = null
 ) : Recognizer {
+    companion object {
+        const val startGroupIndex: Int = 1
+        const val endGroupIndex: Int = 3
+    }
+
     override fun findMatches(input: String): Collection<RecognizerMatch> {
         val output = mutableSetOf<RecognizerMatch>()
         var sizeBefore: Int
@@ -28,9 +30,13 @@ class BracketedRecognizer(
         return output
     }
 
-    private fun createRecognizerMatches(input: String, centerPattern: CenterPattern, result: MatchResult): List<RecognizerMatch> {
-        val startGroup = result.groups[startGroupIndex] ?: throw RuntimeException("start group cannot be found")
-        val endGroup = result.groups[endGroupIndex] ?: throw RuntimeException("end group cannot be found")
+    private fun createRecognizerMatches(
+        input: String,
+        centerPattern: CenterPattern,
+        result: MatchResult
+    ): List<RecognizerMatch> {
+        val startGroup = result.groups[startGroupIndex] ?: throw RecognizerException("start group cannot be found")
+        val endGroup = result.groups[endGroupIndex] ?: throw RecognizerException("end group cannot be found")
         val startIndex = getStartOfFirstGroup(input, result.range.first, startGroup.value)
         val endIndex = getEndOfLastGroup(input, result.range.last, endGroup.value)
         val startRange = IntRange(startIndex, startIndex + startGroup.value.length - 1)
@@ -55,8 +61,10 @@ class BracketedRecognizer(
         return mutableListOf(outerMatch, innerMatch)
     }
 
-    private fun getStartOfFirstGroup(input: String, startIndex: Int, group: String) = input.indexOf(group, startIndex = startIndex)
-    private fun getEndOfLastGroup(input: String, endIndex: Int, group: String) = input.lastIndexOf(group, startIndex = endIndex)
+    private fun getStartOfFirstGroup(input: String, startIndex: Int, group: String) =
+        input.indexOf(group, startIndex = startIndex)
+    private fun getEndOfLastGroup(input: String, endIndex: Int, group: String) =
+        input.lastIndexOf(group, startIndex = endIndex)
 
     data class CenterPattern(
         val title: String,

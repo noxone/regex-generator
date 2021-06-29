@@ -1,11 +1,12 @@
 package org.olafneumann.regex.generator.ui
 
-import org.olafneumann.regex.generator.regex.CodeGenerator
+import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLElement
 import kotlinx.browser.document
 import kotlinx.browser.window
+import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.w3c.dom.url.URL
@@ -15,7 +16,7 @@ internal object HtmlHelper {
         try {
             return document.getElementById(id) as T
         } catch (e: ClassCastException) {
-            throw RuntimeException("Unable to find element with id '${id}'.", e)
+            throw RegexGeneratorException("Unable to find element with id '${id}'.", e)
         }
     }
 }
