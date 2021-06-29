@@ -10,16 +10,18 @@ fun main() {
     window.onload = { initRegexGenerator() }
 }
 
+/* the caught exception is generic to really catch all exceptions */
+@Suppress("TooGenericExceptionCaught")
 private fun initRegexGenerator() {
     try {
-        initRegexGenerator_unsafe()
+        initRegexGeneratorUnsafe()
     } catch (exception: Exception) {
         console.error(exception)
         window.alert("Unable to initialize RegexGenerator: ${exception.message}")
     }
 }
 
-private fun initRegexGenerator_unsafe() {
+private fun initRegexGeneratorUnsafe() {
     NPM.importAll()
 
     // initialize presentation code
