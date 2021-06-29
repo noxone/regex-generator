@@ -1,5 +1,6 @@
 package org.olafneumann.regex.generator.regex
 
+@Suppress("UnusedPrivateMember")
 class RepeatingRecognizer(
     override val name: String,
     override val description: String? = null,
