@@ -1,14 +1,20 @@
 package org.olafneumann.regex.generator.ui
 
-import kotlinx.html.*
+import kotlinx.browser.document
+import kotlinx.html.ButtonType
+import kotlinx.html.button
+import kotlinx.html.code
+import kotlinx.html.div
 import kotlinx.html.dom.create
+import kotlinx.html.id
 import kotlinx.html.js.div
+import kotlinx.html.p
+import kotlinx.html.pre
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.CodeGenerator
 import org.olafneumann.regex.generator.regex.CodeGenerator.GeneratedSnippet
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.Node
-import kotlinx.browser.document
 
 internal class LanguageCard(
     private val codeGenerator: CodeGenerator,
