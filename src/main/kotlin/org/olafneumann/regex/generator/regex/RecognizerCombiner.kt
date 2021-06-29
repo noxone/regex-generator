@@ -97,11 +97,11 @@ object RecognizerCombiner {
 
     private fun List<RegularExpressionPart>.addWholeLineMatchingStuff(options: Options): List<RegularExpressionPart> {
         return if (options.matchWholeLine) {
-            listOf(
-                RegularExpressionPart(IntRange.EMPTY, pattern = "^", title = "Start of input"),
-                *toTypedArray(),
-                RegularExpressionPart(IntRange.EMPTY, pattern = "$", title = "End of input")
-            )
+            val list = mutableListOf<RegularExpressionPart>()
+            list.add(RegularExpressionPart(IntRange.EMPTY, pattern = "^", title = "Start of input"))
+            list.addAll(this)
+            list.add(RegularExpressionPart(IntRange.EMPTY, pattern = "$", title = "End of input"))
+            list
         } else {
             this
         }
