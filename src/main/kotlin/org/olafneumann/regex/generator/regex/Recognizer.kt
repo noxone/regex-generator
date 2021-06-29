@@ -7,4 +7,3 @@ interface Recognizer {
 
     fun findMatches(input: String): Collection<RecognizerMatch>
 }
-
