@@ -31,4 +31,3 @@ interface DisplayContract {
         val selectedRecognizerMatches: Collection<RecognizerMatch>
     }
 }
-
