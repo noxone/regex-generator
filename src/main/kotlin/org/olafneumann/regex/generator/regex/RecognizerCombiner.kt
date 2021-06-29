@@ -72,17 +72,8 @@ object RecognizerCombiner {
 
         for (i in rangesToMatches.indices) {
             if (i > 0) {
-                val rangeBetween =
-                    IntRange(rangesToMatches[i - 1].range.last + 1, rangesToMatches[i].range.first - 1)
-                if (!rangeBetween.isEmpty()) {
-                    val part = if (options.onlyPatterns) {
-                        RegularExpressionPart(rangeBetween, "*.")
-                    } else {
-                        val text = inputText.substring(rangeBetween)
-                        RegularExpressionPart(rangeBetween, text.escapeForRegex(), text)
-                    }
-                    parts.add(part)
-                }
+                getPartBetween(inputText, rangesToMatches[i - 1], rangesToMatches[i], options)
+                    ?.let { parts.add(it) }
             }
             parts.add(rangesToMatches[i])
         }
@@ -94,6 +85,23 @@ object RecognizerCombiner {
         return RegularExpression(parts.addWholeLineMatchingStuff(options))
     }
 
+    private fun getPartBetween(
+        inputText: String,
+        first: RegularExpressionPart,
+        second: RegularExpressionPart,
+        options: Options
+    ): RegularExpressionPart? {
+        val rangeBetween = IntRange(first.range.last + 1, second.range.first - 1)
+        if (!rangeBetween.isEmpty()) {
+            return if (options.onlyPatterns) {
+                RegularExpressionPart(rangeBetween, "*.")
+            } else {
+                val text = inputText.substring(rangeBetween)
+                RegularExpressionPart(rangeBetween, text.escapeForRegex(), text)
+            }
+        }
+        return null
+    }
 
     private fun List<RegularExpressionPart>.addWholeLineMatchingStuff(options: Options): List<RegularExpressionPart> {
         return if (options.matchWholeLine) {
