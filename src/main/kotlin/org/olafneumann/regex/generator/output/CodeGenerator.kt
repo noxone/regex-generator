@@ -54,6 +54,7 @@ internal abstract class SimpleReplacingCodeGenerator(
             getWarnings(pattern, options)
         )
 
+    @Suppress("LongParameterList") // all parameters are required
     protected open fun combineOptions(
         options: RecognizerCombiner.Options,
         valueForCaseInsensitive: String? = null,

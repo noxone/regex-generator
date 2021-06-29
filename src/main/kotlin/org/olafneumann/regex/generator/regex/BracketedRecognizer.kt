@@ -5,11 +5,13 @@ class BracketedRecognizer(
     private val startPattern: String,
     private val endPattern: String,
     private val centerPatterns: List<CenterPattern>,
-    private val startGroupIndex: Int = 1,
-    private val endGroupIndex: Int = 3,
-    override val description: String? = null,
-    override val active: Boolean = true
+    override val description: String? = null
 ) : Recognizer {
+    companion object {
+        const val startGroupIndex: Int = 1
+        const val endGroupIndex: Int = 3
+    }
+
     override fun findMatches(input: String): Collection<RecognizerMatch> {
         val output = mutableSetOf<RecognizerMatch>()
         var sizeBefore: Int

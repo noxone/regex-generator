@@ -4,7 +4,6 @@ class SimpleRecognizer(
     override val name: String,
     private val outputPattern: String,
     override val description: String? = null,
-    override val active: Boolean = true,
     private val searchPattern: String? = null,
     private val mainGroupIndex: Int = 1
 ) : Recognizer {

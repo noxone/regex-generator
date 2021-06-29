@@ -4,7 +4,6 @@ class EchoRecognizer(
     override val name: String,
     private val pattern: String,
     override val description: String? = null,
-    override val active: Boolean = true,
     private val priority: Int = 0,
     private val outputRegexBuilder: String? = null
 ) : Recognizer {

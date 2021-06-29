@@ -81,7 +81,6 @@ object RecognizerRegistry {
 
     fun findMatches(input: String): List<RecognizerMatch> {
         val matches = recognizers
-            .filter { it.active }
             .flatMap { it.findMatches(input) }
             .sortedWith(HasRange.byPosition)
             .toMutableList()
