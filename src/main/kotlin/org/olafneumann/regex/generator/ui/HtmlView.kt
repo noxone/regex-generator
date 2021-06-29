@@ -21,9 +21,9 @@ import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.js.defineSteps
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.regex.CodeGenerator
+import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.regex.UrlGenerator
+import org.olafneumann.regex.generator.output.UrlGenerator
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement

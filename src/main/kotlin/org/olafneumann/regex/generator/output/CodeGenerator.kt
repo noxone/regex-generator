@@ -1,6 +1,8 @@
-package org.olafneumann.regex.generator.regex
+package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.js.encodeURIComponent
+import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RegexCache
 
 interface CodeGenerator {
     companion object {
@@ -214,7 +216,8 @@ internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
             messages.add("The option 's' (dot matches line breaks) is not supported for grep.")
         if (options.multiline)
             messages.add("The option 'm' (multiline) is not supported for grep.")
-        messages.add("grep on mac OS does not support option -P (for Perl regex). To make it work, install a better grep (e.g. brew install grep). Most regex will work without -P.")
+        messages.add("grep on mac OS does not support option -P (for Perl regex). " +
+                "To make it work, install a better grep (e.g. brew install grep). Most regex will work without -P.")
         return messages
     }
 }
@@ -274,7 +277,8 @@ end"""
     override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
         val warnings = mutableListOf<String>()
         if (options.multiline)
-            warnings += "The Ruby regex engine does not support the MULTILINE option. Regex' are always treated as multiline."
+            warnings += "The Ruby regex engine does not support the MULTILINE option. " +
+                    "Regex' are always treated as multiline."
         if (options.dotMatchesLineBreaks)
         // https://riptutorial.com/regex/example/18156/dotall-modifier
             warnings += "In Ruby, the DOTALL modifier equivalent is m, Regexp::MULTILINE modifier."

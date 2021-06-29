@@ -11,8 +11,8 @@ import kotlinx.html.js.div
 import kotlinx.html.p
 import kotlinx.html.pre
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.regex.CodeGenerator
-import org.olafneumann.regex.generator.regex.CodeGenerator.GeneratedSnippet
+import org.olafneumann.regex.generator.output.CodeGenerator
+import org.olafneumann.regex.generator.output.CodeGenerator.GeneratedSnippet
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.Node
 

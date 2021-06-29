@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.ui
 
-import org.olafneumann.regex.generator.regex.CodeGenerator
+import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLElement
