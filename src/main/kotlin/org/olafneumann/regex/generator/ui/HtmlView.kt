@@ -37,6 +37,7 @@ import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.math.max
 
+@Suppress("TooManyFunctions")
 class HtmlView(
     private val presenter: DisplayContract.Controller
 ) : DisplayContract.View {
