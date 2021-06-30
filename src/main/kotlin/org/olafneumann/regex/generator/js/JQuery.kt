@@ -8,6 +8,7 @@ external fun jQuery(id: String): JQuery
 @JsName("$")
 external fun jQuery(element: HTMLElement): JQuery
 
+@Suppress("TooManyFunctions")
 external class JQuery {
     @Suppress("UnusedPrivateMember")
     fun on(type: String, callback: () -> Unit)

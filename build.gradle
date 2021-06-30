@@ -18,6 +18,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
     implementation "org.jetbrains.kotlinx:kotlinx-html-js:0.7.3"
     implementation "org.jetbrains:kotlin-extensions:1.0.1-pre.156-kotlin-1.5.0"
+    implementation "io.ktor:ktor-client-core:1.6.0"
+    implementation "io.ktor:ktor-client-js:1.6.0"
 
     implementation npm("driver.js", "0.9.8")
 
@@ -27,7 +29,7 @@ dependencies {
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
     allRules = false // activate all available (even unstable) rules.
-    config = files("$projectDir/config/detekt/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+    // config = files("$projectDir/config/detekt/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
     //baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
 
     reports {
