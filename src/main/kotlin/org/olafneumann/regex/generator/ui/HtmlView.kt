@@ -108,10 +108,6 @@ class HtmlView(
         checkMultiline.oninput = { presenter.onOptionsChange(options) }
         checkOnlyMatches.oninput = { presenter.onOptionsChange(options) }
         checkWholeLine.oninput = { presenter.onOptionsChange(options) }
-
-        GlobalScope.launch {
-            loadUserGuide()
-        }
     }
 
     override fun applyInitParameters() {
@@ -348,6 +344,18 @@ class HtmlView(
         }
     }
 
+    private var userGuide: Array<StepDefinition>? = null
+
+    override fun showUserGuide(initialStep: Boolean) {
+        if (userGuide == null) {
+            GlobalScope.launch {
+                loadUserGuide()
+                displayUserGuide(initialStep)
+            }
+        } else {
+            displayUserGuide(initialStep)
+        }
+    }
 
     private suspend fun loadUserGuide() {
         val client = HttpClient(Js)
@@ -355,14 +363,10 @@ class HtmlView(
         userGuide = JSON.parse<Array<StepDefinition>>(stepsString)
     }
 
-    private var userGuide: Array<StepDefinition>? = null
-
-    override fun showUserGuide(initialStep: Boolean) {
-        userGuide?.let {
-            driver.reset()
-            driver.defineSteps(it)
-            driver.start(if (initialStep) 0 else 1)
-        }
+    private fun displayUserGuide(initialStep: Boolean) {
+        driver.reset()
+        driver.defineSteps(userGuide!!)
+        driver.start(if (initialStep) 0 else 1)
     }
 
     companion object {
