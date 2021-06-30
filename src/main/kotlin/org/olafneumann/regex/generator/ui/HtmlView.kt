@@ -1,9 +1,9 @@
 package org.olafneumann.regex.generator.ui
 
-import io.ktor.client.*
-import io.ktor.client.engine.js.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.js.Js
+import io.ktor.client.request.get
+import io.ktor.http.Url
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.GlobalScope
@@ -376,7 +376,6 @@ class HtmlView(
         const val ID_TEXT_DISPLAY = "rg_text_display"
         const val ID_RESULT_DISPLAY = "rg_result_display"
         const val ID_ROW_CONTAINER = "rg_row_container"
-        const val ID_CONTAINER_INPUT = "rg_input_container"
         const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
         const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
         const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
