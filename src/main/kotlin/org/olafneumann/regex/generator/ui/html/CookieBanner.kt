@@ -1,6 +1,8 @@
-package org.olafneumann.regex.generator.ui
+package org.olafneumann.regex.generator.ui.html
 
 import org.olafneumann.regex.generator.js.jQuery
+import org.olafneumann.regex.generator.ui.ApplicationSettings
+import org.olafneumann.regex.generator.ui.HtmlHelper
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 

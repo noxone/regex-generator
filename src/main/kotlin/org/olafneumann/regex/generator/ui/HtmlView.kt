@@ -1,17 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.js.Js
-import io.ktor.client.request.get
-import io.ktor.http.Url
 import kotlinx.browser.document
 import kotlinx.browser.window
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
@@ -22,16 +12,15 @@ import kotlinx.html.js.div
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
 import kotlinx.html.title
-import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.JQuery
 import org.olafneumann.regex.generator.js.Prism
-import org.olafneumann.regex.generator.js.StepDefinition
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.ui.html.UserGuide
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
@@ -82,9 +71,9 @@ class HtmlView(
     private val languageDisplays = CodeGenerator.all
         .associateWith { LanguageCard(it, containerLanguages) }
 
-    private val driver = Driver(js("{}"))
-
     private var currentPattern = ""
+
+    private val userGuide = UserGuide()
 
     override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
@@ -348,29 +337,8 @@ class HtmlView(
         }
     }
 
-    private var userGuide: Array<StepDefinition>? = null
-
     override fun showUserGuide(initialStep: Boolean) {
-        if (userGuide == null) {
-            CoroutineScope(Dispatchers.Unconfined).launch {
-                loadUserGuide()
-                displayUserGuide(initialStep)
-            }
-        } else {
-            displayUserGuide(initialStep)
-        }
-    }
-
-    private suspend fun loadUserGuide() {
-        val client = HttpClient(Js)
-        val stepsString = client.get<String>(Url("text/user-guide.en.json"))
-        userGuide = JSON.parse<Array<StepDefinition>>(stepsString)
-    }
-
-    private fun displayUserGuide(initialStep: Boolean) {
-        driver.reset()
-        driver.defineSteps(userGuide!!)
-        driver.start(if (initialStep) 0 else 1)
+        userGuide.show(initialStep)
     }
 
     companion object {

@@ -4,6 +4,7 @@ import kotlinx.browser.window
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
+import org.olafneumann.regex.generator.ui.html.CookieBanner
 
 
 class UiController : DisplayContract.Controller {
