@@ -10,9 +10,15 @@ import kotlinx.coroutines.launch
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.StepDefinition
 
-class UserGuide(
-    private val language: String = "en"
+class UserGuide private constructor(
+    private val language: String
 ) {
+    companion object {
+        private val languageToGuide = mutableMapOf<String, UserGuide>()
+        fun forLanguage(language: String = "en")
+        = languageToGuide.getOrPut(language) { UserGuide(language) }
+    }
+    
     private val driver = Driver(js("{}"))
     private var userGuide: Array<StepDefinition>? = null
 

@@ -73,7 +73,7 @@ class HtmlView(
 
     private var currentPattern = ""
 
-    private val userGuide = UserGuide()
+    private val userGuide = UserGuide.forLanguage("en")
 
     override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
