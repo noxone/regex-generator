@@ -6,7 +6,11 @@ import io.ktor.client.request.get
 import io.ktor.http.Url
 import kotlinx.browser.document
 import kotlinx.browser.window
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
@@ -37,7 +41,6 @@ import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.math.max
 
-@Suppress("TooManyFunctions")
 class HtmlView(
     private val presenter: DisplayContract.Controller
 ) : DisplayContract.View {
@@ -349,7 +352,7 @@ class HtmlView(
 
     override fun showUserGuide(initialStep: Boolean) {
         if (userGuide == null) {
-            GlobalScope.launch {
+            CoroutineScope(Dispatchers.Unconfined).launch {
                 loadUserGuide()
                 displayUserGuide(initialStep)
             }
