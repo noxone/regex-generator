@@ -1,7 +1,13 @@
 package org.olafneumann.regex.generator.ui
 
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.js.Js
+import io.ktor.client.request.get
+import io.ktor.http.Url
 import kotlinx.browser.document
 import kotlinx.browser.window
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.dom.addClass
 import kotlinx.dom.clear
 import kotlinx.dom.removeClass
@@ -14,16 +20,14 @@ import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.JQuery
-import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.Prism
 import org.olafneumann.regex.generator.js.StepDefinition
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
-import org.olafneumann.regex.generator.js.defineSteps
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.output.CodeGenerator
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.output.UrlGenerator
+import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
@@ -33,6 +37,7 @@ import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.math.max
 
+@Suppress("TooManyFunctions")
 class HtmlView(
     private val presenter: DisplayContract.Controller
 ) : DisplayContract.View {
@@ -340,60 +345,28 @@ class HtmlView(
         }
     }
 
+    private var userGuide: Array<StepDefinition>? = null
 
     override fun showUserGuide(initialStep: Boolean) {
+        if (userGuide == null) {
+            GlobalScope.launch {
+                loadUserGuide()
+                displayUserGuide(initialStep)
+            }
+        } else {
+            displayUserGuide(initialStep)
+        }
+    }
+
+    private suspend fun loadUserGuide() {
+        val client = HttpClient(Js)
+        val stepsString = client.get<String>(Url("text/user-guide.en.json"))
+        userGuide = JSON.parse<Array<StepDefinition>>(stepsString)
+    }
+
+    private fun displayUserGuide(initialStep: Boolean) {
         driver.reset()
-        driver.defineSteps(
-            listOf(
-                StepDefinition(
-                    "#rg-title", Popover(
-                        "New to Regex Generator",
-                        "Hi! It looks like you're new to <em>Regex Generator</em>. " +
-                                "Let us show you how to use this tool.",
-                        "right"
-                    )
-                ),
-                StepDefinition(
-                    "#$ID_CONTAINER_INPUT", Popover(
-                        "Sample",
-                        "In the first step we need an example, so please write or paste an example of the " +
-                                "text you want to recognize with your regex.",
-                        "bottom-center"
-                    )
-                ),
-                StepDefinition(
-                    "#rg_result_container", Popover(
-                        "Recognition",
-                        "Regex Generator will immediately analyze your text and suggest common patterns " +
-                                "you may use.",
-                        "top-center"
-                    )
-                ),
-                StepDefinition(
-                    "#$ID_ROW_CONTAINER", Popover(
-                        "Suggestions",
-                        "Click one or more of suggested patterns...",
-                        "top"
-                    )
-                ),
-                StepDefinition(
-                    "#rg_result_display_box", Popover(
-                        "Result",
-                        "... and we will generate a first <em>regular expression</em> for you. " +
-                                "It should be able to match your input text.",
-                        "top-center"
-                    )
-                ),
-                StepDefinition(
-                    "#$ID_DIV_LANGUAGES", Popover(
-                        "Language snippets",
-                        "We will also generate snippets for some languages that show you, how to use the " +
-                                "regular expression in your favourite language.",
-                        "top-left"
-                    )
-                )
-            )
-        )
+        driver.defineSteps(userGuide!!)
         driver.start(if (initialStep) 0 else 1)
     }
 
@@ -408,7 +381,6 @@ class HtmlView(
         const val ID_TEXT_DISPLAY = "rg_text_display"
         const val ID_RESULT_DISPLAY = "rg_result_display"
         const val ID_ROW_CONTAINER = "rg_row_container"
-        const val ID_CONTAINER_INPUT = "rg_input_container"
         const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
         const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
         const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
