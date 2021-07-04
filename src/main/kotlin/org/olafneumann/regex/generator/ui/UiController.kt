@@ -11,8 +11,6 @@ class UiController : DisplayContract.Controller {
     private val view: DisplayContract.View = HtmlView(this)
     override var matchPresenters = listOf<MatchPresenter>()
 
-    private val currentTextInput: String get() = view.inputText
-
     init {
         // if copy is not available: remove copy button
         if (window.navigator.clipboard == undefined) {
