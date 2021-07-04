@@ -30,7 +30,6 @@ import org.w3c.dom.events.InputEvent
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
 import kotlin.js.json
-import kotlin.math.max
 
 class HtmlView(
     private val presenter: DisplayContract.Controller
@@ -276,23 +275,14 @@ class HtmlView(
     }
 
     private fun computeMatchPresenterAreaHeight(rows: Map<Int, HTMLDivElement>): Int =
-        MAGIC_HEIGHT + (rows.map { computeMatchPresenterBottomLine(it.key, it.value) }
+        MAGIC_HEIGHT + (rows.map { computeMatchPresenterTotalHeight(it.key, it.value) }
             .maxOrNull() ?: 0)
 
-    private fun computeMatchPresenterBottomLine(rowIndex: Int, element: HTMLDivElement): Int {
-        val jqElement = jQuery(element)
-        val overlayHeight = getHeight(jqElement.find(".rg-match-item-overlay"))
-        val parentHeight = jqElement.height()
-        return overlayHeight + parentHeight * (rowIndex + 1)
-    }
-
-    private fun getHeight(elements: JQuery): Int {
-        val previousCss = elements.attr("style")
-        elements.css("position:absolute;visibility:hidden;display:block !important;")
-        var maxHeight = 0
-        elements.each { jq -> maxHeight = max(maxHeight, jq.height()) }
-        elements.attr("style", previousCss ?: "")
-        return maxHeight
+    private fun computeMatchPresenterTotalHeight(rowIndex: Int, matchPresenterElement: HTMLDivElement): Int {
+        val jqMatchPresenterElement = jQuery(matchPresenterElement)
+        val matchPresenterHeight = jqMatchPresenterElement.height()
+        val overlayHeight = HtmlHelper.getHeight(jqMatchPresenterElement.find(".rg-match-item-overlay"))
+        return matchPresenterHeight * (rowIndex + 1) + overlayHeight
     }
 
     override fun showResultingPattern(regex: RecognizerCombiner.RegularExpression) {
