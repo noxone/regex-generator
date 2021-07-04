@@ -231,7 +231,7 @@ using System.Text.RegularExpressions;
 
 public class Sample
 {
-    public static void useRegex(String input)
+    public static bool useRegex(String input)
     {
         Regex regex = new Regex("%1${'$'}s"%2${'$'}s);
         return regex.IsMatch(input);
