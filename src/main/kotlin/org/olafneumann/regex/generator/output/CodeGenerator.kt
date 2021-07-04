@@ -124,7 +124,7 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
         "CASE_INSENSITIVE",
         "MULTILINE",
         "DOTALL",
-        prefix = " ,",
+        prefix = ", ",
         separator = " | "
     ) { "Pattern.$it" }
 }
