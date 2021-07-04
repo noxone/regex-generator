@@ -123,7 +123,7 @@ class HtmlView(
     }
 
     private fun applyInitSelection(params: URLSearchParams) {
-        val selections = params.get(SEARCH_SELECTION)
+        val selectionIndexToRecognizerName = params.get(SEARCH_SELECTION)
             ?.ifBlank { null }
             ?.split(",")
             ?.map { it.split("|") }
@@ -131,23 +131,20 @@ class HtmlView(
                 console.log(it)
                 it[0].toInt() to decodeURIComponent(it[1])
             }
-        if (selections != null) {
+            ?: emptyMap()
+        if (selectionIndexToRecognizerName.isNotEmpty()) {
             presenter.matchPresenters
                 .forEach { presenter ->
-                    val selectionName = selections[presenter.ranges[0].first]
-                    presenter.recognizerMatches.firstOrNull { it.recognizer.name == selectionName }
+                    val recognizerName = selectionIndexToRecognizerName[presenter.ranges[0].first]
+                    presenter.recognizerMatches.firstOrNull { it.recognizer.name == recognizerName }
                         ?.let { presenter.selectedMatch = it }
                 }
-            presenter.disableUnclickableSuggestions()
+            presenter.disableNotClickableSuggestions()
         }
     }
 
     override fun hideCopyButton() {
         jQuery(buttonCopy).parent().remove()
-    }
-
-    override fun selectInputText() {
-        textInput.select()
     }
 
     override var inputText: String
@@ -156,15 +153,11 @@ class HtmlView(
             textInput.value = value
         }
 
-    override var displayText: String
-        get() = textDisplay.innerText
-        set(value) {
-            inputCharacterSpans = value.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
-            textDisplay.clear()
-            inputCharacterSpans.forEach { textDisplay.appendChild(it) }
-        }
+    override fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+        textDisplay.clear()
+        inputCharacterSpans = inputText.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
+        inputCharacterSpans.forEach { textDisplay.appendChild(it) }
 
-    override fun showResults(matches: Collection<MatchPresenter>) {
         // TODO remove CSS class iterator
         val indices = mutableMapOf<Int, Int>()
         fun nextCssClass(row: Int): String {
@@ -302,7 +295,7 @@ class HtmlView(
         return maxHeight
     }
 
-    override fun setResultingPattern(regex: RecognizerCombiner.RegularExpression) {
+    override fun showResultingPattern(regex: RecognizerCombiner.RegularExpression) {
         showResultRegex(regex)
 
         // update share-link

@@ -44,8 +44,7 @@ class UiController : DisplayContract.Controller {
         val matchGroups = matches.groupBy { it.ranges }.values
         matchPresenters = matchGroups.map { it.toPresentation() }
 
-        view.displayText = newInput
-        view.showResults(matchPresenters)
+        view.showMatchingRecognizers(newInput, matchPresenters)
         computeOutputPattern()
     }
 
@@ -57,10 +56,10 @@ class UiController : DisplayContract.Controller {
         // determine selected state of the presenter
         matchPresenter.selectedMatch = if (matchPresenter.selected) null else recognizerMatch
 
-        disableUnclickableSuggestions()
+        disableNotClickableSuggestions()
     }
 
-    override fun disableUnclickableSuggestions() {
+    override fun disableNotClickableSuggestions() {
         // find matches to disable
         val selectedMatches = matchPresenters.filter { it.selected }
         matchPresenters.filter { !it.selected }
@@ -81,7 +80,7 @@ class UiController : DisplayContract.Controller {
             matchPresenters.mapNotNull { it.selectedMatch }.toList(),
             view.options
         )
-        view.setResultingPattern(result)
+        view.showResultingPattern(result)
     }
 
     override val allRecognizerMatcher: Collection<RecognizerMatch>
