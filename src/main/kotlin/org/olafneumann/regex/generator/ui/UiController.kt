@@ -27,7 +27,7 @@ class UiController : DisplayContract.Controller {
 
         // Prepare UI
         view.options = ApplicationSettings.viewOptions
-        view.applyInitParameters()
+        view.applyInitParameters(defaultText = VAL_EXAMPLE_INPUT)
     }
 
     private fun List<RecognizerMatch>.toPresentation(): MatchPresenter =
@@ -36,21 +36,10 @@ class UiController : DisplayContract.Controller {
                     && this.containsAll(it.recognizerMatches)
         } ?: MatchPresenter(this)
 
-    fun initialize() {
-        val initialInput = currentTextInput.ifBlank { VAL_EXAMPLE_INPUT }
-        recognizeMatches(initialInput)
-    }
-
-    private fun recognizeMatches(input: String = currentTextInput) {
-        view.inputText = input
-        onInputChanges(input)
-        view.selectInputText()
-    }
-
     override fun onButtonHelpClick() = view.showUserGuide(false)
     fun showInitialUserGuide() = view.showUserGuide(true)
 
-    override fun onInputChanges(newInput: String) {
+    override fun onInputTextChanges(newInput: String) {
         val matches = RecognizerRegistry.findMatches(newInput)
         val matchGroups = matches.groupBy { it.ranges }.values
         matchPresenters = matchGroups.map { it.toPresentation() }
@@ -68,10 +57,10 @@ class UiController : DisplayContract.Controller {
         // determine selected state of the presenter
         matchPresenter.selectedMatch = if (matchPresenter.selected) null else recognizerMatch
 
-        updatePresentation()
+        disableUnclickableSuggestions()
     }
 
-    override fun updatePresentation() {
+    override fun disableUnclickableSuggestions() {
         // find matches to disable
         val selectedMatches = matchPresenters.filter { it.selected }
         matchPresenters.filter { !it.selected }
@@ -92,7 +81,7 @@ class UiController : DisplayContract.Controller {
             matchPresenters.mapNotNull { it.selectedMatch }.toList(),
             view.options
         )
-        view.setPattern(result)
+        view.setResultingPattern(result)
     }
 
     override val allRecognizerMatcher: Collection<RecognizerMatch>

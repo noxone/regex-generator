@@ -10,21 +10,21 @@ interface DisplayContract {
 
         var options: RecognizerCombiner.Options
 
-        fun applyInitParameters()
+        fun applyInitParameters(defaultText: String)
         fun hideCopyButton()
         fun selectInputText()
         fun showResults(matches: Collection<MatchPresenter>)
 
         fun showUserGuide(initialStep: Boolean)
-        fun setPattern(regex: RecognizerCombiner.RegularExpression)
+        fun setResultingPattern(regex: RecognizerCombiner.RegularExpression)
     }
 
     interface Controller {
         fun onButtonHelpClick()
-        fun onInputChanges(newInput: String)
+        fun onInputTextChanges(newInput: String)
         fun onSuggestionClick(recognizerMatch: RecognizerMatch)
         fun onOptionsChange(options: RecognizerCombiner.Options)
-        fun updatePresentation()
+        fun disableUnclickableSuggestions()
 
         val matchPresenters: Collection<MatchPresenter>
         val allRecognizerMatcher: Collection<RecognizerMatch>

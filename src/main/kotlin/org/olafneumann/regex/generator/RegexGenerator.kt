@@ -26,7 +26,6 @@ private fun initRegexGeneratorUnsafe() {
 
     // initialize presentation code
     val presenter = UiController()
-    presenter.initialize()
 
     // store information, that we were already here
     val showGuide = ApplicationSettings.isNewUser()

@@ -26,7 +26,9 @@ import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
+import org.w3c.dom.events.InputEvent
 import org.w3c.dom.url.URL
+import org.w3c.dom.url.URLSearchParams
 import kotlin.js.json
 import kotlin.math.max
 
@@ -92,7 +94,7 @@ class HtmlView(
         }
 
     init {
-        textInput.oninput = { presenter.onInputChanges(inputText) }
+        textInput.oninput = { presenter.onInputTextChanges(inputText) }
         buttonCopy.onclick = { copyToClipboard(currentPattern) }
         buttonShareLink.onclick = { copyToClipboard(textShare.text) }
         buttonHelp.onclick = { presenter.onButtonHelpClick() }
@@ -103,33 +105,32 @@ class HtmlView(
         checkWholeLine.oninput = { presenter.onOptionsChange(options) }
     }
 
-    override fun applyInitParameters() {
+    override fun applyInitParameters(defaultText: String) {
         val params = URL(document.URL).searchParams
 
-        val parsedOptions = RecognizerCombiner.Options.parseSearchParams(
+        options = RecognizerCombiner.Options.parseSearchParams(
             onlyPatternFlag = params.get(SEARCH_ONLY_PATTERNS)?.ifBlank { null },
             matchWholeLineFlag = params.get(SEARCH_MATCH_WHOLE_LINE)?.ifBlank { null },
             regexFlags = params.get(SEARCH_FLAGS)
         )
-        this.options = parsedOptions
 
-        params.get(SEARCH_SAMPLE_REGEX)
-            ?.ifBlank { null }
-            ?.let { inputText = it }
-
-        window.setTimeout({ applyInitSelection() })
+        inputText = params.get(SEARCH_SAMPLE_REGEX)?.ifBlank { null } ?: defaultText
+        textInput.select()
+        // fire input event to trigger match recognition
+        textInput.oninput?.invoke(InputEvent(type = "input"))
+        // after event handling (and after match recognition) apply selections
+        window.setTimeout({ applyInitSelection(params) })
     }
 
-    private fun applyInitSelection() {
-        val params = URL(document.URL).searchParams
-
+    private fun applyInitSelection(params: URLSearchParams) {
         val selections = params.get(SEARCH_SELECTION)
             ?.ifBlank { null }
             ?.split(",")
             ?.map { it.split("|") }
             ?.associate {
                 console.log(it)
-                it[0].toInt() to decodeURIComponent(it[1]) }
+                it[0].toInt() to decodeURIComponent(it[1])
+            }
         if (selections != null) {
             presenter.matchPresenters
                 .forEach { presenter ->
@@ -137,9 +138,8 @@ class HtmlView(
                     presenter.recognizerMatches.firstOrNull { it.recognizer.name == selectionName }
                         ?.let { presenter.selectedMatch = it }
                 }
-            presenter.updatePresentation()
+            presenter.disableUnclickableSuggestions()
         }
-        textShare.updateSearchPattern = true
     }
 
     override fun hideCopyButton() {
@@ -180,7 +180,7 @@ class HtmlView(
         matchPresenterToRowIndex.putAll(distributeToRows(matches))
         // Create HTML elements
         val rowElements = mutableMapOf<Int, HTMLDivElement>()
-        matchPresenterToRowIndex.forEach {  (matchPresenter, rowIndex) ->
+        matchPresenterToRowIndex.forEach { (matchPresenter, rowIndex) ->
             // assign required stuff
             rowElements[rowIndex] = rowElements[rowIndex] ?: createRowElement()
             val rowElement = rowElements[rowIndex]!!
@@ -264,15 +264,15 @@ class HtmlView(
 
     private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
         element.onmouseenter = {
-                if (matchPresenter.availableForHighlight) {
-                    matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
-                }
+            if (matchPresenter.availableForHighlight) {
+                matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
             }
+        }
         element.onmouseleave = {
-                if (matchPresenter.availableForHighlight) {
-                    matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
-                }
+            if (matchPresenter.availableForHighlight) {
+                matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
             }
+        }
     }
 
     private fun animateResultDisplaySize(rows: Map<Int, HTMLDivElement>) {
@@ -302,7 +302,7 @@ class HtmlView(
         return maxHeight
     }
 
-    override fun setPattern(regex: RecognizerCombiner.RegularExpression) {
+    override fun setResultingPattern(regex: RecognizerCombiner.RegularExpression) {
         showResultRegex(regex)
 
         // update share-link

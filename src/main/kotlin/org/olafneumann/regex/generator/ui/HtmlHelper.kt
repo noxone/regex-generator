@@ -34,8 +34,6 @@ internal class TextHandler(
     private val element: HTMLElement,
     private val codeGenerator: CodeGenerator
 ) {
-    var updateSearchPattern = false
-
     fun setPattern(pattern: String, options: RecognizerCombiner.Options, selectedMatches: Collection<RecognizerMatch>) {
         val selection = selectedMatches.map { "${it.ranges[0].first}|${it.recognizer.name}" }
             .joinToString(separator = ",") { encodeURIComponent(it) }
@@ -54,9 +52,7 @@ internal class TextHandler(
         url.port = window.location.port
 
         element.innerText = url.toString()
-        if (updateSearchPattern) {
-            updateDocumentSearchQuery(url, pattern)
-        }
+        updateDocumentSearchQuery(url, pattern)
     }
 
     private fun updateDocumentSearchQuery(url: URL, sampleText: String) {
