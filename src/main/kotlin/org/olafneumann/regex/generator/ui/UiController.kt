@@ -20,7 +20,10 @@ class UiController : DisplayContract.Controller {
         }
 
         // handle the cookie banner
-        CookieBanner.initialize()
+        CookieBanner.initialize(
+            hasUserConsent = { ApplicationSettings.hasUserConsent },
+            setUserConsent = { ApplicationSettings.hasUserConsent = it }
+        )
 
         // Prepare UI
         view.options = ApplicationSettings.viewOptions

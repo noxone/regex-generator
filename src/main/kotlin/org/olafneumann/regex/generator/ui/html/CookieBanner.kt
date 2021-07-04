@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.ui.html
 
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.ui.ApplicationSettings
 import org.olafneumann.regex.generator.ui.HtmlHelper
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
@@ -13,15 +12,15 @@ object CookieBanner {
 
     private val ctnCookie: HTMLDivElement = HtmlHelper.getElementById(ID_DIV_COOKIE)
 
-    fun initialize() {
-        if (ApplicationSettings.hasUserConsent) {
+    fun initialize(hasUserConsent: () -> Boolean, setUserConsent: (Boolean) -> Unit) {
+        if (hasUserConsent()) {
             hideBanner()
         } else {
             val btnAccept: HTMLButtonElement = HtmlHelper.getElementById(ID_BTN_ACCEPT)
             val btnReject: HTMLButtonElement = HtmlHelper.getElementById(ID_BTN_REJECT)
 
             btnAccept.onclick = {
-                ApplicationSettings.hasUserConsent = true
+                setUserConsent(true)
                 hideBanner()
             }
             btnReject.onclick = { hideBanner() }
