@@ -5,26 +5,25 @@ import org.olafneumann.regex.generator.regex.RecognizerMatch
 
 interface DisplayContract {
     interface View {
+        // The text entered by the user
         var inputText: String
-        var displayText: String
 
         var options: RecognizerCombiner.Options
 
-        fun applyInitParameters()
+        fun applyInitParameters(defaultText: String)
         fun hideCopyButton()
-        fun selectInputText()
-        fun showResults(matches: Collection<MatchPresenter>)
-
         fun showUserGuide(initialStep: Boolean)
-        fun setPattern(regex: RecognizerCombiner.RegularExpression)
+
+        fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>)
+        fun showResultingPattern(regex: RecognizerCombiner.RegularExpression)
     }
 
     interface Controller {
         fun onButtonHelpClick()
-        fun onInputChanges(newInput: String)
+        fun onInputTextChanges(newInput: String)
         fun onSuggestionClick(recognizerMatch: RecognizerMatch)
         fun onOptionsChange(options: RecognizerCombiner.Options)
-        fun updatePresentation()
+        fun disableNotClickableSuggestions()
 
         val matchPresenters: Collection<MatchPresenter>
         val allRecognizerMatcher: Collection<RecognizerMatch>

@@ -4,13 +4,12 @@ import kotlinx.browser.window
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
+import org.olafneumann.regex.generator.ui.html.CookieBanner
 
 
 class UiController : DisplayContract.Controller {
     private val view: DisplayContract.View = HtmlView(this)
     override var matchPresenters = listOf<MatchPresenter>()
-
-    private val currentTextInput: String get() = view.inputText
 
     init {
         // if copy is not available: remove copy button
@@ -19,11 +18,14 @@ class UiController : DisplayContract.Controller {
         }
 
         // handle the cookie banner
-        CookieBanner.initialize()
+        CookieBanner.initialize(
+            hasUserConsent = { ApplicationSettings.hasUserConsent },
+            setUserConsent = { ApplicationSettings.hasUserConsent = it }
+        )
 
         // Prepare UI
         view.options = ApplicationSettings.viewOptions
-        view.applyInitParameters()
+        view.applyInitParameters(defaultText = VAL_EXAMPLE_INPUT)
     }
 
     private fun List<RecognizerMatch>.toPresentation(): MatchPresenter =
@@ -32,27 +34,15 @@ class UiController : DisplayContract.Controller {
                     && this.containsAll(it.recognizerMatches)
         } ?: MatchPresenter(this)
 
-    fun initialize() {
-        val initialInput = currentTextInput.ifBlank { VAL_EXAMPLE_INPUT }
-        recognizeMatches(initialInput)
-    }
-
-    private fun recognizeMatches(input: String = currentTextInput) {
-        view.inputText = input
-        onInputChanges(input)
-        view.selectInputText()
-    }
-
     override fun onButtonHelpClick() = view.showUserGuide(false)
     fun showInitialUserGuide() = view.showUserGuide(true)
 
-    override fun onInputChanges(newInput: String) {
+    override fun onInputTextChanges(newInput: String) {
         val matches = RecognizerRegistry.findMatches(newInput)
         val matchGroups = matches.groupBy { it.ranges }.values
         matchPresenters = matchGroups.map { it.toPresentation() }
 
-        view.displayText = newInput
-        view.showResults(matchPresenters)
+        view.showMatchingRecognizers(newInput, matchPresenters)
         computeOutputPattern()
     }
 
@@ -64,10 +54,10 @@ class UiController : DisplayContract.Controller {
         // determine selected state of the presenter
         matchPresenter.selectedMatch = if (matchPresenter.selected) null else recognizerMatch
 
-        updatePresentation()
+        disableNotClickableSuggestions()
     }
 
-    override fun updatePresentation() {
+    override fun disableNotClickableSuggestions() {
         // find matches to disable
         val selectedMatches = matchPresenters.filter { it.selected }
         matchPresenters.filter { !it.selected }
@@ -88,7 +78,7 @@ class UiController : DisplayContract.Controller {
             matchPresenters.mapNotNull { it.selectedMatch }.toList(),
             view.options
         )
-        view.setPattern(result)
+        view.showResultingPattern(result)
     }
 
     override val allRecognizerMatcher: Collection<RecognizerMatch>
