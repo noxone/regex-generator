@@ -2,14 +2,8 @@ package org.olafneumann.regex.generator.ui
 
 import kotlinx.browser.document
 import kotlinx.browser.window
-import kotlinx.dom.addClass
 import kotlinx.dom.clear
-import kotlinx.dom.removeClass
-import kotlinx.html.a
-import kotlinx.html.div
 import kotlinx.html.dom.create
-import kotlinx.html.js.div
-import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.JQuery
@@ -20,27 +14,21 @@ import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.ui.html.RecognizerDisplayPart
 import org.olafneumann.regex.generator.ui.html.UserGuide
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.events.InputEvent
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
-import kotlin.js.json
 
 class HtmlView(
     private val presenter: DisplayContract.Controller
 ) : DisplayContract.View {
-    // extend other classes
-    private fun Int.toCharacterUnits() = "${this}ch"
-
     // HTML elements we need to change
     private val textInput = HtmlHelper.getElementById<HTMLInputElement>(ID_INPUT_ELEMENT)
-    private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_TEXT_DISPLAY)
-    private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(ID_ROW_CONTAINER)
     private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_RESULT_DISPLAY)
     private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_COPY)
     private val buttonHelp = HtmlHelper.getElementById<HTMLAnchorElement>(ID_BUTTON_HELP)
@@ -65,15 +53,12 @@ class HtmlView(
         UrlGenerator("ShareLink", "https://regex-generator.olafneumann.org/?sampleText=%1\$s&flags=%2\$s")
     )
 
-    // Stuff needed to display the regex
-    private val matchPresenterToRowIndex = mutableMapOf<MatchPresenter, Int>()
-    private var inputCharacterSpans = listOf<HTMLSpanElement>()
-
     private val languageDisplays = CodeGenerator.all
         .associateWith { LanguageCard(it, containerLanguages) }
 
     private var currentPattern = ""
 
+    private val recognizerDisplayPart = RecognizerDisplayPart(presenter)
     private val userGuide = UserGuide.forLanguage("en")
 
     override var options: RecognizerCombiner.Options
@@ -153,136 +138,7 @@ class HtmlView(
         }
 
     override fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
-        textDisplay.clear()
-        inputCharacterSpans = inputText.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
-        inputCharacterSpans.forEach { textDisplay.appendChild(it) }
-
-        // TODO remove CSS class iterator
-        val indices = mutableMapOf<Int, Int>()
-        fun nextCssClass(row: Int): String {
-            indices[row] = (indices[row] ?: row) + 1
-            return MATCH_PRESENTER_CSS_CLASS[indices[row]!! % MATCH_PRESENTER_CSS_CLASS.size]
-        }
-
-
-        rowContainer.clear()
-        matchPresenterToRowIndex.clear()
-
-        // find the correct row for each match
-        matchPresenterToRowIndex.putAll(distributeToRows(matches))
-        // Create HTML elements
-        val rowElements = mutableMapOf<Int, HTMLDivElement>()
-        matchPresenterToRowIndex.forEach { (matchPresenter, rowIndex) ->
-            // assign required stuff
-            rowElements[rowIndex] = rowElements[rowIndex] ?: createRowElement()
-            val rowElement = rowElements[rowIndex]!!
-            val cssClass = nextCssClass(rowIndex)
-
-            // create the corresponding match presenter element
-            val element = createMatchPresenterElement(matchPresenter)
-            rowElement.appendChild(element)
-            applyCssStyling(matchPresenter, element, cssClass)
-            applyListenersForUserInput(matchPresenter, element, cssClass)
-        }
-
-        animateResultDisplaySize(rows = rowElements)
-    }
-
-    private fun distributeToRows(matches: Collection<MatchPresenter>): Map<MatchPresenter, Int> {
-        val lines = mutableListOf<Int>()
-        fun createNextLine(): Int {
-            lines.add(0)
-            return lines.size - 1
-        }
-        return matches
-            .sortedWith(MatchPresenter.byPriorityAndPosition)
-            .associateWith { presenter ->
-                val indexOfFreeLine = lines.indexOfFirst { it < presenter.first }
-                val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
-                lines[line] = presenter.last
-                line
-            }
-    }
-
-    private fun createRowElement(): HTMLDivElement =
-        rowContainer.appendChild(document.create.div(classes = CLASS_MATCH_ROW)) as HTMLDivElement
-
-    private fun createMatchPresenterElement(matchPresenter: MatchPresenter): HTMLDivElement =
-        document.create.div(classes = CLASS_MATCH_ITEM) {
-            div(classes = "rg-match-item-overlay") {
-                matchPresenter.recognizerMatches.forEach { match ->
-                    div(classes = "rg-recognizer") {
-                        a {
-                            +match.title
-                            onClickFunction = { event ->
-                                presenter.onSuggestionClick(match)
-                                event.stopPropagation()
-                            }
-                        }
-                    }
-                }
-            }
-            onClickFunction = {
-                when {
-                    matchPresenter.selected ->
-                        matchPresenter.selectedMatch?.let { presenter.onSuggestionClick(it) }
-                    matchPresenter.recognizerMatches.size == 1 ->
-                        presenter.onSuggestionClick(matchPresenter.recognizerMatches.iterator().next())
-                }
-            }
-        }
-
-    private fun applyCssStyling(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
-        element.addClass(cssClass)
-        element.style.left = matchPresenter.first.toCharacterUnits()
-        element.style.width = matchPresenter.length.toCharacterUnits()
-        if (matchPresenter.ranges.size == 2) {
-            element.style.borderLeftWidth =
-                (matchPresenter.ranges[0].last - matchPresenter.ranges[0].first + 1).toCharacterUnits()
-            element.style.borderRightWidth =
-                (matchPresenter.ranges[1].last - matchPresenter.ranges[1].first + 1).toCharacterUnits()
-        }
-        element.classList.toggle(CLASS_ITEM_SELECTED, matchPresenter.selected)
-        element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated)
-        matchPresenter.onSelectedChanged = { selected ->
-            element.classList.toggle(CLASS_ITEM_SELECTED, selected)
-            matchPresenter.forEachIndexInRanges { index ->
-                inputCharacterSpans[index].classList.toggle(CLASS_CHAR_SELECTED, selected)
-            }
-        }
-        matchPresenter.onDeactivatedChanged =
-            { deactivated -> element.classList.toggle(CLASS_ITEM_NOT_AVAILABLE, deactivated) }
-    }
-
-    private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
-        element.onmouseenter = {
-            if (matchPresenter.availableForHighlight) {
-                matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
-            }
-        }
-        element.onmouseleave = {
-            if (matchPresenter.availableForHighlight) {
-                matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
-            }
-        }
-    }
-
-    private fun animateResultDisplaySize(rows: Map<Int, HTMLDivElement>) {
-        val newHeight = "${computeMatchPresenterAreaHeight(rows)}px"
-        val jqRowContainer = jQuery(rowContainer)
-        jqRowContainer.stop()
-        jqRowContainer.animate(json("height" to newHeight), duration = 350)
-    }
-
-    private fun computeMatchPresenterAreaHeight(rows: Map<Int, HTMLDivElement>): Int =
-        MAGIC_HEIGHT + (rows.map { computeMatchPresenterTotalHeight(it.key, it.value) }
-            .maxOrNull() ?: 0)
-
-    private fun computeMatchPresenterTotalHeight(rowIndex: Int, matchPresenterElement: HTMLDivElement): Int {
-        val jqMatchPresenterElement = jQuery(matchPresenterElement)
-        val matchPresenterHeight = jqMatchPresenterElement.height()
-        val overlayHeight = HtmlHelper.getHeight(jqMatchPresenterElement.find(".rg-match-item-overlay"))
-        return matchPresenterHeight * (rowIndex + 1) + overlayHeight
+        recognizerDisplayPart.showMatchingRecognizers(inputText, matches)
     }
 
     override fun showResultingPattern(regex: RecognizerCombiner.RegularExpression) {
