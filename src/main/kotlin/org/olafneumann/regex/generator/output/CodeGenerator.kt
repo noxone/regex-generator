@@ -105,11 +105,11 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
                 |import java.util.regex.Matcher;
                 |
                 |public class Sample {
-                |    public boolean useRegex(String input) {
+                |    public static boolean useRegex(final String input) {
                 |        // Compile regular expression
-                |        Pattern pattern = Pattern.compile("%1${'$'}s"%2${'$'}s);
+                |        final Pattern pattern = Pattern.compile("%1${'$'}s"%2${'$'}s);
                 |        // Match regex against input
-                |        Matcher matcher = pattern.matcher(input);
+                |        final Matcher matcher = pattern.matcher(input);
                 |        // Use results...
                 |        return matcher.matches();
                 |    }
@@ -124,7 +124,7 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
         "CASE_INSENSITIVE",
         "MULTILINE",
         "DOTALL",
-        prefix = " ,",
+        prefix = ", ",
         separator = " | "
     ) { "Pattern.$it" }
 }
@@ -231,9 +231,9 @@ using System.Text.RegularExpressions;
 
 public class Sample
 {
-    public static void useRegex(String input)
+    public static bool useRegex(String input)
     {
-        Regex regex = new Regex("%1${'$'}s"%2${'$'}s);
+        const Regex regex = new Regex("%1${'$'}s"%2${'$'}s);
         return regex.IsMatch(input);
     }
 }"""
