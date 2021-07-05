@@ -2,23 +2,16 @@ package org.olafneumann.regex.generator.ui
 
 import kotlinx.browser.document
 import kotlinx.browser.window
-import kotlinx.dom.clear
-import kotlinx.html.dom.create
-import kotlinx.html.js.span
-import kotlinx.html.title
 import org.olafneumann.regex.generator.js.JQuery
-import org.olafneumann.regex.generator.js.Prism
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.output.CodeGenerator
-import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.html.RecognizerDisplayPart
+import org.olafneumann.regex.generator.ui.html.ResultDisplayPart
 import org.olafneumann.regex.generator.ui.html.UserGuide
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLButtonElement
-import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.InputEvent
 import org.w3c.dom.url.URL
@@ -29,36 +22,18 @@ class HtmlView(
 ) : DisplayContract.View {
     // HTML elements we need to change
     private val textInput = HtmlHelper.getElementById<HTMLInputElement>(ID_INPUT_ELEMENT)
-    private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(ID_RESULT_DISPLAY)
     private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_COPY)
     private val buttonHelp = HtmlHelper.getElementById<HTMLAnchorElement>(ID_BUTTON_HELP)
-    private val buttonShareLink = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_SHARE_LINK)
     private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_ONLY_MATCHES)
     private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_WHOLELINE)
     private val checkCaseInsensitive = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_MULTILINE)
-    private val containerLanguages = HtmlHelper.getElementById<HTMLDivElement>(ID_DIV_LANGUAGES)
-
-    private val anchorRegex101 = LinkHandler(
-        HtmlHelper.getElementById(ID_ANCHOR_REGEX101),
-        UrlGenerator("Regex101", "https://regex101.com/?regex=%1\$s&flags=g%2\$s&delimiter=/")
-    )
-    private val anchorRegexr = LinkHandler(
-        HtmlHelper.getElementById(ID_ANCHOR_REGEXR),
-        UrlGenerator("Regexr", "https://regexr.com/?expression=%1\$s&text=")
-    )
-    private val textShare = TextHandler(
-        HtmlHelper.getElementById(ID_TEXT_SHARE_LINK),
-        UrlGenerator("ShareLink", "https://regex-generator.olafneumann.org/?sampleText=%1\$s&flags=%2\$s")
-    )
-
-    private val languageDisplays = CodeGenerator.all
-        .associateWith { LanguageCard(it, containerLanguages) }
 
     private var currentPattern = ""
 
     private val recognizerDisplayPart = RecognizerDisplayPart(presenter)
+    private val resultDisplayPart = ResultDisplayPart(this, presenter)
     private val userGuide = UserGuide.forLanguage("en")
 
     override var options: RecognizerCombiner.Options
@@ -80,7 +55,6 @@ class HtmlView(
     init {
         textInput.oninput = { presenter.onInputTextChanges(inputText) }
         buttonCopy.onclick = { copyToClipboard(currentPattern) }
-        buttonShareLink.onclick = { copyToClipboard(textShare.text) }
         buttonHelp.onclick = { presenter.onButtonHelpClick() }
         checkCaseInsensitive.oninput = { presenter.onOptionsChange(options) }
         checkDotAll.oninput = { presenter.onOptionsChange(options) }
@@ -142,38 +116,7 @@ class HtmlView(
     }
 
     override fun showResultingPattern(regex: RecognizerCombiner.RegularExpression) {
-        showResultRegex(regex)
-
-        // update share-link
-        textShare.setPattern(inputText, options, presenter.selectedRecognizerMatches)
-
-        // update links
-        currentPattern = regex.pattern
-        anchorRegex101.setPattern(currentPattern, options)
-        anchorRegexr.setPattern(currentPattern, options)
-
-        // update programming languages
-        val options = options
-        CodeGenerator.all
-            .forEach { languageDisplays[it]?.setSnippet(it.generateCode(currentPattern, options)) }
-        Prism.highlightAll()
-    }
-
-    private fun showResultRegex(regex: RecognizerCombiner.RegularExpression) {
-        resultDisplay.clear()
-        for (part in regex.parts) {
-            resultDisplay.append(
-                document.create.span(classes = "rg-result-part") {
-                    title = when {
-                        part.match != null -> "Recognizes \"${part.match.title}\" using the highlighted regex"
-                        part.title != null -> "Recognizes \"${part.title}\""
-                        part.originalText != null -> "Recognizes exactly \"${part.originalText}\""
-                        else -> ""
-                    }
-                    +part.pattern
-                }
-            )
-        }
+        resultDisplayPart.showResultingPattern(regex)
     }
 
     override fun showUserGuide(initialStep: Boolean) {
