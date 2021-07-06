@@ -49,29 +49,882 @@
                     <h5>Paste a text sample.</h5>
                     <a id="rg_button_show_help" class="btn btn-sm rg-no-focus" title="Show help">&#10068;</a>
                 </div>
-                <input type="text" id="rg_raw_input_text" class="form-control rg-code" aria-label="Example text"
-                    aria-describedby="rg_raw_text_input_help" placeholder="Text here..." autofocus="autofocus">
+                <div class="rg-match-container border rounded bg-white p-2">
+                    <span style="position: relative;">
+                        <span id="rg_text_display" style="white-space: pre;">asdasd</span>
+                        <input id="rg_raw_input_text" 
+                            style="position: absolute;opacity: 0.4;width:110%;left: -2px;top: -5px;padding:0"
+                            >
+                    </span>
+                    <div id="rg_row_container" style="height: 217px;">
+                        <div class="rg-match-row">
+                            <div class="rg-match-item bg-success" style="left: 0ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (2)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 1ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (0)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 2ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (2)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 3ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (0)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 4ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (-)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 5ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (0)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 6ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (3)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 7ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (-)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 8ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (1)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 9ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (2)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 10ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (T)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 11ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (1)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 12ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (3)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 13ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (:)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 14ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (3)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 15ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (4)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 16ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (:)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 17ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (5)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 18ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (6)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 19ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (.)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 20ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (1)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 21ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (2)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 22ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (3)</a></div>
+                                    <div class="rg-recognizer"><a>Digit</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 23ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (Z)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 24ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 25ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (I)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 26ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (N)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 27ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (F)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 28ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (O)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 29ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 30ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 31ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ([)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 32ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (o)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 33ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (r)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 34ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (g)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 35ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (.)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 36ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (e)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 37ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (x)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 38ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (a)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 39ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (m)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 40ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (p)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 41ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (l)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 42ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (e)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 43ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (.)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 44ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (C)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 45ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (l)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 46ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (a)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 47ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (s)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 48ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (s)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 49ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (])</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 50ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (:)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 51ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 52ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (T)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 53ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (h)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 54ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (i)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 55ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (s)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 56ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 57ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (i)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 58ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (s)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 59ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 60ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (a)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 61ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 62ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (#)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 63ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (s)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 64ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (i)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 65ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (m)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 66ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (p)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 67ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (l)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 68ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (e)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 69ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 70ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (#)</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 71ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (l)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 72ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (o)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 73ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (g)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 74ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (l)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 75ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (i)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 76ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (n)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 77ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (e)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 78ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 79ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (c)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 80ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (o)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 81ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (n)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 82ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (t)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 83ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (a)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 84ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (i)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 85ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (n)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 86ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (i)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 87ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (n)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 88ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (g)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 89ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 90ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (a)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 91ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character ( )</a></div>
+                                    <div class="rg-recognizer"><a>One whitespace</a></div>
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 92ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (')</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 93ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (v)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 94ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (a)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 95ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (l)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 96ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (u)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 97ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (e)</a></div>
+                                    <div class="rg-recognizer"><a>One character</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 98ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (')</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 99ch; width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Character (.)</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rg-match-row">
+                            <div class="rg-match-item bg-danger" style="left: 0ch; width: 24ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>ISO8601</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 24ch; width: 7ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [Whitespaces + Multiple
+                                            characters]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary"
+                                style="left: 31ch; width: 19ch; border-left-width: 1ch; border-right-width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Square brackets</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 51ch; width: 11ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [One whitespace + Multiple
+                                            characters]</a></div>
+                                    <div class="rg-recognizer"><a>Combination [Whitespaces + Multiple
+                                            characters]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 62ch; width: 7ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Hashtag</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 70ch; width: 8ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Hashtag</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 78ch; width: 14ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [One whitespace + Multiple
+                                            characters]</a></div>
+                                    <div class="rg-recognizer"><a>Combination [Whitespaces + Multiple
+                                            characters]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success"
+                                style="left: 92ch; width: 7ch; border-left-width: 1ch; border-right-width: 1ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>String (apostrophe)</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rg-match-row">
+                            <div class="rg-match-item bg-warning" style="left: 0ch; width: 10ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Date</a></div>
+                                    <div class="rg-recognizer"><a>Combination [Number + Character]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 11ch; width: 12ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Time</a></div>
+                                    <div class="rg-recognizer"><a>Combination [Floating point number (with optional
+                                            exponent) + Character]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 23ch; width: 6ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [Multiple characters + Character]</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 29ch; width: 2ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Whitespaces</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 32ch; width: 17ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Square brackets content (no square bracket)</a>
+                                    </div>
+                                    <div class="rg-recognizer"><a>Combination [Multiple characters + Character]</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 52ch; width: 9ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [Multiple characters + Character]</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 61ch; width: 18ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [One whitespace + Hashtag]</a></div>
+                                    <div class="rg-recognizer"><a>Combination [Whitespaces + Hashtag]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 79ch; width: 10ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 93ch; width: 5ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                    <div class="rg-recognizer"><a>String (apostrophe) content (no apostrophe)</a>
+                                    </div>
+                                    <div class="rg-recognizer"><a>String (apostrophe) content (backslash escaped
+                                            apostrophe)</a></div>
+                                    <div class="rg-recognizer"><a>String (apostrophe) content (double escaped
+                                            apostrophe)</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rg-match-row">
+                            <div class="rg-match-item bg-primary" style="left: 0ch; width: 7ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [Exact number + Character]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 7ch; width: 3ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Floating point number (with optional exponent)</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 11ch; width: 8ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [Number + Character]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 20ch; width: 3ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Exact number (123)</a></div>
+                                    <div class="rg-recognizer"><a>Number</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 24ch; width: 6ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [One whitespace + Multiple
+                                            characters]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 32ch; width: 3ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 36ch; width: 7ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 44ch; width: 5ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 52ch; width: 4ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 57ch; width: 2ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 63ch; width: 6ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 71ch; width: 20ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [Multiple characters + Character]</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rg-match-row">
+                            <div class="rg-match-item bg-success" style="left: 0ch; width: 4ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Exact number (2020)</a></div>
+                                    <div class="rg-recognizer"><a>Number</a></div>
+                                    <div class="rg-recognizer"><a>Floating point number (with optional exponent)</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 4ch; width: 3ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Floating point number (with optional exponent)</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 8ch; width: 2ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Exact number (12)</a></div>
+                                    <div class="rg-recognizer"><a>Number</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 11ch; width: 5ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Combination [Exact number + Character]</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 17ch; width: 6ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Decimal number</a></div>
+                                    <div class="rg-recognizer"><a>Floating point number (with optional exponent)</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-danger" style="left: 25ch; width: 4ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                    <div class="rg-recognizer"><a>Log level</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 71ch; width: 7ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Multiple characters</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rg-match-row">
+                            <div class="rg-match-item bg-danger" style="left: 5ch; width: 2ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Exact number (03)</a></div>
+                                    <div class="rg-recognizer"><a>Number</a></div>
+                                    <div class="rg-recognizer"><a>Day</a></div>
+                                    <div class="rg-recognizer"><a>Month</a></div>
+                                    <div class="rg-recognizer"><a>Hour</a></div>
+                                    <div class="rg-recognizer"><a>Minute/ Second</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-warning" style="left: 11ch; width: 2ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Exact number (13)</a></div>
+                                    <div class="rg-recognizer"><a>Number</a></div>
+                                    <div class="rg-recognizer"><a>Floating point number (with optional exponent)</a>
+                                    </div>
+                                    <div class="rg-recognizer"><a>Day</a></div>
+                                    <div class="rg-recognizer"><a>Hour</a></div>
+                                    <div class="rg-recognizer"><a>Minute/ Second</a></div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-primary" style="left: 14ch; width: 2ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Exact number (34)</a></div>
+                                    <div class="rg-recognizer"><a>Number</a></div>
+                                    <div class="rg-recognizer"><a>Floating point number (with optional exponent)</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rg-match-item bg-success" style="left: 17ch; width: 2ch;">
+                                <div class="rg-match-item-overlay" style="">
+                                    <div class="rg-recognizer"><a>Exact number (56)</a></div>
+                                    <div class="rg-recognizer"><a>Number</a></div>
+                                    <div class="rg-recognizer"><a>Minute/ Second</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
                 <small id="rg_raw_text_input_help" class="form-text text-muted">Give us an example of the text you want
                     to
                     match using your <em>regex</em>. We will provide you with some ideas how to build a regular
-                    expression.</small>
-            </div>
-        </div>
-
-        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_pattern_selection_container">
-            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
-                <h3 class="display-3 text-secondary">2</h3>
-            </div>
-            <div class="col-12 col-md-11 py-4 pl-4">
-                <h5>Which parts of the text are interesting for you?</h5>
-                <div class="row no-gutters bg-white border rounded p-2" id="rg_result_container">
-                    <div class="rg-match-container">
-                        <div id="rg_text_display" class="rg-text-display"></div>
-                        <div id="rg_row_container">
-                        </div>
-                    </div>
-                </div>
-                <small class="form-text text-muted">Click on the marked suggestions to select them for your regular
                     expression.</small>
             </div>
         </div>
