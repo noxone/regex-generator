@@ -30,4 +30,7 @@ external class JQuery {
     @Suppress("UnusedPrivateMember")
     fun animate(properties: Json, duration: Int = definedExternally, easing: String = definedExternally)
     fun stop()
+
+    @Suppress("UnusedPrivateMember")
+    fun width(width: Any = definedExternally): Any?
 }

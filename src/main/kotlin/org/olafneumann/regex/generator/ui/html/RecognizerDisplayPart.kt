@@ -17,12 +17,14 @@ import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MatchPresenter
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
 import kotlin.js.json
 
 internal class RecognizerDisplayPart(
     private val presenter: DisplayContract.Controller
 ) {
+    private val textInput = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_INPUT_ELEMENT)
     private val textDisplay = HtmlHelper.getElementById<HTMLElement>(HtmlView.ID_TEXT_DISPLAY)
     private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_ROW_CONTAINER)
 
@@ -34,6 +36,11 @@ internal class RecognizerDisplayPart(
         textDisplay.clear()
         inputCharacterSpans = inputText.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
+        // adjust width of input text
+        /*val inp = jQuery(textInput)
+        val oup = jQuery(textDisplay)
+        val wid = oup.width() as Int + 10
+        inp.width(wid)*/
 
         // TODO remove CSS class iterator
         val indices = mutableMapOf<Int, Int>()
