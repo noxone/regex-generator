@@ -16,23 +16,28 @@ import org.olafneumann.regex.generator.ui.HtmlHelper
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MatchPresenter
 import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLSpanElement
 import kotlin.js.json
 
 internal class RecognizerDisplayPart(
     private val presenter: DisplayContract.Controller
 ) {
-    private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_TEXT_DISPLAY)
+    private val textDisplay = HtmlHelper.getElementById<HTMLElement>(HtmlView.ID_TEXT_DISPLAY)
     private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_ROW_CONTAINER)
 
     // Stuff needed to display the regex
     private val matchPresenterToRowIndex = mutableMapOf<MatchPresenter, Int>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
-    fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+    fun showInputText(inputText: String) {
         textDisplay.clear()
         inputCharacterSpans = inputText.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
+    }
+
+    fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+        showInputText(inputText)
 
         // TODO remove CSS class iterator
         val indices = mutableMapOf<Int, Int>()
