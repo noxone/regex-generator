@@ -30,10 +30,14 @@ internal class RecognizerDisplayPart(
     private val matchPresenterToRowIndex = mutableMapOf<MatchPresenter, Int>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
-    fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+    fun showInputText(inputText: String) {
         textDisplay.clear()
         inputCharacterSpans = inputText.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
+    }
+
+    fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+        showInputText(inputText)
 
         // TODO remove CSS class iterator
         val indices = mutableMapOf<Int, Int>()
