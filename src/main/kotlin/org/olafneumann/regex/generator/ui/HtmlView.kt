@@ -10,6 +10,7 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.html.RecognizerDisplayPart
 import org.olafneumann.regex.generator.ui.html.ResultDisplayPart
 import org.olafneumann.regex.generator.ui.html.UserGuide
+import org.olafneumann.regex.generator.ui.html.UserInputDelayer
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
@@ -53,7 +54,12 @@ class HtmlView(
         }
 
     init {
-        textInput.oninput = { presenter.onInputTextChanges(inputText) }
+        val delayer = UserInputDelayer<String>(
+            { recognizerDisplayPart.showInputText(it) },
+            { presenter.onInputTextChanges(it) }
+        )
+        //textInput.oninput = { presenter.onInputTextChanges(inputText) }
+        textInput.oninput = { delayer.onAction(inputText) }
         buttonCopy.onclick = { copyToClipboard(currentPattern) }
         buttonHelp.onclick = { presenter.onButtonHelpClick() }
         checkCaseInsensitive.oninput = { presenter.onOptionsChange(options) }

@@ -24,7 +24,6 @@ import kotlin.js.json
 internal class RecognizerDisplayPart(
     private val presenter: DisplayContract.Controller
 ) {
-    private val textInput = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_INPUT_ELEMENT)
     private val textDisplay = HtmlHelper.getElementById<HTMLElement>(HtmlView.ID_TEXT_DISPLAY)
     private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_ROW_CONTAINER)
 
@@ -32,15 +31,14 @@ internal class RecognizerDisplayPart(
     private val matchPresenterToRowIndex = mutableMapOf<MatchPresenter, Int>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
-    fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+    fun showInputText(inputText: String) {
         textDisplay.clear()
         inputCharacterSpans = inputText.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
-        // adjust width of input text
-        /*val inp = jQuery(textInput)
-        val oup = jQuery(textDisplay)
-        val wid = oup.width() as Int + 10
-        inp.width(wid)*/
+    }
+
+    fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+        showInputText(inputText)
 
         // TODO remove CSS class iterator
         val indices = mutableMapOf<Int, Int>()
