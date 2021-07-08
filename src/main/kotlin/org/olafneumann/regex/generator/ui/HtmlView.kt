@@ -58,7 +58,6 @@ class HtmlView(
             { recognizerDisplayPart.showInputText(it) },
             { presenter.onInputTextChanges(it) }
         )
-        //textInput.oninput = { presenter.onInputTextChanges(inputText) }
         textInput.oninput = { delayer.onAction(inputText) }
         buttonCopy.onclick = { copyToClipboard(currentPattern) }
         buttonHelp.onclick = { presenter.onButtonHelpClick() }

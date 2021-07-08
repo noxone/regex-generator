@@ -10,8 +10,30 @@
   white-space: pre;
 }
 
-.rg-code,
-.rg-match-container {
+.rg-combined-input-and-result {
+  position: relative;
+  display: inline-block;
+  min-width: 100%;
+}
+
+.rg-combined-input-and-result span {
+  white-space: pre;
+}
+
+.rg-raw-input {
+  position: absolute;
+  opacity: 0.4;
+  width: 100%;
+  left: 0px;
+  padding: 0;
+  border: 0;
+}
+
+.rg-raw-input:focus, .rg-raw-input:focus-visible, .rg-raw-input:focus-within {
+  border: 0 !important;
+}
+
+.rg-code, .rg-match-container {
   font-family: Consolas, monospace;
 }
 
@@ -67,8 +89,7 @@
   display: block;
 }
 
-.rg-match-item.rg-item-selected:hover .rg-match-item-overlay,
-.rg-match-item.rg-item-not-available:hover .rg-match-item-overlay {
+.rg-match-item.rg-item-selected:hover .rg-match-item-overlay, .rg-match-item.rg-item-not-available:hover .rg-match-item-overlay {
   display: none;
 }
 
@@ -93,7 +114,7 @@
 }
 
 .rg-result-part:hover {
-    background-color: lightgray;
+  background-color: lightgray;
 }
 
 .rg-check-row {
