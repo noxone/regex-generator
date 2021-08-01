@@ -64,13 +64,11 @@ internal class TextHandler(
         url.port = window.location.port
 
         element.innerText = url.toString()
-        updateDocumentSearchQuery(url, pattern)
+        updateDocumentSearchQuery(url)
     }
 
-    private fun updateDocumentSearchQuery(url: URL, sampleText: String) {
-        val title = "Regex Generator \"${sampleText}\""
-        document.title = title
-        window.history.replaceState(data = null, title = title, url = url.toString())
+    private fun updateDocumentSearchQuery(url: URL) {
+        window.history.replaceState(data = null, title = document.title, url = url.toString())
     }
 
     val text get() = element.innerText
