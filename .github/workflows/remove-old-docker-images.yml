@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Delete old Docker images
-        uses: m3ntorship/action-dockerhub-cleanup@v1.2
+        uses: m3ntorship/action-dockerhub-cleanup@1.4
         with:
           user: ${{ secrets.DOCKERHUB_USERNAME }}
           token: ${{ secrets.DOCKERHUB_TOKEN }}
