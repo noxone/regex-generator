@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    name: Build with JDK 11
+    name: Build with JDK 16
     steps:
       - name: Check out
         uses: actions/checkout@v2
@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: adopt
-          java-version: 11
+          java-version: 16
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
