@@ -64,11 +64,11 @@ internal class TextHandler(
         url.port = window.location.port
 
         element.innerText = url.toString()
-        updateDocumentSearchQuery(url)
+        updateDocumentSearchQuery(url.search)
     }
 
-    private fun updateDocumentSearchQuery(url: URL) {
-        window.history.replaceState(data = null, title = document.title, url = url.toString())
+    private fun updateDocumentSearchQuery(urlString: String) {
+        window.history.replaceState(data = null, title = document.title, url = urlString)
     }
 
     val text get() = element.innerText
