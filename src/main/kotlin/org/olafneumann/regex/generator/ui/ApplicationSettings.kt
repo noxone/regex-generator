@@ -32,7 +32,7 @@ internal open class LocalStorageSettings {
         }
     }
 
-    // Hiding local storage behind functions so we can disable storage if user does not consent
+    // Hiding local storage behind functions, so we can disable storage if user does not consent
     protected fun get(key: String) = intermediate[key] ?: localStorage.getItem(key)
     protected fun set(key: String, value: String) {
         if (hasUserConsent) {
@@ -66,7 +66,7 @@ internal object ApplicationSettings : LocalStorageSettings() {
     // ----------------------------------
     // actual function to access settings
 
-    fun isNewUser() = get(KEY_LAST_VERSION)?.toIntOrNull() ?: 0 < VAL_VERSION
+    fun isNewUser() = (get(KEY_LAST_VERSION)?.toIntOrNull() ?: 0) < VAL_VERSION
     fun storeUserLastInfo() = set(KEY_LAST_VERSION, VAL_VERSION)
 
 
