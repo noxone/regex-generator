@@ -124,7 +124,7 @@ object RecognizerCombiner {
     ) {
         companion object {
             private const val DEFAULT_ONLY_PATTERN = false
-            private const val DEFAULT_MATCH_WHOLE_LINE = true
+            private const val DEFAULT_MATCH_WHOLE_LINE = false
             private const val DEFAULT_CASE_INSENSITIVE = true
             private const val DEFAULT_DOT_MATCHES_LINE_BREAKS = false
             private const val DEFAULT_MULTILINE = false
