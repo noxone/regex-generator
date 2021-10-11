@@ -14,6 +14,7 @@ interface CodeGenerator {
             , CSharpCodeGenerator()
             , RubyCodeGenerator()
             , GrepCodeGenerator()
+            , SwiftCodeGenerator()
         ).sortedBy { it.languageName.lowercase() }
     }
 
@@ -284,4 +285,29 @@ end"""
 
         return warnings
     }
+}
+
+internal class SwiftCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "Swift",
+    highlightLanguage = "swift",
+    templateCode = """func useRegex(for text: String) -> Bool {
+    let regex = try! NSRegularExpression(pattern: "%1${'$'}s"%2${'$'}s)
+    let range = NSRange(location: 0, length: text.count)
+    let matches = regex.matches(in: text, options: [], range: range)
+    return matches.first != nil
+}"""
+) {
+
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(RegexCache.get("([\\\\'])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
+
+    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+        options.combine(
+            valueForCaseInsensitive = ".caseInsensitive",
+            valueForDotAll = ".dotMatchesLineSeparators",
+            valueForMultiline = ".anchorsMatchLines",
+            separator = ", ",
+            prefix = ", options: [",
+            postfix = "]"
+        )
 }
