@@ -290,7 +290,7 @@ end"""
 internal class SwiftCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Swift",
     highlightLanguage = "swift",
-    templateCode = """func useRegex(for text: String) throws -> Bool {
+    templateCode = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "%1${'$'}s"%2${'$'}s)
     let range = NSRange(location: 0, length: text.count)
     let matches = regex.matches(in: text, options: [], range: range)
