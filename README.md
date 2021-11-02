@@ -60,9 +60,9 @@ Using this command the page will reload automatically for every source file chan
 
 ### Detekt report
 
-Detekt is a code style checker for Kotlin. It is integrated in the build process to keep the code clean.
+[Detekt](https://github.com/detekt/detekt) is a code style checker for Kotlin. It is integrated in the build process to keep the code clean.
 
-You can find the Detekt report [here](https://regex-generator.olafneumann.org/reports/detekt.html).
+You can find the Detekt report for this project [here](https://regex-generator.olafneumann.org/reports/detekt.html).
 
 ## Project goal
 
