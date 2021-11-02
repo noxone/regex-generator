@@ -60,7 +60,8 @@ Using this command the page will reload automatically for every source file chan
 
 ### Detekt report
 
-Detekt is a code style checker for Kotlin.
+Detekt is a code style checker for Kotlin. It is integrated in the build process to keep the code clean.
+
 You can find the Detekt report [here](https://regex-generator.olafneumann.org/reports/detekt.html).
 
 ## Project goal
@@ -84,13 +85,13 @@ The ``regex generator`` is currently able to generate code snippets in the follo
 - Ruby
 - Swift
 
-If you're missing a language, just create a generator and open a pull-request or simply open a [new issue](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=New+language&template=add-language.md&title=).
+If you miss a language, just open a [new issue](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=New+language&template=add-programming-language.md&title=) or if you like, program the corresponding generator and open a pull request.
 
 ### Patterns
 
 At the current stage there are ~20 patterns integrated in ``regex generator``. It is able to find simple patterns as well as very simple repetitions of smaller patterns.
 
-In the final stage this Regex Generator shall support a wide range of use cases. Feel free to suggest new patterns via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=New+language&template=add-programming-language.md&title=).
+In the final stage this Regex Generator shall support a wide range of use cases. Feel free to suggest new patterns via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=add-pattern.md&title=).
 
 ## More ideas
 
