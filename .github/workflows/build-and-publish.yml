@@ -1,4 +1,4 @@
-name: Publish Page
+name: Build and publish project
 
 on:
   push:
