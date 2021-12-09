@@ -8,7 +8,8 @@ class SimpleTest {
     fun testRegexGeneration() {
         val given = "abc["
         val expected = "abc\\["
-        val actual = RecognizerCombiner.combineMatches(inputText = given, selectedMatches = emptyList(), options = Options())
+        val actual =
+            RecognizerCombiner.combineMatches(inputText = given, selectedMatches = emptyList(), options = Options())
 
         assertEquals(expected, actual.pattern)
     }
