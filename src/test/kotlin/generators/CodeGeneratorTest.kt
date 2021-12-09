@@ -108,6 +108,7 @@ function useRegex(${'$'}input) {
 end"""
     )
 
+    @Suppress("MaxLineLength")
     @Test
     fun testGenerator_Swift() = testLanguageGenerator(
         codeGenerator = SwiftCodeGenerator(), expected = """func useRegex(for text: String) -> Bool {
