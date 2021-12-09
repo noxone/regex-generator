@@ -119,7 +119,7 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\\"])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String = options.combine(
         valueForCaseInsensitive = "Pattern.CASE_INSENSITIVE",
@@ -140,7 +140,7 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\\"])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String = options.combine(
         valueForCaseInsensitive = "RegexOption.IGNORE_CASE",
@@ -170,7 +170,7 @@ function useRegex(${'$'}input) {
 ) {
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
         pattern
-            .replace(RegexCache.get("([\\\\'])"), "\\$1")
+            .replace(RegexCache.get("([\\\\'])"), "\\\\$1")
             .replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
@@ -243,7 +243,7 @@ public class Sample
 
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\\"])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(
@@ -265,7 +265,7 @@ end"""
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\'])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\'])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(
@@ -300,7 +300,7 @@ internal class SwiftCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\'])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\'])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(
