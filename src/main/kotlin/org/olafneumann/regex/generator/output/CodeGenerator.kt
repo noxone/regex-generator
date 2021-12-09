@@ -324,7 +324,7 @@ def useRegex(input):
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\'])"), "\\$1").replace(RegexCache.get("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\'])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(
