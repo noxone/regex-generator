@@ -58,7 +58,13 @@ gradlew run --continuous
 
 Using this command the page will reload automatically for every source file change.
 
-### Detekt report
+### Reports
+
+#### Unit Tests
+
+Well, we don't have enough unit tests. But there are a few. See the [results](https://regex-generator.olafneumann.org/reports/tests/test).
+
+#### Detekt
 
 [Detekt](https://github.com/detekt/detekt) is a code style checker for Kotlin. It is integrated in the build process to keep the code clean.
 
