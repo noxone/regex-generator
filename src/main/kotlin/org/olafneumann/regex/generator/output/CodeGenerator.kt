@@ -15,6 +15,7 @@ interface CodeGenerator {
             , RubyCodeGenerator()
             , GrepCodeGenerator()
             , SwiftCodeGenerator()
+            , PythonCodeGenerator()
         ).sortedBy { it.languageName.lowercase() }
     }
 
@@ -72,7 +73,11 @@ internal abstract class SimpleReplacingCodeGenerator(
         if (multiline && valueForMultiline != null)
             optionList += valueForMultiline
 
-        return optionList.joinToString(separator = separator, prefix = prefix, postfix = postfix)
+        return if (optionList.isNotEmpty()) {
+            optionList.joinToString(separator = separator, prefix = prefix, postfix = postfix)
+        } else {
+            ""
+        }
     }
 }
 
@@ -309,5 +314,28 @@ internal class SwiftCodeGenerator : SimpleReplacingCodeGenerator(
             separator = ", ",
             prefix = ", options: [",
             postfix = "]"
+        )
+}
+
+internal class PythonCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "Python",
+    highlightLanguage = "python",
+    templateCode = """import re
+
+def useRegex(input):
+    pattern = re.compile(r"%1${'$'}s")
+    return pattern.match(input%2${'$'}s)"""
+) {
+
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(RegexCache.get("([\\\\'])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
+
+    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+        options.combine(
+            valueForCaseInsensitive = "re.IGNORECASE",
+            valueForDotAll = "re.DOTALL",
+            valueForMultiline = "re.MULTILINE",
+            separator = ", ",
+            prefix = ", "
         )
 }

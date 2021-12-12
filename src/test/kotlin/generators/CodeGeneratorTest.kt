@@ -31,9 +31,9 @@ class CodeGeneratorTest {
         assertEquals(expected, actual)
     }
 
-    private fun testLanguageGenerator(codeGenerator: CodeGenerator, expected: String) {
+    private fun testLanguageGenerator(codeGenerator: CodeGenerator, options: Options = Options(), expected: String) {
         val regex = generateRegex(given)
-        val actual = codeGenerator.generateCode(pattern = regex, options = Options()).snippet
+        val actual = codeGenerator.generateCode(pattern = regex, options = options).snippet
         assertEquals(expected, actual)
     }
 
@@ -111,8 +111,30 @@ end"""
     @Suppress("MaxLineLength")
     @Test
     fun testGenerator_Swift() = testLanguageGenerator(
-        codeGenerator = SwiftCodeGenerator(), expected = """func useRegex(for text: String) -> Bool {
+        codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = true), expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier und da\\(\\[\\)\\.", options: [.caseInsensitive])
+    let range = NSRange(location: 0, length: text.count)
+    let matches = regex.matches(in: text, options: [], range: range)
+    return matches.first != nil
+}"""
+    )
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun testGenerator_Swift_withoutOptions() = testLanguageGenerator(
+        codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = false), expected = """func useRegex(for text: String) -> Bool {
+    let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier und da\\(\\[\\)\\.")
+    let range = NSRange(location: 0, length: text.count)
+    let matches = regex.matches(in: text, options: [], range: range)
+    return matches.first != nil
+}"""
+    )
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun testGenerator_Swift_withAllOptions() = testLanguageGenerator(
+        codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = true, multiline = true, dotMatchesLineBreaks = true), expected = """func useRegex(for text: String) -> Bool {
+    let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier und da\\(\\[\\)\\.", options: [.caseInsensitive, .dotMatchesLineSeparators, .anchorsMatchLines])
     let range = NSRange(location: 0, length: text.count)
     let matches = regex.matches(in: text, options: [], range: range)
     return matches.first != nil
