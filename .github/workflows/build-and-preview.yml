@@ -1,5 +1,5 @@
 
-name: Build and test project
+name: Build and preview project
 
 on:
   issue_comment:
