@@ -88,6 +88,7 @@ The ``regex generator`` is currently able to generate code snippets in the follo
 - JavaScript
 - Kotlin
 - PHP
+- Python
 - Ruby
 - Swift
 
