@@ -73,7 +73,11 @@ internal abstract class SimpleReplacingCodeGenerator(
         if (multiline && valueForMultiline != null)
             optionList += valueForMultiline
 
-        return optionList.joinToString(separator = separator, prefix = prefix, postfix = postfix)
+        return if (optionList.isNotEmpty()) {
+            optionList.joinToString(separator = separator, prefix = prefix, postfix = postfix)
+        } else {
+            ""
+        }
     }
 }
 
