@@ -29,8 +29,8 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Run Gradle tasks
         run: ./gradlew clean build
-      - name: Copy Detekt report
-        run: mkdir build/distributions/reports && cp build/reports/detekt/detekt.html build/distributions/reports/
+      - name: Copy reports
+        run: mkdir build/distributions/reports && cp build/reports/detekt/detekt.html build/distributions/reports/ && cp -R build/reports/tests/test build/distributions/reports
       - name: Cleanup Gradle Cache
           # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
         # Restoring these files from a GitHub Actions cache might cause problems for future builds.
