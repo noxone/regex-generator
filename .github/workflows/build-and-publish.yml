@@ -2,7 +2,7 @@ name: Build and publish project
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 # based https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
 jobs:
