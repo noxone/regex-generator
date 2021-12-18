@@ -17,7 +17,7 @@ import kotlin.test.assertEquals
 
 class CodeGeneratorTest {
     companion object {
-        private const val given = "abc.\\\$hier "und" da([)."
+        private const val given = "abc.\\\$hier \"und\" da([)."
     }
 
     private fun generateRegex(input: String): String =
