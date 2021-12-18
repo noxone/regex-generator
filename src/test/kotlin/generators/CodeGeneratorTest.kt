@@ -39,6 +39,7 @@ class CodeGeneratorTest {
     }
 
     @Test
+    @Suppress("MaxLineLength")
     fun testGenerator_Java() = testLanguageGenerator(
         codeGenerator = JavaCodeGenerator(), expected = """import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -56,6 +57,7 @@ public class Sample {
     )
 
     @Test
+    @Suppress("MaxLineLength")
     fun testGenerator_Kotlin() = testLanguageGenerator(
         codeGenerator = KotlinCodeGenerator(), expected = """fun useRegex(input: String): Boolean {
     val regex = Regex(pattern = "abc\\.\\\\\\${'$'}hier \\"und\\" da\\(\\[\\)\\.", options = setOf(RegexOption.IGNORE_CASE))
@@ -109,8 +111,8 @@ function useRegex(${'$'}input) {
 end"""
     )
 
-    @Suppress("MaxLineLength")
     @Test
+    @Suppress("MaxLineLength")
     fun testGenerator_Swift() = testLanguageGenerator(
         codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = true), expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \\"und\\" da\\(\\[\\)\\.", options: [.caseInsensitive])
@@ -120,8 +122,8 @@ end"""
 }"""
     )
 
-    @Suppress("MaxLineLength")
     @Test
+    @Suppress("MaxLineLength")
     fun testGenerator_Swift_withoutOptions() = testLanguageGenerator(
         codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = false), expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \\"und\\" da\\(\\[\\)\\.")
@@ -148,7 +150,7 @@ end"""
 
 Public Module Sample
     Public Function useRegex(ByVal input As String) As Boolean
-        Dim regex = New Regex("abc.\\\$hier ""und"" da([).", RegexOptions.IgnoreCase)
+        Dim regex = New Regex("abc.\\\${'$'} ""und"" da([).", RegexOptions.IgnoreCase)
         Return regex.IsMatch(input)
     End Function
 End Module"""
