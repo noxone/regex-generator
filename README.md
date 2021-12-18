@@ -91,6 +91,7 @@ The ``regex generator`` is currently able to generate code snippets in the follo
 - Python
 - Ruby
 - Swift
+- Visual Basic .NET
 
 If you miss a language, just open a [new issue](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=New+language&template=add-programming-language.md&title=) or if you like, program the corresponding generator and open a pull request.
 
