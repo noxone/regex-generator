@@ -7,6 +7,7 @@ import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.Prism
 import org.olafneumann.regex.generator.js.copyToClipboard
+import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
@@ -24,10 +25,14 @@ internal class ResultDisplayPart(
     private val presenter: DisplayContract.Controller
 ) {
     private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_RESULT_DISPLAY)
+    private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(HtmlView.ID_BUTTON_COPY)
     private val containerLanguages = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_DIV_LANGUAGES)
     private val buttonShareLink = HtmlHelper.getElementById<HTMLButtonElement>(HtmlView.ID_BUTTON_SHARE_LINK)
 
+    private var currentPattern = ""
+
     init {
+        buttonCopy.onclick = { copyCurrentPatternToClipboard() }
         buttonShareLink.onclick = { copyToClipboard(textShare.text) }
     }
 
@@ -55,7 +60,7 @@ internal class ResultDisplayPart(
         textShare.setPattern(view.inputText, view.options, presenter.selectedRecognizerMatches)
 
         // update links
-        val currentPattern = regex.pattern
+        currentPattern = regex.pattern
         anchorRegex101.setPattern(currentPattern, view.options)
         anchorRegexr.setPattern(currentPattern, view.options)
 
@@ -81,5 +86,11 @@ internal class ResultDisplayPart(
                 }
             )
         }
+    }
+
+    private fun copyCurrentPatternToClipboard() = copyToClipboard(text = currentPattern)
+
+    fun hideCopyButton() {
+        jQuery(buttonCopy).parent().remove()
     }
 }

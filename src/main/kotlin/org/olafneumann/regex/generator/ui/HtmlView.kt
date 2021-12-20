@@ -3,7 +3,6 @@ package org.olafneumann.regex.generator.ui
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.JQuery
-import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
@@ -12,7 +11,6 @@ import org.olafneumann.regex.generator.ui.html.ResultDisplayPart
 import org.olafneumann.regex.generator.ui.html.UserGuide
 import org.olafneumann.regex.generator.ui.html.UserInputDelayer
 import org.w3c.dom.HTMLAnchorElement
-import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.InputEvent
 import org.w3c.dom.url.URL
@@ -23,15 +21,12 @@ class HtmlView(
 ) : DisplayContract.View {
     // HTML elements we need to change
     private val textInput = HtmlHelper.getElementById<HTMLInputElement>(ID_INPUT_ELEMENT)
-    private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(ID_BUTTON_COPY)
     private val buttonHelp = HtmlHelper.getElementById<HTMLAnchorElement>(ID_BUTTON_HELP)
     private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_ONLY_MATCHES)
     private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_WHOLELINE)
     private val checkCaseInsensitive = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_CASE_INSENSITIVE)
     private val checkDotAll = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_DOT_MATCHES_LINE_BRAKES)
     private val checkMultiline = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_MULTILINE)
-
-    private var currentPattern = ""
 
     private val recognizerDisplayPart = RecognizerDisplayPart(presenter)
     private val resultDisplayPart = ResultDisplayPart(this, presenter)
@@ -59,7 +54,6 @@ class HtmlView(
             { presenter.onInputTextChanges(it) }
         )
         textInput.oninput = { delayer.onAction(inputText) }
-        buttonCopy.onclick = { copyToClipboard(currentPattern) }
         buttonHelp.onclick = { presenter.onButtonHelpClick() }
         checkCaseInsensitive.oninput = { presenter.onOptionsChange(options) }
         checkDotAll.oninput = { presenter.onOptionsChange(options) }
@@ -106,9 +100,7 @@ class HtmlView(
         }
     }
 
-    override fun hideCopyButton() {
-        jQuery(buttonCopy).parent().remove()
-    }
+    override fun hideCopyButton() = resultDisplayPart.hideCopyButton()
 
     override var inputText: String
         get() = textInput.value
