@@ -17,6 +17,7 @@ import kotlin.test.assertEquals
 
 class CodeGeneratorTest {
     companion object {
+        // original text: abc.\$hier "und" da([).
         private const val given = "abc.\\\$hier \"und\" da([)."
     }
 
