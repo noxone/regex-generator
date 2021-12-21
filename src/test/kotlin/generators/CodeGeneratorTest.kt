@@ -17,8 +17,8 @@ import kotlin.test.assertEquals
 
 class CodeGeneratorTest {
     companion object {
-        // original text: abc.\$hier "und" da([).
-        private const val given = "abc.\\\$hier \"und\" da([)."
+        // original text: abc.\$hier "und" / 'da'([).
+        private const val given = "abc.\\\$hier \"und\" / 'da'([)."
     }
 
     private fun generateRegex(input: String): String =
@@ -151,7 +151,7 @@ end"""
 
 Public Module Sample
     Public Function useRegex(ByVal input As String) As Boolean
-        Dim regex = New Regex("abc\.\\\${'$'} ""und"" da\(\[\).", RegexOptions.IgnoreCase)
+        Dim regex = New Regex("abc\.\\\${'$'}hier ""und"" / 'da'\(\[\)\.", RegexOptions.IgnoreCase")
         Return regex.IsMatch(input)
     End Function
 End Module"""

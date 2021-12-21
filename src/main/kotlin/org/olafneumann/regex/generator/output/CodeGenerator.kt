@@ -26,7 +26,9 @@ interface CodeGenerator {
 
     val uniqueName: String
         get() = languageName
+            .replace(" ", "__")
             .replace("-", "_minus_")
+            .replace(".", "_dot_")
             .replace("+", "_plus_")
             .replace("#", "_sharp_")
 
