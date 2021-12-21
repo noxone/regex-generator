@@ -151,7 +151,7 @@ end"""
 
 Public Module Sample
     Public Function useRegex(ByVal input As String) As Boolean
-        Dim regex = New Regex("abc.\\\${'$'} ""und"" da([).", RegexOptions.IgnoreCase)
+        Dim regex = New Regex("abc\.\\\${'$'} ""und"" da\(\[\).", RegexOptions.IgnoreCase)
         Return regex.IsMatch(input)
     End Function
 End Module"""
