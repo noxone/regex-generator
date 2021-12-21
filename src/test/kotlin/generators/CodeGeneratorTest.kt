@@ -7,6 +7,7 @@ import org.olafneumann.regex.generator.output.JavaCodeGenerator
 import org.olafneumann.regex.generator.output.JavaScriptCodeGenerator
 import org.olafneumann.regex.generator.output.KotlinCodeGenerator
 import org.olafneumann.regex.generator.output.PhpCodeGenerator
+import org.olafneumann.regex.generator.output.PythonCodeGenerator
 import org.olafneumann.regex.generator.output.RubyCodeGenerator
 import org.olafneumann.regex.generator.output.SwiftCodeGenerator
 import org.olafneumann.regex.generator.output.VisualBasicNetCodeGenerator
@@ -26,7 +27,7 @@ class CodeGeneratorTest {
 
     @Test
     fun testGenerator_Regex() {
-        val expected = """abc\.\\\${'$'}hier "und" da\(\[\)\."""
+        val expected = """abc\.\\\${'$'}hier "und" / 'da'\(\[\)\."""
 
         val actual = generateRegex(given)
 
@@ -110,6 +111,15 @@ function useRegex(${'$'}input) {
     regex = Regexp.new('abc\\.\\\\\\${'$'}hier "und" da\\(\\[\\)\\.', Regexp::IGNORECASE)
     regex.match input
 end"""
+    )
+
+    @Test
+    fun testGenerator_Python() = testLanguageGenerator(
+        codeGenerator = PythonCodeGenerator(), expected = """import re
+
+def useRegex(input):
+    pattern = re.compile(r"abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.")
+    return pattern.match(input, re.IGNORECASE)"""
     )
 
     @Test
