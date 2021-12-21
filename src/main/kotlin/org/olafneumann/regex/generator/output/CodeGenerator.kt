@@ -194,7 +194,7 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace("\t", "\\t")
+        pattern.replace("/", "\\/").replace("\t", "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(valueForCaseInsensitive = "i", valueForMultiline = "m", valueForDotAll = "s")
