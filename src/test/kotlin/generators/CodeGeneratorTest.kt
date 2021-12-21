@@ -83,6 +83,7 @@ public class Sample
     )
 
     @Test
+    @Suppress("MaxLineLength")
     fun testGenerator_Grep() = testLanguageGenerator(
         codeGenerator = GrepCodeGenerator(), expected = """grep -P -i 'abc\.\\\${'$'}hier "und" / '"'"'da'"'"'\(\[\)\.' [FILE...]"""
     )
