@@ -350,7 +350,7 @@ internal class VisualBasicNetCodeGenerator : SimpleReplacingCodeGenerator(
 
 Public Module Sample
     Public Function useRegex(ByVal input As String) As Boolean
-        Dim regex = New Regex("%1${'$'}s"%2${'$'}s")
+        Dim regex = New Regex("%1${'$'}s"%2${'$'}s)
         Return regex.IsMatch(input)
     End Function
 End Module"""
