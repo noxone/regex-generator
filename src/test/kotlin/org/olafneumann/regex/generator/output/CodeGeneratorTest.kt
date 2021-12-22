@@ -1,4 +1,4 @@
-package generators
+package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.output.CSharpCodeGenerator
 import org.olafneumann.regex.generator.output.CodeGenerator
@@ -162,7 +162,7 @@ def useRegex(input):
 
 Public Module Sample
     Public Function useRegex(ByVal input As String) As Boolean
-        Dim regex = New Regex("abc\.\\\${'$'}hier ""und"" / 'da'\(\[\)\.", RegexOptions.IgnoreCase")
+        Dim regex = New Regex("abc\.\\\${'$'}hier ""und"" / 'da'\(\[\)\.", RegexOptions.IgnoreCase)
         Return regex.IsMatch(input)
     End Function
 End Module"""
