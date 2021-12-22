@@ -7,15 +7,16 @@ import org.olafneumann.regex.generator.regex.RegexCache
 interface CodeGenerator {
     companion object {
         val all = listOf<CodeGenerator>(
-            JavaCodeGenerator()
+            CSharpCodeGenerator()
+            , GrepCodeGenerator()
+            , JavaCodeGenerator()
+            , JavaScriptCodeGenerator()
             , KotlinCodeGenerator()
             , PhpCodeGenerator()
-            , JavaScriptCodeGenerator()
-            , CSharpCodeGenerator()
-            , RubyCodeGenerator()
-            , GrepCodeGenerator()
-            , SwiftCodeGenerator()
             , PythonCodeGenerator()
+            , RubyCodeGenerator()
+            , SwiftCodeGenerator()
+            , VisualBasicNetCodeGenerator()
         ).sortedBy { it.languageName.lowercase() }
     }
 
@@ -25,7 +26,9 @@ interface CodeGenerator {
 
     val uniqueName: String
         get() = languageName
+            .replace(" ", "__")
             .replace("-", "_minus_")
+            .replace(".", "_dot_")
             .replace("+", "_plus_")
             .replace("#", "_sharp_")
 
@@ -191,7 +194,7 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace("\t", "\\t")
+        pattern.replace("/", "\\/").replace("\t", "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(valueForCaseInsensitive = "i", valueForMultiline = "m", valueForDotAll = "s")
@@ -304,7 +307,7 @@ internal class SwiftCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\'])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(
@@ -328,7 +331,7 @@ def useRegex(input):
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\'])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
+        pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(
@@ -336,6 +339,33 @@ def useRegex(input):
             valueForDotAll = "re.DOTALL",
             valueForMultiline = "re.MULTILINE",
             separator = ", ",
+            prefix = ", "
+        )
+}
+
+internal class VisualBasicNetCodeGenerator : SimpleReplacingCodeGenerator(
+    languageName = "Visual Basic .NET",
+    highlightLanguage = "vbnet",
+    templateCode = """Imports System.Text.RegularExpressions
+
+Public Module Sample
+    Public Function useRegex(ByVal input As String) As Boolean
+        Dim regex = New Regex("%1${'$'}s"%2${'$'}s")
+        Return regex.IsMatch(input)
+    End Function
+End Module"""
+) {
+
+
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+        pattern.replace(RegexCache.get("\""), "\"\"")
+
+    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+        options.combine(
+            valueForCaseInsensitive = "RegexOptions.IgnoreCase",
+            valueForMultiline = "RegexOptions.Multiline",
+            valueForDotAll = "RegexOptions.Singleline",
+            separator = " Or ",
             prefix = ", "
         )
 }

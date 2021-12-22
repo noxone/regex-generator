@@ -235,3 +235,7 @@ gradle-app.setting
 # Don't add gh-pages folder (which is used for github pages deployment)
 gh-pages/
 
+
+# kotlin yarn lock
+kotlin-js-store/
+
