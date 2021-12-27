@@ -12,6 +12,8 @@ external fun jQuery(element: HTMLElement): JQuery
 external class JQuery {
     @Suppress("UnusedPrivateMember")
     fun on(type: String, callback: () -> Unit)
+    fun slideDown(): JQuery
+    fun slideUp(): JQuery
     fun hide(): JQuery
     fun parent(): JQuery
     fun remove(): JQuery
