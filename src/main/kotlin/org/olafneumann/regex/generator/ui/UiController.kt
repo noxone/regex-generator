@@ -8,10 +8,13 @@ import org.olafneumann.regex.generator.ui.html.CookieBanner
 
 
 class UiController : DisplayContract.Controller {
-    private val view: DisplayContract.View = HtmlView(this)
+    private val view: DisplayContract.View = HtmlView(this, MAX_INPUT_LENGTH)
     override var matchPresenters = listOf<MatchPresenter>()
 
     init {
+        // remove warning that is not required
+        view.hideShortenWarning(immediately = true)
+
         // if copy is not available: remove copy button
         if (window.navigator.clipboard == undefined) {
             view.hideCopyButton()
@@ -90,5 +93,6 @@ class UiController : DisplayContract.Controller {
     companion object {
         const val VAL_EXAMPLE_INPUT =
             "2020-03-12T13:34:56.123Z INFO  [org.example.Class]: This is a #simple #logline containing a 'value'."
+        private const val MAX_INPUT_LENGTH = 1000
     }
 }

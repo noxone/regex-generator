@@ -8,19 +8,24 @@ import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.html.RecognizerDisplayPart
 import org.olafneumann.regex.generator.ui.html.ResultDisplayPart
+import org.olafneumann.regex.generator.ui.html.TimerController
 import org.olafneumann.regex.generator.ui.html.UserGuide
 import org.olafneumann.regex.generator.ui.html.UserInputDelayer
 import org.w3c.dom.HTMLAnchorElement
+import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.events.InputEvent
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
 
 class HtmlView(
-    private val presenter: DisplayContract.Controller
+    private val presenter: DisplayContract.Controller,
+    private val maxInputLength: Int
 ) : DisplayContract.View {
     // HTML elements we need to change
     private val textInput = HtmlHelper.getElementById<HTMLInputElement>(ID_INPUT_ELEMENT)
+    private val divInputWarning = HtmlHelper.getElementById<HTMLDivElement>(ID_INPUT_MESSAGE_SHORTEN)
     private val buttonHelp = HtmlHelper.getElementById<HTMLAnchorElement>(ID_BUTTON_HELP)
     private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_ONLY_MATCHES)
     private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_WHOLELINE)
@@ -31,6 +36,8 @@ class HtmlView(
     private val recognizerDisplayPart = RecognizerDisplayPart(presenter)
     private val resultDisplayPart = ResultDisplayPart(this, presenter)
     private val userGuide = UserGuide.forLanguage("en")
+
+    private val inputWarningTimerController = TimerController()
 
     override var options: RecognizerCombiner.Options
         get() = RecognizerCombiner.Options(
@@ -53,13 +60,29 @@ class HtmlView(
             { recognizerDisplayPart.showInputText(it) },
             { presenter.onInputTextChanges(it) }
         )
-        textInput.oninput = { delayer.onAction(inputText) }
+        textInput.oninput = { handleUserInput { delayer.onAction(it) } }
         buttonHelp.onclick = { presenter.onButtonHelpClick() }
         checkCaseInsensitive.oninput = { presenter.onOptionsChange(options) }
         checkDotAll.oninput = { presenter.onOptionsChange(options) }
         checkMultiline.oninput = { presenter.onOptionsChange(options) }
         checkOnlyMatches.oninput = { presenter.onOptionsChange(options) }
         checkWholeLine.oninput = { presenter.onOptionsChange(options) }
+
+        textInput.maxLength = maxInputLength + 1
+        HtmlHelper.getElementById<HTMLSpanElement>(ID_INPUT_MESSAGE_SHORTEN_NUMBER)
+            .innerHTML = maxInputLength.toString()
+    }
+
+    private fun handleUserInput(action: (String) -> Unit) {
+        val rawInputText = inputText
+        val actualInputText = if (rawInputText.length <= maxInputLength) {
+            rawInputText
+        } else {
+            showShortenWarning(HIDE_DELAY)
+            this.inputText.substring(0, maxInputLength)
+        }
+        inputText = actualInputText
+        action(actualInputText)
     }
 
     override fun applyInitParameters(defaultText: String) {
@@ -108,6 +131,21 @@ class HtmlView(
             textInput.value = value
         }
 
+    override fun showShortenWarning(hideDelayInSeconds: Int) {
+        jQuery(divInputWarning).slideDown()
+        if (hideDelayInSeconds > 0) {
+            inputWarningTimerController.setTimeout({ hideShortenWarning() }, hideDelayInSeconds * 1000)
+        }
+    }
+
+    override fun hideShortenWarning(immediately: Boolean) {
+        if (immediately) {
+            jQuery(divInputWarning).hide()
+        } else {
+            jQuery(divInputWarning).slideUp()
+        }
+    }
+
     override fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
         recognizerDisplayPart.showMatchingRecognizers(inputText, matches)
     }
@@ -128,6 +166,8 @@ class HtmlView(
         const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
 
         const val ID_INPUT_ELEMENT = "rg_raw_input_text"
+        const val ID_INPUT_MESSAGE_SHORTEN = "rg_raw_input_message_shorten"
+        const val ID_INPUT_MESSAGE_SHORTEN_NUMBER = "rg_raw_input_message_shorten_number"
         const val ID_TEXT_DISPLAY = "rg_text_display"
         const val ID_RESULT_DISPLAY = "rg_result_display"
         const val ID_ROW_CONTAINER = "rg_row_container"
@@ -152,6 +192,7 @@ class HtmlView(
 
         val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
         const val MAGIC_HEIGHT = 8
+        const val HIDE_DELAY = 5
 
         fun JQuery.each(function: (JQuery) -> Unit) =
             each { _, htmlElement -> function(jQuery(htmlElement)) }
