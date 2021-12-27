@@ -49,8 +49,12 @@
                     <h5>Paste a text sample.</h5>
                     <a id="rg_button_show_help" class="btn btn-sm rg-no-focus" title="Show help">&#10068;</a>
                 </div>
-                <input type="text" id="rg_raw_input_text" class="form-control rg-code" aria-label="Example text"
-                    aria-describedby="rg_raw_text_input_help" placeholder="Text here..." autofocus="autofocus">
+                <input type="text" maxlength="1000" id="rg_raw_input_text" class="form-control rg-code"
+                    aria-label="Example text" aria-describedby="rg_raw_text_input_help" placeholder="Text here..."
+                    autofocus="autofocus" value="abcdsdfg">
+                <div id="rg_raw_input_message_shorten" class="alert alert-danger p-0 mt-1 position-absolute" role="alert">
+                    <small class="p-2 d-block">We have shortened the input to <span id="rg_raw_input_message_shorten_number">1000</span> characters to speed up processing.</small>
+                </div>
                 <small id="rg_raw_text_input_help" class="form-text text-muted">Give us an example of the text you want
                     to
                     match using your <em>regex</em>. We will provide you with some ideas how to build a regular
@@ -153,7 +157,7 @@
                                     By default, all major regex engines match in case-sensitive mode. If you want
                                     patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
                                     to match in
-                                    case-insensitive fashion, we need to turn that feature on.&NonBreakingSpace;</nbsp>
+                                    case-insensitive fashion, we need to turn that feature on.&NonBreakingSpace;
                                     <sup><a href="https://www.rexegg.com/regex-modifiers.html#i"
                                             target="_blank">*</a></sup>
                                 </small>
