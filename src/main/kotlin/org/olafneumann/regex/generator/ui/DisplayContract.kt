@@ -14,7 +14,7 @@ interface DisplayContract {
         fun hideCopyButton()
         fun showUserGuide(initialStep: Boolean)
 
-        fun showShortenWarning(hideDelayInSeconds: Int = 0)
+        fun showShortenWarning()
         fun hideShortenWarning(immediately: Boolean = false)
 
         fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>)

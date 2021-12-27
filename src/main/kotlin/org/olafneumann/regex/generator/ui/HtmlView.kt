@@ -78,7 +78,7 @@ class HtmlView(
         val actualInputText = if (rawInputText.length <= maxInputLength) {
             rawInputText
         } else {
-            showShortenWarning(HIDE_DELAY)
+            showShortenWarning()
             this.inputText.substring(0, maxInputLength)
         }
         inputText = actualInputText
@@ -131,11 +131,9 @@ class HtmlView(
             textInput.value = value
         }
 
-    override fun showShortenWarning(hideDelayInSeconds: Int) {
+    override fun showShortenWarning() {
         jQuery(divInputWarning).slideDown()
-        if (hideDelayInSeconds > 0) {
-            inputWarningTimerController.setTimeout({ hideShortenWarning() }, hideDelayInSeconds * 1000)
-        }
+        inputWarningTimerController.setTimeout({ hideShortenWarning() }, HIDE_DELAY)
     }
 
     override fun hideShortenWarning(immediately: Boolean) {
@@ -192,7 +190,7 @@ class HtmlView(
 
         val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
         const val MAGIC_HEIGHT = 8
-        const val HIDE_DELAY = 5
+        const val HIDE_DELAY = 5000
 
         fun JQuery.each(function: (JQuery) -> Unit) =
             each { _, htmlElement -> function(jQuery(htmlElement)) }
