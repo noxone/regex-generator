@@ -36,6 +36,7 @@ class BracketedRecognizerTest {
     }
 
     @Test
+    @Suppress("LongMethod")
     fun testBracketedRecognizer_QuotationMark() {
         val given = "ab\"c123\\\"def4\",5ghi"
         val recognizer = BracketedRecognizer(
