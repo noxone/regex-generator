@@ -18,6 +18,15 @@ interface CodeGenerator {
             , SwiftCodeGenerator()
             , VisualBasicNetCodeGenerator()
         ).sortedBy { it.languageName.lowercase() }
+
+        private val String.codePointString: String
+            get() {
+                return if (isNotEmpty()) {
+                    "_u${this[0].code.toString()}_"
+                } else {
+                    ""
+                }
+            }
     }
 
     val languageName: String
@@ -31,6 +40,7 @@ interface CodeGenerator {
             .replace(".", "_dot_")
             .replace("+", "_plus_")
             .replace("#", "_sharp_")
+            .replace(regex = Regex("[^_A-Za-z0-9]"), transform = { it.value.codePointString })
 
     fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet
 
