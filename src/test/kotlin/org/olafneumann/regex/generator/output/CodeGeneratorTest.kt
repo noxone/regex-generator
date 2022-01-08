@@ -1,18 +1,6 @@
 package org.olafneumann.regex.generator.output
 
-import org.olafneumann.regex.generator.output.CSharpCodeGenerator
-import org.olafneumann.regex.generator.output.CodeGenerator
-import org.olafneumann.regex.generator.output.CodeGenerator.Companion.codePointString
 import org.olafneumann.regex.generator.output.CodeGenerator.Companion.htmlIdCompatible
-import org.olafneumann.regex.generator.output.GrepCodeGenerator
-import org.olafneumann.regex.generator.output.JavaCodeGenerator
-import org.olafneumann.regex.generator.output.JavaScriptCodeGenerator
-import org.olafneumann.regex.generator.output.KotlinCodeGenerator
-import org.olafneumann.regex.generator.output.PhpCodeGenerator
-import org.olafneumann.regex.generator.output.PythonCodeGenerator
-import org.olafneumann.regex.generator.output.RubyCodeGenerator
-import org.olafneumann.regex.generator.output.SwiftCodeGenerator
-import org.olafneumann.regex.generator.output.VisualBasicNetCodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerCombiner.Options
 import kotlin.test.Test

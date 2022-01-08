@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.js.encodeURIComponent
-import org.olafneumann.regex.generator.output.CodeGenerator.Companion.codePointString
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RegexCache
 
@@ -20,10 +19,10 @@ interface CodeGenerator {
             , VisualBasicNetCodeGenerator()
         ).sortedBy { it.languageName.lowercase() }
 
-        internal val String.codePointString: String
+        private val String.codePointString: String
             get() {
                 return if (isNotEmpty()) {
-                    "_u${this[0].code.toString()}_"
+                    "_u${this[0].code}_"
                 } else {
                     ""
                 }
