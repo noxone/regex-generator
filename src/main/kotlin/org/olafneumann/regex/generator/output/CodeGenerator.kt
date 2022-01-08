@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.js.encodeURIComponent
+import org.olafneumann.regex.generator.output.CodeGenerator.Companion.codePointString
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RegexCache
 
@@ -19,7 +20,7 @@ interface CodeGenerator {
             , VisualBasicNetCodeGenerator()
         ).sortedBy { it.languageName.lowercase() }
 
-        private val String.codePointString: String
+        internal val String.codePointString: String
             get() {
                 return if (isNotEmpty()) {
                     "_u${this[0].code.toString()}_"
@@ -27,6 +28,15 @@ interface CodeGenerator {
                     ""
                 }
             }
+
+        internal val String.htmlIdCompatible: String
+            get() = this
+                .replace(" ", "__")
+                .replace("-", "_minus_")
+                .replace(".", "_dot_")
+                .replace("+", "_plus_")
+                .replace("#", "_sharp_")
+                .replace(regex = Regex("[^_A-Za-z0-9]"), transform = { it.value.codePointString })
     }
 
     val languageName: String
@@ -34,13 +44,7 @@ interface CodeGenerator {
     val highlightLanguage: String
 
     val uniqueName: String
-        get() = languageName
-            .replace(" ", "__")
-            .replace("-", "_minus_")
-            .replace(".", "_dot_")
-            .replace("+", "_plus_")
-            .replace("#", "_sharp_")
-            .replace(regex = Regex("[^_A-Za-z0-9]"), transform = { it.value.codePointString })
+        get() = languageName.htmlIdCompatible
 
     fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet
 

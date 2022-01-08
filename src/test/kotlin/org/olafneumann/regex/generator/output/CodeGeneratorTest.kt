@@ -2,6 +2,8 @@ package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.output.CSharpCodeGenerator
 import org.olafneumann.regex.generator.output.CodeGenerator
+import org.olafneumann.regex.generator.output.CodeGenerator.Companion.codePointString
+import org.olafneumann.regex.generator.output.CodeGenerator.Companion.htmlIdCompatible
 import org.olafneumann.regex.generator.output.GrepCodeGenerator
 import org.olafneumann.regex.generator.output.JavaCodeGenerator
 import org.olafneumann.regex.generator.output.JavaScriptCodeGenerator
@@ -24,6 +26,16 @@ class CodeGeneratorTest {
 
     private fun generateRegex(input: String): String =
         RecognizerCombiner.combineMatches(inputText = input, selectedMatches = emptyList(), options = Options()).pattern
+
+    @Test
+    fun testLanguageNameReplacement() {
+        val given = ".abc_DEF-13 37#+xù\$x\\abc"
+        val expected = "_dot_abc_DEF_minus_13__37_sharp__plus_x_u249__u36_x_u92_abc"
+
+        val actual = given.htmlIdCompatible
+
+        assertEquals(expected, actual)
+    }
 
     @Test
     fun testGenerator_Regex() {
