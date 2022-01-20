@@ -7,7 +7,7 @@ import org.olafneumann.regex.generator.regex.RegexCache
 interface CodeGenerator {
     companion object {
         val all = listOf<CodeGenerator>(
-            CCodeGenerator()
+            CRegexCodeGenerator()
             , CSharpCodeGenerator()
             , GrepCodeGenerator()
             , JavaCodeGenerator()
@@ -276,7 +276,7 @@ public class Sample
         )
 }
 
-internal class CCodeGenerator : SimpleReplacingCodeGenerator(
+internal class CRegexCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "C",
     highlightLanguage = "c",
     templateCode = """#include <regex.h>

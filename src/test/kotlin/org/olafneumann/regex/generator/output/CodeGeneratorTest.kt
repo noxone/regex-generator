@@ -69,7 +69,7 @@ public class Sample {
 
     @Test
     fun testGenerator_C() = testLanguageGenerator(
-        codeGenerator = CCodeGenerator(), expected = """#include <regex.h>
+        codeGenerator = CRegexCodeGenerator(), expected = """#include <regex.h>
 
 int useRegex(char* textToCheck) {
     regex_t compiledRegex;
