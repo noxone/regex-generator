@@ -277,7 +277,7 @@ public class Sample
 }
 
 internal class CRegexCodeGenerator : SimpleReplacingCodeGenerator(
-    languageName = "C",
+    languageName = "C (regex.h)",
     highlightLanguage = "c",
     templateCode = """#include <regex.h>
 
