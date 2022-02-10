@@ -94,7 +94,7 @@ object RecognizerCombiner {
         val rangeBetween = IntRange(first.range.last + 1, second.range.first - 1)
         if (!rangeBetween.isEmpty()) {
             return if (options.onlyPatterns) {
-                RegularExpressionPart(rangeBetween, "*.")
+                RegularExpressionPart(rangeBetween, ".*")
             } else {
                 val text = inputText.substring(rangeBetween)
                 RegularExpressionPart(rangeBetween, text.escapeForRegex(), text)
