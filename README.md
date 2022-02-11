@@ -82,6 +82,7 @@ Hopefully this regex generator continues to grow to eventually support a really 
 
 The ``regex generator`` is currently able to generate code snippets in the following languages:
 
+- C (using `regex.h`)
 - C#
 - grep (command line tool)
 - Java
