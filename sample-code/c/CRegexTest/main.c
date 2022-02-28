@@ -108,9 +108,6 @@ void check() {
 }
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    printf("Hello, Selina!\n");
-    
     //check();
     
     useRegex("asd123asd");
