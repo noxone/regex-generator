@@ -12,7 +12,7 @@ jobs:
     name: Build with Java
     steps:
       - name: Check out
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set Java
         uses: actions/setup-java@v2
         with:
