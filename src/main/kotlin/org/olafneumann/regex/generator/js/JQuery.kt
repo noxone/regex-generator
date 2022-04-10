@@ -12,8 +12,11 @@ external fun jQuery(element: HTMLElement): JQuery
 external class JQuery {
     @Suppress("UnusedPrivateMember")
     fun on(type: String, callback: () -> Unit)
+    fun get(): HTMLElement
     fun slideDown(): JQuery
     fun slideUp(): JQuery
+    fun fadeIn(): JQuery
+    fun fadeOut(): JQuery
     fun hide(): JQuery
     fun parent(): JQuery
     fun remove(): JQuery
@@ -32,4 +35,5 @@ external class JQuery {
     @Suppress("UnusedPrivateMember")
     fun animate(properties: Json, duration: Int = definedExternally, easing: String = definedExternally)
     fun stop()
+    fun `is`(s: String): Boolean
 }

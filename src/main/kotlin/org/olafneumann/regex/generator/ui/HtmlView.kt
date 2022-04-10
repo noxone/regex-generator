@@ -6,6 +6,7 @@ import org.olafneumann.regex.generator.js.JQuery
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.ui.html.CapturingGroupPart
 import org.olafneumann.regex.generator.ui.html.RecognizerDisplayPart
 import org.olafneumann.regex.generator.ui.html.ResultDisplayPart
 import org.olafneumann.regex.generator.ui.html.TimerController
@@ -34,6 +35,7 @@ class HtmlView(
     private val checkMultiline = HtmlHelper.getElementById<HTMLInputElement>(ID_CHECK_MULTILINE)
 
     private val recognizerDisplayPart = RecognizerDisplayPart(presenter)
+    private val capturingGroupPart = CapturingGroupPart(presenter)
     private val resultDisplayPart = ResultDisplayPart(this, presenter)
     private val userGuide = UserGuide.forLanguage("en")
 
@@ -149,6 +151,7 @@ class HtmlView(
     }
 
     override fun showResultingPattern(regex: RecognizerCombiner.RegularExpression) {
+        capturingGroupPart.setRegularExpression(regex)
         resultDisplayPart.showResultingPattern(regex)
     }
 

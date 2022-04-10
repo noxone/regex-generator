@@ -164,5 +164,12 @@ object RecognizerCombiner {
     ) {
         val pattern
             get() = parts.joinToString(separator = "") { it.pattern }
+
+        val capturingGroups = mutableListOf<CapturingGroup>()
     }
+
+    data class CapturingGroup(
+        val range: IntRange,
+        var name: String?
+    )
 }

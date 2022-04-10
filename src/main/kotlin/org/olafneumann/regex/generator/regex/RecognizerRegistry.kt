@@ -16,7 +16,7 @@ object RecognizerRegistry {
         SimpleRecognizer("Digit", "\\d"),
         SimpleRecognizer("Number", "[0-9]+"),
         SimpleRecognizer("Decimal number", "[0-9]*\\.[0-9]+"),
-        SimpleRecognizer("Floating point number (with optional exponent)", "([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?"),
+        SimpleRecognizer("Floating point number (with optional exponent)", "(?:[+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE](?:[+-]?\\d+))?"),
         SimpleRecognizer("URL encoded character", "%[0-9A-Fa-f][0-9A-Fa-f]"),
         SimpleRecognizer("Day", "(0?[1-9]|[12][0-9]|3[01])", searchPattern = "(?:^|\\D)(%s)($|\\D)"),
         SimpleRecognizer("Month", "(0?[1-9]|[1][0-2])", searchPattern = "(?:^|\\D)(%s)($|\\D)"),
