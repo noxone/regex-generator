@@ -19,7 +19,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-html-js:0.7.5"
     implementation "org.jetbrains:kotlin-extensions:1.0.1-pre.156-kotlin-1.5.0"
     implementation "io.ktor:ktor-client-core:1.6.8"
-    implementation "io.ktor:ktor-client-js:1.6.8"
+    implementation "io.ktor:ktor-client-js:2.0.0"
 
     implementation npm("driver.js", "0.9.8")
 
