@@ -14,7 +14,7 @@ jobs:
       - name: Check out
         uses: actions/checkout@v3
       - name: Set Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: adopt
           java-version: 16
