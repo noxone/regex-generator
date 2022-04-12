@@ -241,8 +241,20 @@ internal class CapturingGroupPart(
         }
     }
 
-    private fun groupSelectableParts(regexParts: List<RegexPart>, selectablePart: SelectablePart = SelectablePart(parent = null)) {
-        
+    private fun groupSelectableParts(regexParts: List<RegexPart>, parentSelectablePart: SelectablePart? = null): SelectablePart {
+        var index = 0
+        while (index < regexParts.size) {
+            val regexPart = regexParts[index]
+            val selectablePart = SelectablePart(parent = parentSelectablePart)
+            
+            if (regexPart.isGroupStart) {
+                groupSelectableParts(regexParts.subList(index, regexParts.indices.last), selectablePart)
+            } else if (regexPart.isGroupEnd) {
+
+            } else {
+
+            }
+        }
     }
 
     private class SelectablePart(
