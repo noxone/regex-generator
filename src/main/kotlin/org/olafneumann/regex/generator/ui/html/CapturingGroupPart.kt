@@ -15,8 +15,6 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
 import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.HTMLSpanElement
-import org.w3c.dom.Node
-import org.w3c.dom.NodeList
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
 import kotlin.js.json
@@ -85,12 +83,16 @@ internal class CapturingGroupPart(
         options = setOf(RegexOption.IGNORE_CASE)
     )
 
-    private fun findClosingPart(parts: List<SelectablePart>, startIndex: Int = 0): Int {
+    private fun findClosingPart(parts: List<RegexPart>, startIndex: Int = 0): Map<Int, Group> {
+        val out = mutableMapOf<Int, Group>()
         var index = startIndex
+        val group = Group(index)
         while (index < parts.size) {
             val part = parts[index]
             if (part.isGroupStart) {
-                index = findClosingPart(parts, index + 1) + 1
+                out[index] = group
+                out.putAll(findClosingPart(parts, index + 1))
+                index = out.size + 1
             } else if (part.isGroupEnd && part.associated == null) {
                 val groupStart = parts[startIndex - 1]
                 for (subIndex in startIndex until index) {
@@ -104,6 +106,7 @@ internal class CapturingGroupPart(
                     .firstOrNull { it.text == "|" } != null
                 return index
             } else {
+                out[index] = group
                 ++index
             }
         }
@@ -119,7 +122,7 @@ internal class CapturingGroupPart(
         var startIndex: Int? = null
         var endIndex: Int? = null
         val selectableParts = regex.findAll(text)
-            .mapIndexed { index, result -> SelectablePart(index = index, range = result.range, text = result.value) }
+            .mapIndexed { index, result -> RegexPart(index = index, range = result.range, text = result.value) }
             .toList()
         findClosingPart(selectableParts)
         selectableParts
@@ -168,7 +171,7 @@ internal class CapturingGroupPart(
             .forEach { textDisplay.appendChild(it) }
     }
 
-    private fun mark(parts: List<SelectablePart>, startIndex: Int, endIndex: Int) {
+    private fun mark(parts: List<RegexPart>, startIndex: Int, endIndex: Int) {
         val startPart = parts[startIndex]
         val endPart = parts[endIndex]
 
@@ -238,7 +241,40 @@ internal class CapturingGroupPart(
         }
     }
 
-    data class SelectablePart(
+    private fun groupSelectableParts(regexParts: List<RegexPart>, selectablePart: SelectablePart = SelectablePart(parent = null)) {
+        
+    }
+
+    private class SelectablePart(
+        val parent: SelectablePart? = null
+    ) {
+        var prev: SelectablePart? = null
+        var next: SelectablePart? = null
+        var regexParts = mutableListOf<RegexPart>()
+    }
+
+    private data class Group(val id: Int) {
+        companion object {
+            val EMPTY = Group(-1)
+        }
+
+
+        fun add(part: RegexPart) {
+            _parts.add(part)
+            part.group = this
+        }
+    }
+
+    private class Item(vararg parts: RegexPart) {
+        private val _parts = mutableListOf<RegexPart>()
+        val parts: Collection<RegexPart> get() = _parts
+
+        init {
+            _parts.addAll(parts)
+        }
+    }
+
+    private data class RegexPart(
         val index: Int,
         val range: IntRange,
         val text: String
@@ -248,6 +284,7 @@ internal class CapturingGroupPart(
         val isGroup = isGroupStart || isGroupEnd
         var associated: Int? = null
         var containingGroup: Int = -1
+        var group = Group.EMPTY
         var groupContainsAlternatives: Boolean = false
         var element: HTMLSpanElement? = null
     }
