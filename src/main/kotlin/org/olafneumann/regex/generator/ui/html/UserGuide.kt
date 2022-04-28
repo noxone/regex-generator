@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.ui.html
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.engine.js.Js
 import io.ktor.client.request.get
 import io.ktor.http.Url
@@ -15,8 +16,7 @@ class UserGuide private constructor(
 ) {
     companion object {
         private val languageToGuide = mutableMapOf<String, UserGuide>()
-        fun forLanguage(language: String = "en")
-        = languageToGuide.getOrPut(language) { UserGuide(language) }
+        fun forLanguage(language: String = "en") = languageToGuide.getOrPut(language) { UserGuide(language) }
     }
 
     private val driver = Driver(js("{}"))
@@ -35,7 +35,7 @@ class UserGuide private constructor(
 
     private suspend fun loadUserGuide() {
         val client = HttpClient(Js)
-        val stepsString = client.get<String>(userGuideSourceUrl)
+        val stepsString: String = client.get(url = userGuideSourceUrl).body()
         stepDefinitions = JSON.parse<Array<StepDefinition>>(stepsString)
     }
 
