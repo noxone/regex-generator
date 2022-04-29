@@ -156,8 +156,8 @@ end"""
         codeGenerator = PythonCodeGenerator(), expected = """import re
 
 def useRegex(input):
-    pattern = re.compile(r"abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.")
-    return pattern.match(input, re.IGNORECASE)"""
+    pattern = re.compile(r"abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.", re.IGNORECASE)
+    return pattern.match(input)"""
     )
 
     @Test
