@@ -398,8 +398,8 @@ internal class PythonCodeGenerator : SimpleReplacingCodeGenerator(
     templateCode = """import re
 
 def useRegex(input):
-    pattern = re.compile(r"%1${'$'}s")
-    return pattern.match(input%2${'$'}s)"""
+    pattern = re.compile(r"%1${'$'}s, %2${'$'}s")
+    return pattern.match(input)"""
 ) {
 
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
