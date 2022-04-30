@@ -55,7 +55,7 @@ kotlin {
 
             testTask {
                 useKarma {
-                    useChromeHeadlessNoSandbox()
+                    useFirefoxHeadless()
                     webpackConfig.cssSupport.enabled = true
                 }
             }
