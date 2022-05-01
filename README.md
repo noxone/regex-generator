@@ -49,7 +49,7 @@ Of course the docker version supports the same search parameters as the actual w
    Or use docker to build the project:
 
    ```console
-   docker build . -t noxone/regexgenerator
+   docker build . -t noxone/regexgenerator --build-arg APP_ENV=local
    ```
 
 3. Find the output in directory ``./build/distributions/``
