@@ -1,0 +1,49 @@
+name: Build project
+
+on:
+  workflow_call:
+    inputs:
+      upload_artifacts:
+        type: boolean
+        required: false
+        default: false
+
+# based https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
+jobs:
+  build-project:
+    runs-on: ubuntu-latest
+    name: Build with Java
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: 16
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Run Gradle tasks
+        run: ./gradlew clean build
+      - name: Cleanup Gradle Cache
+        # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
+        # Restoring these files from a GitHub Actions cache might cause problems for future builds.
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
+      - name: Copy reports
+        if: ${{ inputs.upload_artifacts }}
+        run: mkdir build/distributions/reports && cp build/reports/detekt/detekt.html build/distributions/reports/ && cp -R build/reports/tests/test build/distributions/reports
+      - name: Upload artifacts
+        if: ${{ inputs.upload_artifacts }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: site
+          path: build/distributions

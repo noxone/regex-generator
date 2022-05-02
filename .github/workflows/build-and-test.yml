@@ -2,8 +2,10 @@
 name: Build and test project
 
 on:
-  - push
-  - pull_request
+  push:
+      branches-ignore:
+        - "main"
+  pull_request:
 
 jobs:
   build:
