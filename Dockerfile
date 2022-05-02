@@ -1,7 +1,7 @@
 # Defining environment APP_ENV is 'local' or 'github'
 # -> local means local build
 # -> github means github action build
-ARG APP_ENV=github
+ARG APP_ENV=local
 
 #**************************************
 # build stages used by local build only
