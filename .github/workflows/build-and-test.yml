@@ -3,8 +3,8 @@ name: Build and test project
 
 on:
   push:
-      branches-ignore:
-        - "main"
+    branches-ignore:
+    - "main"
   pull_request:
 
 jobs:
@@ -48,4 +48,5 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
+          build-args: APP_ENV=github
           push: false
