@@ -15,9 +15,9 @@ jobs:
       uploadArtifacts: true
       includeReports: false
 
-  build-and-publish-docker:
+  build-docker:
     needs: build-project
-    name: Build and publish Docker images
+    name: Build Docker images
     uses: ./.github/workflows/build-docker.yml
     with:
       appEnvironment: "github"
