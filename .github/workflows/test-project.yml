@@ -1,0 +1,24 @@
+
+name: Build and test project
+
+on:
+  push:
+    branches-ignore:
+    - "main"
+  pull_request:
+
+jobs:
+  build-project:
+    name: "Build project"
+    uses: ./.github/workflows/build-project.yml
+    with:
+      uploadArtifacts: true
+      includeReports: false
+
+  build-and-publish-docker:
+    needs: build-site
+    name: Build and publish Docker images
+    uses: ./.github/workflows/build-docker.yml
+    with:
+      appEnvironment: "github"
+      pushImages: false
