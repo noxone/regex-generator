@@ -1,4 +1,4 @@
-# Regex Generator [![Build Status](https://github.com/noxone/regex-generator/actions/workflows/build-and-test.yml/badge.svg?branch=main&event=push)](https://github.com/noxone/regex-generator/actions/workflows/test.yml)
+# Regex Generator [![Build and publish project](https://github.com/noxone/regex-generator/actions/workflows/publish-project.yml/badge.svg)](https://github.com/noxone/regex-generator/actions/workflows/publish-project.yml)
 
 ``Regex Generator`` is a tool to generate simple regular expressions. The goal is that people with less experience can create regex smoothly.
 
