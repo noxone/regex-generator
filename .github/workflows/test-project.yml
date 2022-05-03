@@ -16,7 +16,7 @@ jobs:
       includeReports: false
 
   build-and-publish-docker:
-    needs: build-site
+    needs: build-project
     name: Build and publish Docker images
     uses: ./.github/workflows/build-docker.yml
     with:
