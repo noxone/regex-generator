@@ -30,7 +30,6 @@ on:
 jobs:
   build-and-publish-docker:
     runs-on: ubuntu-latest
-    needs: build-site
     name: Build and publish Docker images
     steps:
       # prepare build

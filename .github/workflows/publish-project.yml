@@ -15,7 +15,7 @@ jobs:
 
   publish-site:
     runs-on: ubuntu-latest
-    needs: build-site
+    needs: build-project
     name: "Publish Site"
     steps:
       - name: Download artifacts
@@ -32,7 +32,7 @@ jobs:
           cname: regex-generator.olafneumann.org
 
   build-and-publish-docker:
-    needs: build-site
+    needs: build-project
     name: Build and publish Docker images
     uses: ./.github/workflows/build-docker.yml
     with:
