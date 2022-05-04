@@ -134,3 +134,40 @@ form * .rg-check-row {
   overflow-x: auto;
   white-space: nowrap;
 }
+
+
+
+/* Driver things */
+
+.rg-guide#driver-popover-item > .driver-popover-title {
+  font: inherit;
+  font-size: 14pt;
+  font-weight: 700;
+}
+
+
+.rg-guide#driver-popover-item > .driver-popover-description {
+  font: inherit;
+  font-size: 11pt;
+}
+
+.rg-guide#driver-popover-item .driver-popover-footer button {
+  font: inherit;
+  font-size: 10pt;
+  border-radius: 5px;
+  padding: 7px 10px;
+  background-color: #6c757d;
+  color: #fff;
+  text-shadow: none;
+  border: none;
+}
+
+.rg-guide#driver-popover-item .driver-popover-footer button.driver-next-btn {
+  background-color: #007bff;
+}
+
+.rg-guide#driver-popover-item .driver-popover-footer button.driver-disabled {
+  color: #fff;
+  opacity: .65;
+}
+
