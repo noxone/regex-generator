@@ -19,7 +19,7 @@ class UserGuide private constructor(
         fun forLanguage(language: String = "en") = languageToGuide.getOrPut(language) { UserGuide(language) }
     }
 
-    private val driver = Driver(js("{}"))
+    private val driver = Driver(js("{className: 'rg-guide'}"))
     private var stepDefinitions: Array<StepDefinition>? = null
 
     fun show(initialStep: Boolean) {
