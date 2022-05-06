@@ -58,7 +58,7 @@ jobs:
 
       # generate and publish docker image containing the generated page
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
       # Do the docker stuff
       - name: Login to DockerHub
