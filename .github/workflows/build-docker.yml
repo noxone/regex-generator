@@ -54,7 +54,7 @@ jobs:
 
       # set up QEMU to enable build of images for multiple architectures
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
 
       # generate and publish docker image containing the generated page
       - name: Set up Docker Buildx
