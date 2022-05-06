@@ -1,5 +1,8 @@
 name: 'Combine PRs'
 
+permissions:
+  actions: write
+
 # Controls when the action will run - in this case triggered manually
 on:
   workflow_dispatch:
