@@ -74,3 +74,24 @@ jobs:
           build-args: APP_ENV=${{ inputs.appEnvironment }}
           push: ${{ inputs.pushImages }}
           tags: noxone/regexgenerator:latest,noxone/regexgenerator:${{ steps.date.outputs.date }}_${{ steps.vars.outputs.sha_short }}
+
+      - name: Prepare Docker description
+        if: ${{ inputs.pushImages }}
+        run: |
+          filename=docker.README.md
+
+          startLine=$(grep -n '## Usage' README.md | sed 's/[^00-9]*//g')
+          startLine=$((startLine - 1))
+          endLine=$(grep -n '## Project goal' README.md | sed 's/[^00-9]*//g')
+
+          head -n $startLine README.md > $filename
+          tail -n +$endLine README.md >> $filename
+      - name: Publish docker description
+        if: ${{ inputs.pushImages }}
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: peterevans/dockerhub-description
+          short-description: ${{ github.event.repository.description }}
+          readme-filepath: ./docker.README.md
