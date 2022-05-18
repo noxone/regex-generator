@@ -74,3 +74,11 @@ jobs:
           build-args: APP_ENV=${{ inputs.appEnvironment }}
           push: ${{ inputs.pushImages }}
           tags: noxone/regexgenerator:latest,noxone/regexgenerator:${{ steps.date.outputs.date }}_${{ steps.vars.outputs.sha_short }}
+      - name: Publish docker description
+        if: ${{ inputs.pushImages }}
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: peterevans/dockerhub-description
+          short-description: ${{ github.event.repository.description }}
