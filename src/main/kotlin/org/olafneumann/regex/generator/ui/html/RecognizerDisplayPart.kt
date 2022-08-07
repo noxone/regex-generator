@@ -10,6 +10,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
+import kotlinx.html.title
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.DisplayContract
 import org.olafneumann.regex.generator.ui.HtmlHelper
@@ -94,6 +95,11 @@ internal class RecognizerDisplayPart(
             div(classes = "rg-match-item-overlay") {
                 matchPresenter.recognizerMatches.forEach { match ->
                     div(classes = "rg-recognizer") {
+                        if (match.patterns.size == 1) {
+                            title = match.patterns[0]
+                        } else {
+                            title = "Match consisting of ${match.patterns.size} patterns."
+                        }
                         a {
                             +match.title
                             onClickFunction = { event ->
