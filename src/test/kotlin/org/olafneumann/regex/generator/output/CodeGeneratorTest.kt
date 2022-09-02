@@ -162,6 +162,20 @@ def useRegex(inputText):
 
     @Test
     @Suppress("MaxLineLength")
+    fun textGenerator_Python_withTrailingBackslash() {
+        val regex = generateRegex("""given\""")
+        val expected = """import re
+
+def useRegex(inputText):
+    pattern = re.compile(r"given"'\\\\', re.DOTALL)
+    return pattern.match(inputText)"""
+        val actual = PythonCodeGenerator().generateCode(pattern = regex, options = Options(dotMatchesLineBreaks = true)).snippet
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    @Suppress("MaxLineLength")
     fun testGenerator_Swift() = testLanguageGenerator(
         codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = true), expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.", options: [.caseInsensitive])
