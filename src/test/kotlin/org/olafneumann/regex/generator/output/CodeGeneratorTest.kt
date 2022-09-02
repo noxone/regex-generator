@@ -169,7 +169,7 @@ def useRegex(inputText):
 def useRegex(inputText):
     pattern = re.compile(r"given"'\\\\', re.DOTALL)
     return pattern.match(inputText)"""
-        val actual = PythonCodeGenerator().generateCode(pattern = regex, options = Options(dotMatchesLineBreaks = true)).snippet
+        val actual = PythonCodeGenerator().generateCode(pattern = regex, options = Options(caseInsensitive = false, dotMatchesLineBreaks = true)).snippet
 
         assertEquals(expected, actual)
     }
