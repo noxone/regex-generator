@@ -155,9 +155,9 @@ end"""
     fun testGenerator_Python() = testLanguageGenerator(
         codeGenerator = PythonCodeGenerator(), expected = """import re
 
-def useRegex(input):
-    pattern = re.compile(r"abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.", re.IGNORECASE)
-    return pattern.match(input)"""
+def useRegex(inputText):
+    pattern = re.compile(r"abc\.\\\${'$'}hier "'"'r"und"'"'r" / 'da'\(\[\)\.", re.IGNORECASE)
+    return pattern.match(inputText)"""
     )
 
     @Test
