@@ -155,7 +155,7 @@ end"""
     fun testGenerator_Python() = testLanguageGenerator(
         codeGenerator = PythonCodeGenerator(), expected = """import re
 
-def useRegex(input_text):
+def use_regex(input_text):
     pattern = re.compile(r"abc\.\\\${'$'}hier "'"'r"und"'"'r" / 'da'\(\[\)\.", re.IGNORECASE)
     return pattern.match(input_text)"""
     )
@@ -166,7 +166,7 @@ def useRegex(input_text):
         val regex = generateRegex("""given\""")
         val expected = """import re
 
-def useRegex(input_text):
+def use_regex(input_text):
     pattern = re.compile(r"given"'\\\\', re.DOTALL)
     return pattern.match(input_text)"""
         val actual = PythonCodeGenerator().generateCode(pattern = regex, options = Options(caseInsensitive = false, dotMatchesLineBreaks = true)).snippet
