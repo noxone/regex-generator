@@ -404,8 +404,8 @@ def use_regex(input_text):
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String {
         return (
                 pattern
-                    // escape quotation mark through extra string
-                    .replace(RegexCache.get("(\"+)"), """"'$1'r"""")
+                    // escape quotation mark through backslashes
+                    .replace(RegexCache.get("(\")"), "\\\\\"")
                     // handle backslash at end of string (but this might add an empty r-string)
                     .replace(RegexCache.get("""(\\+)$"""), "\"'$1$1'r\"")
                 // add trailing quotation mark because it is not available in the template!
