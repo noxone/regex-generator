@@ -397,9 +397,9 @@ internal class PythonCodeGenerator : SimpleReplacingCodeGenerator(
     highlightLanguage = "python",
     templateCode = """import re
 
-def useRegex(inputText):
+def useRegex(input_text):
     pattern = re.compile(r"%1${'$'}s%2${'$'}s)
-    return pattern.match(inputText)"""
+    return pattern.match(input_text)"""
 ) {
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String {
         return (
