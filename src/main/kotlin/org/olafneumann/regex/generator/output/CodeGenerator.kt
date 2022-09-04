@@ -397,13 +397,23 @@ internal class PythonCodeGenerator : SimpleReplacingCodeGenerator(
     highlightLanguage = "python",
     templateCode = """import re
 
-def useRegex(input):
-    pattern = re.compile(r"%1${'$'}s"%2${'$'}s)
-    return pattern.match(input)"""
+def use_regex(input_text):
+    pattern = re.compile(r"%1${'$'}s%2${'$'}s)
+    return pattern.match(input_text)"""
 ) {
-
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String {
+        return (
+                pattern
+                    // escape quotation mark through backslashes
+                    .replace(RegexCache.get("(\")"), "\\\\\"")
+                    // handle backslash at end of string (but this might add an empty r-string)
+                    .replace(RegexCache.get("""(\\+)$"""), "\"'$1$1'r\"")
+                // add trailing quotation mark because it is not available in the template!
+                + '"'
+            )
+            // remove unnecessary empty r-string at end of sequence
+            .replace(RegexCache.get("r\"\"$"), "")
+    }
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(
