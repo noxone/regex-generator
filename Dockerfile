@@ -31,25 +31,22 @@ RUN rm /app/build/distributions/regex-generator.js.map
 #**************************************
 
 # local build only
-FROM alpine AS local-postinstall
+FROM alpine:3.16 AS local-postinstall
 WORKDIR /app
 RUN apk update \
  && apk add lighttpd \
  && rm -rf /var/cache/apk/*
 COPY --from=TEMP_BUILD_IMAGE /app/build/distributions /var/www/localhost/htdocs
-EXPOSE 80
-CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
 
 # github action only
-FROM alpine AS github-postinstall
+FROM alpine:3.16 AS github-postinstall
 WORKDIR /app
 RUN apk update \
  && apk add lighttpd \
  && rm -rf /var/cache/apk/*
 COPY build/distributions /var/www/localhost/htdocs
-EXPOSE 80
-CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
 
 # final stage (maybe empty)
 FROM ${APP_ENV}-postinstall as final
-RUN echo "running final commands"
+EXPOSE 80
+CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
