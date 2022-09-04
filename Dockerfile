@@ -11,7 +11,14 @@ WORKDIR /app
 COPY . .
 
 # Install Firefox
-RUN apt-get update && apt-get install -y \
+RUN echo 'Package: firefox' > /etc/apt/preferences.d/firefox-no-snap  && \
+	echo 'Pin: origin "*.ubuntu.com"' >> /etc/apt/preferences.d/firefox-no-snap  && \ 
+	echo 'Pin: origin "*.ubuntu.com"' >> /etc/apt/preferences.d/firefox-no-snap  && \
+	echo 'Pin-Priority: -1' >> /etc/apt/preferences.d/firefox-no-snap && \
+	apt-get update && apt purge firefox &&\
+	apt-get install -y software-properties-common && \
+	add-apt-repository ppa:mozillateam/ppa && \
+	apt-get update && apt-get install -y \
 	firefox \
 	--no-install-recommends
 RUN rm -rf /var/lib/apt/lists/*
