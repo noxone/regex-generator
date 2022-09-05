@@ -412,7 +412,7 @@ def use_regex(input_text):
                 + '"'
             )
             // remove unnecessary empty r-string at end of sequence
-            .replace(RegexCache.get("r\"\"$"), "")
+            .replace(RegexCache.get("^r\"\"|r\"\"$"), "")
     }
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
