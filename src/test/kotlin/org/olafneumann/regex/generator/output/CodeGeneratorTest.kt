@@ -155,10 +155,24 @@ end"""
     fun testGenerator_Python() = testLanguageGenerator(
         codeGenerator = PythonCodeGenerator(), expected = """import re
 
-def useRegex(input):
-    pattern = re.compile(r"abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.")
-    return pattern.match(input, re.IGNORECASE)"""
+def use_regex(input_text):
+    pattern = re.compile(r"abc\.\\\${'$'}hier \"und\" / 'da'\(\[\)\.", re.IGNORECASE)
+    return pattern.match(input_text)"""
     )
+
+    @Test
+    @Suppress("MaxLineLength")
+    fun textGenerator_Python_withTrailingBackslash() {
+        val regex = generateRegex("""given\\\""")
+        val expected = """import re
+
+def use_regex(input_text):
+    pattern = re.compile(r"given\\\\\\", re.DOTALL)
+    return pattern.match(input_text)"""
+        val actual = PythonCodeGenerator().generateCode(pattern = regex, options = Options(caseInsensitive = false, dotMatchesLineBreaks = true)).snippet
+
+        assertEquals(expected, actual)
+    }
 
     @Test
     @Suppress("MaxLineLength")

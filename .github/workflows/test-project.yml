@@ -1,0 +1,27 @@
+
+name: Build and test project
+
+on:
+  push:
+    branches-ignore:
+    - "main"
+  pull_request:
+
+jobs:
+  build-project:
+    name: "Build project"
+    uses: ./.github/workflows/build-project.yml
+    with:
+      uploadArtifacts: true
+      includeReports: false
+
+  build-docker:
+    needs: build-project
+    name: Build Docker images
+    uses: ./.github/workflows/build-docker.yml
+    with:
+      appEnvironment: "github"
+      pushImages: false
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

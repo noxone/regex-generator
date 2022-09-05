@@ -1,6 +1,6 @@
 plugins {
-    id 'org.jetbrains.kotlin.js' version '1.6.21'
-    id 'io.gitlab.arturbosch.detekt' version '1.20.0'
+    id 'org.jetbrains.kotlin.js' version '1.7.10'
+    id 'io.gitlab.arturbosch.detekt' version '1.21.0'
 }
 
 group 'org.olafneumann'
@@ -16,12 +16,18 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
-    implementation "org.jetbrains.kotlinx:kotlinx-html-js:0.7.5"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-html-js:0.8.0"
+    
     implementation "org.jetbrains:kotlin-extensions:1.0.1-pre.156-kotlin-1.5.0"
-    implementation 'io.ktor:ktor-client-core:2.0.0'
-    implementation 'io.ktor:ktor-client-js:2.0.0'
+
+    implementation 'io.ktor:ktor-client-core:2.1.0'
+
+    implementation 'io.ktor:ktor-client-js:2.1.0'
+
 
     implementation npm("driver.js", "0.9.8")
+
 
     testImplementation "org.jetbrains.kotlin:kotlin-test-js"
 }
@@ -55,7 +61,7 @@ kotlin {
 
             testTask {
                 useKarma {
-                    useChromeHeadless()
+                    useFirefoxHeadless()
                     webpackConfig.cssSupport.enabled = true
                 }
             }

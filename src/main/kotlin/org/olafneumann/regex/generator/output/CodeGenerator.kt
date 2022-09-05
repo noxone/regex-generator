@@ -397,13 +397,24 @@ internal class PythonCodeGenerator : SimpleReplacingCodeGenerator(
     highlightLanguage = "python",
     templateCode = """import re
 
-def useRegex(input):
-    pattern = re.compile(r"%1${'$'}s")
-    return pattern.match(input%2${'$'}s)"""
+def use_regex(input_text):
+    pattern = re.compile(%1${'$'}s%2${'$'}s)
+    return pattern.match(input_text)"""
 ) {
+    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String {
+        val escapedPattern = pattern
+            // escape quotation mark through backslashes
+            .replace(RegexCache.get("(\")"), "\\\\\"")
+            // handle odd number of backslashes at end of string
+            .replace(RegexCache.get("""[^\\](?:\\\\)*(\\)${'$'}"""), "\"'$1$1'r\"")
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
+        // The template does not contain quotation marks, because they depend on the pattern content.
+        // By default, this generator uses r-string (which have nearly no escape sequences).
+        return "r\"${escapedPattern}\""
+            // The previous backslash handling in some rare cases might introduce empty r-strings at the beginning
+            // or end of the string. To generate more pretty code these empty r-strings will be removed.
+            .replace(RegexCache.get("^r\"\"|r\"\"$"), "")
+    }
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options) =
         options.combine(
