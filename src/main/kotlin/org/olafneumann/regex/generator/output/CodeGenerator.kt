@@ -405,14 +405,14 @@ def use_regex(input_text):
         val escapedPattern = pattern
             // escape quotation mark through backslashes
             .replace(RegexCache.get("(\")"), "\\\\\"")
-            // handle backslash at end of string (but this might add an empty r-string)
-            .replace(RegexCache.get("""(\\+)$"""), "\"'$1$1'r\"")
+            // handle odd number of backslashes at end of string
+            .replace(RegexCache.get("""[^\\](?:\\\\)*(\\)${'$'}"""), "\"'$1$1'r\"")
 
         // The template does not contain quotation marks, because they depend on the pattern content.
         // By default, this generator uses r-string (which have nearly no escape sequences).
         return "r\"${escapedPattern}\""
-            // But this may lead to empty r-strings in the beginning or end of the string. To generate more pretty code
-            // these empty r-strings will be removed.
+            // The previous backslash handling in some rare cases might introduce empty r-strings at the beginning
+            // or end of the string. To generate more pretty code these empty r-strings will be removed.
             .replace(RegexCache.get("^r\"\"|r\"\"$"), "")
     }
 

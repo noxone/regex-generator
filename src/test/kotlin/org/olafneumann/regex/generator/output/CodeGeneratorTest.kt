@@ -163,11 +163,11 @@ def use_regex(input_text):
     @Test
     @Suppress("MaxLineLength")
     fun textGenerator_Python_withTrailingBackslash() {
-        val regex = generateRegex("""given\""")
+        val regex = generateRegex("""given\\\""")
         val expected = """import re
 
 def use_regex(input_text):
-    pattern = re.compile(r"given"'\\\\', re.DOTALL)
+    pattern = re.compile(r"given\\\\\\", re.DOTALL)
     return pattern.match(input_text)"""
         val actual = PythonCodeGenerator().generateCode(pattern = regex, options = Options(caseInsensitive = false, dotMatchesLineBreaks = true)).snippet
 
