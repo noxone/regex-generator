@@ -156,23 +156,51 @@ end"""
         codeGenerator = PythonCodeGenerator(), expected = """import re
 
 def use_regex(input_text):
-    pattern = re.compile(r"abc\.\\\${'$'}hier \"und\" / 'da'\(\[\)\.", re.IGNORECASE)
+    pattern = re.compile(r"abc\.\\\${'$'}hier "'"'r"und"'"'r" / 'da'\(\[\)\.", re.IGNORECASE)
     return pattern.match(input_text)"""
     )
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun textGenerator_Python_withTrailingBackslash() {
-        val regex = generateRegex("""given\\\""")
-        val expected = """import re
+    private fun createPythonOutput(string: String) = """import re
 
 def use_regex(input_text):
-    pattern = re.compile(r"given\\\\\\", re.DOTALL)
+    pattern = re.compile(${string}, re.DOTALL)
     return pattern.match(input_text)"""
-        val actual = PythonCodeGenerator().generateCode(pattern = regex, options = Options(caseInsensitive = false, dotMatchesLineBreaks = true)).snippet
+
+    private fun testPython(inputRegex: String, expectedString: String) {
+        val regex = generateRegex(inputRegex)
+        val expected = createPythonOutput(expectedString)
+
+        val actual = PythonCodeGenerator()
+            .generateCode(pattern = regex, options = Options(caseInsensitive = false, dotMatchesLineBreaks = true))
+            .snippet
 
         assertEquals(expected, actual)
     }
+
+    @Test
+    @Suppress("MaxLineLength")
+    fun testGenerator_Python_withTrailingBackslash() =
+        testPython(inputRegex = """given\\\""", expectedString = """r"given\\\\\\"""")
+
+    @Test
+    fun testGenerator_Python_quotationMarks1() =
+        testPython(inputRegex = "'", expectedString = "r\"'\"")
+
+    @Test
+    fun testGenerator_Python_quotationMarks2() =
+        testPython(inputRegex = "\"\"\"", expectedString = "r'\"\"\"'")
+
+    @Test
+    fun testGenerator_Python_quotationMarks3() =
+        testPython(inputRegex = "\"'", expectedString = "'\"'r\"'\"")
+
+    @Test
+    fun testGenerator_Python_quotationMarks4() =
+        testPython(inputRegex = "'\"", expectedString = "r\"'\"'\"'")
+
+    @Test
+    fun testGenerator_Python_quotationMarks5() =
+        testPython(inputRegex = "\"\"\"\"\"'\"\"", expectedString = "'\"\"\"\"\"'r\"'\"'\"\"'")
 
     @Test
     @Suppress("MaxLineLength")
