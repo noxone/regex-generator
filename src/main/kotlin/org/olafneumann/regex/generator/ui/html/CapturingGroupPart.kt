@@ -17,6 +17,7 @@ import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
+import kotlin.js.RegExp
 import kotlin.js.json
 import kotlin.math.max
 import kotlin.math.min
@@ -80,6 +81,11 @@ internal class CapturingGroupPart(
 //    )
     private val regex = Regex(
         """(?<br>\((?:\?(?::|=|<[a-z][a-z0-9]*>|[-a-z]+\)))?)|(?<re>(?:\\.|\[(?:[^\]\\]|\\.)+\]|\)|.)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)""",
+        options = setOf(RegexOption.IGNORE_CASE)
+    )
+
+    private val regexp = Regex(
+        """(?<open>\((?:\?(?::|=|<[a-z][a-z0-9]*>|[-a-z]+\)))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\))|(?<alt>\|)""",
         options = setOf(RegexOption.IGNORE_CASE)
     )
 
