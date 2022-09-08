@@ -1,11 +1,5 @@
 package org.olafneumann.regex.generator.ui.html
 
-import kotlinx.browser.document
-import kotlinx.dom.clear
-import kotlinx.html.dom.create
-import kotlinx.html.js.onMouseDownFunction
-import kotlinx.html.js.onMouseUpFunction
-import kotlinx.html.js.span
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.DisplayContract
@@ -14,13 +8,8 @@ import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
 import org.w3c.dom.HTMLImageElement
-import org.w3c.dom.HTMLSpanElement
-import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
-import kotlin.js.RegExp
 import kotlin.js.json
-import kotlin.math.max
-import kotlin.math.min
 
 internal class CapturingGroupPart(
     private val presenter: DisplayContract.Controller
@@ -63,6 +52,111 @@ internal class CapturingGroupPart(
         }
     }
 
+    private val patternPartitionerRegex = Regex(
+        """(?<open>\((?:\?(?::|=|<[a-z][a-z0-9]*>|[-a-z]+\)))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<alt>\|)""",
+        options = setOf(RegexOption.IGNORE_CASE)
+    )
+
+    fun setRegularExpression(regularExpression: RecognizerCombiner.RegularExpression) {
+        textDisplay.innerText = regularExpression.pattern
+
+        val rawParts = patternPartitionerRegex.findAll(regularExpression.pattern)
+            .mapIndexed { index, matchResult ->
+                PatternSymbol(
+                    index = index,
+                    range = matchResult.range,
+                    text = matchResult.value,
+                    type = getPatternPartType(matchResult.groups)
+                )
+            }
+            .toList()
+        val root = PatternPartGroup()
+        var currentLevel = root
+        for (part in rawParts) {
+            if (part.type == PatternPartType.GROUP_START) {
+                val newLevel = PatternPartGroup(parent = currentLevel)
+                currentLevel.parts.add(newLevel)
+                newLevel.parts.add(part)
+                currentLevel = newLevel
+            } else if (part.type == PatternPartType.GROUP_END) {
+                currentLevel.parts.add(part)
+                if (currentLevel.parent == null) {
+                    throw Exception("Unbalanced number of opening and closing brackets.")
+                }
+                currentLevel = currentLevel.parent!!
+            } else if (part.type == PatternPartType.SYMBOL) {
+                currentLevel.parts.add(part)
+                part.selectable = true
+            } else if (part.type == PatternPartType.ALTERNATIVE) {
+                val lastPart = currentLevel.parts.lastOrNull()
+
+                if (lastPart == null) {
+                    throw Exception("Empty alternative")
+                } else if (lastPart is PatternPartGroup
+                    && lastPart.alternativeGroup) {
+                    currentLevel.parts.add(part)
+                    //currentLevel.parts.add()
+                    // TODO
+                } else {
+                    // TODO
+                }
+            }
+        }
+
+        console.log(rawParts)
+    }
+
+    private interface PatternPart {
+        val parent: PatternPartGroup?
+        val previous: PatternPart?
+        val next: PatternPart?
+    }
+
+    private class PatternPartGroup(
+        override val parent: PatternPartGroup? = null,
+        val alternativeGroup: Boolean = false
+    ) : PatternPart {
+        companion object {
+            val EMPTY = PatternPartGroup()
+        }
+
+        val isRoot: Boolean get() { return parent == null }
+
+        val parts = mutableListOf<PatternPart>()
+        override var previous: PatternPart? = null
+        override var next: PatternPart? = null
+    }
+
+    private data class PatternSymbol(
+        val index: Int,
+        val range: IntRange,
+        val text: String,
+        val type: PatternPartType
+    ) : PatternPart {
+        override var parent: PatternPartGroup = PatternPartGroup.EMPTY
+        override var previous: PatternPart? = null
+        override var next: PatternPart? = null
+        var selectable: Boolean = false
+    }
+
+    private enum class PatternPartType {
+        GROUP_START, GROUP_END, ALTERNATIVE, SYMBOL
+    }
+
+    private fun getPatternPartType(groups: MatchGroupCollection): PatternPartType {
+        return if (groups["part"]?.value != null) {
+            PatternPartType.SYMBOL
+        } else if (groups["open"]?.value != null) {
+            PatternPartType.GROUP_START
+        } else if (groups["close"]?.value != null) {
+            PatternPartType.GROUP_END
+        } else if (groups["alt"]?.value != null) {
+            PatternPartType.ALTERNATIVE
+        } else {
+            throw IllegalArgumentException("Unable to recognize pattern part type from: $groups")
+        }
+    }
+
 
     //    (?:
 //    (?<br>\((?:\?(?::|<[a-z][a-z0-9]*>|[-a-z]+\)))?)
@@ -79,15 +173,11 @@ internal class CapturingGroupPart(
 //    )?
 //    )
 //    )
-    private val regex = Regex(
+    /*private val regex = Regex(
         """(?<br>\((?:\?(?::|=|<[a-z][a-z0-9]*>|[-a-z]+\)))?)|(?<re>(?:\\.|\[(?:[^\]\\]|\\.)+\]|\)|.)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)""",
         options = setOf(RegexOption.IGNORE_CASE)
     )
 
-    private val regexp = Regex(
-        """(?<open>\((?:\?(?::|=|<[a-z][a-z0-9]*>|[-a-z]+\)))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\))|(?<alt>\|)""",
-        options = setOf(RegexOption.IGNORE_CASE)
-    )
 
     private fun findClosingPart(parts: List<RegexPart>, startIndex: Int = 0): Map<Int, Group> {
         val out = mutableMapOf<Int, Group>()
@@ -119,7 +209,7 @@ internal class CapturingGroupPart(
         return parts.size
     }
 
-    fun setRegularExpression(regularExpression: RecognizerCombiner.RegularExpression) {
+    fun setRegularExpression2(regularExpression: RecognizerCombiner.RegularExpression) {
         this.regularExpression = regularExpression
         val text = regularExpression.pattern
 
@@ -305,5 +395,5 @@ internal class CapturingGroupPart(
         var group = Group.EMPTY
         var groupContainsAlternatives: Boolean = false
         var element: HTMLSpanElement? = null
-    }
+    }*/
 }
