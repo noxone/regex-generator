@@ -2,7 +2,7 @@
 
 ``Regex Generator`` is a tool to generate simple regular expressions. The goal is that people with less experience can create regex smoothly.
 
-Regex Generator tries to help you create a first version of a regular expression to recognize certain texts. It is designed to create regular expressions by putting together well-known snippets. This can be used as a starting point for regular expressions.
+``Regex Generator tries to help you create a first version of a regular expression to recognize certain texts. It is designed to create regular expressions by putting together well-known snippets. This can be used as a starting point for regular expressions.
 
 Hopefully nobody will need to use ``substring()`` anymore.
 
@@ -86,7 +86,7 @@ Hopefully this regex generator continues to grow to eventually support a really 
 
 ### Languages
 
-The ``regex generator`` is currently able to generate code snippets in the following languages:
+``Regex Generator`` is currently able to generate code snippets in the following languages:
 
 - C (using `regex.h`)
 - C#
