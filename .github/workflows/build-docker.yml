@@ -76,6 +76,19 @@ jobs:
           push: ${{ inputs.pushImages }}
           tags: noxone/regexgenerator:latest,noxone/regexgenerator:${{ steps.date.outputs.date }}_${{ steps.vars.outputs.sha_short }}
 
+
+      # Delete old docker image tags
+      - name: Delete old docker image tags
+        uses: m3ntorship/action-dockerhub-cleanup@1.4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          token: ${{ secrets.DOCKERHUB_TOKEN }}
+          keep-last: 6
+          user: noxone
+          repos: regexgenerator
+
+
+      # Update docker repository description
       - name: Prepare Docker description
         if: ${{ inputs.pushImages }}
         run: |
