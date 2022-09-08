@@ -37,8 +37,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/github-script@v6
-        id: fetch-branch-names
-        name: Fetch branch names
+        id: create-combined-pr
+        name: Create Combined PR
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -46,29 +46,27 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            branches = [];
-            prs = [];
-            base_branch = null;
+            let branchesAndPRStrings = [];
+            let baseBranch = null;
+            let baseBranchSHA = null;
             for (const pull of pulls) {
               const branch = pull['head']['ref'];
               console.log('Pull for branch: ' + branch);
               if (branch.startsWith('${{ github.event.inputs.branchPrefix }}')) {
-                console.log('Branch matched: ' + branch);
-                statusOK = true;
+                console.log('Branch matched prefix: ' + branch);
+                let statusOK = true;
                 if(${{ github.event.inputs.mustBeGreen }}) {
                   console.log('Checking green status: ' + branch);
-                  const statuses = await github.paginate('GET /repos/{owner}/{repo}/commits/{ref}/status', {
+                  const statusResponse = await github.rest.repos.getCombinedStatusForRef({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     ref: branch
                   });
-                  if(statuses.length > 0) {
-                    const latest_status = statuses[0]['state'];
-                    console.log('Validating status: ' + latest_status);
-                    if(latest_status != 'success') {
-                      console.log('Discarding ' + branch + ' with status ' + latest_status);
-                      statusOK = false;
-                    }
+                  const state = statusResponse['data']['state'];
+                  console.log('Validating status: ' + state);
+                  if(state != 'success') {
+                    console.log('Discarding ' + branch + ' with status ' + state);
+                    statusOK = false;
                   }
                 }
                 console.log('Checking labels: ' + branch);
@@ -83,63 +81,60 @@ jobs:
                 }
                 if (statusOK) {
                   console.log('Adding branch to array: ' + branch);
-                  branches.push(branch);
-                  prs.push('#' + pull['number'] + ' ' + pull['title']);
-                  base_branch = pull['base']['ref'];
+                  const prString = '#' + pull['number'] + ' ' + pull['title'];
+                  branchesAndPRStrings.push({ branch, prString });
+                  baseBranch = pull['base']['ref'];
+                  baseBranchSHA = pull['base']['sha'];
                 }
               }
             }
-            if (branches.length == 0) {
+            if (branchesAndPRStrings.length == 0) {
               core.setFailed('No PRs/branches matched criteria');
               return;
             }
-            core.setOutput('base-branch', base_branch);
-            core.setOutput('prs-string', prs.join('\n'));
+            try {
+              await github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'refs/heads/' + '${{ github.event.inputs.combineBranchName }}',
+                sha: baseBranchSHA
+              });
+            } catch (error) {
+              console.log(error);
+              core.setFailed('Failed to create combined branch - maybe a branch by that name already exists?');
+              return;
+            }
             
-            combined = branches.join(' ')
-            console.log('Combined: ' + combined);
-            return combined
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2.3.3
-        with:
-          fetch-depth: 0
-      # Creates a branch with other PR branches merged together
-      - name: Created combined branch
-        env:
-          BASE_BRANCH: ${{ steps.fetch-branch-names.outputs.base-branch }}
-          BRANCHES_TO_COMBINE: ${{ steps.fetch-branch-names.outputs.result }}
-          COMBINE_BRANCH_NAME: ${{ github.event.inputs.combineBranchName }}
-        run: |
-          echo "$BRANCHES_TO_COMBINE"
-          sourcebranches="${BRANCHES_TO_COMBINE%\"}"
-          sourcebranches="${sourcebranches#\"}"
-          
-          basebranch="${BASE_BRANCH%\"}"
-          basebranch="${basebranch#\"}"
-          
-          git config pull.rebase false
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          
-          git branch $COMBINE_BRANCH_NAME $basebranch
-          git checkout $COMBINE_BRANCH_NAME
-          git pull origin $sourcebranches --no-edit
-          git push origin $COMBINE_BRANCH_NAME
-      # Creates a PR with the new combined branch
-      - uses: actions/github-script@v6
-        name: Create Combined Pull Request
-        env:
-          PRS_STRING: ${{ steps.fetch-branch-names.outputs.prs-string }}
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const prString = process.env.PRS_STRING;
-            const body = 'This PR was created by the Combine PRs action by combining the following PRs:\n' + prString;
-            await github.pulls.create({
+            let combinedPRs = [];
+            let mergeFailedPRs = [];
+            for(const { branch, prString } of branchesAndPRStrings) {
+              try {
+                await github.rest.repos.merge({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  base: '${{ github.event.inputs.combineBranchName }}',
+                  head: branch,
+                });
+                console.log('Merged branch ' + branch);
+                combinedPRs.push(prString);
+              } catch (error) {
+                console.log('Failed to merge branch ' + branch);
+                mergeFailedPRs.push(prString);
+              }
+            }
+            
+            console.log('Creating combined PR');
+            const combinedPRsString = combinedPRs.join('\n');
+            let body = '✅ This PR was created by the Combine PRs action by combining the following PRs:\n' + combinedPRsString;
+            if(mergeFailedPRs.length > 0) {
+              const mergeFailedPRsString = mergeFailedPRs.join('\n');
+              body += '\n\n⚠️ The following PRs were left out due to merge conflicts:\n' + mergeFailedPRsString
+            }
+            await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: 'Combined PR',
               head: '${{ github.event.inputs.combineBranchName }}',
-              base: '${{ steps.fetch-branch-names.outputs.base-branch }}',
+              base: baseBranch,
               body: body
             });
