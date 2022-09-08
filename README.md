@@ -29,7 +29,7 @@ Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&fla
 
 You can also start it via [docker](https://hub.docker.com/r/noxone/regexgenerator). Just use the following command and find Regex Generator on port 80 of your local machine:
 
-```console
+```bash
 docker run -d -p 80:80 noxone/regexgenerator
 ```
 
@@ -42,13 +42,13 @@ Of course the docker version supports the same search parameters as the actual w
 1. Clone the project
 2. In the project's root directory execute
 
-   ```console
+   ```bash
    gradlew clean build
    ```
 
    Or use docker to build the project:
 
-   ```console
+   ```bash
    docker build . -t noxone/regexgenerator
    ```
 
@@ -58,7 +58,7 @@ Of course the docker version supports the same search parameters as the actual w
 
 For a nice development experience use
 
-```console
+```bash
 gradlew run --continuous
 ```
 
