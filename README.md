@@ -104,7 +104,7 @@ If you miss a language, just open a [new issue](https://github.com/noxone/regex-
 
 ### Patterns
 
-At the moment there are 28 patterns of different complexity integrated in ``regex generator``. It is able to recognize simple repetitions and combinations of multiple patterns.
+At the moment there are 28 patterns of different complexity integrated in ``Regex Generator``. It is able to recognize simple repetitions and combinations of multiple patterns.
 
 In the final stage this Regex Generator shall support a wide range of use cases. Feel free to suggest new patterns via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=add-pattern.md&title=).
 
