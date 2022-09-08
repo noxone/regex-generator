@@ -1,8 +1,6 @@
 name: 'Combine PRs'
 
-permissions:
-  actions: write
-  pull-requests: write
+permissions: write-all
 
 # Controls when the action will run - in this case triggered manually
 on:
