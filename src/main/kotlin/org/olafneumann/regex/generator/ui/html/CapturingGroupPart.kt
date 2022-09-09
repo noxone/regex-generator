@@ -4,6 +4,7 @@ import kotlinx.browser.document
 import kotlinx.dom.clear
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
+import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.DisplayContract
@@ -68,11 +69,15 @@ internal class CapturingGroupPart(
 
         val root = analyzeRegexGroups(regularExpression.pattern)
         val spans = makeSpans(group = root)
+        var popover: Popover? = null
         spans.forEach { pair ->
             val symbol = pair.key
             val span = pair.value
 
+            var range: IntRange? = null
+
             span.onmousedown = { mouseDownEvent ->
+                popover?.let { it.dispose() }
                 val startIndex = symbol.index
                 //console.log("DOWN", startIndex, mouseDownEvent)
                 val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
@@ -84,30 +89,34 @@ internal class CapturingGroupPart(
                     MouseCapture.preventGlobalMouseEvents()
                     if (element != null && element is HTMLSpanElement) {
                         val currentIndex = element.attributes["data-index"]?.value?.toInt()
-                        currentIndex?.let { ci -> mark(spans, startIndex, ci) }
+                        currentIndex?.let { ci -> range = mark(spans, startIndex, ci) }
                     }
                 }
                 MouseCapture.capture(
                     event = mouseDownEvent as MouseEvent,
                     mouseMoveListener = mouseMoveListener,
                     mouseUpListener = {
+                        range?.let { range ->
+                            popover = Popover(element = spans.entries.first { it.key.index == range.first }.value, contentString = "abc", placement = "left", title = "test", trigger = "click")
+                            popover!!.show()
+                            // TODO hide popover if user clicks somewhere else
+                        }
                         // console.log("up", it)
                     }
                 )
                 // run the first event now
                 mouseMoveListener(mouseDownEvent)
             }
-            span.onmouseup = { mouseUpEvent ->
+            /*span.onmouseup = { mouseUpEvent ->
                 //console.log("UP", mouseUpEvent)
-            }
+            }*/
             textDisplay.appendChild(span)
         }
     }
 
-    private fun mark(items: Map<PatternSymbol, HTMLSpanElement>, from: Int, to: Int) {
+    private fun mark(items: Map<PatternSymbol, HTMLSpanElement>, from: Int, to: Int): IntRange {
         if (from > to) {
-            mark(items = items, from = to, to = from)
-            return
+            return mark(items = items, from = to, to = from)
         }
 
         var realFrom = from
@@ -125,6 +134,7 @@ internal class CapturingGroupPart(
         items.forEach {
             it.value.classList.toggle("bg-warning", it.key.index in range)
         }
+        return range
     }
 
     private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange {
