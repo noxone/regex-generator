@@ -67,7 +67,6 @@ internal class CapturingGroupPart(
         textDisplay.clear()
 
         val root = analyzeRegexGroups(regularExpression.pattern)
-        console.log("ROOT", root)
         val spans = makeSpans(group = root)
         spans.forEach { pair ->
             val symbol = pair.key
@@ -75,7 +74,7 @@ internal class CapturingGroupPart(
 
             span.onmousedown = { mouseDownEvent ->
                 val startIndex = symbol.index
-                console.log("DOWN", startIndex, mouseDownEvent)
+                //console.log("DOWN", startIndex, mouseDownEvent)
                 val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
                     MouseCapture.restoreGlobalMouseEvents()
                     val element = document.elementFromPoint(
@@ -92,14 +91,14 @@ internal class CapturingGroupPart(
                     event = mouseDownEvent as MouseEvent,
                     mouseMoveListener = mouseMoveListener,
                     mouseUpListener = {
-                        console.log("up", it)
+                        // console.log("up", it)
                     }
                 )
                 // run the first event now
                 mouseMoveListener(mouseDownEvent)
             }
             span.onmouseup = { mouseUpEvent ->
-                console.log("UP", mouseUpEvent)
+                //console.log("UP", mouseUpEvent)
             }
             textDisplay.appendChild(span)
         }
@@ -130,12 +129,10 @@ internal class CapturingGroupPart(
 
     private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange {
         return if (one.isRoot || other.isRoot) {
-            console.log("One of the symbols is the root node. This should not happen.", one, other)
+            console.warn("One of the symbols is the root node. This should not happen.", one, other)
             val root = if (one.isRoot) one else other
-            //root.firstIndex to root.lastIndex
             IntRange(root.firstIndex, root.lastIndex)
-        } else if (one.parent == other.parent) {
-            //one.firstIndex to other.lastIndex
+        } else if (one.parent == other.parent && !one.parent!!.isAlternative && one.selectable && other.selectable) {
             IntRange(one.firstIndex, other.lastIndex)
         } else if (one.depth > other.depth) {
             findIndicesInCommentParent(one = one.parent!!, other = other)
@@ -190,9 +187,12 @@ internal class CapturingGroupPart(
                 currentLevel.add(newLevel)
                 newLevel.add(part)
                 currentLevel = newLevel
-                // TODO is group with negative lookahead (?!...), do not allow selection of children
+                if (part.text.startsWith("(?!")) {
+                    newLevel.forcedNotSelectable = true
+                }
             } else if (part.type == PatternSymbolType.GROUP_END) {
                 currentLevel.add(part)
+                currentLevel.adjustAlternatives()
                 if (currentLevel.parent == null) {
                     throw Exception("Unbalanced number of opening and closing brackets.")
                 }
@@ -241,13 +241,13 @@ internal class CapturingGroupPart(
 
         var forcedNotSelectable: Boolean = false
         override val selectable: Boolean
-            get() = !forcedNotSelectable && (parent?.forcedNotSelectable ?: true)
+            get() = !forcedNotSelectable && (parent?.selectable ?: true)
 
         val parts: List<PatternPart> get() = mutableParts
         private val mutableParts = mutableListOf<PatternPart>()
 
         override fun add(part: PatternPart) {
-            if (part is PatternSymbol && part.type == PatternSymbolType.ALTERNATIVE) {
+            /*if (part is PatternSymbol && part.type == PatternSymbolType.ALTERNATIVE) {
                 if (!alternative) {
                     // needs to turned into an alternative
                     val firstSubGroup = PatternPartGroup(parent = this)
@@ -260,15 +260,43 @@ internal class CapturingGroupPart(
                 mutableParts.add(part)
                 part.parent = this
                 mutableParts.add(PatternPartGroup(parent = this))
-            } else {
-                if (alternative) {
+            } else {*/
+                /*if (alternative) {
                     val partParent = mutableParts.last() as PatternPartGroup
                     partParent.add(part)
                     part.parent = partParent
-                } else {
+                } else {*/
                     mutableParts.add(part)
                     part.parent = this
+                //}
+            //}
+        }
+
+        fun adjustAlternatives() {
+            val altIndices = parts.mapIndexedNotNull { index, patternPart ->
+                if (patternPart is PatternSymbol && patternPart.type == PatternSymbolType.ALTERNATIVE)
+                    index
+                else
+                    null
+            }.toMutableList()
+            if (altIndices.isNotEmpty()) {
+                val min = 0
+                val max = parts.lastIndex
+                altIndices.add(0, min)
+                altIndices.add(max)
+                val oldParts = parts.toList()
+                mutableParts.clear()
+                for (index in min..max) {
+                    if (altIndices.contains(index)) {
+                        add(oldParts[index])
+                        (oldParts[index] as PatternSymbol).selectable = false
+                        add(PatternPartGroup(parent = this))
+                    } else {
+                        (mutableParts.last() as PatternPartGroup).add(oldParts[index])
+                    }
                 }
+                mutableParts.removeLast()
+                alternative = true
             }
         }
     }
