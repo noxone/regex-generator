@@ -2,10 +2,10 @@ package org.olafneumann.regex.generator.js
 
 data class StepDefinition(
     val element: String,
-    val popover: Popover
+    val popover: DriverPopover
 )
 
-data class Popover(
+data class DriverPopover(
     val title: String,
     val description: String,
     val position: String
