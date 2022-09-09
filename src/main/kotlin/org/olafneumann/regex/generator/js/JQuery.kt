@@ -36,4 +36,7 @@ external class JQuery {
     fun animate(properties: Json, duration: Int = definedExternally, easing: String = definedExternally)
     fun stop()
     fun `is`(s: String): Boolean
+
+    fun popover(options: Json)
+    fun popover(command: String)
 }
