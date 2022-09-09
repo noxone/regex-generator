@@ -35,6 +35,7 @@ external class JQuery {
     @Suppress("UnusedPrivateMember")
     fun animate(properties: Json, duration: Int = definedExternally, easing: String = definedExternally)
     fun stop()
+    @Suppress("FunctionNaming")
     fun `is`(s: String): Boolean
 
     fun popover(options: Json)

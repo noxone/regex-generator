@@ -19,6 +19,7 @@ import org.w3c.dom.get
 import kotlin.js.json
 
 internal class CapturingGroupPart(
+    @Suppress("UnusedPrivateMember") // TODO remove
     private val presenter: DisplayContract.Controller
 ) {
     private val container = HtmlHelper.getElementById<HTMLDivElement>("rg_capgroup_selection_container")
@@ -59,6 +60,7 @@ internal class CapturingGroupPart(
         }
     }
 
+    @Suppress("MaxLineLength")
     private val patternPartitionerRegex = Regex(
         """(?<complete>\(\?(?:[a-zA-Z]+|[+-]?[0-9]+|&\w+|P=\w+)\))|(?<open>\((?:\?(?::|!|>|=|\||<=|P?<[a-z][a-z0-9]*>|'[a-z][a-z0-9]*'|[-a-z]+:))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<alt>\|)""",
         options = setOf(RegexOption.IGNORE_CASE)
@@ -93,11 +95,17 @@ internal class CapturingGroupPart(
                     }
                 }
                 MouseCapture.capture(
-                    event = mouseDownEvent as MouseEvent,
+                    event = mouseDownEvent, // as MouseEvent,
                     mouseMoveListener = mouseMoveListener,
                     mouseUpListener = {
                         range?.let { range ->
-                            popover = Popover(element = spans.entries.first { it.key.index == range.first }.value, contentString = "abc", placement = "left", title = "test", trigger = "click")
+                            popover = Popover(
+                                element = spans.entries.first { it.key.index == range.first }.value,
+                                contentString = "abc",
+                                placement = "left",
+                                title = "test",
+                                trigger = "click"
+                            )
                             popover!!.show()
                             // TODO hide popover if user clicks somewhere else
                         }
@@ -168,9 +176,7 @@ internal class CapturingGroupPart(
                     }
 
                     else -> {
-                        //throw Exception("Unknown part type $part")
-                        //emptyList()
-                        emptyMap()
+                        error("Unknown part type $part")
                     }
                 }
             }
@@ -204,7 +210,7 @@ internal class CapturingGroupPart(
                 currentLevel.add(part)
                 currentLevel.adjustAlternatives()
                 if (currentLevel.parent == null) {
-                    throw Exception("Unbalanced number of opening and closing brackets.")
+                    error("Unbalanced number of opening and closing brackets.")
                 }
                 currentLevel = currentLevel.parent!!
             } else if (part.type == PatternSymbolType.CHARACTER) {
@@ -213,7 +219,7 @@ internal class CapturingGroupPart(
             } else if (part.type == PatternSymbolType.ALTERNATIVE || part.type == PatternSymbolType.COMPLETE) {
                 currentLevel.add(part)
             } else {
-                throw Exception("Unknown pattern symbol: ${part.type}")
+                error("Unknown pattern symbol: ${part.type}")
             }
         }
         return root
@@ -230,7 +236,7 @@ internal class CapturingGroupPart(
         abstract val selectable: Boolean
 
         open fun add(part: PatternPart) {
-            throw Exception("'add' not implemented")
+            throw NotImplementedError("'add' not implemented")
         }
     }
 

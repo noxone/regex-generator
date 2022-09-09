@@ -4,6 +4,7 @@ import org.w3c.dom.HTMLElement
 import kotlin.js.json
 import kotlin.properties.Delegates
 
+@Suppress("LongParameterList")
 class Popover(
     element: HTMLElement,
     private val container: String = "body",
