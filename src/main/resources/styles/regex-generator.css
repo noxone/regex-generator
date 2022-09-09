@@ -126,7 +126,7 @@ form * .rg-check-row {
   background-color: white;
 }
 
-#rg_result_display {
+#rg_result_display, #rg_cap_group_display {
   white-space: pre-wrap;
 }
 
