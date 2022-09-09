@@ -53,7 +53,7 @@ internal class CapturingGroupPart(
     }
 
     private val patternPartitionerRegex = Regex(
-        """(?<open>\((?:\?(?::|=|<[a-z][a-z0-9]*>|[-a-z]+\)))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<alt>\|)""",
+        """(?<complete>\(\?(?:[a-zA-Z]+|[+-]?[0-9]+|&\w+|P=\w+)\))|(?<open>\((?:\?(?::|!|>|=|\||<=|P?<[a-z][a-z0-9]*>|'[a-z][a-z0-9]*'|[-a-z]+:))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<alt>\|)""",
         options = setOf(RegexOption.IGNORE_CASE)
     )
 
@@ -73,48 +73,43 @@ internal class CapturingGroupPart(
         val root = PatternPartGroup()
         var currentLevel = root
         for (part in rawParts) {
-            if (part.type == PatternPartType.GROUP_START) {
+            if (part.type == PatternSymbolType.GROUP_START) {
                 val newLevel = PatternPartGroup(parent = currentLevel)
-                currentLevel.parts.add(newLevel)
-                newLevel.parts.add(part)
+                currentLevel.add(newLevel)
+                newLevel.add(part)
                 currentLevel = newLevel
-            } else if (part.type == PatternPartType.GROUP_END) {
-                currentLevel.parts.add(part)
+            } else if (part.type == PatternSymbolType.GROUP_END) {
+                currentLevel.add(part)
                 if (currentLevel.parent == null) {
                     throw Exception("Unbalanced number of opening and closing brackets.")
                 }
                 currentLevel = currentLevel.parent!!
-            } else if (part.type == PatternPartType.SYMBOL) {
-                currentLevel.parts.add(part)
+            } else if (part.type == PatternSymbolType.CHARACTER) {
+                currentLevel.add(part)
                 part.selectable = true
-            } else if (part.type == PatternPartType.ALTERNATIVE) {
-                val lastPart = currentLevel.parts.lastOrNull()
-
-                if (lastPart == null) {
-                    throw Exception("Empty alternative")
-                } else if (lastPart is PatternPartGroup
-                    && lastPart.alternativeGroup) {
-                    currentLevel.parts.add(part)
-                    //currentLevel.parts.add()
-                    // TODO
-                } else {
-                    // TODO
-                }
+            } else if (part.type == PatternSymbolType.ALTERNATIVE || part.type == PatternSymbolType.COMPLETE) {
+                currentLevel.add(part)
+            } else {
+                throw Exception("Unknown pattern symbol: ${part.type}")
             }
         }
 
+
+
         console.log(rawParts)
+        console.log(root)
     }
 
     private interface PatternPart {
-        val parent: PatternPartGroup?
+        var parent: PatternPartGroup? // TODO make 'val' again
         val previous: PatternPart?
         val next: PatternPart?
+
+        fun add(part: PatternPart)
     }
 
     private class PatternPartGroup(
-        override val parent: PatternPartGroup? = null,
-        val alternativeGroup: Boolean = false
+        override var parent: PatternPartGroup? = null
     ) : PatternPart {
         companion object {
             val EMPTY = PatternPartGroup()
@@ -122,36 +117,69 @@ internal class CapturingGroupPart(
 
         val isRoot: Boolean get() { return parent == null }
 
-        val parts = mutableListOf<PatternPart>()
+        private var alternative = false
+        val isAlternative: Boolean
+            get() = alternative
+
+        val parts: List<PatternPart> get() = mutableParts
+        private val mutableParts = mutableListOf<PatternPart>()
         override var previous: PatternPart? = null
         override var next: PatternPart? = null
+
+        override fun add(part: PatternPart) {
+            if (part is PatternSymbol && part.type == PatternSymbolType.ALTERNATIVE) {
+                if (!alternative) {
+                    // needs to turned into an alternative
+                    val firstSubGroup = PatternPartGroup(parent = this)
+                    firstSubGroup.mutableParts.addAll(this.mutableParts.onEach { it.parent = firstSubGroup })
+                    mutableParts.clear()
+                    mutableParts.add(firstSubGroup)
+                    alternative = true
+                }
+
+                mutableParts.add(part)
+                mutableParts.add(PatternPartGroup(parent = this))
+            } else {
+                if (alternative) {
+                    (mutableParts.last() as PatternPartGroup).add(part)
+                } else {
+                    mutableParts.add(part)
+                }
+            }
+        }
     }
 
     private data class PatternSymbol(
         val index: Int,
         val range: IntRange,
         val text: String,
-        val type: PatternPartType
+        val type: PatternSymbolType
     ) : PatternPart {
-        override var parent: PatternPartGroup = PatternPartGroup.EMPTY
+        override var parent: PatternPartGroup? = PatternPartGroup.EMPTY
         override var previous: PatternPart? = null
         override var next: PatternPart? = null
         var selectable: Boolean = false
+
+        override fun add(part: PatternPart) {
+            throw Exception("Cannot add symbol to symbol")
+        }
     }
 
-    private enum class PatternPartType {
-        GROUP_START, GROUP_END, ALTERNATIVE, SYMBOL
+    private enum class PatternSymbolType {
+        GROUP_START, GROUP_END, COMPLETE, ALTERNATIVE, CHARACTER
     }
 
-    private fun getPatternPartType(groups: MatchGroupCollection): PatternPartType {
+    private fun getPatternPartType(groups: MatchGroupCollection): PatternSymbolType {
         return if (groups["part"]?.value != null) {
-            PatternPartType.SYMBOL
+            PatternSymbolType.CHARACTER
         } else if (groups["open"]?.value != null) {
-            PatternPartType.GROUP_START
+            PatternSymbolType.GROUP_START
         } else if (groups["close"]?.value != null) {
-            PatternPartType.GROUP_END
+            PatternSymbolType.GROUP_END
         } else if (groups["alt"]?.value != null) {
-            PatternPartType.ALTERNATIVE
+            PatternSymbolType.ALTERNATIVE
+        } else if (groups["complete"]?.value != null) {
+            PatternSymbolType.COMPLETE
         } else {
             throw IllegalArgumentException("Unable to recognize pattern part type from: $groups")
         }
