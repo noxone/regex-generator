@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+
 plugins {
     id 'org.jetbrains.kotlin.js' version '1.7.10'
     id 'io.gitlab.arturbosch.detekt' version '1.21.0'
@@ -72,6 +75,6 @@ kotlin {
 
 // found here: https://youtrack.jetbrains.com/issue/KT-52578
 // and here:   http://kotlin.liying-cn.net/docs/reference_zh/js/js-project-setup.html
-rootProject.plugins.withType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin) {
-  rootProject.extensions.getByType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension).ignoreScripts = false
+rootProject.plugins.withType(YarnPlugin) {
+  rootProject.extensions.getByType(YarnRootExtension).ignoreScripts = false
 }
