@@ -62,6 +62,7 @@ jobs:
 
       # Do the docker stuff
       - name: Login to DockerHub
+        if: ${{ inputs.pushImages }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -75,24 +76,38 @@ jobs:
           push: ${{ inputs.pushImages }}
           tags: noxone/regexgenerator:latest,noxone/regexgenerator:${{ steps.date.outputs.date }}_${{ steps.vars.outputs.sha_short }}
 
-# Disable due to https://github.com/peter-evans/dockerhub-description/issues/10
-#      - name: Prepare Docker description
+
+# Disabled because the action seems not to work
+#      # Delete old docker image tags
+#      - name: Delete old docker image tags
 #        if: ${{ inputs.pushImages }}
-#        run: |
-#          filename=docker.README.md
-#
-#          startLine=$(grep -n '## Usage' README.md | sed 's/[^00-9]*//g')
-#          startLine=$((startLine - 1))
-#          endLine=$(grep -n '## Project goal' README.md | sed 's/[^00-9]*//g')
-#
-#          head -n $startLine README.md > $filename
-#          tail -n +$endLine README.md >> $filename
-#      - name: Publish docker description
-#        if: ${{ inputs.pushImages }}
-#        uses: peter-evans/dockerhub-description@v3
+#        uses: m3ntorship/action-dockerhub-cleanup@1.4
 #        with:
 #          username: ${{ secrets.DOCKERHUB_USERNAME }}
-#          password: ${{ secrets.DOCKERHUB_TOKEN }}
-#          repository: peterevans/dockerhub-description
-#          short-description: ${{ github.event.repository.description }}
-#          readme-filepath: ./docker.README.md
+#          token: ${{ secrets.DOCKERHUB_TOKEN }}
+#          keep-last: 6
+#          user: noxone
+#          repos: regexgenerator
+
+
+      # Update docker repository description
+      - name: Prepare Docker description
+        if: ${{ inputs.pushImages }}
+        run: |
+          filename=docker.README.md
+
+          startLine=$(grep -n '## Usage' README.md | sed 's/[^00-9]*//g')
+          startLine=$((startLine - 1))
+          endLine=$(grep -n '## Project goal' README.md | sed 's/[^00-9]*//g')
+
+          head -n $startLine README.md > $filename
+          tail -n +$endLine README.md >> $filename
+      - name: Publish docker description
+        if: ${{ inputs.pushImages }}
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: noxone/regexgenerator
+          short-description: ${{ github.event.repository.description }}
+          readme-filepath: ./docker.README.md

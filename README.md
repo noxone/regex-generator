@@ -2,7 +2,7 @@
 
 ``Regex Generator`` is a tool to generate simple regular expressions. The goal is that people with less experience can create regex smoothly.
 
-Regex Generator tries to help you create a first version of a regular expression to recognize certain texts. It is designed to create regular expressions by putting together well-known snippets. This can be used as a starting point for regular expressions.
+``Regex Generator`` tries to help you create a first version of a regular expression to recognize certain texts. It is designed to create regular expressions by putting together well-known snippets. This can be used as a starting point for regular expressions.
 
 Hopefully nobody will need to use ``substring()`` anymore.
 
@@ -29,7 +29,7 @@ Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&fla
 
 You can also start it via [docker](https://hub.docker.com/r/noxone/regexgenerator). Just use the following command and find Regex Generator on port 80 of your local machine:
 
-```console
+```bash
 docker run -d -p 80:80 noxone/regexgenerator
 ```
 
@@ -42,13 +42,13 @@ Of course the docker version supports the same search parameters as the actual w
 1. Clone the project
 2. In the project's root directory execute
 
-   ```console
+   ```bash
    gradlew clean build
    ```
 
    Or use docker to build the project:
 
-   ```console
+   ```bash
    docker build . -t noxone/regexgenerator
    ```
 
@@ -58,7 +58,7 @@ Of course the docker version supports the same search parameters as the actual w
 
 For a nice development experience use
 
-```console
+```bash
 gradlew run --continuous
 ```
 
@@ -86,7 +86,7 @@ Hopefully this regex generator continues to grow to eventually support a really 
 
 ### Languages
 
-The ``regex generator`` is currently able to generate code snippets in the following languages:
+``Regex Generator`` is currently able to generate code snippets in the following languages:
 
 - C (using `regex.h`)
 - C#
@@ -104,7 +104,7 @@ If you miss a language, just open a [new issue](https://github.com/noxone/regex-
 
 ### Patterns
 
-At the moment there are 28 patterns of different complexity integrated in ``regex generator``. It is able to recognize simple repetitions and combinations of multiple patterns.
+At the moment there are 28 patterns of different complexity integrated in ``Regex Generator``. It is able to recognize simple repetitions and combinations of multiple patterns.
 
 In the final stage this Regex Generator shall support a wide range of use cases. Feel free to suggest new patterns via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=add-pattern.md&title=).
 
