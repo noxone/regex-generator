@@ -27,7 +27,7 @@ Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&fla
 
 ### Docker
 
-You can also start it via [docker](https://hub.docker.com/r/noxone/regexgenerator). Just use the following command and find Regex Generator on port 80 of your local machine:
+You can also start it via Docker. Please find the generated images in this [repository](https://hub.docker.com/r/noxone/regexgenerator). Just use the following command and use ``Regex Generator`` via port 80 of your local machine:
 
 ```bash
 docker run -d -p 80:80 noxone/regexgenerator
