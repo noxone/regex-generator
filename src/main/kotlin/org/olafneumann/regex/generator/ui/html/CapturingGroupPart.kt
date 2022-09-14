@@ -2,8 +2,18 @@ package org.olafneumann.regex.generator.ui.html
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
+import kotlinx.html.InputType
+import kotlinx.html.div
 import kotlinx.html.dom.create
+import kotlinx.html.id
+import kotlinx.html.injector.CustomCapture
+import kotlinx.html.injector.InjectByClassName
+import kotlinx.html.injector.inject
+import kotlinx.html.input
+import kotlinx.html.js.form
+import kotlinx.html.js.onInputFunction
 import kotlinx.html.js.span
+import kotlinx.html.label
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
@@ -13,10 +23,12 @@ import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
 import org.w3c.dom.HTMLImageElement
+import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
 import kotlin.js.json
+import kotlin.properties.Delegates
 
 internal class CapturingGroupPart(
     @Suppress("UnusedPrivateMember") // TODO remove
@@ -124,9 +136,53 @@ internal class CapturingGroupPart(
     }
 
     private fun markedRegion(range: IntRange, element: HTMLElement) {
+        val elements = Elements()
+        val CLASS_CAP_NAME = "classCapName"
+        val CLASS_CAP_CHECK = "classCapCheck"
+        val idCheck = "idCheck"
+        val idNameDiv = "idNameDiv"
+        val idName = "idName"
+
         popover = Popover(
             element = element,
-            contentString = "Test",
+            html = true,
+            contentElement = document.create.inject(
+                elements, listOf(
+                    InjectByClassName(CLASS_CAP_CHECK) to Elements::checkbox,
+                    InjectByClassName(CLASS_CAP_NAME) to Elements::nameText,
+                    InjectById(idNameDiv) to Elements::nameDiv
+                )
+            ).form {
+                div(classes = "form-group form-check") {
+                    input(type = InputType.checkBox, classes = "$CLASS_CAP_CHECK form-check-input") {
+                        this.id = idCheck
+                        //checked = match.isCapturingGroup
+                        onInputFunction = { _ ->
+                            console.log(elements.checkbox.checked)
+                            /*match.isCapturingGroup = elements.checkbox.checked
+                            showNameDiv(show = match.isCapturingGroup)
+                            triggerRegexRecalculation()*/
+                        }
+                    }
+                    label(classes = "form-check-label") {
+                        this.htmlFor = idCheck
+                        +"Capturing group"
+                    }
+                }
+                div(classes = "form-group") {
+                    id = idNameDiv
+                    input(type = InputType.text, classes = "$CLASS_CAP_NAME form-control-sm") {
+                        this.id = idName
+                        value = "capturinggroupname"//match.capturingGroupName
+                        placeholder = "name (optional)"
+                        onInputFunction = { _ ->
+                            /*match.capturingGroupName = elements.nameText.value.trim()
+                            triggerRegexRecalculation()*/
+                            console.log(elements.nameText.value.trim())
+                        }
+                    }
+                }
+            },
             placement = "left",
             title = "Create capturing group",
             trigger = "manual"
@@ -136,6 +192,16 @@ internal class CapturingGroupPart(
             it.stopPropagation()
         }
         // TODO hide popover if user clicks somewhere else
+    }
+
+    private class InjectById(private val id: String) : CustomCapture {
+        override fun apply(element: HTMLElement): Boolean = element.id == id
+    }
+
+    private class Elements {
+        var checkbox: HTMLInputElement by Delegates.notNull()
+        var nameText: HTMLInputElement by Delegates.notNull()
+        var nameDiv: HTMLElement by Delegates.notNull()
     }
 
     private fun mark(items: Map<PatternSymbol, HTMLSpanElement>, from: Int, to: Int): IntRange {
