@@ -11,6 +11,7 @@ external fun jQuery(element: HTMLElement): JQuery
 
 @Suppress("TooManyFunctions")
 external class JQuery {
+    fun on(category: String, handler: () -> Unit)
     fun mousedown(handler: (Event) -> Unit)
     fun get(): HTMLElement
     fun slideDown(): JQuery
