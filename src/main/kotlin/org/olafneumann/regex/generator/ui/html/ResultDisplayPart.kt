@@ -60,7 +60,7 @@ internal class ResultDisplayPart(
         textShare.setPattern(view.inputText, view.options, presenter.selectedRecognizerMatches)
 
         // update links
-        currentPattern = regex.pattern
+        currentPattern = regex.finalPattern
         anchorRegex101.setPattern(currentPattern, view.options)
         anchorRegexr.setPattern(currentPattern, view.options)
 

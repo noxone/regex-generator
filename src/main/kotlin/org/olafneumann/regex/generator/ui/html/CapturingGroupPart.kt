@@ -38,6 +38,13 @@ internal class CapturingGroupPart(
             it.preventDefault()
             toggleVisibility(open = !isOpen)
         }
+
+        document.onmousedown = {
+            popover?.let {
+                it.dispose()
+                popover = null
+            }
+        }
     }
 
     private val isOpen: Boolean
@@ -66,12 +73,14 @@ internal class CapturingGroupPart(
         options = setOf(RegexOption.IGNORE_CASE)
     )
 
+    private var popover: Popover? = null
+
     fun setRegularExpression(regularExpression: RecognizerCombiner.RegularExpression) {
         textDisplay.clear()
 
-        val root = analyzeRegexGroups(regularExpression.pattern)
+        val root = analyzeRegexGroups(regularExpression.patternAfterPartSelection)
         val spans = makeSpans(group = root)
-        var popover: Popover? = null
+
         spans.forEach { pair ->
             val symbol = pair.key
             val span = pair.value
@@ -79,9 +88,9 @@ internal class CapturingGroupPart(
             var range: IntRange? = null
 
             span.onmousedown = { mouseDownEvent ->
-                popover?.let { it.dispose() }
+                // popover?.let { it.dispose(); popover = null; }
+
                 val startIndex = symbol.index
-                //console.log("DOWN", startIndex, mouseDownEvent)
                 val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
                     MouseCapture.restoreGlobalMouseEvents()
                     val element = document.elementFromPoint(
@@ -98,18 +107,10 @@ internal class CapturingGroupPart(
                     event = mouseDownEvent, // as MouseEvent,
                     mouseMoveListener = mouseMoveListener,
                     mouseUpListener = {
-                        range?.let { range ->
-                            popover = Popover(
-                                element = spans.entries.first { it.key.index == range.first }.value,
-                                contentString = "abc",
-                                placement = "left",
-                                title = "test",
-                                trigger = "click"
-                            )
-                            popover!!.show()
-                            // TODO hide popover if user clicks somewhere else
+                        range?.let { range -> markedRegion(
+                            range = range,
+                            element = spans.entries.first { it.key.index == range.first }.value)
                         }
-                        // console.log("up", it)
                     }
                 )
                 // run the first event now
@@ -120,6 +121,21 @@ internal class CapturingGroupPart(
             }*/
             textDisplay.appendChild(span)
         }
+    }
+
+    private fun markedRegion(range: IntRange, element: HTMLElement) {
+        popover = Popover(
+            element = element,
+            contentString = "Test",
+            placement = "left",
+            title = "Create capturing group",
+            trigger = "manual"
+        )
+        popover!!.show()
+        jQuery(".popover").mousedown {
+            it.stopPropagation()
+        }
+        // TODO hide popover if user clicks somewhere else
     }
 
     private fun mark(items: Map<PatternSymbol, HTMLSpanElement>, from: Int, to: Int): IntRange {

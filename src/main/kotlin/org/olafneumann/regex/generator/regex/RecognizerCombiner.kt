@@ -162,8 +162,11 @@ object RecognizerCombiner {
     data class RegularExpression(
         val parts: Collection<RegularExpressionPart>
     ) {
-        val pattern
+        val patternAfterPartSelection: String
             get() = parts.joinToString(separator = "") { it.pattern }
+
+        val finalPattern: String
+            get() = patternAfterPartSelection // TODO add capturing groups
 
         val capturingGroups = mutableListOf<CapturingGroup>()
     }

@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.js
 
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 import kotlin.js.Json
 
 @JsName("$")
@@ -10,8 +11,7 @@ external fun jQuery(element: HTMLElement): JQuery
 
 @Suppress("TooManyFunctions")
 external class JQuery {
-    @Suppress("UnusedPrivateMember")
-    fun on(type: String, callback: () -> Unit)
+    fun mousedown(handler: (Event) -> Unit)
     fun get(): HTMLElement
     fun slideDown(): JQuery
     fun slideUp(): JQuery
