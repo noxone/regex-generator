@@ -87,18 +87,16 @@ internal class CapturingGroupPart(
         }
     }
 
-    @Suppress("MaxLineLength")
-    private val patternPartitionerRegex = Regex(
-        """(?<complete>\(\?(?:[a-zA-Z]+|[+-]?[0-9]+|&\w+|P=\w+)\))|(?<open>\((?:\?(?::|!|>|=|\||<=|P?<[a-z][a-z0-9]*>|'[a-z][a-z0-9]*'|[-a-z]+:))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<alt>\|)""",
-        options = setOf(RegexOption.IGNORE_CASE)
-    )
-
     private var popover: Popover? = null
 
     fun setRegularExpression(regularExpression: RegularExpression) {
-        textDisplay.clear()
+        this.regularExpression = regularExpression
 
-        val root = analyzeRegexGroups(regularExpression.patternAfterPartSelection)
+        textDisplay.clear()
+        capGroupList.clear()
+
+        // show text to select regular expressions
+        val root = analyzeRegexGroups()
         val spans = makeSpans(group = root)
 
         spans.forEach { pair ->
@@ -224,7 +222,10 @@ internal class CapturingGroupPart(
             it.dispose()
             popover = null
         }
-        console.log("Create capturing group", name, "in range", elementRange)
+        regularExpression?.let {
+            it.add(RegularExpression.CapturingGroup(range = elementRange, name = name))
+            this.setRegularExpression(regularExpression = it)
+        }
     }
 
     /*private class InjectById(private val id: String) : CustomCapture {
@@ -298,8 +299,8 @@ internal class CapturingGroupPart(
             .associate { it.key to it.value }
     }
 
-    private fun analyzeRegexGroups(pattern: String): PatternPartGroup {
-        val rawParts = patternPartitionerRegex.findAll(pattern)
+    private fun analyzeRegexGroups(): PatternPartGroup {
+        val rawParts = regularExpression!!.patternParts
             .mapIndexed { index, matchResult ->
                 PatternSymbol(
                     index = index,
