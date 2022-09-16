@@ -2,18 +2,18 @@ package org.olafneumann.regex.generator.ui.html
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
+import kotlinx.html.ButtonType
 import kotlinx.html.InputType
+import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.id
-import kotlinx.html.injector.CustomCapture
 import kotlinx.html.injector.InjectByClassName
 import kotlinx.html.injector.inject
 import kotlinx.html.input
 import kotlinx.html.js.form
-import kotlinx.html.js.onInputFunction
+import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
-import kotlinx.html.label
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
@@ -52,6 +52,7 @@ internal class CapturingGroupPart(
         }
 
         document.onmousedown = {
+            // dispose any popover if the user click somewhere else
             popover?.let {
                 it.dispose()
                 popover = null
@@ -137,48 +138,29 @@ internal class CapturingGroupPart(
 
     private fun markedRegion(range: IntRange, element: HTMLElement) {
         val elements = Elements()
-        val CLASS_CAP_NAME = "classCapName"
-        val CLASS_CAP_CHECK = "classCapCheck"
-        val idCheck = "idCheck"
-        val idNameDiv = "idNameDiv"
-        val idName = "idName"
+        val classCapGroupName = "rg-cap-group-name"
+        val idCapGroupName = "rg_name_of_capturing_group"
 
         popover = Popover(
             element = element,
             html = true,
             contentElement = document.create.inject(
                 elements, listOf(
-                    InjectByClassName(CLASS_CAP_CHECK) to Elements::checkbox,
-                    InjectByClassName(CLASS_CAP_NAME) to Elements::nameText,
-                    InjectById(idNameDiv) to Elements::nameDiv
+                    InjectByClassName(classCapGroupName) to Elements::nameText,
                 )
             ).form {
-                div(classes = "form-group form-check") {
-                    input(type = InputType.checkBox, classes = "$CLASS_CAP_CHECK form-check-input") {
-                        this.id = idCheck
-                        //checked = match.isCapturingGroup
-                        onInputFunction = { _ ->
-                            console.log(elements.checkbox.checked)
-                            /*match.isCapturingGroup = elements.checkbox.checked
-                            showNameDiv(show = match.isCapturingGroup)
-                            triggerRegexRecalculation()*/
-                        }
-                    }
-                    label(classes = "form-check-label") {
-                        this.htmlFor = idCheck
-                        +"Capturing group"
+                div(classes = "form-group") {
+                    input(type = InputType.text, classes = "$classCapGroupName form-control-sm") {
+                        this.id = idCapGroupName
+                        placeholder = "Name (optional)"
                     }
                 }
                 div(classes = "form-group") {
-                    id = idNameDiv
-                    input(type = InputType.text, classes = "$CLASS_CAP_NAME form-control-sm") {
-                        this.id = idName
-                        value = "capturinggroupname"//match.capturingGroupName
-                        placeholder = "name (optional)"
-                        onInputFunction = { _ ->
-                            /*match.capturingGroupName = elements.nameText.value.trim()
-                            triggerRegexRecalculation()*/
-                            console.log(elements.nameText.value.trim())
+                    button(classes = "btn btn-primary") {
+                        +"Create capturing group"
+                        type = ButtonType.button
+                        onClickFunction = { _ ->
+                            createCapturingGroup(elements.nameText.value.ifBlank { null }, range)
                         }
                     }
                 }
@@ -189,19 +171,26 @@ internal class CapturingGroupPart(
         )
         popover!!.show()
         jQuery(".popover").mousedown {
+            // prevent popover from being disposed.
             it.stopPropagation()
         }
-        // TODO hide popover if user clicks somewhere else
     }
 
-    private class InjectById(private val id: String) : CustomCapture {
-        override fun apply(element: HTMLElement): Boolean = element.id == id
+    private fun createCapturingGroup(name: String?, elementRange: IntRange) {
+        popover?.let {
+            it.dispose()
+            popover = null
+        }
+        console.log("Create capturing group", name, "in range", elementRange)
     }
+
+    /*private class InjectById(private val id: String) : CustomCapture {
+        override fun apply(element: HTMLElement): Boolean = element.id == id
+    }*/
 
     private class Elements {
-        var checkbox: HTMLInputElement by Delegates.notNull()
         var nameText: HTMLInputElement by Delegates.notNull()
-        var nameDiv: HTMLElement by Delegates.notNull()
+        // var nameDiv: HTMLElement by Delegates.notNull()
     }
 
     private fun mark(items: Map<PatternSymbol, HTMLSpanElement>, from: Int, to: Int): IntRange {
