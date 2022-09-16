@@ -6,6 +6,7 @@ import org.olafneumann.regex.generator.js.JQuery
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.ui.html.CapturingGroupPart
 import org.olafneumann.regex.generator.ui.html.RecognizerDisplayPart
 import org.olafneumann.regex.generator.ui.html.ResultDisplayPart
@@ -150,7 +151,7 @@ class HtmlView(
         recognizerDisplayPart.showMatchingRecognizers(inputText, matches)
     }
 
-    override fun showResultingPattern(regex: RecognizerCombiner.RegularExpression) {
+    override fun showResultingPattern(regex: RegularExpression) {
         capturingGroupPart.setRegularExpression(regex)
         resultDisplayPart.showResultingPattern(regex)
     }

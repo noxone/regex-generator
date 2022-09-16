@@ -11,6 +11,7 @@ import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.ui.DisplayContract
 import org.olafneumann.regex.generator.ui.HtmlHelper
 import org.olafneumann.regex.generator.ui.HtmlView
@@ -53,7 +54,7 @@ internal class ResultDisplayPart(
     private val languageDisplays = CodeGenerator.all
         .associateWith { LanguageCard(it, containerLanguages) }
 
-    fun showResultingPattern(regex: RecognizerCombiner.RegularExpression) {
+    fun showResultingPattern(regex: RegularExpression) {
         showResultRegex(regex)
 
         // update share-link
@@ -71,7 +72,7 @@ internal class ResultDisplayPart(
         Prism.highlightAll()
     }
 
-    private fun showResultRegex(regex: RecognizerCombiner.RegularExpression) {
+    private fun showResultRegex(regex: RegularExpression) {
         resultDisplay.clear()
         for (part in regex.parts) {
             resultDisplay.append(

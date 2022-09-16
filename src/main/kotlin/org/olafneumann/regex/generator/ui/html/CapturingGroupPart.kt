@@ -16,7 +16,7 @@ import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.ui.DisplayContract
 import org.olafneumann.regex.generator.ui.HtmlHelper
 import org.w3c.dom.HTMLDivElement
@@ -41,8 +41,6 @@ internal class CapturingGroupPart(
     private val expandImageClose = expandButton.getElementsByTagName("img")[1] as HTMLImageElement
     private val content = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_content")
     private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_display")
-
-    private var regularExpression: RecognizerCombiner.RegularExpression? = null
 
     init {
         toggleVisibility(open = false)
@@ -88,7 +86,7 @@ internal class CapturingGroupPart(
 
     private var popover: Popover? = null
 
-    fun setRegularExpression(regularExpression: RecognizerCombiner.RegularExpression) {
+    fun setRegularExpression(regularExpression: RegularExpression) {
         textDisplay.clear()
 
         val root = analyzeRegexGroups(regularExpression.patternAfterPartSelection)

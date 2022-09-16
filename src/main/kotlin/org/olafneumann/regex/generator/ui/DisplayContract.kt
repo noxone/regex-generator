@@ -2,6 +2,7 @@ package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.regex.RegularExpression
 
 interface DisplayContract {
     interface View {
@@ -18,7 +19,7 @@ interface DisplayContract {
         fun hideShortenWarning(immediately: Boolean = false)
 
         fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>)
-        fun showResultingPattern(regex: RecognizerCombiner.RegularExpression)
+        fun showResultingPattern(regex: RegularExpression)
     }
 
     interface Controller {
