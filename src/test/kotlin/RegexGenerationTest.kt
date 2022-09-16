@@ -9,7 +9,7 @@ class RegexGenerationTest {
             val actual =
                 RecognizerCombiner.combineMatches(inputText = given, selectedMatches = emptyList(), options = options)
 
-            assertEquals(expected = expected, actual = actual.pattern)
+            assertEquals(expected = expected, actual = actual.finalPattern)
         }
     }
 

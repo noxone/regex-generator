@@ -32,7 +32,7 @@ class RecognizerCombinerTest {
             inputText = inputText,
             selectedMatches = selectedMatches,
             options = RecognizerCombiner.Options(onlyPatterns = false)
-        ).pattern
+        ).finalPattern
 
         assertEquals(expected = expected, actual = actual)
     }
@@ -45,7 +45,7 @@ class RecognizerCombinerTest {
             inputText = inputText,
             selectedMatches = selectedMatches,
             options = RecognizerCombiner.Options(onlyPatterns = true)
-        ).pattern
+        ).finalPattern
 
         assertEquals(expected = expected, actual = actual)
     }

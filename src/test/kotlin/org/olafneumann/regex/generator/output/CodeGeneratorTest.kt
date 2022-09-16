@@ -13,7 +13,11 @@ class CodeGeneratorTest {
     }
 
     private fun generateRegex(input: String): String =
-        RecognizerCombiner.combineMatches(inputText = input, selectedMatches = emptyList(), options = Options()).pattern
+        RecognizerCombiner.combineMatches(
+            inputText = input,
+            selectedMatches = emptyList(),
+            options = Options()
+        ).finalPattern
 
     @Test
     fun testLanguageNameReplacement() {
