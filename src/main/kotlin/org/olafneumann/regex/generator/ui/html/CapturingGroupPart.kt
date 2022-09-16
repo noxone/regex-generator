@@ -1,19 +1,24 @@
 package org.olafneumann.regex.generator.ui.html
 
 import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.dom.clear
 import kotlinx.html.ButtonType
 import kotlinx.html.InputType
+import kotlinx.html.a
 import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.dom.create
+import kotlinx.html.em
 import kotlinx.html.id
 import kotlinx.html.injector.InjectByClassName
 import kotlinx.html.injector.inject
 import kotlinx.html.input
 import kotlinx.html.js.form
+import kotlinx.html.js.li
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
+import kotlinx.html.span
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RegularExpression
@@ -25,6 +30,7 @@ import org.w3c.dom.HTMLHeadingElement
 import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
+import org.w3c.dom.HTMLUListElement
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
 import kotlin.js.json
@@ -41,6 +47,9 @@ internal class CapturingGroupPart(
     private val expandImageClose = expandButton.getElementsByTagName("img")[1] as HTMLImageElement
     private val content = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_content")
     private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_display")
+    private val capGroupList = HtmlHelper.getElementById<HTMLUListElement>("rg_cap_group_list")
+
+    private var regularExpression: RegularExpression? = null
 
     init {
         toggleVisibility(open = false)
@@ -99,7 +108,7 @@ internal class CapturingGroupPart(
             var range: IntRange? = null
 
             span.onmousedown = { mouseDownEvent ->
-                // popover?.let { it.dispose(); popover = null; }
+                popover?.let { it.dispose(); popover = null; }
 
                 val startIndex = symbol.index
                 val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
@@ -131,6 +140,42 @@ internal class CapturingGroupPart(
                 //console.log("UP", mouseUpEvent)
             }*/
             textDisplay.appendChild(span)
+        }
+
+        // display existing regular expressions
+        if (regularExpression.capturingGroups.isNotEmpty()) {
+            regularExpression.capturingGroups
+                .map {
+                    document.create.li(classes = "list-group-item rg-cap-group-list-item d-flex justify-content-between") {
+                        span {
+                            if (it.name != null) {
+                                span(classes = "rg_cap_group_named") { +it.name!! }
+                            } else {
+                                span(classes = "rg_cap_group_unnamed") { +"unnamed group" }
+                            }
+
+                            span {
+                                +"(${it.range.first.toString()} to ${it.range.last.toString()})"
+                            }
+                        }
+                        // todo add hovering effect for the capturing group
+
+                        div {
+                            a {
+                                // https://icons.getbootstrap.com/icons/trash/
+                                +"\uD83D\uDDD1"
+                                onClickFunction = { _ ->
+                                    window.alert("Delete capturing group: ${it.range.toString()}")
+                                }
+                            }
+                        }
+                    }
+                }
+                .forEach { capGroupList.appendChild(it) }
+        } else {
+            capGroupList.appendChild(document.create.li("list-group-item rg-cap-group-list-item") {
+                em { +"No capturing groups defined yet." }
+            })
         }
     }
 

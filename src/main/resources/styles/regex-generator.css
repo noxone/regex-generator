@@ -96,6 +96,10 @@
     background-color: lightgray;
 }
 
+.rg-cap-group-list-item {
+  padding: 0.75ex 1em;
+}
+
 .rg-check-row {
   margin-left: 1.4em;
   padding-right: 3em;
