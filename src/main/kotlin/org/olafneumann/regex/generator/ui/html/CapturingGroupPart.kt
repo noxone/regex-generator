@@ -40,6 +40,10 @@ internal class CapturingGroupPart(
     @Suppress("UnusedPrivateMember") // TODO remove
     private val presenter: DisplayContract.Controller
 ) {
+    companion object {
+        private const val MARK_CLASS = "bg-warning"
+    }
+
     private val container = HtmlHelper.getElementById<HTMLDivElement>("rg_capgroup_selection_container")
     private val number = container.getElementsByTagName("h3")[0] as HTMLHeadingElement
     private val expandButton = HtmlHelper.getElementById<HTMLElement>("rg_cap_group_expander")
@@ -51,6 +55,9 @@ internal class CapturingGroupPart(
 
     private var regularExpression: RegularExpression? = null
 
+    private var popover: Popover? = null
+    private var clearMarks: () -> Unit = {}
+
     init {
         toggleVisibility(open = false)
         expandButton.onclick = {
@@ -60,11 +67,14 @@ internal class CapturingGroupPart(
 
         document.onmousedown = {
             // dispose any popover if the user click somewhere else
-            popover?.let {
-                it.dispose()
-                popover = null
-            }
+            disposePopover()
         }
+    }
+
+    private fun disposePopover() {
+        popover?.dispose()
+        popover = null
+        clearMarks()
     }
 
     private val isOpen: Boolean
@@ -76,18 +86,14 @@ internal class CapturingGroupPart(
             jContent.slideDown()
             jQuery(expandImageOpen).fadeOut()
             jQuery(expandImageClose).fadeIn()
-            //jQuery(number).animate(json("font-size" to "4.5rem"))
             jQuery(number).animate(json("margin-top" to 0, "margin-bottom" to 0))
         } else {
             jContent.slideUp()
             jQuery(expandImageOpen).fadeIn()
             jQuery(expandImageClose).fadeOut()
-            //jQuery(number).animate(json("font-size" to "1.75rem"))
             jQuery(number).animate(json("margin-top" to "-1.7rem", "margin-bottom" to "-2rem"))
         }
     }
-
-    private var popover: Popover? = null
 
     fun setRegularExpression(regularExpression: RegularExpression) {
         this.regularExpression = regularExpression
@@ -106,7 +112,7 @@ internal class CapturingGroupPart(
             var range: IntRange? = null
 
             span.onmousedown = { mouseDownEvent ->
-                popover?.let { it.dispose(); popover = null; }
+                disposePopover()
 
                 val startIndex = symbol.index
                 val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
@@ -139,6 +145,7 @@ internal class CapturingGroupPart(
             }*/
             textDisplay.appendChild(span)
         }
+        clearMarks = { spans.forEach { it.value.classList.toggle(MARK_CLASS, false) } }
 
         // display existing regular expressions
         if (regularExpression.capturingGroups.isNotEmpty()) {
@@ -218,10 +225,8 @@ internal class CapturingGroupPart(
     }
 
     private fun createCapturingGroup(name: String?, elementRange: IntRange) {
-        popover?.let {
-            it.dispose()
-            popover = null
-        }
+        disposePopover()
+        console.log("Element-Range", elementRange)
         regularExpression?.let {
             it.add(RegularExpression.CapturingGroup(range = elementRange, name = name))
             this.setRegularExpression(regularExpression = it)
@@ -255,7 +260,7 @@ internal class CapturingGroupPart(
         val range = findIndicesInCommentParent(compStart, compEnd)
 
         items.forEach {
-            it.value.classList.toggle("bg-warning", it.key.index in range)
+            it.value.classList.toggle(MARK_CLASS, it.key.index in range)
         }
         return range
     }
