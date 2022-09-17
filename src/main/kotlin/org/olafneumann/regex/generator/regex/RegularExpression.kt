@@ -20,7 +20,7 @@ data class RegularExpression(
             var pattern = patternAfterPartSelection
             for (capturingGroup in capturingGroups) {
                 val parts = patternPartitionerRegex.findAll(pattern).toList()
-                console.log("Pattern: ", pattern, parts)
+                console.log("Pattern: ", pattern, parts, capturingGroup)
                 val r1 = if (capturingGroup.range.first != 0) IntRange(start = 0, endInclusive = parts[capturingGroup.range.first - 1].range.last) else null
                 val r2 = IntRange(start = parts[capturingGroup.range.first].range.first, endInclusive = parts[capturingGroup.range.last].range.last)
                 val r3 = if (capturingGroup.range.last != parts.lastIndex) IntRange(start = parts[capturingGroup.range.last + 1].range.first, endInclusive =  parts.last().range.last) else null
@@ -55,7 +55,11 @@ data class RegularExpression(
             }*/
         }
         _capturingGroups.add(newCapturingGroup)
-        _capturingGroups.sortBy { it.last }
+        //_capturingGroups.sortBy { it.last }
+    }
+
+    fun remove(capturingGroup: CapturingGroup) {
+        _capturingGroups.removeAll { it.id == capturingGroup.id }
     }
 
     val patternParts: Sequence<MatchResult>
@@ -70,8 +74,13 @@ data class RegularExpression(
         var range: IntRange,
         var name: String?
     ) {
-        val first = range.first
-        val last = range.last
+        companion object {
+            private var current_id = 0
+                get() { return field++ }
+        }
+        val id = current_id
+        val first: Int get() = range.first
+        val last: Int get() = range.last
     }
 }
 

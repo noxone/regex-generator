@@ -166,11 +166,12 @@ internal class CapturingGroupPart(
                         // todo add hovering effect for the capturing group
 
                         div {
-                            a {
+                            a(classes = "btn") {
                                 // https://icons.getbootstrap.com/icons/trash/
                                 +"\uD83D\uDDD1"
                                 onClickFunction = { _ ->
-                                    window.alert("Delete capturing group: ${it.range.toString()}")
+                                    regularExpression.remove(it)
+                                    setRegularExpression(regularExpression)
                                 }
                             }
                         }
