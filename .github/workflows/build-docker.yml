@@ -36,6 +36,8 @@ jobs:
   build-and-publish-docker:
     runs-on: ubuntu-latest
     name: Build and publish Docker images
+    env:
+      docker-platforms: "linux/amd64,linux/arm64"
     steps:
       # prepare build
       - name: Checkout
@@ -52,12 +54,20 @@ jobs:
           name: site
           path: build/distributions
 
+      # change ENV variables if not multi-platform (local)
+      - name: Sets env vars for local build
+        if: ${{ inputs.appEnvironment == 'local' }}
+        run: |
+          echo "docker-platforms=linux/amd64" >> $GITHUB_ENV
+
       # set up QEMU to enable build of images for multiple architectures
       - name: Set up QEMU
+        if: ${{ inputs.appEnvironment == 'github' }}
         uses: docker/setup-qemu-action@v2
 
       # generate and publish docker image containing the generated page
       - name: Set up Docker Buildx
+        if: ${{ inputs.appEnvironment == 'github' }}
         uses: docker/setup-buildx-action@v2
 
       # Do the docker stuff
@@ -71,7 +81,7 @@ jobs:
         uses: docker/build-push-action@v3.1.1
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.docker-platforms }}
           build-args: APP_ENV=${{ inputs.appEnvironment }}
           push: ${{ inputs.pushImages }}
           tags: noxone/regexgenerator:latest,noxone/regexgenerator:${{ steps.date.outputs.date }}_${{ steps.vars.outputs.sha_short }}
