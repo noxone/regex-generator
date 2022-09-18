@@ -39,6 +39,7 @@ import org.w3c.dom.get
 import kotlin.js.json
 import kotlin.properties.Delegates
 
+@Suppress("TooManyFunctions")
 internal class CapturingGroupPart(
     @Suppress("UnusedPrivateMember") // TODO remove
     private val presenter: DisplayContract.Controller
@@ -108,48 +109,7 @@ internal class CapturingGroupPart(
         // show text to select regular expressions
         val root = analyzeRegexGroups()
         val spans = makeSpans(group = root)
-
-        spans.forEach { pair ->
-            val symbol = pair.key
-            val span = pair.value
-
-            var range: IntRange? = null
-
-            span.onmousedown = { mouseDownEvent ->
-                disposePopover()
-
-                val startIndex = symbol.index
-                val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
-                    MouseCapture.restoreGlobalMouseEvents()
-                    val element = document.elementFromPoint(
-                        x = mouseMoveEvent.x,
-                        y = mouseMoveEvent.y
-                    )
-                    MouseCapture.preventGlobalMouseEvents()
-                    if (element != null && element is HTMLSpanElement) {
-                        val currentIndex = element.attributes["data-index"]?.value?.toInt()
-                        currentIndex?.let { ci -> range = mark(spans, startIndex, ci) }
-                    }
-                }
-                MouseCapture.capture(
-                    event = mouseDownEvent, // as MouseEvent,
-                    mouseMoveListener = mouseMoveListener,
-                    mouseUpListener = {
-                        range?.let { range -> markedRegion(
-                            range = range,
-                            element = spans.entries.first { it.key.index == range.first }.value)
-                        }
-                    }
-                )
-                // run the first event now
-                mouseMoveListener(mouseDownEvent)
-            }
-            /*span.onmouseup = { mouseUpEvent ->
-                //console.log("UP", mouseUpEvent)
-            }*/
-            textDisplay.appendChild(span)
-        }
-        clearMarks = { spans.forEach { it.value.classList.toggle(CLASS_SELECTION, false) } }
+        enhanceSpans(spans)
 
         // display existing regular expressions
         if (regularExpression.capturingGroups.isNotEmpty()) {
@@ -175,7 +135,7 @@ internal class CapturingGroupPart(
                                 // https://icons.getbootstrap.com/icons/trash/
                                 +"\uD83D\uDDD1"
                                 onClickFunction = { _ ->
-                                    regularExpression.remove(it)
+                                    regularExpression.removeCapturingGroup(it.id)
                                     setRegularExpression(regularExpression)
                                 }
                             }
@@ -231,7 +191,7 @@ internal class CapturingGroupPart(
                         placeholder = "Name (optional)"
                         onKeyDownFunction = { event ->
                             if (event is KeyboardEvent) {
-                                if (event.keyCode == 13) {
+                                if (event.key == "Enter") {
                                     createCapturingGroup()
                                 } else if (event.key == "Escape") {
                                     disposePopover()
@@ -265,10 +225,10 @@ internal class CapturingGroupPart(
     private fun createCapturingGroup(name: String?, elementRange: IntRange) {
         disposePopover()
         regularExpression?.let {
-            it.add(RegularExpression.CapturingGroup(
-                openingPosition = elementRange.first,
-                closingPosition = elementRange.last + 2,
-                name = name)
+            it.addCapturingGroup(
+                start = elementRange.first,
+                endInclusive = elementRange.last,
+                name = name
             )
             this.setRegularExpression(regularExpression = it)
         }
@@ -343,6 +303,46 @@ internal class CapturingGroupPart(
             }
             .flatMap { it.entries }
             .associate { it.key to it.value }
+    }
+
+    private fun enhanceSpans(spans: Map<PatternSymbol, HTMLSpanElement>) {
+        spans.forEach { pair ->
+            val symbol = pair.key
+            val span = pair.value
+
+            var range: IntRange? = null
+
+            span.onmousedown = { mouseDownEvent ->
+                disposePopover()
+
+                val startIndex = symbol.index
+                val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
+                    MouseCapture.restoreGlobalMouseEvents()
+                    val element = document.elementFromPoint(
+                        x = mouseMoveEvent.x,
+                        y = mouseMoveEvent.y
+                    )
+                    MouseCapture.preventGlobalMouseEvents()
+                    if (element != null && element is HTMLSpanElement) {
+                        val currentIndex = element.attributes["data-index"]?.value?.toInt()
+                        currentIndex?.let { ci -> range = mark(spans, startIndex, ci) }
+                    }
+                }
+                MouseCapture.capture(
+                    event = mouseDownEvent, // as MouseEvent,
+                    mouseMoveListener = mouseMoveListener,
+                    mouseUpListener = {
+                        range?.let { range -> markedRegion(
+                            range = range,
+                            element = spans.entries.first { it.key.index == range.first }.value)
+                        }
+                    }
+                )
+                // run the first event now
+                mouseMoveListener(mouseDownEvent)
+            }
+            textDisplay.appendChild(span)
+        }
     }
 
     private fun analyzeRegexGroups(): PatternPartGroup {
