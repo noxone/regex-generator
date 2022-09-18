@@ -110,6 +110,7 @@ internal class CapturingGroupPart(
         val root = analyzeRegexGroups()
         val spans = makeSpans(group = root)
         enhanceSpans(spans)
+        clearMarks = { spans.forEach { it.value.classList.toggle(CLASS_SELECTION, false) } }
 
         // display existing regular expressions
         if (regularExpression.capturingGroups.isNotEmpty()) {
