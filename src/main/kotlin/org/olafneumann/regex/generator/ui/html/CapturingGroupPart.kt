@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.ui.html
 
 import kotlinx.browser.document
-import kotlinx.browser.window
 import kotlinx.dom.clear
 import kotlinx.html.ButtonType
 import kotlinx.html.InputType
@@ -11,12 +10,13 @@ import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.em
 import kotlinx.html.id
-import kotlinx.html.injector.InjectByClassName
+import kotlinx.html.injector.CustomCapture
 import kotlinx.html.injector.inject
 import kotlinx.html.input
 import kotlinx.html.js.form
 import kotlinx.html.js.li
 import kotlinx.html.js.onClickFunction
+import kotlinx.html.js.onKeyDownFunction
 import kotlinx.html.js.span
 import kotlinx.html.span
 import org.olafneumann.regex.generator.js.Popover
@@ -31,6 +31,7 @@ import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.HTMLUListElement
+import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
 import kotlin.js.json
@@ -179,7 +180,7 @@ internal class CapturingGroupPart(
                 }
                 .forEach { capGroupList.appendChild(it) }
         } else {
-            capGroupList.appendChild(document.create.li("list-group-item rg-cap-group-list-item") {
+            capGroupList.appendChild(document.create.li("list-group-item rg-cap-group-list-item rg-faded") {
                 em { +"No capturing groups defined yet." }
             })
         }
@@ -187,21 +188,33 @@ internal class CapturingGroupPart(
 
     private fun markedRegion(range: IntRange, element: HTMLElement) {
         val elements = Elements()
-        val classCapGroupName = "rg-cap-group-name"
         val idCapGroupName = "rg_name_of_capturing_group"
+
+        val createCapturingGroup: () -> Unit = {
+            createCapturingGroup(elements.nameText.value.ifBlank { null }, range)
+        }
 
         popover = Popover(
             element = element,
             html = true,
             contentElement = document.create.inject(
                 elements, listOf(
-                    InjectByClassName(classCapGroupName) to Elements::nameText,
+                    InjectById(idCapGroupName) to Elements::nameText
                 )
             ).form {
                 div(classes = "form-group") {
-                    input(type = InputType.text, classes = "$classCapGroupName form-control-sm") {
+                    input(type = InputType.text, classes = "form-control-sm") {
                         this.id = idCapGroupName
                         placeholder = "Name (optional)"
+                        onKeyDownFunction = { event ->
+                            if (event is KeyboardEvent) {
+                                if (event.keyCode == 13) {
+                                    createCapturingGroup()
+                                } else if (event.key == "Escape") {
+                                    disposePopover()
+                                }
+                            }
+                        }
                     }
                 }
                 div(classes = "form-group") {
@@ -209,18 +222,19 @@ internal class CapturingGroupPart(
                         +"Create capturing group"
                         type = ButtonType.button
                         onClickFunction = { _ ->
-                            createCapturingGroup(elements.nameText.value.ifBlank { null }, range)
+                            createCapturingGroup()
                         }
                     }
                 }
             },
             placement = "left",
             title = "Create capturing group",
-            trigger = "manual"
+            trigger = "manual",
+            onShown = { elements.nameText.focus() }
         )
         popover!!.show()
         jQuery(".popover").mousedown {
-            // prevent popover from being disposed.
+            // prevent popover from being disposed when clicking inside
             it.stopPropagation()
         }
     }
@@ -234,9 +248,9 @@ internal class CapturingGroupPart(
         }
     }
 
-    /*private class InjectById(private val id: String) : CustomCapture {
+    private class InjectById(private val id: String) : CustomCapture {
         override fun apply(element: HTMLElement): Boolean = element.id == id
-    }*/
+    }
 
     private class Elements {
         var nameText: HTMLInputElement by Delegates.notNull()

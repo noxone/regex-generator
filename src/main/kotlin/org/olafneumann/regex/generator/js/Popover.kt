@@ -13,13 +13,15 @@ class Popover(
     private val html: Boolean = false,
     private val placement: String = "right",
     private val title: String = "",
-    private val trigger: String = "click"
+    private val trigger: String = "click",
+    onShown: () -> Unit = {}
 ) {
     private var jquery: JQuery
 
     init {
         jquery = jQuery(element)
         jquery.popover(createOptionsJson())
+        jquery.on("shown.bs.popover", onShown)
     }
 
     fun show() = jquery.popover("show")
