@@ -17,6 +17,8 @@ import kotlinx.html.js.form
 import kotlinx.html.js.li
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onKeyDownFunction
+import kotlinx.html.js.onMouseMoveFunction
+import kotlinx.html.js.onMouseOutFunction
 import kotlinx.html.js.span
 import kotlinx.html.span
 import org.olafneumann.regex.generator.js.Popover
@@ -42,7 +44,8 @@ internal class CapturingGroupPart(
     private val presenter: DisplayContract.Controller
 ) {
     companion object {
-        private const val MARK_CLASS = "bg-warning"
+        private const val CLASS_SELECTION = "bg-warning"
+        private const val CLASS_HIGHLIGHT = "bg-info"
     }
 
     private val container = HtmlHelper.getElementById<HTMLDivElement>("rg_capgroup_selection_container")
@@ -146,13 +149,15 @@ internal class CapturingGroupPart(
             }*/
             textDisplay.appendChild(span)
         }
-        clearMarks = { spans.forEach { it.value.classList.toggle(MARK_CLASS, false) } }
+        clearMarks = { spans.forEach { it.value.classList.toggle(CLASS_SELECTION, false) } }
 
         // display existing regular expressions
         if (regularExpression.capturingGroups.isNotEmpty()) {
             regularExpression.capturingGroups
                 .map {
-                    document.create.li(classes = "list-group-item rg-cap-group-list-item d-flex justify-content-between") {
+                    document.create.li(
+                        classes = "list-group-item rg-cap-group-list-item d-flex justify-content-between"
+                    ) {
                         span {
                             if (it.name != null) {
                                 span(classes = "rg_cap_group_named") { +it.name!! }
@@ -161,10 +166,9 @@ internal class CapturingGroupPart(
                             }
 
                             span {
-                                +"(${it.range.first.toString()} to ${it.range.last.toString()})"
+                                +"(${it.openingPosition.toString()} to ${it.closingPosition.toString()})"
                             }
                         }
-                        // todo add hovering effect for the capturing group
 
                         div {
                             a(classes = "btn") {
@@ -175,6 +179,25 @@ internal class CapturingGroupPart(
                                     setRegularExpression(regularExpression)
                                 }
                             }
+                        }
+
+                        // highlight capturing group range in text
+                        var isMarking = false
+                        val markIt: (Boolean, IntRange?) -> Unit = { selected, range ->
+                            spans.forEach {
+                                it.value.classList.toggle(CLASS_HIGHLIGHT, selected
+                                        && (range == null || it.key.index in range))
+                            }
+                        }
+                        onMouseMoveFunction = { _ ->
+                            if (!isMarking) {
+                                markIt(true, it.range)
+                                isMarking = true
+                            }
+                        }
+                        onMouseOutFunction = {
+                            markIt(false, null)
+                            isMarking = false
                         }
                     }
                 }
@@ -241,9 +264,12 @@ internal class CapturingGroupPart(
 
     private fun createCapturingGroup(name: String?, elementRange: IntRange) {
         disposePopover()
-        console.log("Element-Range", elementRange)
         regularExpression?.let {
-            it.add(RegularExpression.CapturingGroup(range = elementRange, name = name))
+            it.add(RegularExpression.CapturingGroup(
+                openingPosition = elementRange.first,
+                closingPosition = elementRange.last + 2,
+                name = name)
+            )
             this.setRegularExpression(regularExpression = it)
         }
     }
@@ -275,7 +301,7 @@ internal class CapturingGroupPart(
         val range = findIndicesInCommentParent(compStart, compEnd)
 
         items.forEach {
-            it.value.classList.toggle(MARK_CLASS, it.key.index in range)
+            it.value.classList.toggle(CLASS_SELECTION, it.key.index in range)
         }
         return range
     }
@@ -398,29 +424,8 @@ internal class CapturingGroupPart(
         private val mutableParts = mutableListOf<PatternPart>()
 
         override fun add(part: PatternPart) {
-            /*if (part is PatternSymbol && part.type == PatternSymbolType.ALTERNATIVE) {
-                if (!alternative) {
-                    // needs to turned into an alternative
-                    val firstSubGroup = PatternPartGroup(parent = this)
-                    firstSubGroup.mutableParts.addAll(this.mutableParts.onEach { it.parent = firstSubGroup })
-                    mutableParts.clear()
-                    mutableParts.add(firstSubGroup)
-                    alternative = true
-                }
-
-                mutableParts.add(part)
-                part.parent = this
-                mutableParts.add(PatternPartGroup(parent = this))
-            } else {*/
-                /*if (alternative) {
-                    val partParent = mutableParts.last() as PatternPartGroup
-                    partParent.add(part)
-                    part.parent = partParent
-                } else {*/
-                    mutableParts.add(part)
-                    part.parent = this
-                //}
-            //}
+            mutableParts.add(part)
+            part.parent = this
         }
 
         fun adjustAlternatives() {
@@ -464,7 +469,6 @@ internal class CapturingGroupPart(
             set(value) { _selectable = value }
             get() = parent!!.selectable && _selectable
 
-        //override var selectable: Boolean = false
         override val isRoot: Boolean = false
         override val depth: Int get() = 1 + parent!!.depth
 

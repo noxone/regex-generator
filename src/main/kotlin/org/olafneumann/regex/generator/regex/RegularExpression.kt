@@ -18,15 +18,24 @@ data class RegularExpression(
     val finalPattern: String
         get() {
             var pattern = patternAfterPartSelection
-            for (capturingGroup in capturingGroups) {
-                val parts = patternPartitionerRegex.findAll(pattern).toList()
-                console.log("Pattern: ", pattern, parts, capturingGroup)
-                val r1 = if (capturingGroup.range.first != 0) IntRange(start = 0, endInclusive = parts[capturingGroup.range.first - 1].range.last) else null
-                val r2 = IntRange(start = parts[capturingGroup.range.first].range.first, endInclusive = parts[capturingGroup.range.last].range.last)
-                val r3 = if (capturingGroup.range.last != parts.lastIndex) IntRange(start = parts[capturingGroup.range.last + 1].range.first, endInclusive =  parts.last().range.last) else null
 
-                pattern = "${r1?.let { pattern.substring(it) } ?: ""}(${capturingGroup.name?.let { "?<$it>" } ?: ""}${pattern.substring(r2)})${r3?.let { pattern.substring(it) } ?: ""}"
+            if (capturingGroups.isNotEmpty()) {
+                val bracketPositions = _capturingGroups
+                    .flatMap { listOf(
+                        it.openingPosition to it.openingString,
+                        it.closingPosition to it.closingString
+                    ) }
+                    .sortedBy { it.first }
+
+                val stringParts = patternPartitionerRegex.findAll(pattern)
+                    .map { pattern.substring(it.range) }
+                    .toMutableList()
+                for (bp in bracketPositions) {
+                    stringParts.add(bp.first, bp.second)
+                }
+                pattern = stringParts.joinToString(separator = "")
             }
+
             return pattern
         }
 
@@ -36,51 +45,45 @@ data class RegularExpression(
         get() = _capturingGroups
 
     fun add(newCapturingGroup: CapturingGroup) {
-        for (curCapturingGroup in _capturingGroups) {
-            /*if (newCapturingGroup.last < curCapturingGroup.first) {
-                // new CG is before current CG
-                curCapturingGroup.range = curCapturingGroup.range.plus(2)
-            } else if (newCapturingGroup.first > curCapturingGroup.last) {
-                // new CG is after current CG
-                // do nothing
-            } else if (newCapturingGroup.first <= curCapturingGroup.first && newCapturingGroup.last > curCapturingGroup.last) {
-                // new CG is around current CG
-                //newCapturingGroup.range = newCapturingGroup.range.plus(0, 2)
-                //curCapturingGroup.range = curCapturingGroup.range.plus(1)
-            } else if (newCapturingGroup.first > curCapturingGroup.first && newCapturingGroup.last < curCapturingGroup.last) {
-                // new CG  is inside current CG
-                curCapturingGroup.range = curCapturingGroup.range.plus(0, 2)
-            } else {
-                error("Invalid capturing group position: cur(${curCapturingGroup.toString()}) new(${newCapturingGroup.toString()})")
-            }*/
-        }
         _capturingGroups.add(newCapturingGroup)
-        //_capturingGroups.sortBy { it.last }
     }
 
     fun remove(capturingGroup: CapturingGroup) {
-        _capturingGroups.removeAll { it.id == capturingGroup.id }
+        // console.log("Current list: ", _capturingGroups, "Delete: ", capturingGroup)
+
+        val indexToDelete = _capturingGroups.indexOfFirst { it.id == capturingGroup.id }
+        val oldCapturingGroup = _capturingGroups.removeAt(index = indexToDelete)
     }
 
     val patternParts: Sequence<MatchResult>
         get() = patternPartitionerRegex.findAll(finalPattern)
 
+    private fun IntRange.minus(amount: Int): IntRange = plus(-amount)
+    private fun IntRange.minus(forFirst: Int, forLast: Int) = plus(-forFirst, -forLast)
     private fun IntRange.plus(amount: Int): IntRange =
         plus(amount, amount)
     private fun IntRange.plus(forFirst: Int, forLast: Int) =
         IntRange(start = start + forFirst, endInclusive = endInclusive + forLast)
 
     data class CapturingGroup(
-        var range: IntRange,
+        var openingPosition: Int,
+        var closingPosition: Int,
         var name: String?
     ) {
+        val id = current_id
+
+        val openingString: String
+            get() = "(${name?.let { "?<$it>" } ?: ""}"
+        val closingString: String
+            get() = ")"
+
+        val range: IntRange
+            get() = IntRange(openingPosition, closingPosition)
+
         companion object {
             private var current_id = 0
                 get() { return field++ }
         }
-        val id = current_id
-        val first: Int get() = range.first
-        val last: Int get() = range.last
     }
 }
 
