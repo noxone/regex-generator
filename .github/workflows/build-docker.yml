@@ -70,7 +70,6 @@ jobs:
 
       # generate and publish docker image containing the generated page
       - name: Set up Docker Buildx
-        if: ${{ inputs.appEnvironment == 'github' }}
         uses: docker/setup-buildx-action@v2
 
       # cache docker layers
