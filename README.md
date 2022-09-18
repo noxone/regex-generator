@@ -27,7 +27,7 @@ Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&fla
 
 ### Docker
 
-You can also start it via [docker](https://hub.docker.com/r/noxone/regexgenerator). Just use the following command and find Regex Generator on port 80 of your local machine:
+You can also start it via Docker. Please find the generated images in this [repository](https://hub.docker.com/r/noxone/regexgenerator). Just use the following command and use ``Regex Generator`` via port 80 of your local machine:
 
 ```bash
 docker run -d -p 80:80 noxone/regexgenerator
@@ -78,7 +78,7 @@ You can find the Detekt report for this project [here](https://regex-generator.o
 
 ## Project goal
 
-As written in the introduction the aim of the project is to enable everybody to use regular expressions. The use of ``substring()`` is nearly always unnecessary and if code is written in a reasonable manner you won't need that method.
+As written in the introduction the aim of the project is to enable everybody to use regular expressions. The use of ``substring()`` is nearly always unnecessary and if code is written in a reasonable manner you barely need that method.
 
 There are a lot of very nice tools to build, understand and even debug your regex. ``Regex Generator`` tries to add a little bit to these tools to give you at least a starting point how the regex you need might look like.
 
