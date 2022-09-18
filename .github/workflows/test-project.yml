@@ -8,16 +8,16 @@ on:
   pull_request:
 
 jobs:
-  build-project:
-    name: "Build project"
+  build-project-directly:
+    name: "Build project directly"
     uses: ./.github/workflows/build-project.yml
     with:
       uploadArtifacts: true
       includeReports: false
 
   build-docker:
-    needs: build-project
-    name: Build Docker images
+    needs: build-project-directly
+    name: Build Docker images for Docker Hub
     uses: ./.github/workflows/build-docker.yml
     with:
       appEnvironment: "github"
@@ -25,3 +25,14 @@ jobs:
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-project-in-docker:
+    name: Build Docker images for local
+    uses: ./.github/workflows/build-docker.yml
+    with:
+      appEnvironment: "local"
+      pushImages: false
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  
