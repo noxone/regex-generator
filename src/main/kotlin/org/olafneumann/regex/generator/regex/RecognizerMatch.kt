@@ -38,6 +38,8 @@ class RecognizerMatch(
     override fun equals(other: Any?): Boolean =
         other is RecognizerMatch
                 && recognizer == other.recognizer
+                && title == other.title
+                && patterns == other.patterns
                 && hasSameRangesAs(other)
 
     override fun hashCode(): Int {
