@@ -79,7 +79,7 @@ jobs:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ inputs.appEnvironment }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-buildx-${{ inputs.appEnvironment }}-
 
       # Do the docker stuff
       - name: Login to DockerHub
