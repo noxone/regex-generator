@@ -1,8 +1,14 @@
 package org.olafneumann.regex.generator.model
 
-data class Model(
-    val userInput: String,
-    val rawTextSymbols: List<RawTextSymbol>,
-    val rawRegexSymbols: List<RawRegexSymbol>
-) {
+@Suppress("EmptyClassBlock")
+interface Model {
+    @Suppress("EmptyClassBlock")
+    interface Change {
+
+    }
 }
+
+data class Result<M: Model, C: Model.Change>(
+    val model: M,
+    val change: C
+)
