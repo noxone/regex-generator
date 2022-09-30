@@ -52,6 +52,11 @@ class RecognizerMatch(
         result = 31 * result + length
         return result
     }
+
+    override fun toString(): String {
+        return "RecognizerMatch(title='$title', position=$first/$length, priority=$priority, recognizer=${recognizer.name}, patterns=$patterns)"
+    }
+
 }
 
 

@@ -2,6 +2,8 @@ package org.olafneumann.regex.generator.model
 
 @Suppress("EmptyClassBlock")
 interface Model {
+    val output: String
+
     @Suppress("EmptyClassBlock")
     interface Change {
 

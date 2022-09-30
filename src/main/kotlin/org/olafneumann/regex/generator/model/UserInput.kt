@@ -16,6 +16,9 @@ data class UserInput(
     val userInputString: String
         get() = characters.joinToString(separator = "") { it.character.toString() }
 
+    override val output: String
+        get() = userInputString
+
     val size: Int
         get() = characters.size
 
