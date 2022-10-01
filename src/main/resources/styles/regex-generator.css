@@ -112,12 +112,16 @@
   margin-left: -1.14em;
 }
 
-.rg-code-accordion .card-header {
-  padding: 0.3em;
+.rg-code-accordion .accordion-button {
+  padding: 0.6em;
 }
 
-.rg-code-accordion .card-body {
-  padding: 0.6em 1em;
+.rg-code-accordion .accordion-button {
+  box-shadow: none;
+}
+
+.rg-code-accordion .accordion-button:not(.collapsed) {
+  background-color: #f4f8ff;
 }
 
 .rg-code-accordion pre {

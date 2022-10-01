@@ -27,15 +27,15 @@ internal class LanguageCard(
     private val warnings: MutableList<HTMLElement> = mutableListOf()
 
     init {
-        parent.appendChild(document.create.div(classes = "card") {
-            div(classes = "card-header") {
-                button(classes = "btn btn-link", type = ButtonType.button) {
-                    attributes["data-toggle"] = "collapse"
-                    attributes["data-target"] = "#$bodyElementId"
+        parent.appendChild(document.create.div(classes = "accordion-item") {
+            div(classes = "accordion-header") {
+                button(classes = "accordion-button ${if (!shown) "collapsed" else ""}", type = ButtonType.button) {
+                    attributes["data-bs-toggle"] = "collapse"
+                    attributes["data-bs-target"] = "#$bodyElementId"
                     +codeGenerator.languageName
                 }
             }
-            div(classes = "collapse ${if (shown) "show" else ""}") {
+            div(classes = "accordion-collapse collapse ${if (shown) "show" else ""}") {
                 id = bodyElementId
                 pre {
                     code(classes = "language-${codeGenerator.highlightLanguage}") {
