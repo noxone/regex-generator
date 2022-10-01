@@ -44,7 +44,7 @@
         </div>
 
         <div class="row px-4 py-5 rounded bg-warning">
-            <h1 class="display-2"><span id="rg-title">Regex Generator</span></h1>
+            <h1 class="display-3"><span id="rg-title">Regex Generator</span></h1>
             <p class="lead d-none d-sm-block">Creating <em>regular expressions</em> is easy again!</p>
         </div>
 
@@ -114,33 +114,29 @@
                     <div id="rg_div_onlymatch_container"
                         class="col-12 col-sm-8 col-md-9 col-lg-10 mt-3 mt-sm-0 form-group">
                         <div class="card p-3">
-                            <div class="form-group">
-                                <div class="rg-check-row">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="rg_onlymatches"
-                                            aria-describedby="rg_onlymatches_help">
-                                        <label class="form-check-label" for="rg_onlymatches">Generate only
-                                            patterns</label>
-                                    </div>
-                                    <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
-                                        When this option is checked, the generated regular expression will only contain
-                                        the patterns that you selected in step 2. Otherwise, all characters between the
-                                        patterns will be copied.
-                                    </small>
+                            <div class="form-group rg-check-row">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="rg_onlymatches"
+                                        aria-describedby="rg_onlymatches_help">
+                                    <label class="form-check-label" for="rg_onlymatches">Generate only
+                                        patterns</label>
                                 </div>
+                                <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
+                                    When this option is checked, the generated regular expression will only contain
+                                    the patterns that you selected in step 2. Otherwise, all characters between the
+                                    patterns will be copied.
+                                </small>
                             </div>
-                            <div class="form-group">
-                                <div class="rg-check-row">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="rg_matchwholeline"
-                                            aria-describedby="rg_matchwholeline_help">
-                                        <label class="form-check-label" for="rg_matchwholeline">Match whole
-                                            line</label>
-                                    </div>
-                                    <small id="rg_matchwholeline_help" class="form-text text-muted mt-0">
-                                        Would you like the generated regular expression to match all of the input?
-                                    </small>
+                            <div class="form-group rg-check-row">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="rg_matchwholeline"
+                                        aria-describedby="rg_matchwholeline_help">
+                                    <label class="form-check-label" for="rg_matchwholeline">Match whole
+                                        line</label>
                                 </div>
+                                <small id="rg_matchwholeline_help" class="form-text text-muted mt-0">
+                                    Would you like the generated regular expression to match all of the input?
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -163,8 +159,7 @@
                         report</a>.</small>
                 <div class="card mt-2 p-3">
                     <form>
-                        <div class="rg-form-group">
-                            <div class="col-sm-12 rg-check-row">
+                        <div class="form-group col-sm-12 rg-check-row">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="rg_caseinsensitive"
                                         aria-describedby="rg_caseinsensitive_help">
@@ -180,47 +175,42 @@
                                         href="https://www.rexegg.com/regex-modifiers.html#i" target="_blank"
                                         rel="noopener">*</a>
                                 </small>
-                            </div>
                         </div>
-                        <div class="rg-form-group">
-                            <div class="col-sm-12 rg-check-row">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="rg_dotmatcheslinebreakes"
-                                        aria-describedby="rg_dotmatcheslinebreakes_help">
-                                    <label class="form-check-label" for="rg_dotmatcheslinebreakes">Dot Matches
-                                        Line Breaks</label>
-                                </div>
-                                <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
-                                    By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
-                                    match line break characters such as line feeds and
-                                    carriage returns. If you want patterns such as <span
-                                        class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
-                                    lines, we need to turn that feature on.<a class="text-decoration-none"
-                                        href="https://www.rexegg.com/regex-modifiers.html#dotall" target="_blank"
-                                        rel="noopener">*</a></small>
+                        <div class="form-group col-sm-12 rg-check-row">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="rg_dotmatcheslinebreakes"
+                                    aria-describedby="rg_dotmatcheslinebreakes_help">
+                                <label class="form-check-label" for="rg_dotmatcheslinebreakes">Dot Matches
+                                    Line Breaks</label>
                             </div>
+                            <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
+                                By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
+                                match line break characters such as line feeds and
+                                carriage returns. If you want patterns such as <span
+                                    class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
+                                lines, we need to turn that feature on.<a class="text-decoration-none"
+                                    href="https://www.rexegg.com/regex-modifiers.html#dotall" target="_blank"
+                                    rel="noopener">*</a></small>
                         </div>
-                        <div class="rg-form-group">
-                            <div class="col-sm-12 rg-check-row">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="rg_multiline"
-                                        aria-describedby="rg_multiline_help">
-                                    <label class="form-check-label" for="rg_multiline">Multiline</label>
-                                </div>
-                                <small id="rg_multiline_help" class="form-text text-muted mt-0">
-                                    By default, most major engines (except Ruby), the anchors <span
-                                        class="border rg-code p-1 bg-white">^</span> and <span
-                                        class="border rg-code p-1 bg-white">$</span> only match
-                                    (respectively) at the beginning and the end of the string.
+                        <div class="form-group col-sm-12 rg-check-row">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="rg_multiline"
+                                    aria-describedby="rg_multiline_help">
+                                <label class="form-check-label" for="rg_multiline">Multiline</label>
+                            </div>
+                            <small id="rg_multiline_help" class="form-text text-muted mt-0">
+                                By default, most major engines (except Ruby), the anchors <span
+                                    class="border rg-code p-1 bg-white">^</span> and <span
+                                    class="border rg-code p-1 bg-white">$</span> only match
+                                (respectively) at the beginning and the end of the string.
 
-                                    In other engines, if you want patterns such as <span
-                                        class="border rg-code p-1 bg-white">^Define</span> and <span
-                                        class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
-                                    (respectively) at the beginning and the end of each line, we need to turn that
-                                    feature on.<a class="text-decoration-none"
-                                        href="https://www.rexegg.com/regex-modifiers.html#multiline" target="_blank"
-                                        rel="noopener">*</a></small>
-                            </div>
+                                In other engines, if you want patterns such as <span
+                                    class="border rg-code p-1 bg-white">^Define</span> and <span
+                                    class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
+                                (respectively) at the beginning and the end of each line, we need to turn that
+                                feature on.<a class="text-decoration-none"
+                                    href="https://www.rexegg.com/regex-modifiers.html#multiline" target="_blank"
+                                    rel="noopener">*</a></small>
                         </div>
                     </form>
                 </div>

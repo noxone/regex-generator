@@ -97,7 +97,11 @@
 }
 
 .rg-check-row {
-  padding-left: 1.4em;
+  padding-left: 1.5em;
+}
+
+.rg-check-row + .rg-check-row {
+  margin-top: 0.8em;
 }
 
 .rg-check-row .form-check {
