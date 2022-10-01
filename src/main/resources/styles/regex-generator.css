@@ -97,12 +97,11 @@
 }
 
 .rg-check-row {
-  margin-left: 1.4em;
-  padding-right: 3em;
+  padding-left: 1.4em;
 }
 
-form * .rg-check-row {
-  padding-right: 4em;
+.rg-form-group + .rg-form-group {
+  margin-top: 1em;
 }
 
 .rg-check-row .custom-control {
@@ -110,7 +109,7 @@ form * .rg-check-row {
 }
 
 .rg-check-row .custom-control .custom-control-input {
-  margin-left: -2em;
+  margin-left: -1.14em;
 }
 
 .rg-code-accordion .card-header {

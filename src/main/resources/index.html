@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- search engine -->
-    <meta name="description" content="A tool to generate simple regular expressions from sample text. Enable less experienced developers to create regex smoothly."/>
-    <meta name="keywords" content="regex, regular expression, pcre, regular, expression, substring"/>
+    <meta name="description"
+        content="A tool to generate simple regular expressions from sample text. Enable less experienced developers to create regex smoothly." />
+    <meta name="keywords" content="regex, regular expression, pcre, regular, expression, substring" />
     <meta name="author" content="Olaf Neumann" />
 
     <!-- favicon -->
@@ -19,7 +20,8 @@
     <link rel="manifest" href="favicon/site.webmanifest">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
     <!-- sources of regex generator -->
     <script type="text/javascript" src="regex-generator.js"></script>
@@ -30,7 +32,7 @@
 </head>
 
 <body class="bg-dark">
-    <div class="container-fluid py-3" id="rg_mainContainer">
+    <div class="container-fluid py-3 px-4" id="rg_mainContainer">
         <div id="rg_container_cookie" class="alert alert-danger fixed-top m-2" role="alert">
             <div class="d-flex justify-content-between rg-banner-consent">
                 <p class="m-0">This site uses cookies to improve your user experience.</p>
@@ -109,7 +111,7 @@
                     <div id="rg_div_onlymatch_container"
                         class="col-12 col-sm-8 col-md-9 col-lg-10 mt-3 mt-sm-0 form-group">
                         <div class="card p-3">
-                            <div class="form-group">
+                            <div class="rg-form-group">
                                 <div class="rg-check-row">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="rg_onlymatches"
@@ -124,7 +126,7 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="rg-form-group">
                                 <div class="rg-check-row">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="rg_matchwholeline"
@@ -157,9 +159,9 @@
                     If you find a syntax error, please submit a <a
                         href="https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=bug_report.md&title=Syntax%20Error">bug
                         report</a>.</small>
-                <div class="card mt-2 pt-3">
+                <div class="card mt-2 p-3">
                     <form>
-                        <div class="form-group">
+                        <div class="rg-form-group">
                             <div class="col-sm-12 rg-check-row">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="rg_caseinsensitive"
@@ -171,13 +173,14 @@
                                     By default, all major regex engines match in case-sensitive mode. If you want
                                     patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
                                     to match in
-                                    case-insensitive fashion, we need to turn that feature on.&NonBreakingSpace;
-                                    <sup><a href="https://www.rexegg.com/regex-modifiers.html#i"
-                                            target="_blank">*</a></sup>
+                                    case-insensitive fashion, we need to turn that feature on.<a
+                                        class="text-decoration-none"
+                                        href="https://www.rexegg.com/regex-modifiers.html#i" target="_blank"
+                                        rel="noopener">*</a>
                                 </small>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="rg-form-group">
                             <div class="col-sm-12 rg-check-row">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="rg_dotmatcheslinebreakes"
@@ -190,12 +193,12 @@
                                     match line break characters such as line feeds and
                                     carriage returns. If you want patterns such as <span
                                         class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
-                                    lines, we need to turn that feature on.&NonBreakingSpace;<sup><a
-                                            href="https://www.rexegg.com/regex-modifiers.html#dotall"
-                                            target="_blank">*</a></sup> </small>
+                                    lines, we need to turn that feature on.<a class="text-decoration-none"
+                                        href="https://www.rexegg.com/regex-modifiers.html#dotall" target="_blank"
+                                        rel="noopener">*</a></small>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="rg-form-group">
                             <div class="col-sm-12 rg-check-row">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="rg_multiline"
@@ -212,9 +215,9 @@
                                         class="border rg-code p-1 bg-white">^Define</span> and <span
                                         class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
                                     (respectively) at the beginning and the end of each line, we need to turn that
-                                    feature on.&NonBreakingSpace;<sup><a
-                                            href="https://www.rexegg.com/regex-modifiers.html#multiline"
-                                            target="_blank">*</a></sup> </small>
+                                    feature on.<a class="text-decoration-none"
+                                        href="https://www.rexegg.com/regex-modifiers.html#multiline" target="_blank"
+                                        rel="noopener">*</a></small>
                             </div>
                         </div>
                     </form>
@@ -239,44 +242,47 @@
         </div>
 
         <!-- Footer -->
-        <footer
-            class="page-footer font-small row bg-dark text-muted border border-secondary mt-4 p-4 rounded">
+        <footer class="page-footer font-small row bg-dark text-muted border border-secondary mt-4 p-4 rounded">
             <h5 class="text-uppercase" style="width: 100%">Regex Generator</h5>
             <div class="text-center text-md-start collapse show" id="footerContent">
                 <div class="row">
                     <div class="col-md-6 mt-md-0 mt-3">
                         <p>The idea for this page comes from <a
                                 href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/"
-                                target="_blank">txt2re</a>,
+                                target="_blank" rel="noopener">txt2re</a>,
                             which seems to be discontinued.</p>
                         <p>The aim of this page is to give as many people as possible the opportunity to develop and
                             use regular expressions. Hopefully nobody has to call <span
                                 class="rg-code">substring()</span> anymore.</p>
                         <p>Find the project sources at <a href="https://github.com/noxone/regex-generator"
-                                target="_blank">Github</a>
+                                target="_blank" rel="noopener">Github</a>
                         </p>
                     </div>
                     <hr class="clearfix w-100 d-md-none pb-3 border-secondary">
                     <div class="col-md-3 mb-md-0 mb-3">
                         <h5>Useful Regex Links</h5>
                         <ul class="list-unstyled">
-                            <li><a href="https://regex101.com/" target="_blank" id="rg_anchor_regex101">Regular
+                            <li><a href="https://regex101.com/" target="_blank" rel="noopener"
+                                    id="rg_anchor_regex101">Regular
                                     Expressions 101</a></li>
-                            <li><a href="https://regexr.com/" target="_blank" id="rg_anchor_regexr">Regexr</a></li>
+                            <li><a href="https://regexr.com/" target="_blank" rel="noopener"
+                                    id="rg_anchor_regexr">Regexr</a></li>
                             <!-- ?expression=abc&text=def -->
-                            <li><a href="https://www.regexplanet.com" target="_blank">RegexPlanet</a></li>
+                            <li><a href="https://www.regexplanet.com" target="_blank" rel="noopener">RegexPlanet</a>
+                            </li>
                             <!--?regex=abc&replacement=def-->
-                            <li><a href="https://www.rexegg.com" target="_blank">RexEgg</a></li>
-                            <li><a href="https://rgxdb.com/" target="_blank">Regex DB</a></li>
+                            <li><a href="https://www.rexegg.com" target="_blank" rel="noopener">RexEgg</a></li>
+                            <li><a href="https://rgxdb.com/" target="_blank" rel="noopener">Regex DB</a></li>
                         </ul>
                     </div>
                     <div class="col-md-3 mb-md-0 mb-3">
                         <h5>This project is built using</h5>
                         <ul class="list-unstyled">
-                            <li><a href="https://kotlinlang.org/" target="_blank">Kotlin</a></li>
-                            <li><a href="https://getbootstrap.com" target="_blank">Bootstrap</a></li>
-                            <li><a href="https://prismjs.com/" target="_blank">Prismjs</a></li>
-                            <li><a href="https://kamranahmed.info/driver.js/" target="_blank">Driver.js</a></li>
+                            <li><a href="https://kotlinlang.org/" target="_blank" rel="noopener">Kotlin</a></li>
+                            <li><a href="https://getbootstrap.com" target="_blank" rel="noopener">Bootstrap</a></li>
+                            <li><a href="https://prismjs.com/" target="_blank" rel="noopener">Prismjs</a></li>
+                            <li><a href="https://kamranahmed.info/driver.js/" target="_blank"
+                                    rel="noopener">Driver.js</a></li>
                         </ul>
                     </div>
                 </div>
@@ -284,15 +290,20 @@
 
             <!-- Copyright -->
             <div class="text-center pt-3">
-                &copy; 2020-2022 Copyright <a href="https://github.com/noxone/" target="_blank">Olaf Neumann</a>
+                &copy; 2020-2022 Copyright <a href="https://github.com/noxone/" target="_blank" rel="noopener">Olaf
+                    Neumann</a>
             </div>
         </footer>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
