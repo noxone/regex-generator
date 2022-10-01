@@ -12,7 +12,7 @@ class UserInputTest {
         val given = "abc"
         val input = UserInput(userInput = given)
 
-        assertEquals(expected = given, actual = input.userInputString)
+        assertEquals(expected = given, actual = input.userString)
         assertEquals(3, actual = input.size)
     }
 

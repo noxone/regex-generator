@@ -3,8 +3,8 @@ package org.olafneumann.regex.generator.model
 import dev.andrewbailey.diff.DiffOperation
 import dev.andrewbailey.diff.differenceOf
 
-data class UserInput(
-    private val userInput: String
+class UserInput(
+    userInput: String
 ) : Model {
     private val characters: List<Character>
     init {
@@ -13,17 +13,17 @@ data class UserInput(
             .toList()
     }
 
-    val userInputString: String
+    val userString: String
         get() = characters.joinToString(separator = "") { it.character.toString() }
 
     override val output: String
-        get() = userInputString
+        get() = userString
 
     val size: Int
         get() = characters.size
 
     fun setUserInput(newInputString: String): Result<UserInput, Change> {
-        val oldInput = userInput.toCharArray().toList()
+        val oldInput = characters.map { it.character }.toList()
         val newInput = newInputString.toCharArray().toList()
 
         val differences = differenceOf(original = oldInput, updated = newInput, detectMoves = false)
