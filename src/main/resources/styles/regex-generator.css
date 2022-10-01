@@ -97,28 +97,31 @@
 }
 
 .rg-check-row {
-  margin-left: 1.4em;
-  padding-right: 3em;
+  padding-left: 1.5em;
 }
 
-form * .rg-check-row {
-  padding-right: 4em;
+.rg-check-row + .rg-check-row {
+  margin-top: 0.8em;
 }
 
-.rg-check-row .custom-control {
+.rg-check-row .form-check {
   padding-left: 0;
 }
 
-.rg-check-row .custom-control .custom-control-input {
-  margin-left: -2em;
+.rg-check-row .form-check .form-check-input {
+  margin-left: -1.5em;
 }
 
-.rg-code-accordion .card-header {
-  padding: 0.3em;
+.rg-code-accordion .accordion-button {
+  padding: 0.6em;
 }
 
-.rg-code-accordion .card-body {
-  padding: 0.6em 1em;
+.rg-code-accordion .accordion-button {
+  box-shadow: none;
+}
+
+.rg-code-accordion .accordion-button:not(.collapsed) {
+  background-color: #f4f8ff;
 }
 
 .rg-code-accordion pre {
@@ -133,6 +136,16 @@ form * .rg-check-row {
 .rg-share-link {
   overflow-x: auto;
   white-space: nowrap;
+}
+
+footer a.rounded {
+  display: inline-block;
+  padding: 0.2em;
+  margin: -0.07em 0;
+}
+
+footer a.rounded:hover {
+  background-color: #1b1b1b;
 }
 
 
@@ -157,7 +170,7 @@ form * .rg-check-row {
   border-radius: 5px;
   padding: 7px 10px;
   background-color: #6c757d;
-  color: #fff;
+  color: #F8F9FA;
   text-shadow: none;
   border: none;
 }
@@ -167,7 +180,7 @@ form * .rg-check-row {
 }
 
 .rg-guide#driver-popover-item .driver-popover-footer button.driver-disabled {
-  color: #fff;
+  color: #F8F9FA;
   opacity: .65;
 }
 
