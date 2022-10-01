@@ -138,6 +138,16 @@
   white-space: nowrap;
 }
 
+footer a.rounded {
+  display: inline-block;
+  padding: 0.2em;
+  margin: -0.07em 0;
+}
+
+footer a.rounded:hover {
+  background-color: #1b1b1b;
+}
+
 
 
 /* Driver things */
