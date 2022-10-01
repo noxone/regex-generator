@@ -32,7 +32,7 @@ on:
       DOCKERHUB_TOKEN:
         required: true
       DOCKERHUB_PASSWORD:
-        required: true
+        required: false
 
 jobs:
   build-and-publish-docker:
