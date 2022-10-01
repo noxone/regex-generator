@@ -1,0 +1,29 @@
+name: Delete Old Docker Image Tags
+
+on:
+  workflow_dispatch:
+    inputs:
+      numberOfImagesToKeep:
+        description: "Number of images to keep"
+        required: true
+        default: "15"
+  workflow_call:
+    inputs:
+      numberOfImagesToKeep:
+        type: number
+        required: false
+        default: 15
+
+
+jobs:
+  delete-image-tags:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete Tags
+        run: exec ./.github/scripts/delete-old-docker-tags.sh
+        with:
+          UNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          UPASS: ${{ secrets.DOCKERHUB_TOKEN }}
+          KEEP: ${{ github.event.inputs.numberOfImagesToKeep }}
+
