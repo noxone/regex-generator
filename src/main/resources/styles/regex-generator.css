@@ -104,12 +104,12 @@
   margin-top: 0.6em;
 }
 
-.rg-check-row .custom-control {
+.rg-check-row .form-check {
   padding-left: 0;
 }
 
-.rg-check-row .custom-control .custom-control-input {
-  margin-left: -1.14em;
+.rg-check-row .form-check .form-check-input {
+  margin-left: -1.5em;
 }
 
 .rg-code-accordion .accordion-button {
