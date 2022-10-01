@@ -16,6 +16,10 @@ on:
   # Triggers the workflow on push or pull request events but only for default and protected branches
   push:
     branches: [ main ]
+    paths-ignore:
+      - '.github/**'
+      - 'sample-code/**'
+      - 'webpack.config.d/**'
   pull_request:
     branches: [ main ]
   schedule:
