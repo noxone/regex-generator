@@ -100,10 +100,6 @@
   padding-left: 1.4em;
 }
 
-.rg-form-group + .rg-form-group {
-  margin-top: 0.6em;
-}
-
 .rg-check-row .form-check {
   padding-left: 0;
 }
@@ -160,7 +156,7 @@
   border-radius: 5px;
   padding: 7px 10px;
   background-color: #6c757d;
-  color: #fff;
+  color: #F8F9FA;
   text-shadow: none;
   border: none;
 }
@@ -170,7 +166,7 @@
 }
 
 .rg-guide#driver-popover-item .driver-popover-footer button.driver-disabled {
-  color: #fff;
+  color: #F8F9FA;
   opacity: .65;
 }
 
