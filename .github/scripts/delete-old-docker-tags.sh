@@ -4,10 +4,10 @@
 set -e
 
 # set username and password
-UNAME=""
-UPASS=""
+UNAME=$docker_username
+UPASS=$docker_password
 REPO_LIST="regexgenerator"
-KEEP=15
+KEEP=$numberOfImagesToKeep
 
 echo "Logging in..."
 # get token to be able to talk to Docker Hub

@@ -13,17 +13,23 @@ on:
         type: number
         required: false
         default: 15
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_PASSWORD:
+        required: true
 
 
 jobs:
   delete-image-tags:
     runs-on: ubuntu-latest
+    name: Delete old docker image tags
+    env: 
+      docker_username: ${{ secrects.DOCKERHUB_USERNAME }}
+      docker_password: ${{ secrects.DOCKERHUB_PASSWORD }}
+      numberOfImagesToKeep: ${{ github.event.inputs.numberOfImagesToKeep }}
 
     steps:
       - name: Delete Tags
         run: exec ./.github/scripts/delete-old-docker-tags.sh
-        with:
-          UNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          UPASS: ${{ secrets.DOCKERHUB_PASSWORD }}
-          KEEP: ${{ github.event.inputs.numberOfImagesToKeep }}
 
