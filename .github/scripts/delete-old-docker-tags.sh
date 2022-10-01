@@ -7,7 +7,7 @@ set -e
 UNAME=$docker_username
 UPASS=$docker_password
 REPO_LIST="regexgenerator"
-KEEP=$numberOfImagesToKeep
+KEEP=$(( 15 > numberOfImagesToKeep ? 15 : numberOfImagesToKeep ))
 
 echo "Logging in..."
 # get token to be able to talk to Docker Hub
