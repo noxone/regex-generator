@@ -5,10 +5,10 @@ import dev.andrewbailey.diff.differenceOf
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
 
-class PatternRecognition(
-    val input: UserInput,
+class S2PatternRecognition(
+    val input: S1UserInput,
     previousMatches: List<RecognizerMatch> = emptyList(),
-    change: UserInput.Change? = null
+    change: S1UserInput.Change? = null
 ) : Model {
     val matches: List<RecognizerMatch>
     val diffs: DiffResult<RecognizerMatch>
@@ -18,11 +18,15 @@ class PatternRecognition(
 
         diffs = differenceOf(previousMatches, matches)
 
+
         this.matches = matches
     }
 
     override val output: String
         get() = input.output
+
+    fun setUserInput(modelWithDelta: ModelWithDelta<S1UserInput, S1UserInput.Change>): S2PatternRecognition =
+        S2PatternRecognition(input = modelWithDelta.model, previousMatches = matches, change = modelWithDelta.change)
 
     data class Selection(
         val match: RecognizerMatch
@@ -31,16 +35,4 @@ class PatternRecognition(
     data class Deselection(
         val match: RecognizerMatch
     ) : Model.Change
-
-    private class RMShadow(
-        val originalMatch: RecognizerMatch
-    ) {
-        val first: Int get() = originalMatch.first
-        val length: Int get() = originalMatch.length
-
-        override fun equals(other: Any?): Boolean {
-            console.log("equals", other.toString())
-            return originalMatch == other
-        }
-    }
 }

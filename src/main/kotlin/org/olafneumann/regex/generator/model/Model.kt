@@ -10,7 +10,7 @@ interface Model {
     }
 }
 
-data class Result<M: Model, C: Model.Change>(
+data class ModelWithDelta<M: Model, C: Model.Change>(
     val model: M,
     val change: C
 )

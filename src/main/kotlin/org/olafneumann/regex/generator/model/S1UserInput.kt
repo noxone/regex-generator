@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.model
 import dev.andrewbailey.diff.DiffOperation
 import dev.andrewbailey.diff.differenceOf
 
-class UserInput(
+class S1UserInput(
     userInput: String
 ) : Model {
     private val characters: List<Character>
@@ -22,14 +22,14 @@ class UserInput(
     val size: Int
         get() = characters.size
 
-    fun setUserInput(newInputString: String): Result<UserInput, Change> {
+    fun setUserInput(newInputString: String): ModelWithDelta<S1UserInput, Change> {
         val oldInput = characters.map { it.character }.toList()
         val newInput = newInputString.toCharArray().toList()
 
         val differences = differenceOf(original = oldInput, updated = newInput, detectMoves = false)
 
-        return Result(
-            model = UserInput(userInput = newInputString),
+        return ModelWithDelta(
+            model = S1UserInput(userInput = newInputString),
             change = Change(changes = differences.operations)
         )
     }

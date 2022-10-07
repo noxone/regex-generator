@@ -10,7 +10,7 @@ class UserInputTest {
     @Test
     fun testModel_List() {
         val given = "abc"
-        val input = UserInput(userInput = given)
+        val input = S1UserInput(userInput = given)
 
         assertEquals(expected = given, actual = input.userString)
         assertEquals(3, actual = input.size)
@@ -20,7 +20,7 @@ class UserInputTest {
     // make sure, the 3rd party lib behaves the same...
     @Test
     fun testDifference_AddLetter() {
-        val input = UserInput(userInput = "abce")
+        val input = S1UserInput(userInput = "abce")
 
         val result = input.setUserInput(newInputString = "abcde")
         val changes = result.change.changes
@@ -38,7 +38,7 @@ class UserInputTest {
 
     @Test
     fun testDifference_RemoveLetter() {
-        val input = UserInput(userInput = "abcdef")
+        val input = S1UserInput(userInput = "abcdef")
 
         val result = input.setUserInput(newInputString = "acdf")
         val changes = result.change.changes
@@ -61,7 +61,7 @@ class UserInputTest {
 
     @Test
     fun testDifference_ExchangeText() {
-        val input = UserInput(userInput = "morning")
+        val input = S1UserInput(userInput = "morning")
 
         val result = input.setUserInput(newInputString = "bookshelf")
         val changes = result.change.changes

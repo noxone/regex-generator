@@ -5,11 +5,11 @@ import kotlin.test.Test
 class PatternRecognitionTest {
     @Test
     fun testModel_A() {
-        val input1 = UserInput(userInput = "abc123")
+        val input1 = S1UserInput(userInput = "abc123")
         val input2 = input1.setUserInput(newInputString = "abc1234")
 
-        val pr1 = PatternRecognition(input = input1)
-        val pr2 = PatternRecognition(input = input2.model, previousMatches = pr1.matches, change = input2.change)
+        val pr1 = S2PatternRecognition(input = input1)
+        val pr2 = S2PatternRecognition(input = input2.model, previousMatches = pr1.matches, change = input2.change)
 
         console.log(pr1.matches.toIndexedString("pr1: \n"))
         console.log(pr2.matches.toIndexedString("pr2: \n"))
@@ -18,11 +18,11 @@ class PatternRecognitionTest {
 
     @Test
     fun testModel_B() {
-        val input1 = UserInput(userInput = "abc123")
-        val input2 = UserInput(userInput = "abcd123")
+        val input1 = S1UserInput(userInput = "abc123")
+        val input2 = S1UserInput(userInput = "abcd123")
 
-        val pr1 = PatternRecognition(input = input1)
-        val pr2 = PatternRecognition(input = input2, previousMatches = pr1.matches)
+        val pr1 = S2PatternRecognition(input = input1)
+        val pr2 = S2PatternRecognition(input = input2, previousMatches = pr1.matches)
 
         console.log(pr1.matches.toIndexedString("pr1: \n"))
         console.log(pr2.matches.toIndexedString("pr2: \n"))
