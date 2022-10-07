@@ -15,6 +15,14 @@
   font-family: Consolas, monospace;
 }
 
+.rg-code-accordion pre[class*=language-]>code {
+  box-shadow: none;
+}
+
+.rg-code-accordion pre[class*=language-]::before, .rg-code-accordion pre[class*=language-]::after {
+  display: none;
+}
+
 .rg-match-container {
   overflow-x: auto;
   width: 100%;
