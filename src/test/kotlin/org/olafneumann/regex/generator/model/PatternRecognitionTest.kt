@@ -9,7 +9,7 @@ class PatternRecognitionTest {
         val input2 = input1.setUserInput(newInputString = "abc1234")
 
         val pr1 = S2PatternRecognition(input = input1)
-        val pr2 = S2PatternRecognition(input = input2.model, previousMatches = pr1.matches, change = input2.change)
+        val pr2 = S2PatternRecognition(input = input2.model, previousMatches = pr1.matches, inputChange = input2.change)
 
         console.log(pr1.matches.toIndexedString("pr1: \n"))
         console.log(pr2.matches.toIndexedString("pr2: \n"))
