@@ -1,4 +1,4 @@
-#rg_blur + div {
+#rg_loading + div {
   filter: blur(5px);
 }
 
