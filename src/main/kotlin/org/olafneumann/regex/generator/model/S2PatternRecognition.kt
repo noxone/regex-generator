@@ -18,11 +18,13 @@ class S2PatternRecognition(
         val matches = RecognizerRegistry.findMatches(input.output)
 
         diffs = differenceOf(previousMatches, matches)
-        val augmentedMatches = previousMatches.map { AugmentedRecognizerMatch(match = it) }
-            .forEach { match -> inputChange
-                ?.changes
-                ?.forEach { change -> change.applyOn(match) } }
-        
+        val augmentedMatches = previousMatches.map { AugmentedRecognizerMatch(original = it) }
+            .mapNotNull { match ->
+                var out: AugmentedRecognizerMatch? = match
+                inputChange?.changes?.forEach { change -> out = out?.apply(change) }
+                out
+            }
+-
         this.matches = matches
     }
 
@@ -48,7 +50,7 @@ class S2PatternRecognition(
             is DiffOperation.RemoveRange -> console.log("removeRange")
             is DiffOperation.Move -> console.log("move")
             is DiffOperation.MoveRange -> console.log("moveRange")
-            else -> console.log("ELSE")
+            else -> throw RuntimeException("Unknown Diff Operation: $this")
         }
     }
 }
