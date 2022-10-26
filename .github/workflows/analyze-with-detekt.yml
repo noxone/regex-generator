@@ -20,6 +20,7 @@ on:
       - '.github/**'
       - 'sample-code/**'
       - 'webpack.config.d/**'
+      - 'raw/**'
   pull_request:
     branches: [ main ]
   schedule:
