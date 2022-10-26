@@ -1,7 +1,6 @@
 {
-    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
     "name": "Regex Generator",
-    "short_name": "RegexGenerator",
+    "short_name": "regexgen",
     "categories": ["productivity", "utilities"],
     "start_url": ".",
     "display": "standalone",
