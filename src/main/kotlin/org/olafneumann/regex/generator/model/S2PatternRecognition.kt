@@ -18,13 +18,10 @@ class S2PatternRecognition(
         val matches = RecognizerRegistry.findMatches(input.output)
 
         diffs = differenceOf(previousMatches, matches)
-        val augmentedMatches = previousMatches.map { AugmentedRecognizerMatch(original = it) }
-            .mapNotNull { match ->
-                var out: AugmentedRecognizerMatch? = match
-                inputChange?.changes?.forEach { change -> out = out?.apply(change) }
-                out
-            }
--
+        val augmentedMatches = previousMatches
+            .map { AugmentedRecognizerMatch(original = it) }
+            .mapNotNull { it.applyAll(inputChange?.changes) }
+
         this.matches = matches
     }
 

@@ -14,17 +14,17 @@ class AugmentedRecognizerMatch(
         return original == other
     }
 
-    fun <T> apply(diffOperation: DiffOperation<T>): AugmentedRecognizerMatch? =
+    private fun <T> apply(diffOperation: DiffOperation<T>): AugmentedRecognizerMatch? =
         when (diffOperation) {
             is DiffOperation.Add -> {
                 if (diffOperation.index < first) {
-                    add(first = 1, length = 0)
+                    add(first = 1)
                 } else if (diffOperation.index == first) {
                     // TODO: What to do here?
                     console.log("Added at start of match")
                     null
                 } else if (diffOperation.index in (first + 1) until last) {
-                    add(first = 0, length = 1)
+                    add(length = 1)
                 } else {
                     this
                 }
@@ -32,13 +32,13 @@ class AugmentedRecognizerMatch(
 
             is DiffOperation.AddAll -> {
                 if (diffOperation.index <= first) {
-                    add(first = diffOperation.items.size, length = 0)
+                    add(first = diffOperation.items.size)
                 } else if (diffOperation.index == first) {
                     // TODO: What to do here?
                     console.log("Added range at start of match")
                     null
                 } else if (diffOperation.index in (first + 1) until last) {
-                    add(first = 0, length = diffOperation.items.size)
+                    add(length = diffOperation.items.size)
                 } else {
                     this
                 }
@@ -46,9 +46,9 @@ class AugmentedRecognizerMatch(
 
             is DiffOperation.Remove -> {
                 if (diffOperation.index < first) {
-                    add(first = -1, length = 0)
+                    add(first = -1)
                 } else if (diffOperation.index in first until last) {
-                    add(first = 0, length = 1)
+                    add(length = -1)
                 } else {
                     this
                 }
@@ -56,9 +56,11 @@ class AugmentedRecognizerMatch(
 
             is DiffOperation.RemoveRange -> {
                 if (diffOperation.endIndex < first) {
-                    add(first = diffOperation.startIndex - diffOperation.endIndex, length = 0)
+                    add(first = diffOperation.startIndex - diffOperation.endIndex)
                 } else if (diffOperation.startIndex > last) {
                     this
+                } else if (diffOperation.startIndex >= first && diffOperation.endIndex < last) {
+                    add(length = diffOperation.startIndex - diffOperation.endIndex)
                 } else {
                     // remove this
                     null
@@ -68,11 +70,18 @@ class AugmentedRecognizerMatch(
                     null
                 } else if (diffOperation.startIndex >= first && diffOperation.)*/
             }
+
             else -> throw RuntimeException("Unknown or unexpected Diff Operation: $this")
         }
 
-    private fun add(first: Int, length: Int): AugmentedRecognizerMatch? =
-        if (this.length > length) {
+    fun <T> applyAll(diffOperations: List<DiffOperation<T>>?): AugmentedRecognizerMatch? {
+        var out: AugmentedRecognizerMatch? = this
+        diffOperations?.forEach { out = out?.apply(it) }
+        return out
+    }
+
+    private fun add(first: Int = 0, length: Int = 0): AugmentedRecognizerMatch? =
+        if (this.first >= first && this.length > length) {
             AugmentedRecognizerMatch(original = original, first = this.first + first, length = this.length + length)
         } else {
             null

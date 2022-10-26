@@ -5,7 +5,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class UserInputTest {
+class S1UserInputTest {
 
     @Test
     fun testModel_List() {

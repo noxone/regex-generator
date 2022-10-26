@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator.model
 
 import kotlin.test.Test
 
-class PatternRecognitionTest {
+class S2PatternRecognitionTest {
     @Test
     fun testModel_A() {
         val input1 = S1UserInput(userInput = "abc123")
