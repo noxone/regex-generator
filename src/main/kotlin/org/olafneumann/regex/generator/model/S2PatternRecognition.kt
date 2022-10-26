@@ -1,6 +1,5 @@
 package org.olafneumann.regex.generator.model
 
-import dev.andrewbailey.diff.DiffOperation
 import dev.andrewbailey.diff.DiffResult
 import dev.andrewbailey.diff.differenceOf
 import org.olafneumann.regex.generator.regex.RecognizerMatch
@@ -31,6 +30,10 @@ class S2PatternRecognition(
     fun setUserInput(modelWithDelta: ModelWithDelta<S1UserInput, S1UserInput.Change>): S2PatternRecognition =
         S2PatternRecognition(input = modelWithDelta.model, previousMatches = matches, inputChange = modelWithDelta.change)
 
+    fun select(match: RecognizerMatch) {
+
+    }
+
     data class Selection(
         val match: RecognizerMatch
     ) : Model.Change
@@ -38,16 +41,4 @@ class S2PatternRecognition(
     data class Deselection(
         val match: RecognizerMatch
     ) : Model.Change
-
-    private fun DiffOperation<Char>.applyOn(match: AugmentedRecognizerMatch) {
-        when (this) {
-            is DiffOperation.Add -> console.log("add")
-            is DiffOperation.AddAll -> console.log("addAll")
-            is DiffOperation.Remove -> console.log("remove")
-            is DiffOperation.RemoveRange -> console.log("removeRange")
-            is DiffOperation.Move -> console.log("move")
-            is DiffOperation.MoveRange -> console.log("moveRange")
-            else -> throw RuntimeException("Unknown Diff Operation: $this")
-        }
-    }
 }
