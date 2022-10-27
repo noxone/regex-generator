@@ -10,6 +10,9 @@ fun main() {
     window.onload = { initRegexGenerator() }
 }
 
+// TODO add service worker:
+// https://resources.jetbrains.com/storage/products/kotlinconf2019/slides/Thursday/Aud%2012/E.%20Hellman,%20Building%20Progressive%20Web%20Apps%20%20in%20Kotlin.pdf
+
 /* the caught exception is generic to really catch all exceptions */
 @Suppress("TooGenericExceptionCaught")
 private fun initRegexGenerator() {
