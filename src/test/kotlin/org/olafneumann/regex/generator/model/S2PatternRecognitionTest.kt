@@ -1,8 +1,10 @@
 package org.olafneumann.regex.generator.model
 
+import kotlin.math.exp
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class S2PatternRecognitionTest {
     @Test
@@ -31,8 +33,7 @@ class S2PatternRecognitionTest {
 
     @Test
     fun testPatterns_simpleRecognition() {
-        val s1 = S1UserInput(userInput = "abc123def")
-        val s2 = S2PatternRecognition(input = s1)
+        val s2 = S2PatternRecognition(input = stage1abc123def)
 
         val titles = s2.matches.map { it.title }
 
@@ -41,6 +42,80 @@ class S2PatternRecognitionTest {
     }
 
     @Test
+    fun testPatterns_selectOneMatch() {
+        // given
+        val s2n1 = S2PatternRecognition(input = stage1abc123def)
+        val numberMatch = s2n1.matches.first { it.title == "Number" }
+
+        // when
+        val s2n2 = s2n1.select(numberMatch)
+
+        // then
+        assertTrue(s2n1.selectedMatches.isEmpty(), message = "Initial number of matches is zero")
+        assertEquals(expected = 1, actual = s2n2.selectedMatches.size, message = "Should be exactly one match after selection")
+        assertEquals(expected = "Number", actual = s2n2.selectedMatches.first().title)
+    }
+
+    @Test
+    fun testPatterns_selectInvalidMatch() {
+        // given
+        val s2n1 = S2PatternRecognition(input = stage1abc123def)
+        val numberMatch = s2n1.matches.first { it.title == "Number" }
+        val digitMatch = s2n1.matches.first { it.title == "Digit" }
+        val s2n2 = s2n1.select(numberMatch)
+
+        // when
+        val s2n3 = s2n2.select(digitMatch)
+
+        // then
+        assertEquals(expected = s2n2.selectedMatches, actual = s2n3.selectedMatches)
+    }
+
+    @Test
+    fun testPatterns_selectValidMatch() {
+        // given
+        val s2n1 = S2PatternRecognition(input = stage1abc123def)
+        val numberMatch = s2n1.matches.first { it.title == "Number" }
+        val characterMatch = s2n1.matches.first { it.title == "One character" }
+        val s2n2 = s2n1.select(numberMatch)
+
+        // when
+        val s2n3 = s2n2.select(characterMatch)
+
+        // then
+        assertTrue(s2n3.selectedMatches.size > s2n2.selectedMatches.size)
+    }
+
+    @Test
+    fun testPatterns_deselectOneMatch() {
+        // given
+        val s2n1 = S2PatternRecognition(input = stage1abc123def)
+        val numberMatch = s2n1.matches.first { it.title == "Number" }
+        val s2n2 = s2n1.select(numberMatch)
+
+        // when
+        val s2n3 = s2n2.deselect(s2n2.selectedMatches.first())
+
+        // then
+        assertTrue(s2n3.selectedMatches.isEmpty())
+    }
+
+    @Test
+    fun testPatterns_simpleOutput() {
+        val expected = "abc[0-9]+def"
+
+        // given
+        val s2n1 = S2PatternRecognition(input = stage1abc123def)
+        val numberMatch = s2n1.matches.first { it.title == "Number" }
+
+        // when
+        val s2n2 = s2n1.select(numberMatch)
+
+        // then
+        assertEquals(expected = expected, actual = s2n2.output)
+    }
+
+    /*@Test
     fun testModel_A() {
         val s1s1 = S1UserInput(userInput = "abc123")
         val s1s2 = s1s1.setUserInput(newInputString = "abc1234")
@@ -64,9 +139,10 @@ class S2PatternRecognitionTest {
         console.log(pr1.matches.toIndexedString("pr1: \n"))
         console.log(pr2.matches.toIndexedString("pr2: \n"))
         console.log(pr2.diffs.operations.toIndexedString("Operations:\n"))
-    }
+    }*/
 
     companion object {
+        private val stage1abc123def = S1UserInput(userInput = "abc123def")
         fun List<Any>.toIndexedString(prefix: String = ""): String =
             this
                 .mapIndexed { index, recognizerMatch -> index to recognizerMatch }
