@@ -61,7 +61,7 @@ class AugmentedRecognizerMatch(
     }
 
     override fun equals(other: Any?): Boolean {
-        val out = when (other) {
+        return when (other) {
             null -> false
             is AugmentedRecognizerMatch ->
                 original.recognizer == other.original.recognizer
@@ -77,8 +77,6 @@ class AugmentedRecognizerMatch(
 
             else -> false
         }
-        console.log(out.toString(), toString(), "Equals", other)
-        return out
     }
 
 

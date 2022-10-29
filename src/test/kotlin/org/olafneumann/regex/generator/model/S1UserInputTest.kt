@@ -25,9 +25,6 @@ class S1UserInputTest {
         val result = input.setUserInput(newInputString = "abcde")
         val changes = result.change.changes
 
-        val out = changes.joinToString { it.toString() }
-        console.log(out)
-
         assertEquals(1 , changes.size)
         assertTrue { changes[0] is DiffOperation.Add }
 
@@ -42,9 +39,6 @@ class S1UserInputTest {
 
         val result = input.setUserInput(newInputString = "acdf")
         val changes = result.change.changes
-
-        val out = changes.joinToString { it.toString() }
-        console.log(out)
 
         assertEquals(2 , changes.size)
         assertTrue { changes[0] is DiffOperation.Remove }
@@ -65,9 +59,6 @@ class S1UserInputTest {
 
         val result = input.setUserInput(newInputString = "bookshelf")
         val changes = result.change.changes
-
-        val out = changes.joinToString { it.toString() }
-        console.log(out)
 
         assertEquals(4 , changes.size)
     }

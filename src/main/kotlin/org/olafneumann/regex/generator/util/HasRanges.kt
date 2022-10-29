@@ -10,9 +10,7 @@ interface HasRanges {
         if (ranges.size != other.ranges.size) {
             return false
         }
-        val out = ranges.mapIndexed { index, range -> range == other.ranges[index] }
+        return ranges.mapIndexed { index, range -> range == other.ranges[index] }
             .all { it }
-        console.log("Range Check", out.toString(), ranges.toIndexedString(), other.ranges.toIndexedString())
-        return out
     }
 }

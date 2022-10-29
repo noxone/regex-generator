@@ -38,7 +38,6 @@ class S2PatternRecognition : Model {
 
     fun setUserInput(newInput: String): S2PatternRecognition {
         val newMatches = RecognizerRegistry.findMatches(newInput)
-        console.log(newInput)
 
         // check how the input string has changed in regard to the old string
         val inputDiffs = differenceOf(
@@ -46,7 +45,6 @@ class S2PatternRecognition : Model {
             updated = newInput.toCharArray().toList(),
             detectMoves = false
         )
-        console.log(inputDiffs.operations.toIndexedString("Diffs: "))
 
         // generate pseudo matches, that resemble possible matches after applying the changes
         val newSelectedMatches = this.selectedMatches

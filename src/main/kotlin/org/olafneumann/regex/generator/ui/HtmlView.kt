@@ -107,10 +107,7 @@ class HtmlView(
             ?.ifBlank { null }
             ?.split(",")
             ?.map { it.split("|") }
-            ?.associate {
-                console.log(it)
-                it[0].toInt() to decodeURIComponent(it[1])
-            }
+            ?.associate { it[0].toInt() to decodeURIComponent(it[1]) }
             ?: emptyMap()
         if (selectionIndexToRecognizerName.isNotEmpty()) {
             presenter.matchPresenters
