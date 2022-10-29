@@ -160,9 +160,9 @@ class S2PatternRecognitionTest {
         val s2s1 = S2PatternRecognition(input = s1s1)
         val s2s2 = S2PatternRecognition(input = s1s2.model, previousMatches = s2s1.matches, inputChange = s1s2.change)
 
-        console.log(s2s1.matches.toIndexedString("pr1: \n"))
-        console.log(s2s2.matches.toIndexedString("pr2: \n"))
-        console.log(s2s2.diffs.operations.toIndexedString("Operations:\n"))
+        console.log(s2s1.matches.org.olafneumann.regex.generator.util.toIndexedString("pr1: \n"))
+        console.log(s2s2.matches.org.olafneumann.regex.generator.util.toIndexedString("pr2: \n"))
+        console.log(s2s2.diffs.operations.org.olafneumann.regex.generator.util.toIndexedString("Operations:\n"))
     }
 
     @Test
@@ -173,9 +173,9 @@ class S2PatternRecognitionTest {
         val pr1 = S2PatternRecognition(input = input1)
         val pr2 = S2PatternRecognition(input = input2, previousMatches = pr1.matches)
 
-        console.log(pr1.matches.toIndexedString("pr1: \n"))
-        console.log(pr2.matches.toIndexedString("pr2: \n"))
-        console.log(pr2.diffs.operations.toIndexedString("Operations:\n"))
+        console.log(pr1.matches.org.olafneumann.regex.generator.util.toIndexedString("pr1: \n"))
+        console.log(pr2.matches.org.olafneumann.regex.generator.util.toIndexedString("pr2: \n"))
+        console.log(pr2.diffs.operations.org.olafneumann.regex.generator.util.toIndexedString("Operations:\n"))
     }*/
 
     companion object {

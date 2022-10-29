@@ -1,8 +1,5 @@
 package org.olafneumann.regex.generator.util
 
-import org.olafneumann.regex.generator.regex.RecognizerMatch
-import toIndexedString
-
 interface HasRanges {
     val ranges: List<IntRange>
 

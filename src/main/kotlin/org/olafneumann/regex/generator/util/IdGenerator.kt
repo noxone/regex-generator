@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.model
+package org.olafneumann.regex.generator.util
 
 class IdGenerator {
     var next = 0

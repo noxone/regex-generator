@@ -5,7 +5,6 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
 import org.olafneumann.regex.generator.util.hasIntersectionWith
-import toIndexedString
 
 class S2PatternRecognition : Model {
     val input: String
@@ -90,6 +89,15 @@ class S2PatternRecognition : Model {
             matches = matches,
             selectedMatches = selectedMatches - match,
             options = RecognizerCombiner.Options()
+        )
+    }
+
+    fun setOptions(options: RecognizerCombiner.Options) : S2PatternRecognition {
+        return S2PatternRecognition(
+            input = input,
+            matches = matches,
+            selectedMatches = selectedMatches,
+            options = options
         )
     }
 }

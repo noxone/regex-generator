@@ -1,3 +1,4 @@
+package org.olafneumann.regex.generator.util
 
 fun List<Any>.toIndexedString(prefix: String = ""): String =
     this
