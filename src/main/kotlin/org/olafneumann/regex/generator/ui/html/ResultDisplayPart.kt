@@ -14,7 +14,6 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.DisplayContract
 import org.olafneumann.regex.generator.ui.HtmlHelper
 import org.olafneumann.regex.generator.ui.HtmlView
-import org.olafneumann.regex.generator.ui.LanguageCard
 import org.olafneumann.regex.generator.ui.LinkHandler
 import org.olafneumann.regex.generator.ui.TextHandler
 import org.w3c.dom.HTMLButtonElement
@@ -51,7 +50,7 @@ internal class ResultDisplayPart(
     )
 
     private val languageDisplays = CodeGenerator.all
-        .associateWith { LanguageCard(it, containerLanguages) }
+        .associateWith { LanguageAccordionCard(it, containerLanguages) }
 
     fun showResultingPattern(regex: RecognizerCombiner.RegularExpression) {
         showResultRegex(regex)

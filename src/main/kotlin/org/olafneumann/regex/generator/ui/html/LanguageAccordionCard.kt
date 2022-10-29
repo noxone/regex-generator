@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.ui
+package org.olafneumann.regex.generator.ui.html
 
 import kotlinx.browser.document
 import kotlinx.html.ButtonType
@@ -13,10 +13,11 @@ import kotlinx.html.pre
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.output.CodeGenerator.GeneratedSnippet
+import org.olafneumann.regex.generator.settings.ApplicationSettings
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.Node
 
-internal class LanguageCard(
+internal class LanguageAccordionCard(
     private val codeGenerator: CodeGenerator,
     parent: Node
 ) {

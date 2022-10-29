@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator
 
-import org.olafneumann.regex.generator.ui.ApplicationSettings
+import org.olafneumann.regex.generator.settings.ApplicationSettings
 import org.olafneumann.regex.generator.ui.UiController
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.NPM
