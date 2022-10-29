@@ -24,7 +24,7 @@ class RecognizerMatch(
         }
         this.ranges = ranges.sortedWith(compareBy({ it.first }, { it.last }))
         this.first = this.ranges[0].first
-        this.last = this.ranges[this.ranges.size - 1].last
+        this.last = this.ranges.last().last
         this.length = last - first + 1
     }
 

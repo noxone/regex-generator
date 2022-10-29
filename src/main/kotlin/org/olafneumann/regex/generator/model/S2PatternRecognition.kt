@@ -49,21 +49,18 @@ class S2PatternRecognition : Model {
         console.log(inputDiffs.operations.toIndexedString("Diffs: "))
 
         // generate pseudo matches, that resemble possible matches after applying the changes
-        val a = this.selectedMatches
-        console.log(a.toList().toIndexedString("A: "))
-        val b = a    .mapNotNull { AugmentedRecognizerMatch.enhancing(original = it) }
-        console.log(b.toIndexedString("B: "))
-            val c = b.mapNotNull { it.applyAll(inputDiffs.operations) }
-        console.log(c.toIndexedString("C: "))
+        val newSelectedMatches = this.selectedMatches
+            .map { AugmentedRecognizerMatch(original = it) }
+            .mapNotNull { it.applyAll(inputDiffs.operations) }
             // see if the augmented matches are still present in the new list of matches -> the new selection
-        val newSelectedMatches = c.mapNotNull { augmentedMatch -> newMatches.firstOrNull { newMatch -> augmentedMatch.equals(newMatch) } }
-        console.log(newSelectedMatches.toIndexedString("newSelectedMatches: "))
+            .mapNotNull { augmentedMatch -> newMatches.firstOrNull { newMatch -> augmentedMatch.equals(newMatch) } }
 
         return S2PatternRecognition(
             input = newInput,
             matches = newMatches,
             selectedMatches = newSelectedMatches,
-            options = options)
+            options = options
+        )
     }
 
     fun select(match: RecognizerMatch): S2PatternRecognition {

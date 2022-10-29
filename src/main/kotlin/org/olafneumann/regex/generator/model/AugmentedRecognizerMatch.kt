@@ -1,28 +1,64 @@
 package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.DiffOperation
+import org.olafneumann.regex.generator.RegexGeneratorException
+import org.olafneumann.regex.generator.model.AugmentedRecognizerMatch.Companion.RangeAction.Companion.add
+import org.olafneumann.regex.generator.model.AugmentedRecognizerMatch.Companion.RangeAction.Companion.remove
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.util.HasRanges
+import org.olafneumann.regex.generator.util.add
+import org.olafneumann.regex.generator.util.remove
 
-class AugmentedRecognizerMatch private constructor(
+class AugmentedRecognizerMatch(
     val original: RecognizerMatch,
-    val first: Int = original.first,
-    val length: Int = original.length
-) : HasRanges {
+    override val ranges: List<IntRange> = original.ranges
+) : HasRange, HasRanges {
+    override val first: Int
+        get() = this.ranges[0].first
+    override val last: Int
+        get() = this.ranges.last().last
+
+
+    fun <T> applyAll(diffOperations: List<DiffOperation<T>>?): AugmentedRecognizerMatch? {
+        var out: AugmentedRecognizerMatch? = this
+        diffOperations?.forEach { out = out?.apply(it) }
+        return out
+    }
+
+    private val <T> DiffOperation<T>.rangeAction: RangeAction get() =
+        when (this) {
+            is DiffOperation.Add -> RangeAction(add, IntRange(this.index, this.index))
+            is DiffOperation.AddAll -> RangeAction(add, IntRange(this.index, this.index + this.items.size - 1))
+            is DiffOperation.Remove -> RangeAction(remove, IntRange(this.index, this.index))
+            is DiffOperation.RemoveRange -> RangeAction(remove, IntRange(this.startIndex, this.endIndex))
+            else -> throw RegexGeneratorException("Unknown DiffOperation: $this")
+        }
+
     companion object {
-        fun enhancing(original: RecognizerMatch): AugmentedRecognizerMatch? {
-            return if (original.ranges.size == 1) {
-                AugmentedRecognizerMatch(original = original)
-            } else {
-                // TODO also enable matches with several ranges
-                null
+        private data class RangeAction(
+            val action: (IntRange, IntRange) -> IntRange?,
+            val range: IntRange
+        ) {
+            fun applyTo(range: IntRange): IntRange? = action(range, this.range)
+
+            companion object {
+                val add: (IntRange, IntRange) -> IntRange? = { a, b -> a.add(b) }
+                val remove: (IntRange, IntRange) -> IntRange? = { a, b -> a.remove(b) }
             }
         }
     }
 
-    private val last = first + length
-    override val ranges: List<IntRange>
-        get() = listOf(IntRange(start = first, endInclusive = last - 1))
+    private fun <T> apply(diffOperation: DiffOperation<T>): AugmentedRecognizerMatch? {
+        val rangeAction = diffOperation.rangeAction
+        val newRanges = ranges.mapNotNull { rangeAction.applyTo(it) }
+
+        return if (newRanges.size == ranges.size) {
+            AugmentedRecognizerMatch(original = original, ranges = newRanges)
+        } else {
+            null
+        }
+    }
 
     override fun equals(other: Any?): Boolean {
         val out = when (other) {
@@ -53,79 +89,6 @@ class AugmentedRecognizerMatch private constructor(
         result = 31 * result + ranges.hashCode()
         return result
     }
-
-    private fun <T> apply(diffOperation: DiffOperation<T>): AugmentedRecognizerMatch? =
-        when (diffOperation) {
-            is DiffOperation.Add -> {
-                if (diffOperation.index < first) {
-                    add(first = 1)
-                } else if (diffOperation.index == first) {
-                    // TODO: What to do here?
-                    console.log("Added at start of match")
-                    null
-                } else if (diffOperation.index in (first + 1) until last) {
-                    add(length = 1)
-                } else {
-                    this
-                }
-            }
-
-            is DiffOperation.AddAll -> {
-                if (diffOperation.index <= first) {
-                    add(first = diffOperation.items.size)
-                } else if (diffOperation.index == first) {
-                    // TODO: What to do here?
-                    console.log("Added range at start of match")
-                    null
-                } else if (diffOperation.index in (first + 1) until last) {
-                    add(length = diffOperation.items.size)
-                } else {
-                    this
-                }
-            }
-
-            is DiffOperation.Remove -> {
-                if (diffOperation.index < first) {
-                    add(first = -1)
-                } else if (diffOperation.index in first until last) {
-                    add(length = -1)
-                } else {
-                    this
-                }
-            }
-
-            is DiffOperation.RemoveRange -> {
-                if (diffOperation.endIndex < first) {
-                    add(first = diffOperation.startIndex - diffOperation.endIndex)
-                } else if (diffOperation.startIndex > last) {
-                    this
-                } else if (diffOperation.startIndex >= first && diffOperation.endIndex < last) {
-                    add(length = diffOperation.startIndex - diffOperation.endIndex)
-                } else {
-                    // remove this
-                    null
-                } /*else if (diffOperation.startIndex <= first && diffOperation.endIndex < last) {
-                    add(first = first - diffOperation.startIndex, length = diffOperation.endIndex - first)
-                } else if (diffOperation.startIndex <= first && diffOperation.endIndex >= last) {
-                    null
-                } else if (diffOperation.startIndex >= first && diffOperation.)*/
-            }
-
-            else -> throw RuntimeException("Unknown or unexpected Diff Operation: $this")
-        }
-
-    fun <T> applyAll(diffOperations: List<DiffOperation<T>>?): AugmentedRecognizerMatch? {
-        var out: AugmentedRecognizerMatch? = this
-        diffOperations?.forEach { out = out?.apply(it) }
-        return out
-    }
-
-    private fun add(first: Int = 0, length: Int = 0): AugmentedRecognizerMatch? =
-        if (this.first >= first && this.length > length) {
-            AugmentedRecognizerMatch(original = original, first = this.first + first, length = this.length + length)
-        } else {
-            null
-        }
 
     override fun toString(): String {
         return "AugmentedRecognizerMatch(title=${original.title}, position=$first/$length, priority=${original.priority}, recognizer=${original.recognizer.name}, patterns=${original.patterns})"

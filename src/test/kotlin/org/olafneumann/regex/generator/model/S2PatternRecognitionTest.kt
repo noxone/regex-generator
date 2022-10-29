@@ -133,6 +133,24 @@ class S2PatternRecognitionTest {
         assertEquals(expected = numberMatch.last + 1, actual = actualMatch.last, "Last index of match")
     }
 
+    @Test
+    fun shouldKeepTheSelectionWhenAddingCharactersPriorToSelectionMatch() {
+        // given
+        val s2n1 = S2PatternRecognition(input = "abc123def", options = RecognizerCombiner.Options())
+        val numberMatch = s2n1.matches.first { it.title == "Number" }
+        val s2n2 = s2n1.select(numberMatch)
+
+        // when
+        val s2n3 = s2n2.setUserInput("abdc123def")
+
+        // then
+        assertEquals(expected = 1, actual = s2n3.selectedMatches.size, "Number of matches")
+        val actualMatch = s2n3.selectedMatches.first()
+        assertEquals(expected = "Number", actual = actualMatch.title, "Match title")
+        assertEquals(expected = numberMatch.first + 1, actual = actualMatch.first, "First index of match")
+        assertEquals(expected = numberMatch.last + 1, actual = actualMatch.last, "Last index of match")
+    }
+
     /*@Test
     fun testModel_A() {
         val s1s1 = S1UserInput(userInput = "abc123")
