@@ -41,6 +41,7 @@ class S2PatternRecognitionTest {
         assertContains(titles, "Multiple characters")
     }
 
+    @Suppress("MaxLineLength")
     @Test
     fun testPatterns_selectOneMatch() {
         // given

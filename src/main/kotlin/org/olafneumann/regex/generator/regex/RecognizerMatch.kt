@@ -44,7 +44,11 @@ class RecognizerMatch(
     }
 
     override fun toString(): String {
-        return "RecognizerMatch(title='$title', position=$first/$length, priority=$priority, recognizer=${recognizer.name}, patterns=$patterns)"
+        return "RecognizerMatch(title='$title', " +
+                "position=$first/$length, " +
+                "priority=$priority, " +
+                "recognizer=${recognizer.name}, " +
+                "patterns=$patterns)"
     }
 
 }

@@ -91,6 +91,10 @@ class AugmentedRecognizerMatch(
     }
 
     override fun toString(): String {
-        return "AugmentedRecognizerMatch(title=${original.title}, position=$first/$length, priority=${original.priority}, recognizer=${original.recognizer.name}, patterns=${original.patterns})"
+        return "AugmentedRecognizerMatch(title=${original.title}, " +
+                "position=$first/$length, " +
+                "priority=${original.priority}, " +
+                "recognizer=${original.recognizer.name}, " +
+                "patterns=${original.patterns})"
     }
 }

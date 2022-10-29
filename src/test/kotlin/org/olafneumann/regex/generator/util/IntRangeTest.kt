@@ -90,8 +90,14 @@ class IntRangeTest {
     }
 
     private fun testIntersections(expected: Boolean, rangeA: IntRange, rangeB: IntRange) {
-        assertEquals(expected = expected, rangeA.hasIntersectionWith(rangeB), message = "Intersection of $rangeA with $rangeB")
-        assertEquals(expected = expected, rangeB.hasIntersectionWith(rangeA), message = "Intersection of $rangeB with $rangeA")
+        assertEquals(
+            expected = expected,
+            actual = rangeA.hasIntersectionWith(rangeB),
+            message = "Intersection of $rangeA with $rangeB")
+        assertEquals(
+            expected = expected,
+            actual = rangeB.hasIntersectionWith(rangeA),
+            message = "Intersection of $rangeB with $rangeA")
     }
 
     @Test
@@ -117,7 +123,10 @@ class IntRangeTest {
     }
 
     private fun testRangeAdd(expected: IntRange?, originalRange: IntRange, rangeToAdd: IntRange) {
-        assertEquals(expected, originalRange.add(rangeToAdd), "Adding $rangeToAdd to $originalRange should be $expected")
+        assertEquals(
+            expected = expected,
+            actual = originalRange.add(rangeToAdd),
+            message = "Adding $rangeToAdd to $originalRange should be $expected")
     }
 
     @Test
@@ -139,6 +148,10 @@ class IntRangeTest {
     }
 
     private fun testRangeRemove(expected: IntRange?, originalRange: IntRange, rangeToRemove: IntRange) {
-        assertEquals(expected, originalRange.remove(rangeToRemove), "Removing $rangeToRemove from $originalRange should be $expected")
+        assertEquals(
+            expected = expected,
+            actual = originalRange.remove(rangeToRemove),
+            message = "Removing $rangeToRemove from $originalRange should be $expected"
+        )
     }
 }
