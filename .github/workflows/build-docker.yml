@@ -79,9 +79,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ inputs.appEnvironment }}-${{ github.sha }}
+          key: ${{ runner.os }}-docker${{ inputs.appEnvironment }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ inputs.appEnvironment }}-
+            ${{ runner.os }}-docker${{ inputs.appEnvironment }}-
 
       # Do the docker stuff
       - name: Login to DockerHub
@@ -91,7 +91,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push Docker images
-        uses: docker/build-push-action@v3.1.1
+        uses: docker/build-push-action@v3.2.0
         with:
           context: .
           platforms: ${{ env.docker-platforms }}

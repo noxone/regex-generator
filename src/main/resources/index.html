@@ -14,10 +14,17 @@
 
     <!-- favicon -->
     <link rel="shortcut icon" href="favicon/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <link rel="manifest" href="favicon/site.webmanifest">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/app.webmanifest">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon/rg_152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/rg_180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="favicon/rg_167.png">
+    <meta name="apple-mobile-web-app-title" content="Regex Generator">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -32,6 +39,15 @@
 </head>
 
 <body class="bg-dark">
+    <div id="rg_loading" class="fixed-top fixed-bottom">
+        <div class="bg-light shadow rounded m-5 px-4 py-5 row fixed-top opacity-75 display-5">
+            <div class="spinner-grow inline-block m-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            Regex Generator loading...
+        </div>
+    </div>
+
     <div class="container-fluid py-3 px-4" id="rg_mainContainer">
         <div id="rg_container_cookie" class="alert alert-danger fixed-top m-2" role="alert">
             <div class="d-flex justify-content-between rg-banner-consent">
@@ -236,7 +252,7 @@
 
         <!-- Footer -->
         <footer class="page-footer font-small row bg-dark text-muted border border-secondary mt-4 p-4 rounded">
-            <h5 class="text-uppercase" style="width: 100%">Regex Generator</h5>
+            <h5 class="text-uppercase text-md-start text-center">Regex Generator</h5>
             <div class="text-center text-md-start collapse show" id="footerContent">
                 <div class="row">
                     <div class="col-md-6 mt-md-0 mt-3">

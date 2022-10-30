@@ -4,6 +4,7 @@ import org.olafneumann.regex.generator.settings.ApplicationSettings
 import org.olafneumann.regex.generator.ui.UiController
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.NPM
+import org.olafneumann.regex.generator.ui.html.LoadingIndicator
 
 
 fun main() {
@@ -30,6 +31,8 @@ private fun initRegexGeneratorUnsafe() {
     // store information, that we were already here
     val showGuide = ApplicationSettings.isNewUser()
     ApplicationSettings.storeUserLastInfo()
+
+    LoadingIndicator.hideLoading()
 
     // show guide for new users
     if (showGuide) {
