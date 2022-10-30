@@ -6,27 +6,21 @@ import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
 import org.olafneumann.regex.generator.util.hasIntersectionWith
 
-class S2PatternRecognition : Model {
-    val input: String
-    val matches: List<RecognizerMatch>
-    val selectedMatches: Set<RecognizerMatch>
+class PatternRecognizerModel(
+    val input: String,
+    val matches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
+    selectedMatches: Collection<RecognizerMatch> = emptySet(),
     val options: RecognizerCombiner.Options
+) {
+    val selectedMatches: Set<RecognizerMatch>
 
-    constructor(
-        input: String,
-        matches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
-        selectedMatches: Collection<RecognizerMatch> = emptySet(),
-        options: RecognizerCombiner.Options
-    ) {
-        this.input = input
-        this.matches = matches
+    init {
         this.selectedMatches = selectedMatches
             .filter { matches.contains(it) }
             .toSet()
-        this.options = options
     }
 
-    override val output: String
+    val regularExpression: String
         get() = RecognizerCombiner
             .combineMatches(
                 inputText = input,
@@ -35,7 +29,7 @@ class S2PatternRecognition : Model {
             )
             .pattern
 
-    fun setUserInput(newInput: String): S2PatternRecognition {
+    fun setUserInput(newInput: String): PatternRecognizerModel {
         val newMatches = RecognizerRegistry.findMatches(newInput)
 
         // check how the input string has changed in regard to the old string
@@ -52,7 +46,7 @@ class S2PatternRecognition : Model {
             // see if the augmented matches are still present in the new list of matches -> the new selection
             .mapNotNull { augmentedMatch -> newMatches.firstOrNull { newMatch -> augmentedMatch.equals(newMatch) } }
 
-        return S2PatternRecognition(
+        return PatternRecognizerModel(
             input = newInput,
             matches = newMatches,
             selectedMatches = newSelectedMatches,
@@ -60,7 +54,7 @@ class S2PatternRecognition : Model {
         )
     }
 
-    fun select(match: RecognizerMatch): S2PatternRecognition {
+    fun select(match: RecognizerMatch): PatternRecognizerModel {
         // make sure, the selection is valid
         if (!matches.contains(match)) {
             return this
@@ -75,7 +69,7 @@ class S2PatternRecognition : Model {
             }
         }
 
-        return S2PatternRecognition(
+        return PatternRecognizerModel(
             input = input,
             matches = matches,
             selectedMatches = selectedMatches + match,
@@ -83,8 +77,8 @@ class S2PatternRecognition : Model {
         )
     }
 
-    fun deselect(match: RecognizerMatch): S2PatternRecognition {
-        return S2PatternRecognition(
+    fun deselect(match: RecognizerMatch): PatternRecognizerModel {
+        return PatternRecognizerModel(
             input = input,
             matches = matches,
             selectedMatches = selectedMatches - match,
@@ -92,8 +86,8 @@ class S2PatternRecognition : Model {
         )
     }
 
-    fun setOptions(options: RecognizerCombiner.Options) : S2PatternRecognition {
-        return S2PatternRecognition(
+    fun setOptions(options: RecognizerCombiner.Options) : PatternRecognizerModel {
+        return PatternRecognizerModel(
             input = input,
             matches = matches,
             selectedMatches = selectedMatches,

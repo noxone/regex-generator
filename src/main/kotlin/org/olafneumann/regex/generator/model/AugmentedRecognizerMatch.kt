@@ -10,7 +10,7 @@ import org.olafneumann.regex.generator.util.HasRanges
 import org.olafneumann.regex.generator.util.add
 import org.olafneumann.regex.generator.util.remove
 
-class AugmentedRecognizerMatch(
+internal class AugmentedRecognizerMatch(
     val original: RecognizerMatch,
     override val ranges: List<IntRange> = original.ranges
 ) : HasRange, HasRanges {

@@ -6,14 +6,14 @@ import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class S2PatternRecognitionTest {
+class PatternRecognizerModelTest {
     @Test
     fun testPatterns_numberOfMatches1() {
         // given
         val s1 = S1UserInput(userInput = "aaa")
 
         // when
-        val s2 = S2PatternRecognition(input = s1.output, options = RecognizerCombiner.Options())
+        val s2 = PatternRecognizerModel(input = s1.output, options = RecognizerCombiner.Options())
 
         //then
         assertEquals(expected = 9, actual = s2.matches.size)
@@ -25,7 +25,7 @@ class S2PatternRecognitionTest {
         val s1 = S1UserInput(userInput = "TX_RESP_Q008")
 
         // when
-        val s2 = S2PatternRecognition(input = s1.output, options = RecognizerCombiner.Options())
+        val s2 = PatternRecognizerModel(input = s1.output, options = RecognizerCombiner.Options())
 
         //then
         assertEquals(expected = 33, actual = s2.matches.size)
@@ -33,7 +33,7 @@ class S2PatternRecognitionTest {
 
     @Test
     fun testPatterns_simpleRecognition() {
-        val s2 = S2PatternRecognition(input = stage1abc123def.output, options = RecognizerCombiner.Options())
+        val s2 = PatternRecognizerModel(input = stage1abc123def.output, options = RecognizerCombiner.Options())
 
         val titles = s2.matches.map { it.title }
 
@@ -45,7 +45,7 @@ class S2PatternRecognitionTest {
     @Test
     fun testPatterns_selectOneMatch() {
         // given
-        val s2n1 = S2PatternRecognition(input = stage1abc123def.output, options = RecognizerCombiner.Options())
+        val s2n1 = PatternRecognizerModel(input = stage1abc123def.output, options = RecognizerCombiner.Options())
         val numberMatch = s2n1.matches.first { it.title == "Number" }
 
         // when
@@ -60,7 +60,7 @@ class S2PatternRecognitionTest {
     @Test
     fun testPatterns_selectInvalidMatch() {
         // given
-        val s2n1 = S2PatternRecognition(input = stage1abc123def.output, options = RecognizerCombiner.Options())
+        val s2n1 = PatternRecognizerModel(input = stage1abc123def.output, options = RecognizerCombiner.Options())
         val numberMatch = s2n1.matches.first { it.title == "Number" }
         val digitMatch = s2n1.matches.first { it.title == "Digit" }
         val s2n2 = s2n1.select(numberMatch)
@@ -75,7 +75,7 @@ class S2PatternRecognitionTest {
     @Test
     fun testPatterns_selectValidMatch() {
         // given
-        val s2n1 = S2PatternRecognition(input = stage1abc123def.output, options = RecognizerCombiner.Options())
+        val s2n1 = PatternRecognizerModel(input = stage1abc123def.output, options = RecognizerCombiner.Options())
         val numberMatch = s2n1.matches.first { it.title == "Number" }
         val characterMatch = s2n1.matches.first { it.title == "One character" }
         val s2n2 = s2n1.select(numberMatch)
@@ -90,7 +90,7 @@ class S2PatternRecognitionTest {
     @Test
     fun testPatterns_deselectOneMatch() {
         // given
-        val s2n1 = S2PatternRecognition(input = stage1abc123def.output, options = RecognizerCombiner.Options())
+        val s2n1 = PatternRecognizerModel(input = stage1abc123def.output, options = RecognizerCombiner.Options())
         val numberMatch = s2n1.matches.first { it.title == "Number" }
         val s2n2 = s2n1.select(numberMatch)
 
@@ -106,7 +106,7 @@ class S2PatternRecognitionTest {
         val expected = "abc[0-9]+def"
 
         // given
-        val s2n1 = S2PatternRecognition(input = stage1abc123def.output, options = RecognizerCombiner.Options())
+        val s2n1 = PatternRecognizerModel(input = stage1abc123def.output, options = RecognizerCombiner.Options())
         val numberMatch = s2n1.matches.first { it.title == "Number" }
 
         // when
@@ -119,7 +119,7 @@ class S2PatternRecognitionTest {
     @Test
     fun shouldKeepTheSelectionWhenAddingCharactersToSelectionMatch() {
         // given
-        val s2n1 = S2PatternRecognition(input = "abc123def", options = RecognizerCombiner.Options())
+        val s2n1 = PatternRecognizerModel(input = "abc123def", options = RecognizerCombiner.Options())
         val numberMatch = s2n1.matches.first { it.title == "Number" }
         val s2n2 = s2n1.select(numberMatch)
 
@@ -137,7 +137,7 @@ class S2PatternRecognitionTest {
     @Test
     fun shouldKeepTheSelectionWhenAddingCharactersPriorToSelectionMatch() {
         // given
-        val s2n1 = S2PatternRecognition(input = "abc123def", options = RecognizerCombiner.Options())
+        val s2n1 = PatternRecognizerModel(input = "abc123def", options = RecognizerCombiner.Options())
         val numberMatch = s2n1.matches.first { it.title == "Number" }
         val s2n2 = s2n1.select(numberMatch)
 
