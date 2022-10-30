@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.ui.html
+package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
@@ -12,10 +12,10 @@ import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.DisplayContract
-import org.olafneumann.regex.generator.ui.HtmlHelper
+import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.HtmlView
-import org.olafneumann.regex.generator.ui.LinkHandler
-import org.olafneumann.regex.generator.ui.TextHandler
+import org.olafneumann.regex.generator.ui.utils.LinkHandler
+import org.olafneumann.regex.generator.ui.utils.TextHandler
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 

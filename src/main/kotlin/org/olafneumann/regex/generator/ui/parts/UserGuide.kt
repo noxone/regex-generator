@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.ui.html
+package org.olafneumann.regex.generator.ui.parts
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

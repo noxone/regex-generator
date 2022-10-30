@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.ui
+package org.olafneumann.regex.generator.ui.utils
 
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
@@ -10,6 +10,7 @@ import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.js.JQuery
 import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.HtmlView.Companion.each
 import org.w3c.dom.url.URL
 import kotlin.math.max

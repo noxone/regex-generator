@@ -6,11 +6,12 @@ import org.olafneumann.regex.generator.js.JQuery
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.ui.html.RecognizerDisplayPart
-import org.olafneumann.regex.generator.ui.html.ResultDisplayPart
-import org.olafneumann.regex.generator.ui.html.TimerController
-import org.olafneumann.regex.generator.ui.html.UserGuide
-import org.olafneumann.regex.generator.ui.html.UserInputDelayer
+import org.olafneumann.regex.generator.ui.parts.RecognizerDisplayPart
+import org.olafneumann.regex.generator.ui.parts.ResultDisplayPart
+import org.olafneumann.regex.generator.ui.utils.TimerController
+import org.olafneumann.regex.generator.ui.parts.UserGuide
+import org.olafneumann.regex.generator.ui.utils.HtmlHelper
+import org.olafneumann.regex.generator.ui.utils.UserInputDelayer
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement

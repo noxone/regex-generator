@@ -4,7 +4,7 @@ import org.olafneumann.regex.generator.settings.ApplicationSettings
 import org.olafneumann.regex.generator.ui.UiController
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.NPM
-import org.olafneumann.regex.generator.ui.html.LoadingIndicator
+import org.olafneumann.regex.generator.ui.components.LoadingIndicator
 
 
 fun main() {

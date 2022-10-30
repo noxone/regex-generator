@@ -5,7 +5,7 @@ import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
 import org.olafneumann.regex.generator.settings.ApplicationSettings
-import org.olafneumann.regex.generator.ui.html.CookieBanner
+import org.olafneumann.regex.generator.ui.components.CookieBanner
 
 
 class UiController : DisplayContract.Controller {

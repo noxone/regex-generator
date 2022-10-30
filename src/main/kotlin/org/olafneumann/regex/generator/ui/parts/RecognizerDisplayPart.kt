@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.ui.html
+package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.addClass
@@ -13,7 +13,7 @@ import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.DisplayContract
-import org.olafneumann.regex.generator.ui.HtmlHelper
+import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MatchPresenter
 import org.w3c.dom.HTMLDivElement

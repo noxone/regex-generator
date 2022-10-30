@@ -1,8 +1,7 @@
-package org.olafneumann.regex.generator.ui.html
+package org.olafneumann.regex.generator.ui.components
 
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.ui.HtmlHelper
-import org.w3c.dom.HTMLButtonElement
+import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLDivElement
 
 object LoadingIndicator {
