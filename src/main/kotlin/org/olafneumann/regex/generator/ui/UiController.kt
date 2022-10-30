@@ -65,7 +65,7 @@ class UiController : DisplayContract.Controller {
         // find matches to disable
         val selectedMatches = matchPresenters.filter { it.selected }
         matchPresenters.filter { !it.selected }
-            .forEach { match -> match.deactivated = selectedMatches.any { match.intersect(it) } }
+            .forEach { match -> match.deactivated = selectedMatches.any { match.intersects(it) } }
 
         computeOutputPattern()
     }
