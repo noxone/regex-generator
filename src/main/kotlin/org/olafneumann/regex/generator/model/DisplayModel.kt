@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.model
 
 import org.olafneumann.regex.generator.regex.RecognizerMatch
-import org.olafneumann.regex.generator.ui.MatchPresenter
 import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.util.HasRanges
 
@@ -25,6 +24,7 @@ class DisplayModel(
             ) }
         val selectedMatchPresenterBuilders = matchPresenterBuilders.filter { it.selected }
         matchPresenterBuilders
+            .filter { !it.selected }
             .filter { mpb -> selectedMatchPresenterBuilders.any { it.intersects(mpb) } }
             .forEach { it.deactivated(true) }
         matchPresenters = matchPresenterBuilders
@@ -37,12 +37,30 @@ class DisplayModel(
 
     val shareLink: String get() = TODO("Implement shareLink")
 
-    fun newPatternRecognitionModel(patternRecognitionModel: PatternRecognizerModel): DisplayModel {
+    fun setUserInput(input: String): DisplayModel {
         return DisplayModel(
             showLoadingIndicator = showLoadingIndicator,
             showCookieBanner = showCookieBanner,
             showCopyButton = showCopyButton,
-            patternRecognitionModel = patternRecognitionModel
+            patternRecognitionModel = patternRecognitionModel.setUserInput(input)
+        )
+    }
+
+    fun select(recognizerMatch: RecognizerMatch): DisplayModel {
+        return DisplayModel(
+            showLoadingIndicator = showLoadingIndicator,
+            showCookieBanner = showCookieBanner,
+            showCopyButton = showCopyButton,
+            patternRecognitionModel = patternRecognitionModel.select(recognizerMatch)
+        )
+    }
+
+    fun deselect(recognizerMatch: RecognizerMatch): DisplayModel {
+        return DisplayModel(
+            showLoadingIndicator = showLoadingIndicator,
+            showCookieBanner = showCookieBanner,
+            showCopyButton = showCopyButton,
+            patternRecognitionModel = patternRecognitionModel.deselect(recognizerMatch)
         )
     }
 
@@ -55,10 +73,9 @@ class DisplayModel(
                 return newLine
             }
             matches
-                .forEach { presenter ->
-                    lines
-                        .firstOrNull { line -> line.last().last < presenter.first } ?: createNextLine()
-                        .add(presenter)
+                .forEach { matchPresenter ->
+                    val line = lines.firstOrNull { line -> line.last().last < matchPresenter.first } ?: createNextLine()
+                    line.add(matchPresenter)
                 }
             return lines
         }
@@ -67,14 +84,14 @@ class DisplayModel(
 
 class MatchPresenter2 private constructor(
     override val ranges: List<IntRange>,
-    val matches: Collection<RecognizerMatch>,
+    val recognizerMatches: Collection<RecognizerMatch>,
     val selected: Boolean,
     val deactivated: Boolean
 ) : HasRange, HasRanges {
     override val first: Int = ranges.minOf { it.first }
     override val last: Int = ranges.maxOf { it.last }
     override val range = IntRange(first, last)
-    val priority = matches.maxOf { it.priority }
+    val priority = recognizerMatches.maxOf { it.priority }
 
     data class Builder(
         override var ranges: List<IntRange>,
@@ -86,14 +103,20 @@ class MatchPresenter2 private constructor(
         fun build(): MatchPresenter2 =
             MatchPresenter2(
                 ranges = ranges,
-                matches = matches,
+                recognizerMatches = matches,
                 selected = selected,
                 deactivated = deactivated
             )
     }
 
+
+
     companion object {
         private val byPriority = compareByDescending<MatchPresenter2> { it.priority }
         val byPriorityAndPosition = byPriority.then(HasRange.byPosition)
+    }
+
+    override fun toString(): String {
+        return "MatchPresenter(ranges=$ranges, priority=$priority, matches=$recognizerMatches, selected=$selected, deactivated=$deactivated)"
     }
 }

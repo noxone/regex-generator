@@ -42,8 +42,6 @@ class MatchPresenter(
 
     val availableForHighlight: Boolean get() = !deactivated && !selected
 
-    inline fun forEachIndexInRanges(action: (Int) -> Unit) = ranges.flatMap { it.asIterable() }.forEach { action(it) }
-
     companion object {
         private val byPriority = compareByDescending<MatchPresenter> { it.priority }
         val byPriorityAndPosition = byPriority.then(HasRange.byPosition)

@@ -1,9 +1,9 @@
 package org.olafneumann.regex.generator
 
 import org.olafneumann.regex.generator.settings.ApplicationSettings
-import org.olafneumann.regex.generator.ui.UiController
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.NPM
+import org.olafneumann.regex.generator.ui.MVCController
 import org.olafneumann.regex.generator.ui.components.LoadingIndicator
 
 
@@ -26,7 +26,8 @@ private fun initRegexGeneratorUnsafe() {
     NPM.importAll()
 
     // initialize presentation code
-    val presenter = UiController()
+    //val presenter = UiController()
+    val controller = MVCController()
 
     // store information, that we were already here
     val showGuide = ApplicationSettings.isNewUser()
@@ -36,6 +37,6 @@ private fun initRegexGeneratorUnsafe() {
 
     // show guide for new users
     if (showGuide) {
-        presenter.showInitialUserGuide()
+        // TODO presenter.showInitialUserGuide()
     }
 }

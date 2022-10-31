@@ -1,7 +1,5 @@
 package org.olafneumann.regex.generator.util
 
-import org.olafneumann.regex.generator.ui.MatchPresenter
-
 interface HasRanges {
     val ranges: List<IntRange>
 
@@ -16,4 +14,6 @@ interface HasRanges {
     fun intersects(other: HasRanges): Boolean =
         ranges.flatMap { thisRange -> other.ranges.map { otherRange -> thisRange to otherRange } }
             .any { it.first.intersect(it.second).isNotEmpty() }
+
+    fun forEachIndexInRanges(action: (Int) -> Unit) = ranges.flatMap { it.asIterable() }.forEach { action(it) }
 }
