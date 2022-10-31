@@ -35,6 +35,6 @@ private fun initRegexGeneratorUnsafe() {
 
     // show guide for new users
     if (showGuide) {
-        // TODO presenter.showInitialUserGuide()
+        controller.onShowUserGuide(initialStep = true)
     }
 }

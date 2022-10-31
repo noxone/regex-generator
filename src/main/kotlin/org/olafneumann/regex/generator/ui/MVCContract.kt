@@ -7,6 +7,8 @@ import org.olafneumann.regex.generator.regex.RecognizerMatch
 interface MVCContract {
     interface View {
         fun applyModel(model: DisplayModel)
+
+        fun showUserGuide(initialStep: Boolean)
     }
 
     interface Controller {
@@ -17,5 +19,7 @@ interface MVCContract {
         fun onRecognizerMatchClick(recognizerMatch: RecognizerMatch)
         fun onCopyRegexButtonClick()
         fun onShareButtonClick()
+
+        fun onShowUserGuide(initialStep: Boolean = false)
     }
 }

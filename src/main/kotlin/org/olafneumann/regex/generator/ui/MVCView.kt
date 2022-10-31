@@ -3,6 +3,7 @@ package org.olafneumann.regex.generator.ui
 import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.ui.components.CookieBanner
 import org.olafneumann.regex.generator.ui.components.LoadingIndicator
+import org.olafneumann.regex.generator.ui.components.UserGuide
 import org.olafneumann.regex.generator.ui.parts.P1UserInput
 import org.olafneumann.regex.generator.ui.parts.P2MatchPresenter
 import org.olafneumann.regex.generator.ui.parts.P3RegexDisplay
@@ -10,6 +11,7 @@ import org.olafneumann.regex.generator.ui.parts.P4LanguageDisplay
 import org.olafneumann.regex.generator.ui.parts.PXFooter
 import org.olafneumann.regex.generator.ui.parts.PXOptions
 import org.olafneumann.regex.generator.ui.parts.PXShare
+import org.olafneumann.regex.generator.ui.parts.PXUserGuide
 
 class MVCView(
     private val controller: MVCContract.Controller,
@@ -29,6 +31,9 @@ class MVCView(
     private val shareDisplay = PXShare(controller = controller)
     private val footerDisplay = PXFooter()
 
+    private val userGuidePart = PXUserGuide(controller = controller)
+    private val userGuide = UserGuide.forLanguage("en")
+
     override fun applyModel(model: DisplayModel) {
         loadingIndicator.applyModel(model)
         cookieBanner.applyModel(model)
@@ -39,5 +44,9 @@ class MVCView(
         languageDisplay.applyModel(model)
         shareDisplay.applyModel(model)
         footerDisplay.applyModel(model)
+    }
+
+    override fun showUserGuide(initialStep: Boolean) {
+        userGuide.show(initialStep)
     }
 }

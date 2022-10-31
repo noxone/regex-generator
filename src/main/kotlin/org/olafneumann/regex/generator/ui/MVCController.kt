@@ -70,6 +70,10 @@ class MVCController : MVCContract.Controller {
         model = model.deselect(recognizerMatch)
     }
 
+    override fun onShowUserGuide(initialStep: Boolean) {
+        view.showUserGuide(initialStep)
+    }
+
     companion object {
         private const val VAL_EXAMPLE_INPUT =
             "2020-03-12T13:34:56.123Z INFO  [org.example.Class]: This is a #simple #logline containing a 'value'."
@@ -77,7 +81,7 @@ class MVCController : MVCContract.Controller {
 
         private fun createInitialModel() = DisplayModel(
             showLoadingIndicator = true,
-            showCookieBanner = isUserConsentGiven,
+            showCookieBanner = !isUserConsentGiven,
             showCopyButton = isClipboardAvailable,
             patternRecognitionModel = PatternRecognizerModel(
                 input = VAL_EXAMPLE_INPUT,
