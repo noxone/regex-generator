@@ -1,7 +1,10 @@
 package org.olafneumann.regex.generator.ui.parts
 
+import kotlinx.browser.document
+import kotlinx.browser.window
 import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.ui.HtmlView
+import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLButtonElement
@@ -17,12 +20,14 @@ class PXShare(
         buttonShareLink.onclick = { controller.onShareButtonClick() }
     }
 
-    /*private val textShare = TextHandler(
-        HtmlHelper.getElementById(HtmlView.ID_TEXT_SHARE_LINK),
-        UrlGenerator("ShareLink", "https://regex-generator.olafneumann.org/?sampleText=%1\$s&flags=%2\$s")
-    )*/
-
     fun applyModel(model: DisplayModel) {
-        divShareLink.innerText = model.shareLink
+        val url = model.shareLink.toCurrentWindowLocation()
+
+        divShareLink.innerText = url.toString()
+        updateDocumentSearchQuery(url.search)
+    }
+
+    private fun updateDocumentSearchQuery(urlString: String) {
+        window.history.replaceState(data = null, title = document.title, url = urlString)
     }
 }

@@ -1,5 +1,8 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.browser.window
+import org.w3c.dom.url.URL
+
 object HtmlView {
     const val CLASS_MATCH_ROW = "rg-match-row"
     const val CLASS_MATCH_ITEM = "rg-match-item"
@@ -35,6 +38,15 @@ object HtmlView {
     val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
     const val MAGIC_HEIGHT = 8
     const val HIDE_DELAY = 5000
+
+    val URL_CURRENT = URL(window.location.toString())
+    fun URL.toCurrentWindowLocation(): URL {
+        var url = URL(this.toString())
+        url.protocol = URL_CURRENT.protocol
+        url.hostname = URL_CURRENT.hostname
+        url.port = URL_CURRENT.port
+        return url
+    }
 }
 
 

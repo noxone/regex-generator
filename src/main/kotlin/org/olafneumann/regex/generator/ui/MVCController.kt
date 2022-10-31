@@ -9,6 +9,7 @@ import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.settings.ApplicationSettings
+import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
 
@@ -24,9 +25,6 @@ class MVCController : MVCContract.Controller {
         }
 
     init {
-        // Prepare UI
-        // TODO view.applyInitParameters(defaultText = UiController.VAL_EXAMPLE_INPUT)
-
         view.applyModel(model)
     }
 
@@ -60,7 +58,7 @@ class MVCController : MVCContract.Controller {
     }
 
     override fun onShareButtonClick() {
-        copyToClipboard(text = model.shareLink)
+        copyToClipboard(text = model.shareLink.toCurrentWindowLocation().toString())
     }
 
     private fun isSelected(recognizerMatch: RecognizerMatch): Boolean =

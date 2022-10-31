@@ -1,7 +1,11 @@
 package org.olafneumann.regex.generator.model
 
+import org.olafneumann.regex.generator.js.encodeURIComponent
+import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.ui.HtmlView
+import org.w3c.dom.url.URL
 
 class DisplayModel(
     val showLoadingIndicator: Boolean,
@@ -35,9 +39,21 @@ class DisplayModel(
         rowsOfMatchPresenters = distributeToRows(matchPresenters)
     }
 
-    val shareLink: String get() {
-        // TODO implement share link
-        return "SHARE LINK"
+    val shareLink: URL get() {
+        val selection = patternRecognitionModel.selectedRecognizerMatches.map { "${it.first}|${it.recognizer.name}" }
+            .joinToString(separator = ",") { encodeURIComponent(it) }
+        val searchAddition = mapOf(
+            HtmlView.SEARCH_ONLY_PATTERNS to patternRecognitionModel.options.onlyPatterns,
+            HtmlView.SEARCH_MATCH_WHOLE_LINE to patternRecognitionModel.options.matchWholeLine,
+            HtmlView.SEARCH_SELECTION to selection)
+            .map { "${it.key}=${it.value}" }
+            .joinToString(separator = "&")
+
+        val shareUrlString = "${urlShareGenerator.generateCode(
+            patternRecognitionModel.input, 
+            patternRecognitionModel.options).snippet}&${searchAddition}"
+
+        return URL(shareUrlString)
     }
 
     fun setLoadingIndicatorVisible(visible: Boolean): DisplayModel {
@@ -118,6 +134,11 @@ class DisplayModel(
                 }
             return lines
         }
+
+        private val urlShareGenerator = UrlGenerator(
+            linkName = "ShareLink",
+            urlTemplate = "https://regex-generator.olafneumann.org/?sampleText=%1\$s&flags=%2\$s"
+        )
     }
 }
 

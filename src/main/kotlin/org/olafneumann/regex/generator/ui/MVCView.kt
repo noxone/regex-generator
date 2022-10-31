@@ -31,8 +31,12 @@ class MVCView(
     private val shareDisplay = PXShare(controller = controller)
     private val footerDisplay = PXFooter()
 
-    private val userGuidePart = PXUserGuide(controller = controller)
     private val userGuide = UserGuide.forLanguage("en")
+
+    init {
+        // no reference required
+        PXUserGuide(controller = controller)
+    }
 
     override fun applyModel(model: DisplayModel) {
         loadingIndicator.applyModel(model)
