@@ -14,5 +14,6 @@ interface MVCContract {
         fun onOptionsChange(options: RecognizerCombiner.Options)
         fun onRecognizerMatchClick(recognizerMatch: RecognizerMatch)
         fun onCopyRegexButtonClick()
+        fun onShareButtonClick()
     }
 }

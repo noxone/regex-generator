@@ -8,15 +8,15 @@ import org.olafneumann.regex.generator.util.hasIntersectionWith
 
 class PatternRecognizerModel(
     val input: String,
-    val matches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
+    val recognizerMatches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
     selectedMatches: Collection<RecognizerMatch> = emptySet(),
     val options: RecognizerCombiner.Options
 ) {
-    val selectedMatches: Set<RecognizerMatch>
+    val selectedRecognizerMatches: Set<RecognizerMatch>
 
     init {
-        this.selectedMatches = selectedMatches
-            .filter { matches.contains(it) }
+        this.selectedRecognizerMatches = selectedMatches
+            .filter { recognizerMatches.contains(it) }
             .toSet()
     }
 
@@ -24,7 +24,7 @@ class PatternRecognizerModel(
         get() = RecognizerCombiner
             .combineMatches(
                 inputText = input,
-                selectedMatches = selectedMatches,
+                selectedMatches = selectedRecognizerMatches,
                 options = options
             )
 
@@ -39,7 +39,7 @@ class PatternRecognizerModel(
         )
 
         // generate pseudo matches, that resemble possible matches after applying the changes
-        val newSelectedMatches = this.selectedMatches
+        val newSelectedMatches = this.selectedRecognizerMatches
             .map { AugmentedRecognizerMatch(original = it) }
             .mapNotNull { it.applyAll(inputDiffs.operations) }
             // see if the augmented matches are still present in the new list of matches -> the new selection
@@ -47,7 +47,7 @@ class PatternRecognizerModel(
 
         return PatternRecognizerModel(
             input = newInput,
-            matches = newMatches,
+            recognizerMatches = newMatches,
             selectedMatches = newSelectedMatches,
             options = options
         )
@@ -55,12 +55,12 @@ class PatternRecognizerModel(
 
     fun select(match: RecognizerMatch): PatternRecognizerModel {
         // make sure, the selection is valid
-        if (!matches.contains(match)) {
+        if (!recognizerMatches.contains(match)) {
             return this
         }
 
         // make sure, the selection is valid
-        val alreadySelectedRanges = selectedMatches.flatMap { it.ranges }
+        val alreadySelectedRanges = selectedRecognizerMatches.flatMap { it.ranges }
         match.ranges.forEach { rangeOfNewMatch ->
             val hasIntersection = alreadySelectedRanges.firstOrNull { it.hasIntersectionWith(rangeOfNewMatch) } != null
             if (hasIntersection) {
@@ -70,8 +70,8 @@ class PatternRecognizerModel(
 
         return PatternRecognizerModel(
             input = input,
-            matches = matches,
-            selectedMatches = selectedMatches + match,
+            recognizerMatches = recognizerMatches,
+            selectedMatches = selectedRecognizerMatches + match,
             options = RecognizerCombiner.Options()
         )
     }
@@ -79,8 +79,8 @@ class PatternRecognizerModel(
     fun deselect(match: RecognizerMatch): PatternRecognizerModel {
         return PatternRecognizerModel(
             input = input,
-            matches = matches,
-            selectedMatches = selectedMatches - match,
+            recognizerMatches = recognizerMatches,
+            selectedMatches = selectedRecognizerMatches - match,
             options = RecognizerCombiner.Options()
         )
     }
@@ -88,8 +88,8 @@ class PatternRecognizerModel(
     fun setOptions(options: RecognizerCombiner.Options) : PatternRecognizerModel {
         return PatternRecognizerModel(
             input = input,
-            matches = matches,
-            selectedMatches = selectedMatches,
+            recognizerMatches = recognizerMatches,
+            selectedMatches = selectedRecognizerMatches,
             options = options
         )
     }

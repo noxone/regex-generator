@@ -16,12 +16,12 @@ class DisplayModel(
 
     init {
         // Create MatchPresenters
-        val matchPresenterBuilders = patternRecognitionModel.matches
+        val matchPresenterBuilders = patternRecognitionModel.recognizerMatches
             .groupBy { it.ranges }
             .map { pair -> MatchPresenter2.Builder(
                 ranges = pair.key,
                 matches = pair.value,
-                selected = pair.value.firstOrNull { patternRecognitionModel.selectedMatches.contains(it) } != null
+                selected = pair.value.firstOrNull { patternRecognitionModel.selectedRecognizerMatches.contains(it) } != null
             ) }
         val selectedMatchPresenterBuilders = matchPresenterBuilders.filter { it.selected }
         matchPresenterBuilders
@@ -36,7 +36,10 @@ class DisplayModel(
         rowsOfMatchPresenters = distributeToRows(matchPresenters)
     }
 
-    val shareLink: String get() = TODO("Implement shareLink")
+    val shareLink: String get() {
+        // TODO implement share link
+        return "SHARE LINK"
+    }
 
     fun setUserInput(input: String): DisplayModel {
         return DisplayModel(

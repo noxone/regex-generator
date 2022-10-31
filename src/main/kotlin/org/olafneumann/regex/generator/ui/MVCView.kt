@@ -5,7 +5,9 @@ import org.olafneumann.regex.generator.ui.parts.P1UserInput
 import org.olafneumann.regex.generator.ui.parts.P2MatchPresenter
 import org.olafneumann.regex.generator.ui.parts.P3RegexDisplay
 import org.olafneumann.regex.generator.ui.parts.P4LanguageDisplay
+import org.olafneumann.regex.generator.ui.parts.PXFooter
 import org.olafneumann.regex.generator.ui.parts.PXOptions
+import org.olafneumann.regex.generator.ui.parts.PXShare
 
 class MVCView(
     private val controller: MVCContract.Controller,
@@ -20,16 +22,20 @@ class MVCView(
     private val regexDisplay = P3RegexDisplay(controller = controller)
     private val options = PXOptions(controller = controller)
     private val languageDisplay = P4LanguageDisplay()
+    private val shareDisplay = PXShare(controller = controller)
+    private val footerDisplay = PXFooter()
 
     override fun showModel(model: DisplayModel) {
         userInputPart.showInputText(model.patternRecognitionModel.input)
         matchPresenterPart.showText(model.patternRecognitionModel.input)
         matchPresenterPart.showMatchPresenters(model.rowsOfMatchPresenters) { recognizerMatchToCheck ->
-            model.patternRecognitionModel.selectedMatches.contains(recognizerMatchToCheck)
+            model.patternRecognitionModel.selectedRecognizerMatches.contains(recognizerMatchToCheck)
         }
         regexDisplay.applyModel(model)
         options.applyModel(model)
         languageDisplay.applyModel(model)
+        shareDisplay.applyModel(model)
+        footerDisplay.applyModel(model)
     }
 
     companion object {

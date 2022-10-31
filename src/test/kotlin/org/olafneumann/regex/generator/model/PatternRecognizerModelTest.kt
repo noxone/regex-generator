@@ -16,7 +16,7 @@ class PatternRecognizerModelTest {
         val model = PatternRecognizerModel(input = input, options = RecognizerCombiner.Options())
 
         //then
-        assertEquals(expected = 9, actual = model.matches.size)
+        assertEquals(expected = 9, actual = model.recognizerMatches.size)
     }
 
     @Test
@@ -28,7 +28,7 @@ class PatternRecognizerModelTest {
         val model = PatternRecognizerModel(input = input, options = RecognizerCombiner.Options())
 
         //then
-        assertEquals(expected = 33, actual = model.matches.size)
+        assertEquals(expected = 33, actual = model.recognizerMatches.size)
     }
 
     @Test
@@ -36,7 +36,7 @@ class PatternRecognizerModelTest {
         val input = "abc123def"
         val model = PatternRecognizerModel(input = input, options = RecognizerCombiner.Options())
 
-        val titles = model.matches.map { it.title }
+        val titles = model.recognizerMatches.map { it.title }
 
         assertContains(titles, "Number")
         assertContains(titles, "Multiple characters")
@@ -48,15 +48,15 @@ class PatternRecognizerModelTest {
         // given
         val input = "abc123def"
         val model1 = PatternRecognizerModel(input = input, options = RecognizerCombiner.Options())
-        val numberMatch = model1.matches.first { it.title == "Number" }
+        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
 
         // when
         val model2 = model1.select(numberMatch)
 
         // then
-        assertTrue(model1.selectedMatches.isEmpty(), message = "Initial number of matches is zero")
-        assertEquals(expected = 1, actual = model2.selectedMatches.size, message = "Should be exactly one match after selection")
-        assertEquals(expected = "Number", actual = model2.selectedMatches.first().title)
+        assertTrue(model1.selectedRecognizerMatches.isEmpty(), message = "Initial number of matches is zero")
+        assertEquals(expected = 1, actual = model2.selectedRecognizerMatches.size, message = "Should be exactly one match after selection")
+        assertEquals(expected = "Number", actual = model2.selectedRecognizerMatches.first().title)
     }
 
     @Test
@@ -64,15 +64,15 @@ class PatternRecognizerModelTest {
         // given
         val input = "abc123def"
         val model1 = PatternRecognizerModel(input = input, options = RecognizerCombiner.Options())
-        val numberMatch = model1.matches.first { it.title == "Number" }
-        val digitMatch = model1.matches.first { it.title == "Digit" }
+        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
+        val digitMatch = model1.recognizerMatches.first { it.title == "Digit" }
         val model2 = model1.select(numberMatch)
 
         // when
         val model3 = model2.select(digitMatch)
 
         // then
-        assertEquals(expected = model2.selectedMatches, actual = model3.selectedMatches)
+        assertEquals(expected = model2.selectedRecognizerMatches, actual = model3.selectedRecognizerMatches)
     }
 
     @Test
@@ -80,15 +80,15 @@ class PatternRecognizerModelTest {
         // given
         val input = "abc123def"
         val model1 = PatternRecognizerModel(input = input, options = RecognizerCombiner.Options())
-        val numberMatch = model1.matches.first { it.title == "Number" }
-        val characterMatch = model1.matches.first { it.title == "One character" }
+        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
+        val characterMatch = model1.recognizerMatches.first { it.title == "One character" }
         val model2 = model1.select(numberMatch)
 
         // when
         val model3 = model2.select(characterMatch)
 
         // then
-        assertTrue(model3.selectedMatches.size > model2.selectedMatches.size)
+        assertTrue(model3.selectedRecognizerMatches.size > model2.selectedRecognizerMatches.size)
     }
 
     @Test
@@ -96,14 +96,14 @@ class PatternRecognizerModelTest {
         // given
         val input = "abc123def"
         val model1 = PatternRecognizerModel(input = input, options = RecognizerCombiner.Options())
-        val numberMatch = model1.matches.first { it.title == "Number" }
+        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
         val model2 = model1.select(numberMatch)
 
         // when
-        val model3 = model2.deselect(model2.selectedMatches.first())
+        val model3 = model2.deselect(model2.selectedRecognizerMatches.first())
 
         // then
-        assertTrue(model3.selectedMatches.isEmpty())
+        assertTrue(model3.selectedRecognizerMatches.isEmpty())
     }
 
     @Test
@@ -113,7 +113,7 @@ class PatternRecognizerModelTest {
         // given
         val input = "abc123def"
         val model1 = PatternRecognizerModel(input = input, options = RecognizerCombiner.Options())
-        val numberMatch = model1.matches.first { it.title == "Number" }
+        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
 
         // when
         val model2 = model1.select(numberMatch)
@@ -126,15 +126,15 @@ class PatternRecognizerModelTest {
     fun shouldKeepTheSelectionWhenAddingCharactersToSelectionMatch() {
         // given
         val model1 = PatternRecognizerModel(input = "abc123def", options = RecognizerCombiner.Options())
-        val numberMatch = model1.matches.first { it.title == "Number" }
+        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
         val model2 = model1.select(numberMatch)
 
         // when
         val model3 = model2.setUserInput("abc1243def")
 
         // then
-        assertEquals(expected = 1, actual = model3.selectedMatches.size, "Number of matches")
-        val actualMatch = model3.selectedMatches.first()
+        assertEquals(expected = 1, actual = model3.selectedRecognizerMatches.size, "Number of matches")
+        val actualMatch = model3.selectedRecognizerMatches.first()
         assertEquals(expected = "Number", actual = actualMatch.title, "Match title")
         assertEquals(expected = numberMatch.first, actual = actualMatch.first, "First index of match")
         assertEquals(expected = numberMatch.last + 1, actual = actualMatch.last, "Last index of match")
@@ -144,15 +144,15 @@ class PatternRecognizerModelTest {
     fun shouldKeepTheSelectionWhenAddingCharactersPriorToSelectionMatch() {
         // given
         val model1 = PatternRecognizerModel(input = "abc123def", options = RecognizerCombiner.Options())
-        val numberMatch = model1.matches.first { it.title == "Number" }
+        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
         val model2 = model1.select(numberMatch)
 
         // when
         val model3 = model2.setUserInput("abdc123def")
 
         // then
-        assertEquals(expected = 1, actual = model3.selectedMatches.size, "Number of matches")
-        val actualMatch = model3.selectedMatches.first()
+        assertEquals(expected = 1, actual = model3.selectedRecognizerMatches.size, "Number of matches")
+        val actualMatch = model3.selectedRecognizerMatches.first()
         assertEquals(expected = "Number", actual = actualMatch.title, "Match title")
         assertEquals(expected = numberMatch.first + 1, actual = actualMatch.first, "First index of match")
         assertEquals(expected = numberMatch.last + 1, actual = actualMatch.last, "Last index of match")

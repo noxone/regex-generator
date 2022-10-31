@@ -41,8 +41,12 @@ class MVCController : MVCContract.Controller {
         copyToClipboard(text = model.patternRecognitionModel.regularExpression.pattern)
     }
 
+    override fun onShareButtonClick() {
+        copyToClipboard(text = model.shareLink)
+    }
+
     private fun isSelected(recognizerMatch: RecognizerMatch): Boolean =
-        model.patternRecognitionModel.selectedMatches.contains(recognizerMatch)
+        model.patternRecognitionModel.selectedRecognizerMatches.contains(recognizerMatch)
 
     private fun select(recognizerMatch: RecognizerMatch) {
         model = model.select(recognizerMatch)
