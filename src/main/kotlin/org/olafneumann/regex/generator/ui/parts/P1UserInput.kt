@@ -13,7 +13,7 @@ import org.w3c.dom.HTMLSpanElement
 class P1UserInput(
     private val controller: MVCContract.Controller,
     private val maxInputLength: Int,
-    private val immediateUserInputAction: (String) -> Unit
+    immediateUserInputAction: (String) -> Unit
 ) {
     private val textInput = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_INPUT_ELEMENT)
     private val divInputWarning = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_INPUT_MESSAGE_SHORTEN)

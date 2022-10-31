@@ -74,15 +74,6 @@ class DisplayModel(
         )
     }
 
-    fun setCopyButtonVisible(visible: Boolean): DisplayModel {
-        return DisplayModel(
-            showLoadingIndicator = showLoadingIndicator,
-            showCookieBanner = showCookieBanner,
-            showCopyButton = visible,
-            patternRecognitionModel = patternRecognitionModel
-        )
-    }
-
     fun setUserInput(input: String): DisplayModel {
         return DisplayModel(
             showLoadingIndicator = showLoadingIndicator,

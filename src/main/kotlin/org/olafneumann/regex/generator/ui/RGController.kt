@@ -13,8 +13,8 @@ import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
 
-class MVCController : MVCContract.Controller {
-    private val view: MVCContract.View = MVCView(
+class RGController : MVCContract.Controller {
+    private val view: MVCContract.View = RGView(
         controller = this,
         maxInputLength = MAX_INPUT_LENGTH
     )

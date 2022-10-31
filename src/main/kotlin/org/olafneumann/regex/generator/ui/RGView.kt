@@ -13,9 +13,9 @@ import org.olafneumann.regex.generator.ui.parts.PXOptions
 import org.olafneumann.regex.generator.ui.parts.PXShare
 import org.olafneumann.regex.generator.ui.parts.PXUserGuide
 
-class MVCView(
+class RGView(
     private val controller: MVCContract.Controller,
-    private val maxInputLength: Int
+    maxInputLength: Int
 ) : MVCContract.View {
     private val loadingIndicator = LoadingIndicator()
     private val cookieBanner = CookieBanner { controller.onDoneAskingUserForCookies(hasGivenConsent = it) }

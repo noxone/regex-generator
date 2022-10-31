@@ -46,6 +46,6 @@ class P3RegexDisplay(
     }
 
     private fun showOrHideCopyButton(show: Boolean) {
-        buttonCopy.classList.toggle("d-none", show)
+        buttonCopy.classList.toggle("d-none", !show)
     }
 }

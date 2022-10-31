@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator
 import org.olafneumann.regex.generator.settings.ApplicationSettings
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.NPM
-import org.olafneumann.regex.generator.ui.MVCController
+import org.olafneumann.regex.generator.ui.RGController
 
 
 fun main() {
@@ -25,7 +25,7 @@ private fun initRegexGeneratorUnsafe() {
     NPM.importAll()
 
     // initialize presentation code
-    val controller = MVCController()
+    val controller = RGController()
 
     // store information, that we were already here
     val showGuide = ApplicationSettings.isNewUser()

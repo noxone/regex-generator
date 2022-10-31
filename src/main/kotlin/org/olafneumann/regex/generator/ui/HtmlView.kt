@@ -39,9 +39,9 @@ object HtmlView {
     const val MAGIC_HEIGHT = 8
     const val HIDE_DELAY = 5000
 
-    val URL_CURRENT = URL(window.location.toString())
+    private val URL_CURRENT = URL(window.location.toString())
     fun URL.toCurrentWindowLocation(): URL {
-        var url = URL(this.toString())
+        val url = URL(this.toString())
         url.protocol = URL_CURRENT.protocol
         url.hostname = URL_CURRENT.hostname
         url.port = URL_CURRENT.port

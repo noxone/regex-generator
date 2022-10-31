@@ -17,7 +17,6 @@ import org.olafneumann.regex.generator.model.MatchPresenter
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
-import org.olafneumann.regex.generator.ui.MVCView
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
