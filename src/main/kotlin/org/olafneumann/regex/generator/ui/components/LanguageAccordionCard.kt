@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.ui.parts
+package org.olafneumann.regex.generator.ui.components
 
 import kotlinx.browser.document
 import kotlinx.html.ButtonType
