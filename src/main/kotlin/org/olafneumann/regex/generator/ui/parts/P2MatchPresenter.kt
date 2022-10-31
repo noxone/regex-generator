@@ -12,6 +12,7 @@ import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.jQuery
+import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.model.MatchPresenter
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.ui.HtmlView
@@ -32,16 +33,28 @@ class P2MatchPresenter(
 
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
+    fun applyModel(model: DisplayModel) {
+        showText(model.patternRecognitionModel.input)
+        showMatchPresenters(model.rowsOfMatchPresenters, model.patternRecognitionModel.selectedRecognizerMatches)
+    }
+
     fun showText(text: String) {
         textDisplay.clear()
         inputCharacterSpans = text.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
+
     }
 
-    fun showMatchPresenters(
+    private fun showMatchPresenters(
         presenters: List<List<MatchPresenter>>,
-        isSelected: (RecognizerMatch) -> Boolean = { false }
+        selectedRecognizerMatches: Collection<RecognizerMatch>
     ) {
+        val isSelected: (RecognizerMatch) -> Boolean = { selectedRecognizerMatches.contains(it) }
+        inputCharacterSpans.forEachIndexed { index, htmlSpanElement ->
+            val selected = selectedRecognizerMatches.any { it.contains(index) }
+            htmlSpanElement.classList.toggle(HtmlView.CLASS_CHAR_SELECTED, selected)
+        }
+
         rowContainer.clear()
 
         presenters.forEachIndexed { rowIndex, row ->
@@ -108,7 +121,7 @@ class P2MatchPresenter(
         }
 
     private fun getColorClass(row: Int, index: Int): String {
-        return MVCView.MATCH_PRESENTER_CSS_CLASS[(row + index) % MVCView.MATCH_PRESENTER_CSS_CLASS.size]
+        return HtmlView.MATCH_PRESENTER_CSS_CLASS[(row + index) % HtmlView.MATCH_PRESENTER_CSS_CLASS.size]
     }
 
     private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {

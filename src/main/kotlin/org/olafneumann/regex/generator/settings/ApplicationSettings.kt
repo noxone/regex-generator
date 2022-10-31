@@ -14,7 +14,7 @@ internal object ApplicationSettings : LocalStorageSettings() {
     fun storeUserLastInfo() = set(KEY_LAST_VERSION, VAL_VERSION)
 
 
-    var viewOptions: RecognizerCombiner.Options
+    var regexCombinerOptions: RecognizerCombiner.Options
         get() = get(KEY_COMBINER_OPTIONS)?.let { JSON.parse<RecognizerCombiner.Options>(it) }
             ?: RecognizerCombiner.Options()
         set(value) = set(KEY_COMBINER_OPTIONS, JSON.stringify(value))

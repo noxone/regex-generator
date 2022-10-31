@@ -14,6 +14,7 @@ external class JQuery {
     fun on(type: String, callback: () -> Unit)
     fun slideDown(): JQuery
     fun slideUp(): JQuery
+    fun show(): JQuery
     fun hide(): JQuery
     fun parent(): JQuery
     fun remove(): JQuery

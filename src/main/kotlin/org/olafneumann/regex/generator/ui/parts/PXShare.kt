@@ -17,8 +17,12 @@ class PXShare(
         buttonShareLink.onclick = { controller.onShareButtonClick() }
     }
 
+    /*private val textShare = TextHandler(
+        HtmlHelper.getElementById(HtmlView.ID_TEXT_SHARE_LINK),
+        UrlGenerator("ShareLink", "https://regex-generator.olafneumann.org/?sampleText=%1\$s&flags=%2\$s")
+    )*/
+
     fun applyModel(model: DisplayModel) {
-        console.log(model.shareLink)
         divShareLink.innerText = model.shareLink
     }
 }

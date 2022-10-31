@@ -4,7 +4,7 @@ import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
-import org.olafneumann.regex.generator.ui.utils.LinkHandler
+import org.olafneumann.regex.generator.ui.components.LinkHandler
 
 class PXFooter {
     private val anchorRegex101 = LinkHandler(

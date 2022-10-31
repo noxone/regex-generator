@@ -40,6 +40,33 @@ class DisplayModel(
         return "SHARE LINK"
     }
 
+    fun setLoadingIndicatorVisible(visible: Boolean): DisplayModel {
+        return DisplayModel(
+            showLoadingIndicator = visible,
+            showCookieBanner = showCookieBanner,
+            showCopyButton = showCopyButton,
+            patternRecognitionModel = patternRecognitionModel
+        )
+    }
+
+    fun setCookieBannerVisible(visible: Boolean): DisplayModel {
+        return DisplayModel(
+            showLoadingIndicator = showLoadingIndicator,
+            showCookieBanner = visible,
+            showCopyButton = showCopyButton,
+            patternRecognitionModel = patternRecognitionModel
+        )
+    }
+
+    fun setCopyButtonVisible(visible: Boolean): DisplayModel {
+        return DisplayModel(
+            showLoadingIndicator = showLoadingIndicator,
+            showCookieBanner = showCookieBanner,
+            showCopyButton = visible,
+            patternRecognitionModel = patternRecognitionModel
+        )
+    }
+
     fun setUserInput(input: String): DisplayModel {
         return DisplayModel(
             showLoadingIndicator = showLoadingIndicator,

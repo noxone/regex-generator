@@ -1,10 +1,12 @@
 package org.olafneumann.regex.generator.ui
 
+import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.settings.ApplicationSettings
 
 class MVCController : MVCContract.Controller {
     private val view: MVCContract.View = MVCView(
@@ -14,11 +16,23 @@ class MVCController : MVCContract.Controller {
     private var model: DisplayModel = createInitialModel()
         set(value) {
             field = value
-            view.showModel(value)
+            view.applyModel(value)
         }
 
     init {
-        view.showModel(model)
+        // Prepare UI
+        // TODO view.applyInitParameters(defaultText = UiController.VAL_EXAMPLE_INPUT)
+
+        view.applyModel(model)
+    }
+
+    override fun onFinishedLoading() {
+        model = model.setLoadingIndicatorVisible(false)
+    }
+
+    override fun onDoneAskingUserForCookies(hasGivenConsent: Boolean) {
+        ApplicationSettings.hasUserConsent = hasGivenConsent
+        model = model.setCookieBannerVisible(false)
     }
 
     override fun onUserInputChange(input: String) {
@@ -63,13 +77,18 @@ class MVCController : MVCContract.Controller {
 
         private fun createInitialModel() = DisplayModel(
             showLoadingIndicator = true,
-            showCookieBanner = true,
-            showCopyButton = true,
+            showCookieBanner = isUserConsentGiven,
+            showCopyButton = isClipboardAvailable,
             patternRecognitionModel = PatternRecognizerModel(
                 input = VAL_EXAMPLE_INPUT,
-                options = RecognizerCombiner.Options()
+                options = ApplicationSettings.regexCombinerOptions
             )
         )
 
+        private val isClipboardAvailable: Boolean get() =
+            window.navigator.clipboard != undefined
+
+        private val isUserConsentGiven: Boolean get() =
+            ApplicationSettings.hasUserConsent
     }
 }

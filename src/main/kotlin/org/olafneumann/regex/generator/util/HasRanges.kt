@@ -15,5 +15,7 @@ interface HasRanges {
         ranges.flatMap { thisRange -> other.ranges.map { otherRange -> thisRange to otherRange } }
             .any { it.first.intersect(it.second).isNotEmpty() }
 
+    fun contains(value: Int): Boolean = ranges.any { it.contains(value) }
+
     fun forEachIndexInRanges(action: (Int) -> Unit) = ranges.flatMap { it.asIterable() }.forEach { action(it) }
 }

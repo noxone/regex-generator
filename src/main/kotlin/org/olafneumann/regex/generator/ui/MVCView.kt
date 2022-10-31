@@ -1,6 +1,8 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.components.CookieBanner
+import org.olafneumann.regex.generator.ui.components.LoadingIndicator
 import org.olafneumann.regex.generator.ui.parts.P1UserInput
 import org.olafneumann.regex.generator.ui.parts.P2MatchPresenter
 import org.olafneumann.regex.generator.ui.parts.P3RegexDisplay
@@ -13,6 +15,8 @@ class MVCView(
     private val controller: MVCContract.Controller,
     private val maxInputLength: Int
 ) : MVCContract.View {
+    private val loadingIndicator = LoadingIndicator()
+    private val cookieBanner = CookieBanner { controller.onDoneAskingUserForCookies(hasGivenConsent = it) }
     private val userInputPart = P1UserInput(
         controller = controller,
         maxInputLength = maxInputLength,
@@ -25,20 +29,15 @@ class MVCView(
     private val shareDisplay = PXShare(controller = controller)
     private val footerDisplay = PXFooter()
 
-    override fun showModel(model: DisplayModel) {
+    override fun applyModel(model: DisplayModel) {
+        loadingIndicator.applyModel(model)
+        cookieBanner.applyModel(model)
         userInputPart.showInputText(model.patternRecognitionModel.input)
-        matchPresenterPart.showText(model.patternRecognitionModel.input)
-        matchPresenterPart.showMatchPresenters(model.rowsOfMatchPresenters) { recognizerMatchToCheck ->
-            model.patternRecognitionModel.selectedRecognizerMatches.contains(recognizerMatchToCheck)
-        }
+        matchPresenterPart.applyModel(model)
         regexDisplay.applyModel(model)
         options.applyModel(model)
         languageDisplay.applyModel(model)
         shareDisplay.applyModel(model)
         footerDisplay.applyModel(model)
-    }
-
-    companion object {
-        val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
     }
 }
