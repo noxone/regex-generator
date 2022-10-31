@@ -1,7 +1,5 @@
 package org.olafneumann.regex.generator.util
 
-import org.olafneumann.regex.generator.ui.MatchPresenter
-
 interface HasRange {
     val first: Int
     val last: Int

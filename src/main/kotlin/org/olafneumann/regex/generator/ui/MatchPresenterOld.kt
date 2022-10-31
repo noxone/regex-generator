@@ -5,7 +5,7 @@ import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.util.HasRanges
 import kotlin.properties.Delegates
 
-class MatchPresenter(
+class MatchPresenterOld(
     val recognizerMatches: List<RecognizerMatch>,
     selectedMatch: RecognizerMatch? = null,
     deactivated: Boolean = false,
@@ -43,7 +43,7 @@ class MatchPresenter(
     val availableForHighlight: Boolean get() = !deactivated && !selected
 
     companion object {
-        private val byPriority = compareByDescending<MatchPresenter> { it.priority }
+        private val byPriority = compareByDescending<MatchPresenterOld> { it.priority }
         val byPriorityAndPosition = byPriority.then(HasRange.byPosition)
     }
 }

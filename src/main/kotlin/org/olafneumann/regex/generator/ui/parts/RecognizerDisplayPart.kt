@@ -15,7 +15,7 @@ import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.DisplayContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.HtmlView
-import org.olafneumann.regex.generator.ui.MatchPresenter
+import org.olafneumann.regex.generator.ui.MatchPresenterOld
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLSpanElement
@@ -28,7 +28,7 @@ internal class RecognizerDisplayPart(
     private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_ROW_CONTAINER)
 
     // Stuff needed to display the regex
-    private val matchPresenterToRowIndex = mutableMapOf<MatchPresenter, Int>()
+    private val matchPresenterToRowIndex = mutableMapOf<MatchPresenterOld, Int>()
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     fun showInputText(inputText: String) {
@@ -37,7 +37,7 @@ internal class RecognizerDisplayPart(
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
     }
 
-    fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+    fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenterOld>) {
         showInputText(inputText)
 
         // TODO remove CSS class iterator
@@ -71,14 +71,14 @@ internal class RecognizerDisplayPart(
         animateResultDisplaySize(rows = rowElements)
     }
 
-    private fun distributeToRows(matches: Collection<MatchPresenter>): Map<MatchPresenter, Int> {
+    private fun distributeToRows(matches: Collection<MatchPresenterOld>): Map<MatchPresenterOld, Int> {
         val lines = mutableListOf<Int>()
         fun createNextLine(): Int {
             lines.add(0)
             return lines.size - 1
         }
         return matches
-            .sortedWith(MatchPresenter.byPriorityAndPosition)
+            .sortedWith(MatchPresenterOld.byPriorityAndPosition)
             .associateWith { presenter ->
                 val indexOfFreeLine = lines.indexOfFirst { it < presenter.first }
                 val line = if (indexOfFreeLine >= 0) indexOfFreeLine else createNextLine()
@@ -90,7 +90,7 @@ internal class RecognizerDisplayPart(
     private fun createRowElement(): HTMLDivElement =
         rowContainer.appendChild(document.create.div(classes = HtmlView.CLASS_MATCH_ROW)) as HTMLDivElement
 
-    private fun createMatchPresenterElement(matchPresenter: MatchPresenter): HTMLDivElement =
+    private fun createMatchPresenterElement(matchPresenter: MatchPresenterOld): HTMLDivElement =
         document.create.div(classes = HtmlView.CLASS_MATCH_ITEM) {
             div(classes = "rg-match-item-overlay") {
                 matchPresenter.recognizerMatches.forEach { match ->
@@ -120,7 +120,7 @@ internal class RecognizerDisplayPart(
             }
         }
 
-    private fun applyCssStyling(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
+    private fun applyCssStyling(matchPresenter: MatchPresenterOld, element: HTMLDivElement, cssClass: String) {
         element.addClass(cssClass)
         element.style.left = matchPresenter.first.toCharacterUnits()
         element.style.width = matchPresenter.length.toCharacterUnits()
@@ -142,7 +142,10 @@ internal class RecognizerDisplayPart(
             { deactivated -> element.classList.toggle(HtmlView.CLASS_ITEM_NOT_AVAILABLE, deactivated) }
     }
 
-    private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
+    private fun applyListenersForUserInput(
+        matchPresenter: MatchPresenterOld,
+        element: HTMLDivElement, cssClass: String
+    ) {
         element.onmouseenter = {
             if (matchPresenter.availableForHighlight) {
                 matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }

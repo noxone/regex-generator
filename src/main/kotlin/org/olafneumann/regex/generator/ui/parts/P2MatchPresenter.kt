@@ -12,7 +12,7 @@ import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.model.MatchPresenter2
+import org.olafneumann.regex.generator.model.MatchPresenter
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
@@ -38,7 +38,10 @@ class P2MatchPresenter(
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
     }
 
-    fun showMatchPresenters(presenters: List<List<MatchPresenter2>>, isSelected: (RecognizerMatch) -> Boolean = { false }) {
+    fun showMatchPresenters(
+        presenters: List<List<MatchPresenter>>,
+        isSelected: (RecognizerMatch) -> Boolean = { false }
+    ) {
         rowContainer.clear()
 
         presenters.forEachIndexed { rowIndex, row ->
@@ -71,7 +74,10 @@ class P2MatchPresenter(
     private fun createRowElement(): HTMLDivElement =
         document.create.div(classes = HtmlView.CLASS_MATCH_ROW)
 
-    private fun createPresenterElement(matchPresenter: MatchPresenter2, isSelected: (RecognizerMatch) -> Boolean): HTMLDivElement =
+    private fun createPresenterElement(
+        matchPresenter: MatchPresenter,
+        isSelected: (RecognizerMatch) -> Boolean
+    ): HTMLDivElement =
         document.create.div(classes = HtmlView.CLASS_MATCH_ITEM) {
             div(classes = "rg-match-item-overlay") {
                 matchPresenter.recognizerMatches.forEach { recognizerMatch ->
@@ -105,7 +111,7 @@ class P2MatchPresenter(
         return MVCView.MATCH_PRESENTER_CSS_CLASS[(row + index) % MVCView.MATCH_PRESENTER_CSS_CLASS.size]
     }
 
-    private fun applyListenersForUserInput(matchPresenter: MatchPresenter2, element: HTMLDivElement, cssClass: String) {
+    private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
         element.onmouseenter = {
             if (matchPresenter.availableForHighlight) {
                 matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
@@ -118,7 +124,7 @@ class P2MatchPresenter(
         }
     }
 
-    private inline val MatchPresenter2.availableForHighlight: Boolean get() = !deactivated && !selected
+    private inline val MatchPresenter.availableForHighlight: Boolean get() = !deactivated && !selected
 
     private fun animateResultDisplaySize(rowElements: List<HTMLDivElement>) {
         val newHeight = "${computeMatchPresenterAreaHeight(rowElements)}px"

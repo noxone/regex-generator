@@ -10,7 +10,7 @@ import org.olafneumann.regex.generator.ui.components.CookieBanner
 
 class UiController : DisplayContract.Controller {
     private val view: DisplayContract.View = HtmlView(this, MAX_INPUT_LENGTH)
-    override var matchPresenters = listOf<MatchPresenter>()
+    override var matchPresenters = listOf<MatchPresenterOld>()
 
     init {
         // remove warning that is not required
@@ -32,11 +32,11 @@ class UiController : DisplayContract.Controller {
         view.applyInitParameters(defaultText = VAL_EXAMPLE_INPUT)
     }
 
-    private fun List<RecognizerMatch>.toPresentation(): MatchPresenter =
+    private fun List<RecognizerMatch>.toPresentation(): MatchPresenterOld =
         matchPresenters.findLast {
             it.recognizerMatches.containsAll(this)
                     && this.containsAll(it.recognizerMatches)
-        } ?: MatchPresenter(this)
+        } ?: MatchPresenterOld(this)
 
     override fun onButtonHelpClick() = view.showUserGuide(false)
     fun showInitialUserGuide() = view.showUserGuide(true)

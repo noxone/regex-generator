@@ -142,7 +142,7 @@ class HtmlView(
         }
     }
 
-    override fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>) {
+    override fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenterOld>) {
         recognizerDisplayPart.showMatchingRecognizers(inputText, matches)
     }
 

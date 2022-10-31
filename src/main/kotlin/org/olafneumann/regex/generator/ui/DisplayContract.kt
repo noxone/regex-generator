@@ -17,7 +17,7 @@ interface DisplayContract {
         fun showShortenWarning()
         fun hideShortenWarning(immediately: Boolean = false)
 
-        fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenter>)
+        fun showMatchingRecognizers(inputText: String, matches: Collection<MatchPresenterOld>)
         fun showResultingPattern(regex: RecognizerCombiner.RegularExpression)
     }
 
@@ -28,7 +28,7 @@ interface DisplayContract {
         fun onOptionsChange(options: RecognizerCombiner.Options)
         fun disableNotClickableSuggestions()
 
-        val matchPresenters: Collection<MatchPresenter>
+        val matchPresenters: Collection<MatchPresenterOld>
         val allRecognizerMatcher: Collection<RecognizerMatch>
         val selectedRecognizerMatches: Collection<RecognizerMatch>
     }
