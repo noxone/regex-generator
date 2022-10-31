@@ -20,14 +20,13 @@ class PatternRecognizerModel(
             .toSet()
     }
 
-    val regularExpression: String
+    val regularExpression: RecognizerCombiner.RegularExpression
         get() = RecognizerCombiner
             .combineMatches(
                 inputText = input,
                 selectedMatches = selectedMatches,
                 options = options
             )
-            .pattern
 
     fun setUserInput(newInput: String): PatternRecognizerModel {
         val newMatches = RecognizerRegistry.findMatches(newInput)

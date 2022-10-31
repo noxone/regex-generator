@@ -119,7 +119,7 @@ class PatternRecognizerModelTest {
         val model2 = model1.select(numberMatch)
 
         // then
-        assertEquals(expected = expected, actual = model2.regularExpression)
+        assertEquals(expected = expected, actual = model2.regularExpression.pattern)
     }
 
     @Test

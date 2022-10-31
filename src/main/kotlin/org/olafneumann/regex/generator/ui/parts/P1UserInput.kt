@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.ui.parts
 
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
@@ -32,7 +31,7 @@ class P1UserInput(
 
         val delayer = UserInputDelayer(
             immediateUserInputAction,
-            { controller.setUserInput(it) }
+            { controller.onUserInputChange(it) }
         )
         textInput.oninput = { handleUserInput { delayer.onAction(it) } }
         textInput.maxLength = maxInputLength + 1

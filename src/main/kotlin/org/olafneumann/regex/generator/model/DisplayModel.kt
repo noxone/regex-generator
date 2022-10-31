@@ -1,5 +1,6 @@
 package org.olafneumann.regex.generator.model
 
+import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.util.HasRanges
@@ -43,6 +44,15 @@ class DisplayModel(
             showCookieBanner = showCookieBanner,
             showCopyButton = showCopyButton,
             patternRecognitionModel = patternRecognitionModel.setUserInput(input)
+        )
+    }
+
+    fun setOptions(options: RecognizerCombiner.Options): DisplayModel {
+        return DisplayModel(
+            showLoadingIndicator = showLoadingIndicator,
+            showCookieBanner = showCookieBanner,
+            showCopyButton = showCopyButton,
+            patternRecognitionModel = patternRecognitionModel.setOptions(options)
         )
     }
 

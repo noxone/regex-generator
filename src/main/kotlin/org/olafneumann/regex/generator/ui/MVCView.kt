@@ -3,6 +3,8 @@ package org.olafneumann.regex.generator.ui
 import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.ui.parts.P1UserInput
 import org.olafneumann.regex.generator.ui.parts.P2MatchPresenter
+import org.olafneumann.regex.generator.ui.parts.P3RegexDisplay
+import org.olafneumann.regex.generator.ui.parts.PXOptions
 
 class MVCView(
     private val controller: MVCContract.Controller,
@@ -13,9 +15,9 @@ class MVCView(
         maxInputLength = maxInputLength,
         immediateUserInputAction = { matchPresenterPart.showText(it) }
     )
-    private val matchPresenterPart = P2MatchPresenter(
-        controller = controller
-    )
+    private val matchPresenterPart = P2MatchPresenter(controller = controller)
+    private val regexDisplay = P3RegexDisplay(controller = controller)
+    private val options = PXOptions(controller = controller)
 
     override fun showModel(model: DisplayModel) {
         userInputPart.showInputText(model.patternRecognitionModel.input)
@@ -23,6 +25,8 @@ class MVCView(
         matchPresenterPart.showMatchPresenters(model.rowsOfMatchPresenters) { recognizerMatchToCheck ->
             model.patternRecognitionModel.selectedMatches.contains(recognizerMatchToCheck)
         }
+        regexDisplay.applyModel(model)
+        options.applyModel(model)
     }
 
     companion object {

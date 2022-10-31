@@ -84,7 +84,7 @@ class P2MatchPresenter(
                         a {
                             +recognizerMatch.title
                             onClickFunction = { event ->
-                                controller.onClick(recognizerMatch)
+                                controller.onRecognizerMatchClick(recognizerMatch)
                                 event.stopPropagation()
                             }
                         }
@@ -94,9 +94,9 @@ class P2MatchPresenter(
             onClickFunction = {
                 when {
                     matchPresenter.selected ->
-                        controller.onClick(matchPresenter.recognizerMatches.first { isSelected(it) })
+                        controller.onRecognizerMatchClick(matchPresenter.recognizerMatches.first { isSelected(it) })
                     matchPresenter.recognizerMatches.size == 1 ->
-                        controller.onClick(matchPresenter.recognizerMatches.first())
+                        controller.onRecognizerMatchClick(matchPresenter.recognizerMatches.first())
                 }
             }
         }

@@ -1,5 +1,6 @@
 package org.olafneumann.regex.generator.ui
 
+import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
@@ -20,16 +21,24 @@ class MVCController : MVCContract.Controller {
         view.showModel(model)
     }
 
-    override fun setUserInput(input: String) {
+    override fun onUserInputChange(input: String) {
         model = model.setUserInput(input)
     }
 
-    override fun onClick(recognizerMatch: RecognizerMatch) {
+    override fun onOptionsChange(options: RecognizerCombiner.Options) {
+        model = model.setOptions(options)
+    }
+
+    override fun onRecognizerMatchClick(recognizerMatch: RecognizerMatch) {
         if (isSelected(recognizerMatch)) {
             deselect(recognizerMatch)
         } else {
             select(recognizerMatch)
         }
+    }
+
+    override fun onCopyRegexButtonClick() {
+        copyToClipboard(text = model.patternRecognitionModel.regularExpression.pattern)
     }
 
     private fun isSelected(recognizerMatch: RecognizerMatch): Boolean =
