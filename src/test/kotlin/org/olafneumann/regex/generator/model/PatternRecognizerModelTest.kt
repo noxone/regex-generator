@@ -166,6 +166,17 @@ class PatternRecognizerModelTest {
         )
     }
 
+    @Test
+    fun testKeepSelection3() {
+        shouldKeepTheSelectionWhenChangingInput(
+            firstInput = "a(sd)f",
+            secondInput = "a(serd)f",
+            recognizerName = "Parentheses",
+            expectedFirst = 1,
+            expectedLast = 6
+        )
+    }
+
     private fun shouldKeepTheSelectionWhenChangingInput(
         firstInput: String,
         recognizerName: String,
