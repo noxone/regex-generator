@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.ui.html
+package org.olafneumann.regex.generator.ui.utils
 
 class UserInputDelayer<T>(
     val immediateAction: (T) -> Unit,

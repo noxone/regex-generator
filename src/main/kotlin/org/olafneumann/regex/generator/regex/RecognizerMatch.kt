@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.regex
 
 import org.olafneumann.regex.generator.util.HasRange
+import org.olafneumann.regex.generator.util.HasRanges
 
 class RecognizerMatch(
     val patterns: List<String>,
@@ -8,8 +9,8 @@ class RecognizerMatch(
     val recognizer: Recognizer,
     val title: String,
     val priority: Int = 0
-) : HasRange {
-    val ranges: List<IntRange>
+) : HasRange, HasRanges {
+    override val ranges: List<IntRange>
     override val first: Int
     override val last: Int
     override val length: Int
@@ -23,16 +24,8 @@ class RecognizerMatch(
         }
         this.ranges = ranges.sortedWith(compareBy({ it.first }, { it.last }))
         this.first = this.ranges[0].first
-        this.last = this.ranges[this.ranges.size - 1].last
+        this.last = this.ranges.last().last
         this.length = last - first + 1
-    }
-
-    fun hasSameRangesAs(other: RecognizerMatch): Boolean {
-        if (ranges.size != other.ranges.size) {
-            return false
-        }
-        return ranges.mapIndexed { index, range -> range == other.ranges[index] }
-            .all { it }
     }
 
     override fun equals(other: Any?): Boolean =
@@ -47,11 +40,17 @@ class RecognizerMatch(
         result = 31 * result + patterns.hashCode()
         result = 31 * result + title.hashCode()
         result = 31 * result + ranges.hashCode()
-        result = 31 * result + first
-        result = 31 * result + last
-        result = 31 * result + length
         return result
     }
+
+    override fun toString(): String {
+        return "RecognizerMatch(title='$title', " +
+                "position=$first/$length, " +
+                "priority=$priority, " +
+                "recognizer=${recognizer.name}, " +
+                "patterns=$patterns)"
+    }
+
 }
 
 

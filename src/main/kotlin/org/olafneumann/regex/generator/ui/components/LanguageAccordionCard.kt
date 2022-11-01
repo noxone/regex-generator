@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.ui
+package org.olafneumann.regex.generator.ui.components
 
 import kotlinx.browser.document
 import kotlinx.html.ButtonType
@@ -13,10 +13,12 @@ import kotlinx.html.pre
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.output.CodeGenerator.GeneratedSnippet
+import org.olafneumann.regex.generator.settings.ApplicationSettings
+import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.Node
 
-internal class LanguageCard(
+internal class LanguageAccordionCard(
     private val codeGenerator: CodeGenerator,
     parent: Node
 ) {
@@ -44,8 +46,8 @@ internal class LanguageCard(
                 }
             }
         })
-        codeElement = document.getElementById(codeElementId) as HTMLElement
-        bodyElement = document.getElementById(bodyElementId) as HTMLElement
+        codeElement = HtmlHelper.getElementById(codeElementId)
+        bodyElement = HtmlHelper.getElementById(bodyElementId)
 
         jQuery(bodyElement).on("shown.bs.collapse") { shown = true }
         jQuery(bodyElement).on("hidden.bs.collapse") { shown = false }

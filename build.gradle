@@ -28,6 +28,8 @@ dependencies {
 
     implementation 'io.ktor:ktor-client-js:2.1.3'
 
+    implementation 'dev.andrewbailey.difference:difference:1.0.0'
+
 
     implementation npm("driver.js", "0.9.8")
 
