@@ -104,6 +104,8 @@ class IntRangeTest {
     fun testIntRangeAdd() {
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(1, 1), expected = IntRange(6, 11))
         testRangeAdd(originalRange = IntRange(1, 1), rangeToAdd = IntRange(1, 1), expected = listOf(1..2, 2..2))
+        testRangeAdd(originalRange = 0..0, rangeToAdd = 1..2,
+            expected = listOf(0..0, 0..1, 0..2))
         testRangeAdd(originalRange = IntRange(1, 10), rangeToAdd = IntRange(1, 1), expected = listOf(1..11, 2..11))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(1, 4), expected = IntRange(9, 14))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(1, 5), expected = IntRange(10, 15))

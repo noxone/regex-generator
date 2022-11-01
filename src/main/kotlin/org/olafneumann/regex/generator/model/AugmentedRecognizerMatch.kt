@@ -27,15 +27,29 @@ internal class AugmentedRecognizerMatch(
         }
 
         val rangeAction = diffOperation.rangeAction
-        val rangesAfterAction = ranges.map { rangeAction.applyTo(it) }
-        if (rangesAfterAction.any { it.isEmpty() }) {
-            return emptyList()
-        }
+        if (ranges.size == 1) {
+            val possibleRanges = rangeAction.applyTo(ranges[0])
+            return possibleRanges.map { AugmentedRecognizerMatch(original = original, ranges = listOf(it)) }
+        } else if (ranges.size == 2) {
+            val rangeAlternatives = ranges.map { rangeAction.applyTo(it) }
+            return crossProduct(rangeAlternatives[0], rangeAlternatives[1])
+                .map { AugmentedRecognizerMatch(original = original, ranges = it) }
+        } else {
+            val rangesAfterAction = ranges.map { rangeAction.applyTo(it) }
+            if (rangesAfterAction.any { it.isEmpty() }) {
+                return emptyList()
+            }
 
-        val maxRangeCount = rangesAfterAction.maxOfOrNull { it.size }!!
-        return rangesAfterAction
-            .map { listOfRanges -> (1..maxRangeCount).map { listOfRanges[it % listOfRanges.size] } }
-            .map { AugmentedRecognizerMatch(original = original, ranges = it) }
+            val maxRangeCount = rangesAfterAction.maxOfOrNull { it.size }!!
+            return rangesAfterAction
+                .map { listOfRanges -> (1..maxRangeCount).map { listOfRanges[it % listOfRanges.size] } }
+                .map { AugmentedRecognizerMatch(original = original, ranges = it) }
+        }
+    }
+
+    private fun <T> crossProduct(a: List<T>, b: List<T>): List<List<T>> {
+        return a.flatMap { at -> b.map { bt -> at to bt } }
+            .map { listOf(it.first, it.second) }
     }
 
     override fun equals(other: Any?): Boolean {

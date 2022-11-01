@@ -155,6 +155,17 @@ class PatternRecognizerModelTest {
         )
     }
 
+    @Test
+    fun testKeepSelection2() {
+        shouldKeepTheSelectionWhenChangingInput(
+            firstInput = "s",
+            secondInput = "sdf",
+            recognizerName = "Multiple characters",
+            expectedFirst = 0,
+            expectedLast = 2
+        )
+    }
+
     private fun shouldKeepTheSelectionWhenChangingInput(
         firstInput: String,
         recognizerName: String,
