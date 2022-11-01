@@ -13,34 +13,34 @@ fun IntRange.containsAndNotOnEdges(value: Int): Boolean =
 fun IntRange.containsAndNotOnEdges(value: IntRange): Boolean =
     containsAndNotOnEdges(value.first) && containsAndNotOnEdges(value.last)
 
-fun IntRange.add(rangeToAdd: IntRange): IntRange? {
+fun IntRange.add(rangeToAdd: IntRange): List<IntRange> {
     return if (rangeToAdd.first < this.first) {
-        IntRange(this.first + rangeToAdd.length, this.last + rangeToAdd.length)
+        listOf(IntRange(this.first + rangeToAdd.length, this.last + rangeToAdd.length))
     } else if (rangeToAdd.first == this.first) {
-        null
+        emptyList()
     } else if (rangeToAdd.first > this.first && rangeToAdd.first <= this.last) {
-        IntRange(this.first, this.last + rangeToAdd.length)
+        listOf(IntRange(this.first, this.last + rangeToAdd.length))
     } else if (rangeToAdd.first == this.last + 1) {
-        null
+        emptyList()
     } else {
-        this
+        listOf(this)
     }
 }
 
-fun IntRange.remove(rangeToRemove: IntRange): IntRange? {
+fun IntRange.remove(rangeToRemove: IntRange): List<IntRange> {
     return if (rangeToRemove.last < this.first) {
-        IntRange(this.first - rangeToRemove.length, this.last - rangeToRemove.length)
+        listOf(IntRange(this.first - rangeToRemove.length, this.last - rangeToRemove.length))
     } else if (rangeToRemove.first > this.last) {
-        this
+        listOf(this)
     } else if (rangeToRemove.first <= this.first && rangeToRemove.last >= this.last) {
-        null
+        emptyList()
     } else if (rangeToRemove.first >= this.first && rangeToRemove.last <= this.last) {
-        IntRange(this.first, this.last - rangeToRemove.length)
+        listOf(IntRange(this.first, this.last - rangeToRemove.length))
     } else if (rangeToRemove.first <= this.first && rangeToRemove.last > this.first) {
-        IntRange(rangeToRemove.first, this.last - rangeToRemove.length)
+        listOf(IntRange(rangeToRemove.first, this.last - rangeToRemove.length))
     } else if (rangeToRemove.first <= this.last && rangeToRemove.last > this.last) {
-        IntRange(this.first, rangeToRemove.first - 1)
+        listOf(IntRange(this.first, rangeToRemove.first - 1))
     } else {
-        this
+        listOf(this)
     }
 }

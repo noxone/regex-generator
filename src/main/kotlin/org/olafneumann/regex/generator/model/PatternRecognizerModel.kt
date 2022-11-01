@@ -41,7 +41,7 @@ class PatternRecognizerModel(
         // generate pseudo matches, that resemble possible matches after applying the changes
         val newSelectedMatches = this.selectedRecognizerMatches
             .map { AugmentedRecognizerMatch(original = it) }
-            .mapNotNull { it.applyAll(inputDiffs.operations) }
+            .flatMap { it.applyAll(inputDiffs.operations) }
             // see if the augmented matches are still present in the new list of matches -> the new selection
             .mapNotNull { augmentedMatch -> newMatches.firstOrNull { newMatch -> augmentedMatch.equals(newMatch) } }
 
