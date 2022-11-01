@@ -152,6 +152,7 @@ class IntRangeTest {
         testRangeRemove(originalRange = IntRange(5, 10), rangeToRemove = IntRange(6, 9), expected = IntRange(5, 6))
         testRangeRemove(originalRange = IntRange(5, 10), rangeToRemove = IntRange(6, 19), expected = IntRange(5, 5))
         testRangeRemove(originalRange = 1..16, rangeToRemove = 2..3, expected = 1..14)
+        testRangeRemove(originalRange = 3..6, rangeToRemove = 4..5, expected = 3..4)
     }
 
     private fun testRangeRemove(expected: IntRange, originalRange: IntRange, rangeToRemove: IntRange) =

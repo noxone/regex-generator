@@ -19,7 +19,7 @@ private val <T> DiffOperation<T>.range: IntRange
             is DiffOperation.Add -> index..index
             is DiffOperation.AddAll -> index until index + items.size
             is DiffOperation.Remove -> index..index
-            is DiffOperation.RemoveRange -> startIndex..endIndex
+            is DiffOperation.RemoveRange -> startIndex until endIndex
             else -> throw RegexGeneratorException("Unknown DiffOperation: $this")
         }
 

@@ -144,6 +144,17 @@ class PatternRecognizerModelTest {
         )
     }
 
+    @Test
+    fun testKeepSelection1() {
+        shouldKeepTheSelectionWhenChangingInput(
+            firstInput = "asd1231sdf",
+            secondInput = "asd11sdf",
+            recognizerName = "Number",
+            expectedFirst = 3,
+            expectedLast = 4
+        )
+    }
+
     private fun shouldKeepTheSelectionWhenChangingInput(
         firstInput: String,
         recognizerName: String,
