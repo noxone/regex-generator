@@ -103,21 +103,24 @@ class IntRangeTest {
     @Test
     fun testIntRangeAdd() {
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(1, 1), expected = IntRange(6, 11))
-        testRangeAdd(originalRange = IntRange(1, 1), rangeToAdd = IntRange(1, 1), expected = emptyList())
-        testRangeAdd(originalRange = IntRange(1, 10), rangeToAdd = IntRange(1, 1), expected = emptyList())
+        testRangeAdd(originalRange = IntRange(1, 1), rangeToAdd = IntRange(1, 1), expected = listOf(1..2, 2..2))
+        testRangeAdd(originalRange = IntRange(1, 10), rangeToAdd = IntRange(1, 1), expected = listOf(1..11, 2..11))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(1, 4), expected = IntRange(9, 14))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(1, 5), expected = IntRange(10, 15))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(1, 10), expected = IntRange(15, 20))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(1, 20), expected = IntRange(25, 30))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(4, 4), expected = IntRange(6, 11))
-        testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(5, 5), expected = emptyList())
-        testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(5, 7), expected = emptyList())
-        testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(5, 11), expected = emptyList())
+        testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(5, 5), expected = listOf(5..11, 6..11))
+        testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(5, 7),
+            expected = listOf(5..13, 6..13, 7..13, 8..13))
+        testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(5, 11),
+            expected = listOf(5..17, 6..17, 7..17, 8..17, 9..17, 10..17, 11..17, 12..17))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(6, 6), expected = IntRange(5, 11))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(6, 15), expected = IntRange(5, 20))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(9, 12), expected = IntRange(5, 14))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(10, 10), expected = IntRange(5, 11))
-        testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(11, 14), expected = emptyList())
+        testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(11, 14),
+            expected = listOf(5..10, 5..11, 5..12, 5..13, 5..14))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(12, 12), expected = IntRange(5, 10))
         testRangeAdd(originalRange = IntRange(5, 10), rangeToAdd = IntRange(14, 18), expected = IntRange(5, 10))
     }
@@ -148,6 +151,7 @@ class IntRangeTest {
         testRangeRemove(originalRange = IntRange(5, 10), rangeToRemove = IntRange(9, 12), expected = IntRange(5, 8))
         testRangeRemove(originalRange = IntRange(5, 10), rangeToRemove = IntRange(6, 9), expected = IntRange(5, 6))
         testRangeRemove(originalRange = IntRange(5, 10), rangeToRemove = IntRange(6, 19), expected = IntRange(5, 5))
+        testRangeRemove(originalRange = 1..16, rangeToRemove = 2..3, expected = 1..14)
     }
 
     private fun testRangeRemove(expected: IntRange, originalRange: IntRange, rangeToRemove: IntRange) =

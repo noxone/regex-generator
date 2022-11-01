@@ -17,11 +17,12 @@ fun IntRange.add(rangeToAdd: IntRange): List<IntRange> {
     return if (rangeToAdd.first < this.first) {
         listOf(IntRange(this.first + rangeToAdd.length, this.last + rangeToAdd.length))
     } else if (rangeToAdd.first == this.first) {
-        emptyList()
+        (rangeToAdd.first..(rangeToAdd.last + 1))
+            .map { it..(this.last + rangeToAdd.length) }
     } else if (rangeToAdd.first > this.first && rangeToAdd.first <= this.last) {
         listOf(IntRange(this.first, this.last + rangeToAdd.length))
     } else if (rangeToAdd.first == this.last + 1) {
-        emptyList()
+        (0..rangeToAdd.length).map { this.first..(this.last + it) }
     } else {
         listOf(this)
     }
