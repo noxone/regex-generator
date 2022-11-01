@@ -1,14 +1,10 @@
 package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.DiffOperation
-import org.olafneumann.regex.generator.RegexGeneratorException
-import org.olafneumann.regex.generator.model.AugmentedRecognizerMatch.Companion.RangeAction.Companion.add
-import org.olafneumann.regex.generator.model.AugmentedRecognizerMatch.Companion.RangeAction.Companion.remove
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.util.HasRanges
-import org.olafneumann.regex.generator.util.add
-import org.olafneumann.regex.generator.util.remove
+import org.olafneumann.regex.generator.util.rangeAction
 
 internal class AugmentedRecognizerMatch(
     val original: RecognizerMatch,
@@ -19,44 +15,39 @@ internal class AugmentedRecognizerMatch(
     override val last: Int
         get() = this.ranges.last().last
 
-    fun <T> applyAll(diffOperations: List<DiffOperation<T>>?): AugmentedRecognizerMatch? {
-        var out: AugmentedRecognizerMatch? = this
-        diffOperations?.forEach { out = out?.apply(it) }
+    fun <T> applyAll(diffOperations: List<DiffOperation<T>>?): List<AugmentedRecognizerMatch> {
+        var out: List<AugmentedRecognizerMatch> = listOf(this)
+        diffOperations?.forEach { diffOp -> out = out.flatMap { it.apply(diffOp) } }
         return out
     }
 
-    private val <T> DiffOperation<T>.rangeAction: RangeAction get() =
-        when (this) {
-            is DiffOperation.Add -> RangeAction(add, IntRange(this.index, this.index))
-            is DiffOperation.AddAll -> RangeAction(add, IntRange(this.index, this.index + this.items.size - 1))
-            is DiffOperation.Remove -> RangeAction(remove, IntRange(this.index, this.index))
-            is DiffOperation.RemoveRange -> RangeAction(remove, IntRange(this.startIndex, this.endIndex))
-            else -> throw RegexGeneratorException("Unknown DiffOperation: $this")
+    private fun <T> apply(diffOperation: DiffOperation<T>): List<AugmentedRecognizerMatch> {
+        if (ranges.isEmpty()) {
+            return emptyList()
         }
 
-    companion object {
-        private data class RangeAction(
-            val action: (IntRange, IntRange) -> IntRange?,
-            val range: IntRange
-        ) {
-            fun applyTo(range: IntRange): IntRange? = action(range, this.range)
+        val rangeAction = diffOperation.rangeAction
+        when (ranges.size) {
+            1 -> {
+                val possibleRanges = rangeAction.applyTo(ranges[0])
+                return possibleRanges.map { AugmentedRecognizerMatch(original = original, ranges = listOf(it)) }
+            }
 
-            companion object {
-                val add: (IntRange, IntRange) -> IntRange? = { a, b -> a.add(b) }
-                val remove: (IntRange, IntRange) -> IntRange? = { a, b -> a.remove(b) }
+            2 -> {
+                val rangeAlternatives = ranges.map { rangeAction.applyTo(it) }
+                return crossProduct(rangeAlternatives[0], rangeAlternatives[1])
+                    .map { AugmentedRecognizerMatch(original = original, ranges = it) }
+            }
+
+            else -> {
+                return emptyList()
             }
         }
     }
 
-    private fun <T> apply(diffOperation: DiffOperation<T>): AugmentedRecognizerMatch? {
-        val rangeAction = diffOperation.rangeAction
-        val newRanges = ranges.mapNotNull { rangeAction.applyTo(it) }
-
-        return if (newRanges.size == ranges.size) {
-            AugmentedRecognizerMatch(original = original, ranges = newRanges)
-        } else {
-            null
-        }
+    private fun <T> crossProduct(a: List<T>, b: List<T>): List<List<T>> {
+        return a.flatMap { at -> b.map { bt -> at to bt } }
+            .map { listOf(it.first, it.second) }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -89,7 +80,7 @@ internal class AugmentedRecognizerMatch(
 
     override fun toString(): String {
         return "AugmentedRecognizerMatch(title=${original.title}, " +
-                "position=$first/$length, " +
+                "position=$range, " +
                 "priority=${original.priority}, " +
                 "recognizer=${original.recognizer.name}, " +
                 "patterns=${original.patterns})"

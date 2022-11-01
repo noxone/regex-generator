@@ -124,38 +124,80 @@ class PatternRecognizerModelTest {
 
     @Test
     fun shouldKeepTheSelectionWhenAddingCharactersToSelectionMatch() {
-        // given
-        val model1 = PatternRecognizerModel(input = "abc123def", options = RecognizerCombiner.Options())
-        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
-        val model2 = model1.select(numberMatch)
-
-        // when
-        val model3 = model2.setUserInput("abc1243def")
-
-        // then
-        assertEquals(expected = 1, actual = model3.selectedRecognizerMatches.size, "Number of matches")
-        val actualMatch = model3.selectedRecognizerMatches.first()
-        assertEquals(expected = "Number", actual = actualMatch.title, "Match title")
-        assertEquals(expected = numberMatch.first, actual = actualMatch.first, "First index of match")
-        assertEquals(expected = numberMatch.last + 1, actual = actualMatch.last, "Last index of match")
+        shouldKeepTheSelectionWhenChangingInput(
+            firstInput = "abc123def",
+            secondInput = "abc1243def",
+            recognizerName = "Number",
+            expectedFirst = 3,
+            expectedLast = 6
+        )
     }
 
     @Test
     fun shouldKeepTheSelectionWhenAddingCharactersPriorToSelectionMatch() {
+        shouldKeepTheSelectionWhenChangingInput(
+            firstInput = "abc123def",
+            secondInput = "abdc123def",
+            recognizerName = "Number",
+            expectedFirst = 4,
+            expectedLast = 6
+        )
+    }
+
+    @Test
+    fun testKeepSelection1() {
+        shouldKeepTheSelectionWhenChangingInput(
+            firstInput = "asd1231sdf",
+            secondInput = "asd11sdf",
+            recognizerName = "Number",
+            expectedFirst = 3,
+            expectedLast = 4
+        )
+    }
+
+    @Test
+    fun testKeepSelection2() {
+        shouldKeepTheSelectionWhenChangingInput(
+            firstInput = "s",
+            secondInput = "sdf",
+            recognizerName = "Multiple characters",
+            expectedFirst = 0,
+            expectedLast = 2
+        )
+    }
+
+    @Test
+    fun testKeepSelection3() {
+        shouldKeepTheSelectionWhenChangingInput(
+            firstInput = "a(sd)f",
+            secondInput = "a(serd)f",
+            recognizerName = "Parentheses",
+            expectedFirst = 1,
+            expectedLast = 6
+        )
+    }
+
+    private fun shouldKeepTheSelectionWhenChangingInput(
+        firstInput: String,
+        recognizerName: String,
+        secondInput: String,
+        expectedFirst: Int,
+        expectedLast: Int
+    ) {
         // given
-        val model1 = PatternRecognizerModel(input = "abc123def", options = RecognizerCombiner.Options())
-        val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
-        val model2 = model1.select(numberMatch)
+        val model1 = PatternRecognizerModel(input = firstInput, options = RecognizerCombiner.Options())
+        val match = model1.recognizerMatches.first { it.title == recognizerName }
+        val model2 = model1.select(match)
 
         // when
-        val model3 = model2.setUserInput("abdc123def")
+        val model3 = model2.setUserInput(secondInput)
 
         // then
         assertEquals(expected = 1, actual = model3.selectedRecognizerMatches.size, "Number of matches")
         val actualMatch = model3.selectedRecognizerMatches.first()
-        assertEquals(expected = "Number", actual = actualMatch.title, "Match title")
-        assertEquals(expected = numberMatch.first + 1, actual = actualMatch.first, "First index of match")
-        assertEquals(expected = numberMatch.last + 1, actual = actualMatch.last, "Last index of match")
+        assertEquals(expected = recognizerName, actual = actualMatch.title, "Match title")
+        assertEquals(expected = expectedFirst, actual = actualMatch.first, "First index of match")
+        assertEquals(expected = expectedLast, actual = actualMatch.last, "Last index of match")
     }
 
     companion object {
