@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.DiffOperation
+import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.util.HasRanges
@@ -27,27 +28,38 @@ internal class AugmentedRecognizerMatch(
         }
 
         val rangeAction = diffOperation.rangeAction
-        when (ranges.size) {
-            1 -> {
-                val possibleRanges = rangeAction.applyTo(ranges[0])
-                return possibleRanges.map { AugmentedRecognizerMatch(original = original, ranges = listOf(it)) }
-            }
+        return if (ranges.size == 1) {
+            val possibleRanges = rangeAction.applyTo(ranges[0])
+            possibleRanges.map { AugmentedRecognizerMatch(original = original, ranges = listOf(it)) }
+        } else {
+            val rangeAlternatives = ranges.map { rangeAction.applyTo(it) }
+            crossProduct(rangeAlternatives[0], rangeAlternatives[1])
+                .map { AugmentedRecognizerMatch(original = original, ranges = it) }
+        }
+    }
 
-            2 -> {
-                val rangeAlternatives = ranges.map { rangeAction.applyTo(it) }
-                return crossProduct(rangeAlternatives[0], rangeAlternatives[1])
-                    .map { AugmentedRecognizerMatch(original = original, ranges = it) }
-            }
-
-            else -> {
-                return emptyList()
-            }
+    private fun <T> crossProduct(lists: List<List<T>>): List<List<T>> {
+        return if (lists.size == 2) {
+            crossProduct(lists[0], lists[1])
+        } else if (lists.size > 2) {
+            val left = lists[0]
+            val right = crossProduct(lists.subList(1, lists.lastIndex))
+            left.flatMap { leftItem -> right.map { rightItem -> leftItem to rightItem } }
+                .map { concat(it.first, it.second) }
+        } else {
+            throw RegexGeneratorException("Invalid list of lists: $lists")
         }
     }
 
     private fun <T> crossProduct(a: List<T>, b: List<T>): List<List<T>> {
         return a.flatMap { at -> b.map { bt -> at to bt } }
             .map { listOf(it.first, it.second) }
+    }
+
+    private fun <T> concat(item: T, list: List<T>): List<T> {
+        val out = mutableListOf(item)
+        out.addAll(list)
+        return out
     }
 
     override fun equals(other: Any?): Boolean {
