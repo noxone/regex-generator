@@ -18,6 +18,7 @@ class RGController : MVCContract.Controller {
         controller = this,
         maxInputLength = MAX_INPUT_LENGTH
     )
+
     private var model: DisplayModel = createInitialModel()
         set(value) {
             field = value
@@ -26,6 +27,10 @@ class RGController : MVCContract.Controller {
 
     init {
         view.applyModel(model)
+    }
+
+    override fun onUndo() {
+        TODO("Not yet implemented")
     }
 
     override fun onFinishedLoading() {

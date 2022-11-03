@@ -39,17 +39,17 @@
 </head>
 
 <body class="bg-dark">
-    <div id="rg_loading" class="fixed-top fixed-bottom">
+    <!--<div id="rg_loading" class="fixed-top fixed-bottom">
         <div class="bg-light shadow rounded m-5 px-4 py-5 row fixed-top opacity-75 display-5">
             <div class="spinner-grow inline-block m-2" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
             Regex Generator loading...
         </div>
-    </div>
+    </div>-->
 
     <div class="container-fluid py-3 px-4" id="rg_mainContainer">
-        <div id="rg_container_cookie" class="alert alert-danger fixed-top m-2" role="alert">
+        <!--<div id="rg_container_cookie" class="alert alert-danger fixed-top m-2" role="alert">
             <div class="d-flex justify-content-between rg-banner-consent">
                 <p class="m-0">This site uses cookies to improve your user experience.</p>
                 <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
@@ -57,13 +57,23 @@
                     <button id="rg_btn_cookie_accept" type="button" class="btn btn-success">Accept</button>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <div class="row rounded-top bg-warning px-4 pt-5 pb-2">
             <h1 class="display-3"><span id="rg-title">Regex Generator</span></h1>
             <p class="lead d-none d-sm-block">Creating <em>regular expressions</em> is easy again!</p>
         </div>
-        <div class="row bg-warning rounded-bottom px-4 py-2">
+        <div class="row bg-warning rounded-bottom px-4 py-2 sticky-top">
+            <nav class="navbar navbar-expand"><!--navbar-expand-md-->
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <button id="rg_button_action_undo" class="btn btn-outline-secondary me-2" type="button">Undo</button>
+                    </div>
+                </div>
+            </nav>
             <!-- sticky-sm-top -->
             <!--Some actions here.-->&nbsp;
         </div>
