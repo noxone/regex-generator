@@ -30,7 +30,7 @@ class RGController : MVCContract.Controller {
     }
 
     override fun onUndo() {
-        TODO("Not yet implemented")
+        model = model.performUndo()
     }
 
     override fun onFinishedLoading() {
@@ -105,7 +105,8 @@ class RGController : MVCContract.Controller {
                 showLoadingIndicator = true,
                 showCookieBanner = !isUserConsentGiven,
                 showCopyButton = isClipboardAvailable,
-                patternRecognitionModel = applyInitialSelection(patternRecognizerModel, params)
+                patternRecognitionModel = applyInitialSelection(patternRecognizerModel, params),
+                oldPatternRecognizerModels = emptyList()
             )
         }
 

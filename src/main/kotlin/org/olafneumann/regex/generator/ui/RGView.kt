@@ -11,6 +11,7 @@ import org.olafneumann.regex.generator.ui.parts.P4LanguageDisplay
 import org.olafneumann.regex.generator.ui.parts.PXFooter
 import org.olafneumann.regex.generator.ui.parts.PXOptions
 import org.olafneumann.regex.generator.ui.parts.PXShare
+import org.olafneumann.regex.generator.ui.parts.PXToolbar
 import org.olafneumann.regex.generator.ui.parts.PXUserGuide
 
 class RGView(
@@ -19,6 +20,7 @@ class RGView(
 ) : MVCContract.View {
     private val loadingIndicator = LoadingIndicator()
     private val cookieBanner = CookieBanner { controller.onDoneAskingUserForCookies(hasGivenConsent = it) }
+    private val toolbar  = PXToolbar(controller = controller)
     private val userInputPart = P1UserInput(
         controller = controller,
         maxInputLength = maxInputLength,
@@ -41,6 +43,7 @@ class RGView(
     override fun applyModel(model: DisplayModel) {
         loadingIndicator.applyModel(model)
         cookieBanner.applyModel(model)
+        toolbar.applyModel(model)
         userInputPart.showInputText(model.patternRecognitionModel.input)
         matchPresenterPart.applyModel(model)
         regexDisplay.applyModel(model)

@@ -16,7 +16,7 @@ class PXToolbar(
     }
 
     fun applyModel(model: DisplayModel) {
-        enableUndoButton(model)
+        enableUndoButton(model.isUndoAvailable)
     }
 
     private fun enableUndoButton(enabled: Boolean) {
