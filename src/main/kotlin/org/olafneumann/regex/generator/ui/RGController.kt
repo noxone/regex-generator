@@ -4,8 +4,8 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
-import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.settings.ApplicationSettings

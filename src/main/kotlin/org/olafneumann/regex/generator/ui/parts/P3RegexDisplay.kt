@@ -5,7 +5,7 @@ import kotlinx.dom.clear
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
 import kotlinx.html.title
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract

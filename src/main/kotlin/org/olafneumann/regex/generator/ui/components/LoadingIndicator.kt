@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.ui.components
 
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLDivElement
 

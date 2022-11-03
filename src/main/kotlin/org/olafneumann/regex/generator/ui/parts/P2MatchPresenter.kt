@@ -12,8 +12,8 @@ import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.model.DisplayModel
-import org.olafneumann.regex.generator.model.MatchPresenter
+import org.olafneumann.regex.generator.ui.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.MatchPresenter
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract

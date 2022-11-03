@@ -1,6 +1,7 @@
-package org.olafneumann.regex.generator.model
+package org.olafneumann.regex.generator.ui.model
 
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.ui
 
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.components.CookieBanner
 import org.olafneumann.regex.generator.ui.components.LoadingIndicator
 import org.olafneumann.regex.generator.ui.components.UserGuide

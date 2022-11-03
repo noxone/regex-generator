@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.ui.parts
 
 import org.olafneumann.regex.generator.js.Prism
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.components.LanguageAccordionCard
