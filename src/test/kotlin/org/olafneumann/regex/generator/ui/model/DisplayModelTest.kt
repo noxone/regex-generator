@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.ui.model
 
+import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.ui.model.DisplayModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -13,7 +13,8 @@ class DisplayModelTest {
             showLoadingIndicator = true,
             showCookieBanner = true,
             showCopyButton = true,
-            patternRecognitionModel = patternModel
+            patternRecognitionModel = patternModel,
+            oldPatternRecognizerModels = emptyList()
         )
 
         assertEquals(2, displayModel.rowsOfMatchPresenters.size, "Number of rows in display model")

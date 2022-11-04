@@ -83,7 +83,7 @@ class DisplayModel(
         val listOfOldModels = mutableListOf<PatternRecognizerModel>()
         listOfOldModels.addAll(oldPatternRecognizerModels)
         listOfOldModels.add(patternRecognitionModel)
-        if (listOfOldModels.size > 100) {
+        if (listOfOldModels.size > NUMBER_OF_UNDO_SLOTS) {
             listOfOldModels.removeAt(0)
         }
         return DisplayModel(
@@ -132,6 +132,7 @@ class DisplayModel(
     }
 
     companion object {
+        private const val NUMBER_OF_UNDO_SLOTS = 100
         private fun distributeToRows(matches: Collection<MatchPresenter>): List<List<MatchPresenter>> {
             val lines = mutableListOf<MutableList<MatchPresenter>>()
             fun createNextLine(): MutableList<MatchPresenter> {
