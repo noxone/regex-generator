@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.ui.parts
 
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.output.UrlGenerator
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
@@ -17,8 +17,8 @@ class PXFooter {
     )
 
     fun applyModel(model: DisplayModel) {
-        val currentPattern = model.patternRecognitionModel.regularExpression.pattern
-        val options = model.patternRecognitionModel.options
+        val currentPattern = model.patternRecognizerModel.regularExpression.pattern
+        val options = model.patternRecognizerModel.options
 
         anchorRegex101.setPattern(currentPattern, options)
         anchorRegexr.setPattern(currentPattern, options)

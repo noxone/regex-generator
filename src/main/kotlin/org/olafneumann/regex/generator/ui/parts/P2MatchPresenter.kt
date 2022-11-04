@@ -12,8 +12,8 @@ import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.model.DisplayModel
-import org.olafneumann.regex.generator.model.MatchPresenter
+import org.olafneumann.regex.generator.ui.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.MatchPresenter
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
@@ -33,8 +33,8 @@ class P2MatchPresenter(
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     fun applyModel(model: DisplayModel) {
-        showText(model.patternRecognitionModel.input)
-        showMatchPresenters(model.rowsOfMatchPresenters, model.patternRecognitionModel.selectedRecognizerMatches)
+        showText(model.patternRecognizerModel.input)
+        showMatchPresenters(model.rowsOfMatchPresenters, model.patternRecognizerModel.selectedRecognizerMatches)
     }
 
     fun showText(text: String) {

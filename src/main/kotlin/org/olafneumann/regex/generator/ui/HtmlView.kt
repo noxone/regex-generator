@@ -10,6 +10,8 @@ object HtmlView {
     const val CLASS_CHAR_SELECTED = "rg-char-selected"
     const val CLASS_ITEM_NOT_AVAILABLE = "rg-item-not-available"
 
+    const val ID_ACTION_UNDO = "rg_button_action_undo"
+    const val ID_ACTION_REDO = "rg_button_action_redo"
     const val ID_INPUT_ELEMENT = "rg_raw_input_text"
     const val ID_INPUT_MESSAGE_SHORTEN = "rg_raw_input_message_shorten"
     const val ID_INPUT_MESSAGE_SHORTEN_NUMBER = "rg_raw_input_message_shorten_number"

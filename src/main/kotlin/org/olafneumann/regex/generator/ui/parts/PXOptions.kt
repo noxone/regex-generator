@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.ui.parts
 
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
@@ -41,7 +41,7 @@ class PXOptions(
         }
 
     fun applyModel(displayModel: DisplayModel) {
-        this.options = displayModel.patternRecognitionModel.options
+        this.options = displayModel.patternRecognizerModel.options
     }
 
     private fun propagateOptionsChange() {

@@ -4,8 +4,8 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
-import org.olafneumann.regex.generator.model.DisplayModel
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.settings.ApplicationSettings
@@ -18,6 +18,7 @@ class RGController : MVCContract.Controller {
         controller = this,
         maxInputLength = MAX_INPUT_LENGTH
     )
+
     private var model: DisplayModel = createInitialModel()
         set(value) {
             field = value
@@ -26,6 +27,14 @@ class RGController : MVCContract.Controller {
 
     init {
         view.applyModel(model)
+    }
+
+    override fun onUndo() {
+        model = model.performUndo()
+    }
+
+    override fun onRedo() {
+        model = model.performRedo()
     }
 
     override fun onFinishedLoading() {
@@ -54,7 +63,7 @@ class RGController : MVCContract.Controller {
     }
 
     override fun onCopyRegexButtonClick() {
-        copyToClipboard(text = model.patternRecognitionModel.regularExpression.pattern)
+        copyToClipboard(text = model.patternRecognizerModel.regularExpression.pattern)
     }
 
     override fun onShareButtonClick() {
@@ -62,7 +71,7 @@ class RGController : MVCContract.Controller {
     }
 
     private fun isSelected(recognizerMatch: RecognizerMatch): Boolean =
-        model.patternRecognitionModel.selectedRecognizerMatches.contains(recognizerMatch)
+        model.patternRecognizerModel.selectedRecognizerMatches.contains(recognizerMatch)
 
     private fun select(recognizerMatch: RecognizerMatch) {
         model = model.select(recognizerMatch)
@@ -100,7 +109,8 @@ class RGController : MVCContract.Controller {
                 showLoadingIndicator = true,
                 showCookieBanner = !isUserConsentGiven,
                 showCopyButton = isClipboardAvailable,
-                patternRecognitionModel = applyInitialSelection(patternRecognizerModel, params)
+                patternRecognizerModels = listOf(applyInitialSelection(patternRecognizerModel, params)),
+                modelPointer = 0
             )
         }
 

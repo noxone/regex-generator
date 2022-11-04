@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.browser.window
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.olafneumann.regex.generator.ui.MVCContract

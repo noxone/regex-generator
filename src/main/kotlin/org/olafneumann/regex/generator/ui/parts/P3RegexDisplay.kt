@@ -5,7 +5,7 @@ import kotlinx.dom.clear
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
 import kotlinx.html.title
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
@@ -25,7 +25,7 @@ class P3RegexDisplay(
 
     fun applyModel(model: DisplayModel) {
         showOrHideCopyButton(model.showCopyButton)
-        showResultRegex(regex = model.patternRecognitionModel.regularExpression)
+        showResultRegex(regex = model.patternRecognizerModel.regularExpression)
     }
 
     private fun showResultRegex(regex: RecognizerCombiner.RegularExpression) {

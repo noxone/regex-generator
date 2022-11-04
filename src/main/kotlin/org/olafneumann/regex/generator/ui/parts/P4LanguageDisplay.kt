@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.ui.parts
 
 import org.olafneumann.regex.generator.js.Prism
-import org.olafneumann.regex.generator.model.DisplayModel
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.output.CodeGenerator
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.components.LanguageAccordionCard
@@ -15,8 +15,8 @@ class P4LanguageDisplay {
         .associateWith { LanguageAccordionCard(it, containerLanguages) }
 
     fun applyModel(model: DisplayModel) {
-        val currentPattern = model.patternRecognitionModel.regularExpression.pattern
-        val options = model.patternRecognitionModel.options
+        val currentPattern = model.patternRecognizerModel.regularExpression.pattern
+        val options = model.patternRecognizerModel.options
 
         CodeGenerator.all
             .forEach { languageDisplays[it]?.setSnippet(it.generateCode(currentPattern, options)) }

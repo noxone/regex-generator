@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.model
+package org.olafneumann.regex.generator.ui.model
 
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.util.HasRange
