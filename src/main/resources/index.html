@@ -29,6 +29,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <!-- sources of regex generator -->
     <script type="text/javascript" src="regex-generator.js"></script>
@@ -68,11 +69,14 @@
         <div class="row bg-warning rounded-bottom px-4 py-2 sticky-top d-none d-md-block">
             <nav class="navbar navbar-expand p-0">
                 <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toolbarContent" aria-controls="toolbarContent" aria-expanded="false" aria-label="Toggle toolbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <button id="rg_button_action_undo" class="btn btn-outline-secondary me-2" type="button">Undo</button>
+                    <div class="collapse navbar-collapse" id="toolbarContent">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button id="rg_button_action_undo" type="button" class="btn btn-outline-secondary" title="Undo"><i class="bi bi-arrow-counterclockwise"></i></button>
+                            <button id="rg_button_action_redo" type="button" class="btn btn-outline-secondary" title="Redo"><i class="bi bi-arrow-clockwise"></i></button>
+                        </div>
                     </div>
                 </div>
             </nav>

@@ -41,7 +41,7 @@ class PXOptions(
         }
 
     fun applyModel(displayModel: DisplayModel) {
-        this.options = displayModel.patternRecognitionModel.options
+        this.options = displayModel.patternRecognizerModel.options
     }
 
     private fun propagateOptionsChange() {

@@ -25,7 +25,7 @@ class P3RegexDisplay(
 
     fun applyModel(model: DisplayModel) {
         showOrHideCopyButton(model.showCopyButton)
-        showResultRegex(regex = model.patternRecognitionModel.regularExpression)
+        showResultRegex(regex = model.patternRecognizerModel.regularExpression)
     }
 
     private fun showResultRegex(regex: RecognizerCombiner.RegularExpression) {

@@ -44,7 +44,7 @@ class RGView(
         loadingIndicator.applyModel(model)
         cookieBanner.applyModel(model)
         toolbar.applyModel(model)
-        userInputPart.showInputText(model.patternRecognitionModel.input)
+        userInputPart.applyModel(model)
         matchPresenterPart.applyModel(model)
         regexDisplay.applyModel(model)
         options.applyModel(model)

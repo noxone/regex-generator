@@ -3,6 +3,7 @@ package org.olafneumann.regex.generator.ui.parts
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
+import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.TimerController
 import org.olafneumann.regex.generator.ui.utils.UserInputDelayer
@@ -39,8 +40,8 @@ class P1UserInput(
             .innerHTML = maxInputLength.toString()
     }
 
-    fun showInputText(text: String) {
-        inputText = text
+    fun applyModel(model: DisplayModel) {
+        inputText = model.patternRecognizerModel.input
     }
 
     private fun handleUserInput(action: (String) -> Unit) {

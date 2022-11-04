@@ -33,8 +33,8 @@ class P2MatchPresenter(
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
     fun applyModel(model: DisplayModel) {
-        showText(model.patternRecognitionModel.input)
-        showMatchPresenters(model.rowsOfMatchPresenters, model.patternRecognitionModel.selectedRecognizerMatches)
+        showText(model.patternRecognizerModel.input)
+        showMatchPresenters(model.rowsOfMatchPresenters, model.patternRecognizerModel.selectedRecognizerMatches)
     }
 
     fun showText(text: String) {

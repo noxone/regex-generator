@@ -21,6 +21,7 @@ interface MVCContract {
         fun onShareButtonClick()
 
         fun onUndo()
+        fun onRedo()
 
         fun onShowUserGuide(initialStep: Boolean = false)
     }

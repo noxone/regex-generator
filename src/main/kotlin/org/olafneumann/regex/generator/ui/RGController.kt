@@ -33,6 +33,10 @@ class RGController : MVCContract.Controller {
         model = model.performUndo()
     }
 
+    override fun onRedo() {
+        model = model.performRedo()
+    }
+
     override fun onFinishedLoading() {
         model = model.setLoadingIndicatorVisible(false)
     }
@@ -59,7 +63,7 @@ class RGController : MVCContract.Controller {
     }
 
     override fun onCopyRegexButtonClick() {
-        copyToClipboard(text = model.patternRecognitionModel.regularExpression.pattern)
+        copyToClipboard(text = model.patternRecognizerModel.regularExpression.pattern)
     }
 
     override fun onShareButtonClick() {
@@ -67,7 +71,7 @@ class RGController : MVCContract.Controller {
     }
 
     private fun isSelected(recognizerMatch: RecognizerMatch): Boolean =
-        model.patternRecognitionModel.selectedRecognizerMatches.contains(recognizerMatch)
+        model.patternRecognizerModel.selectedRecognizerMatches.contains(recognizerMatch)
 
     private fun select(recognizerMatch: RecognizerMatch) {
         model = model.select(recognizerMatch)
@@ -105,8 +109,8 @@ class RGController : MVCContract.Controller {
                 showLoadingIndicator = true,
                 showCookieBanner = !isUserConsentGiven,
                 showCopyButton = isClipboardAvailable,
-                patternRecognitionModel = applyInitialSelection(patternRecognizerModel, params),
-                oldPatternRecognizerModels = emptyList()
+                patternRecognizerModels = listOf(applyInitialSelection(patternRecognizerModel, params)),
+                modelPointer = 0
             )
         }
 
