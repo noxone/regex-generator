@@ -72,7 +72,7 @@ class PatternRecognizerModel(
             input = input,
             recognizerMatches = recognizerMatches,
             selectedMatches = selectedRecognizerMatches + match,
-            options = RecognizerCombiner.Options()
+            options = options
         )
     }
 
@@ -81,7 +81,7 @@ class PatternRecognizerModel(
             input = input,
             recognizerMatches = recognizerMatches,
             selectedMatches = selectedRecognizerMatches - match,
-            options = RecognizerCombiner.Options()
+            options = options
         )
     }
 
