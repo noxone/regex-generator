@@ -12,7 +12,6 @@ class PatternRecognizerModel(
     selectedMatches: Collection<RecognizerMatch> = emptySet(),
     val options: RecognizerCombiner.Options
 ) {
-    val id = ID_GENERATOR.currentId
     val selectedRecognizerMatches: Set<RecognizerMatch>
 
     init {
@@ -93,9 +92,5 @@ class PatternRecognizerModel(
             selectedMatches = selectedRecognizerMatches,
             options = options
         )
-    }
-
-    companion object {
-        private val ID_GENERATOR = IdGenerator()
     }
 }
