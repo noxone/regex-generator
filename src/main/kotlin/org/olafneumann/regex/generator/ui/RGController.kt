@@ -67,7 +67,7 @@ class RGController : MVCContract.Controller {
     }
 
     override fun onShareButtonClick() {
-        copyToClipboard(text = model.shareLink.toCurrentWindowLocation().toString())
+        copyToClipboard(text = model.shareLink.toString())
     }
 
     private fun isSelected(recognizerMatch: RecognizerMatch): Boolean =

@@ -5,6 +5,7 @@ import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.ui.HtmlView
+import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.w3c.dom.url.URL
 import kotlin.math.max
 import kotlin.math.min
@@ -65,7 +66,7 @@ data class DisplayModel(
                 .map { "${it.key}=${it.value}" }
                 .joinToString(prefix = "http://localhost/?", separator = "&")
 
-            return URL(searchParameters)
+            return URL(searchParameters).toCurrentWindowLocation()
         }
 
     val isUndoAvailable: Boolean get() = modelPointer > 0

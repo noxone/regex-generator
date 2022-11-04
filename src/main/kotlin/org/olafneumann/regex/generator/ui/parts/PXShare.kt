@@ -22,7 +22,7 @@ class PXShare(
 
     fun applyModel(model: DisplayModel) {
         showOrHideCopyButton(model.showCopyButton)
-        val url = model.shareLink.toCurrentWindowLocation()
+        val url = model.shareLink
 
         divShareLink.innerText = url.toString()
         updateDocumentSearchQuery(url.search)
