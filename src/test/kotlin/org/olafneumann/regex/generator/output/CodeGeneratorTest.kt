@@ -246,4 +246,14 @@ Public Module Sample
     End Function
 End Module"""
     )
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun testGenerator_PatternUrlGenerator() = testLanguageGenerator(
+            codeGenerator = PatternUrlGenerator(
+                linkName = "Regex101",
+                urlTemplate = "https://regex101.com/?regex=%1\$s&flags=g%2\$s&delimiter=/"
+            ),
+            expected = "https://regex101.com/?regex=abc%5C.%5C%5C%5C%24hier%20%22und%22%20%2F%20'da'%5C(%5C%5B%5C)%5C.&flags=gi&delimiter=/"
+    )
 }
