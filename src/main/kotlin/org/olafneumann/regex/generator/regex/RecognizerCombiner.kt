@@ -36,21 +36,25 @@ object RecognizerCombiner {
                 hasContentBeforeFirstMatch && options.onlyPatterns -> RegularExpressionPart(
                     IntRange(0, rangesToMatches.first().range.first - 1), ".*", title = "anything"
                 )
+
                 hasContentBeforeFirstMatch && !options.onlyPatterns -> {
                     val length = rangesToMatches.first().range.first
                     val text = inputText.substring(0, length)
                     RegularExpressionPart(IntRange(0, length - 1), text.escapeForRegex(), text)
                 }
+
                 else -> null
             }
             val lastPart = when {
                 hasContentAfterLastMatch && options.onlyPatterns -> RegularExpressionPart(
                     IntRange(0, rangesToMatches.last().range.last), ".*", title = "anything"
                 )
+
                 hasContentAfterLastMatch && !options.onlyPatterns -> {
                     val text = inputText.substring(rangesToMatches.last().range.last + 1)
                     RegularExpressionPart(IntRange(0, rangesToMatches.last().range.last), text.escapeForRegex(), text)
                 }
+
                 else -> null
             }
 
@@ -122,6 +126,16 @@ object RecognizerCombiner {
         val dotMatchesLineBreaks: Boolean = DEFAULT_DOT_MATCHES_LINE_BREAKS,
         val multiline: Boolean = DEFAULT_MULTILINE
     ) {
+        val flagString: String
+            get() = listOfNotNull(
+                    onlyPatterns.ifTrue(CHAR_ONLY_PATTERNS),
+                    matchWholeLine.ifTrue(CHAR_WHOLE_LINE),
+                    caseInsensitive.ifTrue(CHAR_CASE_INSENSITIVE),
+                    dotMatchesLineBreaks.ifTrue(CHAR_DOT_MATCHES_LINE_BREAKS),
+                    multiline.ifTrue(CHAR_MULTILINE)
+                )
+                .joinToString(separator = "") { it.toString() }
+
         companion object {
             private const val DEFAULT_ONLY_PATTERN = false
             private const val DEFAULT_MATCH_WHOLE_LINE = false
@@ -129,14 +143,23 @@ object RecognizerCombiner {
             private const val DEFAULT_DOT_MATCHES_LINE_BREAKS = false
             private const val DEFAULT_MULTILINE = false
 
-            fun parseSearchParams(onlyPatternFlag: String?, matchWholeLineFlag: String?, regexFlags: String?): Options {
-                val onlyPatterns = onlyPatternFlag?.let { it.toBoolean() } ?: DEFAULT_ONLY_PATTERN
-                val matchWholeLine = matchWholeLineFlag?.let { it.toBoolean() } ?: DEFAULT_MATCH_WHOLE_LINE
+            const val CHAR_ONLY_PATTERNS = 'P'
+            const val CHAR_WHOLE_LINE = 'L'
+            const val CHAR_CASE_INSENSITIVE = 'i'
+            const val CHAR_DOT_MATCHES_LINE_BREAKS = 's'
+            const val CHAR_MULTILINE = 'm'
+
+            private fun Boolean.ifTrue(char: Char): Char? =
+                if (this) char else null
+
+            fun parseSearchParams(regexFlags: String?): Options {
+                val onlyPatterns = regexFlags.parseFlag(char = CHAR_ONLY_PATTERNS, default = DEFAULT_ONLY_PATTERN)
+                val matchWholeLine = regexFlags.parseFlag(char = CHAR_WHOLE_LINE, default = DEFAULT_MATCH_WHOLE_LINE)
                 val caseInsensitive =
-                    regexFlags?.contains(char = 'i', ignoreCase = true) ?: DEFAULT_CASE_INSENSITIVE
+                    regexFlags.parseFlag(char = CHAR_CASE_INSENSITIVE, default = DEFAULT_CASE_INSENSITIVE)
                 val dotMatchesLineBreaks =
-                    regexFlags?.contains(char = 's', ignoreCase = true) ?: DEFAULT_DOT_MATCHES_LINE_BREAKS
-                val multiline = regexFlags?.contains(char = 'm', ignoreCase = true) ?: DEFAULT_MULTILINE
+                    regexFlags.parseFlag(char = CHAR_DOT_MATCHES_LINE_BREAKS, default = DEFAULT_DOT_MATCHES_LINE_BREAKS)
+                val multiline = regexFlags.parseFlag(char = CHAR_MULTILINE, default = DEFAULT_MULTILINE)
                 return Options(
                     onlyPatterns = onlyPatterns,
                     matchWholeLine = matchWholeLine,
@@ -145,6 +168,9 @@ object RecognizerCombiner {
                     multiline = multiline
                 )
             }
+
+            private fun String?.parseFlag(char: Char, default: Boolean): Boolean =
+                this?.contains(char = char, ignoreCase = false) ?: default
         }
     }
 

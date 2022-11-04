@@ -98,20 +98,15 @@ internal abstract class SimpleReplacingCodeGenerator(
     }
 }
 
-internal open class UrlGenerator(
+internal open class PatternUrlGenerator(
     linkName: String,
     urlTemplate: String,
     private val valueForCaseInsensitive: String? = "i",
     private val valueForDotAll: String? = "s",
     private val valueForMultiline: String? = "m",
-    private val additionCharactersToEscape: List<Char> = emptyList()
 ) : SimpleReplacingCodeGenerator(linkName, linkName, urlTemplate) {
-    private fun String.escape(chars: List<Char>): String =
-        if (chars.isEmpty()) this
-        else replace(chars.first().toString(), "\\${chars.first()}").escape(chars.drop(1))
-
     override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
-        encodeURIComponent(pattern.escape(additionCharactersToEscape))
+        encodeURIComponent(pattern)
 
     override fun generateOptionsCode(options: RecognizerCombiner.Options): String =
         options.combine(

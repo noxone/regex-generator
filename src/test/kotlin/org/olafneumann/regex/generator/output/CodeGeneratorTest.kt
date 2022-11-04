@@ -246,5 +246,4 @@ Public Module Sample
     End Function
 End Module"""
     )
-
 }
