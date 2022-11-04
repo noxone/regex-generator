@@ -33,8 +33,6 @@ object HtmlView {
 
     const val SEARCH_SAMPLE_REGEX = "sampleText"
     const val SEARCH_FLAGS = "flags"
-    const val SEARCH_ONLY_PATTERNS = "onlyPatterns"
-    const val SEARCH_MATCH_WHOLE_LINE = "matchWholeLine"
     const val SEARCH_SELECTION = "selection"
 
     val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")

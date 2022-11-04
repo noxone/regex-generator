@@ -94,8 +94,6 @@ class RGController : MVCContract.Controller {
             val params = URL(document.URL).searchParams
 
             val options = RecognizerCombiner.Options.parseSearchParams(
-                onlyPatternFlag = params.get(HtmlView.SEARCH_ONLY_PATTERNS)?.ifBlank { null },
-                matchWholeLineFlag = params.get(HtmlView.SEARCH_MATCH_WHOLE_LINE)?.ifBlank { null },
                 regexFlags = params.get(HtmlView.SEARCH_FLAGS)
             )
             val inputText = params.get(HtmlView.SEARCH_SAMPLE_REGEX)?.ifBlank { null } ?: VAL_EXAMPLE_INPUT
