@@ -13,8 +13,8 @@ class DisplayModelTest {
             showLoadingIndicator = true,
             showCookieBanner = true,
             showCopyButton = true,
-            patternRecognitionModel = patternModel,
-            undoModels = emptyList()
+            patternRecognizerModels = listOf(patternModel),
+            modelPointer = 0
         )
 
         assertEquals(2, displayModel.rowsOfMatchPresenters.size, "Number of rows in display model")
