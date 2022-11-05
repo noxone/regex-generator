@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.js
 
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 import kotlin.js.Json
 
 @JsName("$")
@@ -12,8 +13,11 @@ external fun jQuery(element: HTMLElement): JQuery
 external class JQuery {
     @Suppress("UnusedPrivateMember")
     fun on(type: String, callback: () -> Unit)
+    fun mousedown(handler: (Event) -> Unit)
     fun slideDown(): JQuery
     fun slideUp(): JQuery
+    fun fadeIn(): JQuery
+    fun fadeOut(): JQuery
     fun show(): JQuery
     fun hide(): JQuery
     fun parent(): JQuery
@@ -33,4 +37,9 @@ external class JQuery {
     @Suppress("UnusedPrivateMember")
     fun animate(properties: Json, duration: Int = definedExternally, easing: String = definedExternally)
     fun stop()
+    @Suppress("FunctionNaming")
+    fun `is`(s: String): Boolean
+
+    fun popover(options: Json)
+    fun popover(command: String)
 }

@@ -6,7 +6,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.ui.model.DisplayModel
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
@@ -28,7 +28,7 @@ class P3RegexDisplay(
         showResultRegex(regex = model.patternRecognizerModel.regularExpression)
     }
 
-    private fun showResultRegex(regex: RecognizerCombiner.RegularExpression) {
+    private fun showResultRegex(regex: RegularExpression) {
         resultDisplay.clear()
         for (part in regex.parts) {
             resultDisplay.append(

@@ -9,7 +9,6 @@ import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.settings.ApplicationSettings
-import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
 
@@ -63,7 +62,7 @@ class RGController : MVCContract.Controller {
     }
 
     override fun onCopyRegexButtonClick() {
-        copyToClipboard(text = model.patternRecognizerModel.regularExpression.pattern)
+        copyToClipboard(text = model.patternRecognizerModel.regularExpression.finalPattern)
     }
 
     override fun onShareButtonClick() {

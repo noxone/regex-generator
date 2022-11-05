@@ -17,7 +17,7 @@ class PXFooter {
     )
 
     fun applyModel(model: DisplayModel) {
-        val currentPattern = model.patternRecognizerModel.regularExpression.pattern
+        val currentPattern = model.patternRecognizerModel.regularExpression.finalPattern
         val options = model.patternRecognizerModel.options
 
         anchorRegex101.setPattern(currentPattern, options)

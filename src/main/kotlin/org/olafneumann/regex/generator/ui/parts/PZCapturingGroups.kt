@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
+import kotlinx.dom.clear
 import kotlinx.html.ButtonType
 import kotlinx.html.InputType
 import kotlinx.html.a
@@ -22,9 +23,10 @@ import kotlinx.html.js.span
 import kotlinx.html.span
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
+import org.olafneumann.regex.generator.ui.utils.MouseCapture
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
@@ -39,9 +41,7 @@ import kotlin.js.json
 import kotlin.properties.Delegates
 
 @Suppress("TooManyFunctions")
-internal class PZCapturingGroups(
-    // private val controller: MVCContract.Controller
-) {
+internal class PZCapturingGroups {
     companion object {
         private const val CLASS_SELECTION = "bg-warning"
         private const val CLASS_HIGHLIGHT = "bg-info"
@@ -56,7 +56,7 @@ internal class PZCapturingGroups(
     private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_display")
     private val capGroupList = HtmlHelper.getElementById<HTMLUListElement>("rg_cap_group_list")
 
-    private var regularExpression: RecognizerCombiner.RegularExpression? = null
+    private var regularExpression: RegularExpression? = null
 
     private var popover: Popover? = null
     private var clearMarks: () -> Unit = {}
@@ -94,7 +94,7 @@ internal class PZCapturingGroups(
             jContent.slideUp()
             jQuery(expandImageOpen).fadeIn()
             jQuery(expandImageClose).fadeOut()
-            jQuery(number).animate(json("margin-top" to "-1.7rem", "margin-bottom" to "-2rem"))
+            jQuery(number).animate(json("margin-top" to "-0.32em", "margin-bottom" to "-1em"))
         }
     }
 

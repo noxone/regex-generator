@@ -184,11 +184,4 @@ object RecognizerCombiner {
         val fromInputText
             get() = originalText != null
     }
-
-    data class RegularExpression(
-        val parts: Collection<RegularExpressionPart>
-    ) {
-        val pattern
-            get() = parts.joinToString(separator = "") { it.pattern }
-    }
 }

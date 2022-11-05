@@ -4,6 +4,7 @@ import dev.andrewbailey.diff.differenceOf
 import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerRegistry
+import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.util.hasIntersectionWith
 
 class PatternRecognizerModel(
@@ -20,7 +21,7 @@ class PatternRecognizerModel(
             .toSet()
     }
 
-    val regularExpression: RecognizerCombiner.RegularExpression
+    val regularExpression: RegularExpression
         get() = RecognizerCombiner
             .combineMatches(
                 inputText = input,
