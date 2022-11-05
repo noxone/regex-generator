@@ -127,10 +127,42 @@
             </div>
         </div>
 
+        <!-- cap group part -->
+        <div class="row no-gutters bg-light mt-3 pr-4 rounded" id="rg_capgroup_selection_container">
+            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
+                <h3 class="display-3 text-secondary">3</h3>
+            </div>
+            <div class="col-12 col-md-11 py-4 pl-4">
+                <button id="rg_cap_group_expander" class="btn p-0" style="text-align: left;outline: none;">
+                    <h5>Add capturing groups (optional)
+                        <div style="display: inline;">
+                            <img class="ml-2" style="position: absolute; filter: invert(50%);" src="images/chevron_right.svg" title="closed" width="25" height="25"/>
+                            <img class="ml-2" style="position: absolute; filter: invert(50%);transform: rotate(90deg);" src="images/chevron_right.svg" title="opened" width="25" height="25"/>
+                        </div>
+                    </h5>
+                </button>
+                <div id="rg_cap_group_content">
+                    <div class="row no-gutters bg-white border rounded p-2" id="rg_cap_group_container">
+                        <div class="rg-match-container">
+                            <div style="user-select: none;cursor: pointer;" id="rg_cap_group_display" class="rg-text-display">abcde</div>
+                        </div>
+                    </div>
+                    <small class="form-text text-muted">Mark the parts of the regular expression you want to capture.</small>
+                    <div class="pt-3">
+                        <h6>Capturing groups</h6>
+                        <ul id="rg_cap_group_list" class="list-group">
+                            <li class="list-group-item rg-cap-group-list-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Regex generation part -->
         <div class="row bg-light mt-3 rounded" id="rg_regex_result_container">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
-                <h3 class="display-3 text-secondary">3</h3>
+                <h3 class="display-3 text-secondary">4</h3>
             </div>
             <div class="col-12 col-md-11 py-3">
                 <h5>Regular expression</h5>
@@ -181,7 +213,7 @@
         <!-- Sample Code Part -->
         <div class="row bg-light mt-3 rounded">
             <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
-                <h3 class="display-3 text-secondary">4</h3>
+                <h3 class="display-3 text-secondary">5</h3>
             </div>
             <div class="col-12 col-md-11 py-3">
                 <h5>Usage in programming languages</h5>
