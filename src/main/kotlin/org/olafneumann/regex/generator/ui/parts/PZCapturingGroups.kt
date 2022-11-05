@@ -9,6 +9,7 @@ import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.em
+import kotlinx.html.i
 import kotlinx.html.id
 import kotlinx.html.injector.CustomCapture
 import kotlinx.html.injector.inject
@@ -24,13 +25,11 @@ import kotlinx.html.span
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RegularExpression
-import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
-import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.HTMLUListElement
@@ -50,8 +49,8 @@ internal class PZCapturingGroups {
     private val container = HtmlHelper.getElementById<HTMLDivElement>("rg_capgroup_selection_container")
     private val number = container.getElementsByTagName("h3")[0] as HTMLHeadingElement
     private val expandButton = HtmlHelper.getElementById<HTMLElement>("rg_cap_group_expander")
-    private val expandImageOpen = expandButton.getElementsByTagName("img")[0] as HTMLImageElement
-    private val expandImageClose = expandButton.getElementsByTagName("img")[1] as HTMLImageElement
+    private val expandImageOpen = expandButton.getElementsByTagName("i")[0] as HTMLElement
+    private val expandImageClose = expandButton.getElementsByTagName("i")[1] as HTMLElement
     private val content = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_content")
     private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_display")
     private val capGroupList = HtmlHelper.getElementById<HTMLUListElement>("rg_cap_group_list")
@@ -62,6 +61,7 @@ internal class PZCapturingGroups {
     private var clearMarks: () -> Unit = {}
 
     init {
+        // TODO move to DisplayModel
         toggleVisibility(open = false)
         expandButton.onclick = {
             it.preventDefault()
@@ -131,8 +131,7 @@ internal class PZCapturingGroups {
 
                         div {
                             a(classes = "btn") {
-                                // https://icons.getbootstrap.com/icons/trash/
-                                +"\uD83D\uDDD1"
+                                i (classes="bi bi-trash") {}
                                 onClickFunction = { _ ->
                                     regularExpression.removeCapturingGroup(it.id)
                                     setRegularExpression(regularExpression)
