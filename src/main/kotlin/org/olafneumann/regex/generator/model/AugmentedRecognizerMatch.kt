@@ -33,7 +33,7 @@ internal class AugmentedRecognizerMatch(
             possibleRanges.map { AugmentedRecognizerMatch(original = original, ranges = listOf(it)) }
         } else {
             val rangeAlternatives = ranges.map { rangeAction.applyTo(it) }
-            crossProduct(rangeAlternatives[0], rangeAlternatives[1])
+            crossProduct(rangeAlternatives)
                 .map { AugmentedRecognizerMatch(original = original, ranges = it) }
         }
     }
