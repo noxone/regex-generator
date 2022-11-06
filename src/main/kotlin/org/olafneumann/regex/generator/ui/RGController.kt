@@ -106,28 +106,45 @@ class RGController : MVCContract.Controller {
                 showLoadingIndicator = true,
                 showCookieBanner = !isUserConsentGiven,
                 showCopyButton = isClipboardAvailable,
-                patternRecognizerModels = listOf(applyInitialSelection(patternRecognizerModel, params)),
+                patternRecognizerModels = listOf(patternRecognizerModel.applyInitialSelection(params)),
                 modelPointer = 0
             )
         }
 
-        private fun applyInitialSelection(
-            model: PatternRecognizerModel,
+        private fun PatternRecognizerModel.applyInitialSelection(
             params: URLSearchParams
         ): PatternRecognizerModel {
-            var outModel = model
-            val selectionIndexToRecognizerName = params.get(HtmlView.SEARCH_SELECTION)
-                ?.ifBlank { null }
-                ?.split(",")
-                ?.map { it.split("|") }
-                ?.associate { it[0].toInt() to decodeURIComponent(it[1]) }
-                ?: emptyMap()
-            selectionIndexToRecognizerName.entries.forEach { (index, name) ->
-                model.recognizerMatches
-                    .firstOrNull { it.first == index && it.recognizer.name == name }
-                    ?.let { outModel = outModel.select(it) }
+            val selectionIndexToRecognizerName: Map<Int, String>
+            try {
+                selectionIndexToRecognizerName = params.get(HtmlView.SEARCH_SELECTION)
+                    ?.ifBlank { null }
+                    ?.split(",")
+                    ?.map { it.split("|") }
+                    ?.filter { it.size == 2 }
+                    ?.associate { it[0].tryParsingToInt() to decodeURIComponent(it[1]) }
+                    ?.filter { it.key >= 0 }
+                    ?: emptyMap()
+            } catch (e: IllegalArgumentException) {
+                console.warn("Unable to read state from URL", e)
+                return this
             }
+
+            var outModel = this
+            selectionIndexToRecognizerName
+                .mapNotNull { (index, name) -> recognizerMatches
+                    .firstOrNull { it.first == index && it.recognizer.name == name }
+                }
+                .forEach { outModel = outModel.select(it) }
             return outModel
+        }
+
+        private fun String.tryParsingToInt(): Int {
+            return try {
+                this.toInt()
+            } catch (e: IllegalArgumentException) {
+                console.warn("Unable to read state from URL", e)
+                -1
+            }
         }
 
         private val isClipboardAvailable: Boolean get() =
