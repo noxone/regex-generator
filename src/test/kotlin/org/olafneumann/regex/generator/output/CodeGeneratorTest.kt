@@ -250,7 +250,7 @@ End Module"""
     @Suppress("MaxLineLength")
     @Test
     fun testGenerator_PatternUrlGenerator() = testLanguageGenerator(
-            codeGenerator = PatternUrlGenerator(
+            codeGenerator = UrlGenerator(
                 linkName = "Regex101",
                 urlTemplate = "https://regex101.com/?regex=%1\$s&flags=g%2\$s&delimiter=/"
             ),
