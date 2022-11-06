@@ -6,6 +6,11 @@
   display: none;
 }
 
+h1, h2, h3, h4, h5, h6, label, small {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .rg-banner-consent .btn {
   height: 2.3em;
 }
