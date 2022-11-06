@@ -1,5 +1,6 @@
-package org.olafneumann.regex.generator.regex
+package org.olafneumann.regex.generator.recognizer
 
+import org.olafneumann.regex.generator.regex.RegexCombiner
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -28,10 +29,10 @@ class RecognizerCombinerTest {
     fun testMatchCombinationWithoutOnlyPatterns() {
         val expected = "[a-z]+123[a-z]+"
 
-        val actual = RecognizerCombiner.combineMatches(
+        val actual = RegexCombiner.combineMatches(
             inputText = inputText,
             selectedMatches = selectedMatches,
-            options = RecognizerCombiner.Options(onlyPatterns = false)
+            options = RegexCombiner.Options(onlyPatterns = false)
         ).pattern
 
         assertEquals(expected = expected, actual = actual)
@@ -41,10 +42,10 @@ class RecognizerCombinerTest {
     fun testMatchCombinationWithOnlyPatterns() {
         val expected = "[a-z]+.*[a-z]+"
 
-        val actual = RecognizerCombiner.combineMatches(
+        val actual = RegexCombiner.combineMatches(
             inputText = inputText,
             selectedMatches = selectedMatches,
-            options = RecognizerCombiner.Options(onlyPatterns = true)
+            options = RegexCombiner.Options(onlyPatterns = true)
         ).pattern
 
         assertEquals(expected = expected, actual = actual)

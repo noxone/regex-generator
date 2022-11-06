@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.js.encodeURIComponent
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
 import org.olafneumann.regex.generator.regex.RegexCache
+import org.olafneumann.regex.generator.regex.RegexCombiner
 
 interface CodeGenerator {
     companion object {
@@ -46,7 +46,7 @@ interface CodeGenerator {
     val uniqueName: String
         get() = languageName.htmlIdCompatible
 
-    fun generateCode(pattern: String, options: RecognizerCombiner.Options): GeneratedSnippet
+    fun generateCode(pattern: String, options: RegexCombiner.Options): GeneratedSnippet
 
     data class GeneratedSnippet(
         val snippet: String,
@@ -59,13 +59,13 @@ internal abstract class SimpleReplacingCodeGenerator(
     override val highlightLanguage: String,
     private val templateCode: String
 ) : CodeGenerator {
-    protected open fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String = pattern
+    protected open fun transformPattern(pattern: String, options: RegexCombiner.Options): String = pattern
 
-    protected abstract fun generateOptionsCode(options: RecognizerCombiner.Options): String
+    protected abstract fun generateOptionsCode(options: RegexCombiner.Options): String
 
-    protected open fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> = emptyList()
+    protected open fun getWarnings(pattern: String, options: RegexCombiner.Options): List<String> = emptyList()
 
-    override fun generateCode(pattern: String, options: RecognizerCombiner.Options): CodeGenerator.GeneratedSnippet =
+    override fun generateCode(pattern: String, options: RegexCombiner.Options): CodeGenerator.GeneratedSnippet =
         CodeGenerator.GeneratedSnippet(
             templateCode.replace("%1${'$'}s", transformPattern(pattern, options))
                 .replace("%2${'$'}s", generateOptionsCode(options))
@@ -74,7 +74,7 @@ internal abstract class SimpleReplacingCodeGenerator(
         )
 
     @Suppress("LongParameterList")
-    protected fun RecognizerCombiner.Options.combine(
+    protected fun RegexCombiner.Options.combine(
         valueForCaseInsensitive: String? = null,
         valueForMultiline: String? = null,
         valueForDotAll: String? = null,
@@ -105,10 +105,10 @@ internal open class PatternUrlGenerator(
     private val valueForDotAll: String? = "s",
     private val valueForMultiline: String? = "m",
 ) : SimpleReplacingCodeGenerator(linkName, linkName, urlTemplate) {
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         encodeURIComponent(pattern)
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options): String =
+    override fun generateOptionsCode(options: RegexCombiner.Options): String =
         options.combine(
             valueForCaseInsensitive = valueForCaseInsensitive,
             valueForMultiline = valueForMultiline,
@@ -134,10 +134,10 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
                 |}""".trimMargin()
 ) {
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options): String = options.combine(
+    override fun generateOptionsCode(options: RegexCombiner.Options): String = options.combine(
         valueForCaseInsensitive = "Pattern.CASE_INSENSITIVE",
         valueForMultiline = "Pattern.MULTILINE",
         valueForDotAll = "Pattern.DOTALL",
@@ -155,10 +155,10 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
 }"""
 ) {
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options): String = options.combine(
+    override fun generateOptionsCode(options: RegexCombiner.Options): String = options.combine(
         valueForCaseInsensitive = "RegexOption.IGNORE_CASE",
         valueForMultiline = "RegexOption.MULTILINE",
         valueForDotAll = "RegexOption.DOT_MATCHES_ALL",
@@ -167,7 +167,7 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
         separator = ", "
     )
 
-    override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+    override fun getWarnings(pattern: String, options: RegexCombiner.Options): List<String> {
         if (options.dotMatchesLineBreaks)
             return listOf("The option 'RegexOption.DOT_MATCHES_ALL' is only supported on JVM runtime.")
         return emptyList()
@@ -184,12 +184,12 @@ function useRegex(${'$'}input) {
 }
 ?>"""
 ) {
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern
             .replace(RegexCache.get("([\\\\'])"), "\\\\$1")
             .replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(valueForCaseInsensitive = "i", valueForMultiline = "m", valueForDotAll = "s")
 }
 
@@ -202,13 +202,13 @@ internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
 }"""
 ) {
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace("/", "\\/").replace("\t", "\\t")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(valueForCaseInsensitive = "i", valueForMultiline = "m", valueForDotAll = "s")
 
-    override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+    override fun getWarnings(pattern: String, options: RegexCombiner.Options): List<String> {
         if (options.dotMatchesLineBreaks)
             return listOf("The option 's' (dot matches line breaks) is not supported in Firefox and IE.")
         return emptyList()
@@ -221,13 +221,13 @@ internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
     templateCode = """grep -P%2${'$'}s '%1${'$'}s' [FILE...]"""
 ) {
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace("'", "'\"'\"'")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(valueForCaseInsensitive = "-i", separator = " ", prefix = " ")
 
-    override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+    override fun getWarnings(pattern: String, options: RegexCombiner.Options): List<String> {
         val messages = mutableListOf<String>()
         if (options.dotMatchesLineBreaks)
             messages.add("The option 's' (dot matches line breaks) is not supported for grep.")
@@ -258,10 +258,10 @@ public class Sample
 ) {
 
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(
             valueForCaseInsensitive = "RegexOptions.IgnoreCase",
             valueForMultiline = "RegexOptions.Multiline",
@@ -310,10 +310,10 @@ int useRegex(char* textToCheck) {
 ) {
 
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(
             valueForCaseInsensitive = "REG_ICASE",
             valueForMultiline = "REG_NEWLINE",
@@ -321,7 +321,7 @@ int useRegex(char* textToCheck) {
             prefix = " | "
         )
 
-    override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+    override fun getWarnings(pattern: String, options: RegexCombiner.Options): List<String> {
         if (options.dotMatchesLineBreaks)
             return listOf("DOT_ALL is not supported by regex.h")
 
@@ -338,10 +338,10 @@ internal class RubyCodeGenerator : SimpleReplacingCodeGenerator(
 end"""
 ) {
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace(RegexCache.get("([\\\\'])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(
             valueForCaseInsensitive = "Regexp::IGNORECASE",
             valueForDotAll = "Regexp::MULTILINE",
@@ -349,7 +349,7 @@ end"""
             prefix = ", "
         )
 
-    override fun getWarnings(pattern: String, options: RecognizerCombiner.Options): List<String> {
+    override fun getWarnings(pattern: String, options: RegexCombiner.Options): List<String> {
         val warnings = mutableListOf<String>()
         if (options.multiline)
             warnings += "The Ruby regex engine does not support the MULTILINE option. " +
@@ -373,10 +373,10 @@ internal class SwiftCodeGenerator : SimpleReplacingCodeGenerator(
 }"""
 ) {
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(
             valueForCaseInsensitive = ".caseInsensitive",
             valueForDotAll = ".dotMatchesLineSeparators",
@@ -396,7 +396,7 @@ def use_regex(input_text):
     pattern = re.compile(%1${'$'}s%2${'$'}s)
     return pattern.match(input_text)"""
 ) {
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         if (pattern.contains('"') && !pattern.contains('\'')) {
             transformPatternWithQuotationMarks(pattern, quotationMark = '\'', other = '"')
         } else {
@@ -421,7 +421,7 @@ def use_regex(input_text):
             .replace(RegexCache.get("^r${quotationMark}${quotationMark}|r${quotationMark}${quotationMark}$"), "")
     }
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(
             valueForCaseInsensitive = "re.IGNORECASE",
             valueForDotAll = "re.DOTALL",
@@ -445,10 +445,10 @@ End Module"""
 ) {
 
 
-    override fun transformPattern(pattern: String, options: RecognizerCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
         pattern.replace(RegexCache.get("\""), "\"\"")
 
-    override fun generateOptionsCode(options: RecognizerCombiner.Options) =
+    override fun generateOptionsCode(options: RegexCombiner.Options) =
         options.combine(
             valueForCaseInsensitive = "RegexOptions.IgnoreCase",
             valueForMultiline = "RegexOptions.Multiline",

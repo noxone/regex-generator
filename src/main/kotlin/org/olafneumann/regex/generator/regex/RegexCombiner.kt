@@ -1,6 +1,9 @@
 package org.olafneumann.regex.generator.regex
 
-object RecognizerCombiner {
+import org.olafneumann.regex.generator.recognizer.RecognizerMatch
+import org.olafneumann.regex.generator.recognizer.escapeForRegex
+
+object RegexCombiner {
     fun combineMatches(
         inputText: String,
         selectedMatches: Collection<RecognizerMatch>,

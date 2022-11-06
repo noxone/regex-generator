@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.ui.parts
 
 import org.olafneumann.regex.generator.ui.model.DisplayModel
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
+import org.olafneumann.regex.generator.regex.RegexCombiner
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
@@ -24,8 +24,8 @@ class PXOptions(
         checkWholeLine.oninput = { propagateOptionsChange() }
     }
 
-    private var options: RecognizerCombiner.Options
-        get() = RecognizerCombiner.Options(
+    private var options: RegexCombiner.Options
+        get() = RegexCombiner.Options(
             onlyPatterns = checkOnlyMatches.checked,
             matchWholeLine = checkWholeLine.checked,
             caseInsensitive = checkCaseInsensitive.checked,

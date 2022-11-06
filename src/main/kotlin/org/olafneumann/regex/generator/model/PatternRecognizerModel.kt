@@ -1,9 +1,9 @@
 package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.differenceOf
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.regex.RecognizerMatch
-import org.olafneumann.regex.generator.regex.RecognizerRegistry
+import org.olafneumann.regex.generator.regex.RegexCombiner
+import org.olafneumann.regex.generator.recognizer.RecognizerMatch
+import org.olafneumann.regex.generator.recognizer.RecognizerRegistry
 import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.util.hasIntersectionWith
 
@@ -11,8 +11,8 @@ data class PatternRecognizerModel(
     val input: String,
     val recognizerMatches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
     val selectedRecognizerMatches: Collection<RecognizerMatch> = emptySet(),
-    val options: RecognizerCombiner.Options,
-    val regularExpression: RegularExpression = RecognizerCombiner
+    val options: RegexCombiner.Options,
+    val regularExpression: RegularExpression = RegexCombiner
         .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
 ) {
     fun setUserInput(newInput: String): PatternRecognizerModel {
@@ -38,7 +38,7 @@ data class PatternRecognizerModel(
             input = newInput,
             recognizerMatches = newMatches,
             selectedRecognizerMatches = newSelectedMatches,
-            regularExpression = RecognizerCombiner
+            regularExpression = RegexCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }
@@ -60,7 +60,7 @@ data class PatternRecognizerModel(
 
         return copy(
             selectedRecognizerMatches = selectedRecognizerMatches + match,
-            regularExpression = RecognizerCombiner
+            regularExpression = RegexCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }
@@ -68,15 +68,15 @@ data class PatternRecognizerModel(
     fun deselect(match: RecognizerMatch): PatternRecognizerModel {
         return copy(
             selectedRecognizerMatches = selectedRecognizerMatches - match,
-            regularExpression = RecognizerCombiner
+            regularExpression = RegexCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }
 
-    fun setOptions(options: RecognizerCombiner.Options) : PatternRecognizerModel {
+    fun setOptions(options: RegexCombiner.Options) : PatternRecognizerModel {
         return copy(
             options = options,
-            regularExpression = RecognizerCombiner
+            regularExpression = RegexCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }

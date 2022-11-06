@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.regex
+package org.olafneumann.regex.generator.recognizer
 
 @Suppress("UnusedPrivateMember")
 class RepeatingRecognizer(
