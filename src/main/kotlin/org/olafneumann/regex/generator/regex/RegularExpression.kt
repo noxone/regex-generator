@@ -1,6 +1,5 @@
 package org.olafneumann.regex.generator.regex
 
-
 data class RegularExpression(
     val parts: Collection<RecognizerCombiner.RegularExpressionPart>
 ) {
@@ -12,11 +11,9 @@ data class RegularExpression(
         )
     }
 
-    val patternAfterPartSelection: String
-        get() = parts.joinToString(separator = "") { it.pattern }
+    private val patternAfterPartSelection: String by lazy { parts.joinToString(separator = "") { it.pattern } }
 
-    val finalPattern: String
-        get() {
+    val finalPattern: String by lazy {
             var pattern = patternAfterPartSelection
 
             if (capturingGroups.isNotEmpty()) {
@@ -36,7 +33,7 @@ data class RegularExpression(
                 pattern = stringParts.joinToString(separator = "")
             }
 
-            return pattern
+            pattern
         }
 
     private val _capturingGroups = mutableListOf<CapturingGroup>()
