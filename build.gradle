@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 plugins {
-    id 'org.jetbrains.kotlin.js' version '1.7.20'
+    id 'org.jetbrains.kotlin.js' version '1.7.21'
     id 'io.gitlab.arturbosch.detekt' version '1.21.0'
 }
 
