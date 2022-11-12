@@ -7,6 +7,7 @@ interface CodeGenerator {
         val all = listOf<CodeGenerator>(
             CRegexCodeGenerator()
             , CSharpCodeGenerator()
+            , GoCodeGenerator()
             , GrepCodeGenerator()
             , JavaCodeGenerator()
             , JavaScriptCodeGenerator()

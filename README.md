@@ -90,6 +90,7 @@ Hopefully this regex generator continues to grow to eventually support a really 
 
 - C (using `regex.h`)
 - C#
+- Go
 - grep (command line tool)
 - Java
 - JavaScript
