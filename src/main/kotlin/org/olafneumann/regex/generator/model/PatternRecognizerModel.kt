@@ -34,12 +34,14 @@ data class PatternRecognizerModel(
             .filter { newMatches.contains(it) }
             .toSet()
 
+        val newRegex = RegexMatchCombiner
+            .combineMatches(inputText = newInput, selectedMatches = selectedRecognizerMatches, options = options)
+
         return copy(
             input = newInput,
             recognizerMatches = newMatches,
             selectedRecognizerMatches = newSelectedMatches,
-            regularExpression = RegexMatchCombiner
-                .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
+            regularExpression = newRegex
         )
     }
 
