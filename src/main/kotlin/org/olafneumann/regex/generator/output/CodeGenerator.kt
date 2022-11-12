@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.output
 
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.Options
 
 interface CodeGenerator {
     companion object {
@@ -45,7 +45,7 @@ interface CodeGenerator {
     val uniqueName: String
         get() = languageName.htmlIdCompatible
 
-    fun generateCode(pattern: String, options: RegexMatchCombiner.Options): GeneratedSnippet
+    fun generateCode(pattern: String, options: Options): GeneratedSnippet
 
     data class GeneratedSnippet(
         val snippet: String,

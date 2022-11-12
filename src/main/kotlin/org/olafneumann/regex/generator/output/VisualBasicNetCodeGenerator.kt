@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.output
 
+import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 
 internal class VisualBasicNetCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Visual Basic .NET",
@@ -17,10 +17,10 @@ End Module"""
 ) {
 
 
-    override fun transformPattern(pattern: String, options: RegexMatchCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: Options): String =
         pattern.replace(RegexCache.get("\""), "\"\"")
 
-    override fun generateOptionsCode(options: RegexMatchCombiner.Options) =
+    override fun generateOptionsCode(options: Options) =
         options.combine(
             valueForCaseInsensitive = "RegexOptions.IgnoreCase",
             valueForMultiline = "RegexOptions.Multiline",

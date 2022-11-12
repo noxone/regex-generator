@@ -6,8 +6,8 @@ import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.ui.model.DisplayModel
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
+import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.settings.ApplicationSettings
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
@@ -49,7 +49,7 @@ class RGController : MVCContract.Controller {
         model = model.setUserInput(input)
     }
 
-    override fun onOptionsChange(options: RegexMatchCombiner.Options) {
+    override fun onOptionsChange(options: Options) {
         model = model.setOptions(options)
     }
 
@@ -92,7 +92,7 @@ class RGController : MVCContract.Controller {
         private fun createInitialModel(): DisplayModel {
             val params = URL(document.URL).searchParams
 
-            val options = RegexMatchCombiner.Options.parseSearchParams(
+            val options = Options.parseSearchParams(
                 regexFlags = params.get(HtmlView.SEARCH_FLAGS)
             )
             val inputText = params.get(HtmlView.SEARCH_SAMPLE_REGEX)?.ifBlank { null } ?: VAL_EXAMPLE_INPUT

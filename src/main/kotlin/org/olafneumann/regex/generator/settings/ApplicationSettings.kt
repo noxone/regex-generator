@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.settings
 
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.Options
 
 internal object ApplicationSettings : LocalStorageSettings() {
     private const val KEY_COMBINER_OPTIONS = "combiner.options"
@@ -14,9 +14,9 @@ internal object ApplicationSettings : LocalStorageSettings() {
     fun storeUserLastInfo() = set(KEY_LAST_VERSION, VAL_VERSION)
 
 
-    var regexCombinerOptions: RegexMatchCombiner.Options
-        get() = get(KEY_COMBINER_OPTIONS)?.let { JSON.parse<RegexMatchCombiner.Options>(it) }
-            ?: RegexMatchCombiner.Options()
+    var regexCombinerOptions: Options
+        get() = get(KEY_COMBINER_OPTIONS)?.let { JSON.parse<Options>(it) }
+            ?: Options()
         set(value) = set(KEY_COMBINER_OPTIONS, JSON.stringify(value))
 
     private fun String.toLanguageExpandedProperty() = "language.${this}.expanded"

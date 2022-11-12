@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
 import org.olafneumann.regex.generator.ui.model.DisplayModel
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 
 interface MVCContract {
@@ -15,7 +15,7 @@ interface MVCContract {
         fun onFinishedLoading()
         fun onDoneAskingUserForCookies(hasGivenConsent: Boolean)
         fun onUserInputChange(input: String)
-        fun onOptionsChange(options: RegexMatchCombiner.Options)
+        fun onOptionsChange(options: Options)
         fun onRecognizerMatchClick(recognizerMatch: RecognizerMatch)
         fun onCopyRegexButtonClick()
         fun onShareButtonClick()

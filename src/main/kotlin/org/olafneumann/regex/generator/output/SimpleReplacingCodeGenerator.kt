@@ -1,19 +1,19 @@
 package org.olafneumann.regex.generator.output
 
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.Options
 
 internal abstract class SimpleReplacingCodeGenerator(
     override val languageName: String,
     override val highlightLanguage: String,
     private val templateCode: String
 ) : CodeGenerator {
-    protected open fun transformPattern(pattern: String, options: RegexMatchCombiner.Options): String = pattern
+    protected open fun transformPattern(pattern: String, options: Options): String = pattern
 
-    protected abstract fun generateOptionsCode(options: RegexMatchCombiner.Options): String
+    protected abstract fun generateOptionsCode(options: Options): String
 
-    protected open fun getWarnings(pattern: String, options: RegexMatchCombiner.Options): List<String> = emptyList()
+    protected open fun getWarnings(pattern: String, options: Options): List<String> = emptyList()
 
-    override fun generateCode(pattern: String, options: RegexMatchCombiner.Options): CodeGenerator.GeneratedSnippet =
+    override fun generateCode(pattern: String, options: Options): CodeGenerator.GeneratedSnippet =
         CodeGenerator.GeneratedSnippet(
             templateCode.replace("%1${'$'}s", transformPattern(pattern, options))
                 .replace("%2${'$'}s", generateOptionsCode(options))
@@ -22,7 +22,7 @@ internal abstract class SimpleReplacingCodeGenerator(
         )
 
     @Suppress("LongParameterList")
-    protected fun RegexMatchCombiner.Options.combine(
+    protected fun Options.combine(
         valueForCaseInsensitive: String? = null,
         valueForMultiline: String? = null,
         valueForDotAll: String? = null,

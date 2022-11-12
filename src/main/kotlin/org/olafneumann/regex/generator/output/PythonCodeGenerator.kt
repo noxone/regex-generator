@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.output
 
+import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 
 internal class PythonCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Python",
@@ -12,7 +12,7 @@ def use_regex(input_text):
     pattern = re.compile(%1${'$'}s%2${'$'}s)
     return pattern.match(input_text)"""
 ) {
-    override fun transformPattern(pattern: String, options: RegexMatchCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: Options): String =
         if (pattern.contains('"') && !pattern.contains('\'')) {
             transformPatternWithQuotationMarks(pattern, quotationMark = '\'', other = '"')
         } else {
@@ -37,7 +37,7 @@ def use_regex(input_text):
             .replace(RegexCache.get("^r${quotationMark}${quotationMark}|r${quotationMark}${quotationMark}$"), "")
     }
 
-    override fun generateOptionsCode(options: RegexMatchCombiner.Options) =
+    override fun generateOptionsCode(options: Options) =
         options.combine(
             valueForCaseInsensitive = "re.IGNORECASE",
             valueForDotAll = "re.DOTALL",

@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.regex.RegexCache
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.Options
 
 internal class GoCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Go",
@@ -18,10 +18,10 @@ func useRegex(s string) bool {
 }"""
 ) {
 
-    override fun transformPattern(pattern: String, options: RegexMatchCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: Options): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RegexMatchCombiner.Options) =
+    override fun generateOptionsCode(options: Options) =
         options.combine(
             valueForCaseInsensitive = "i",
             valueForDotAll = "s",
