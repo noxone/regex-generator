@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.output
 
-import org.olafneumann.regex.generator.regex.RegexCombiner
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 
 internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "grep",
@@ -8,13 +8,13 @@ internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
     templateCode = """grep -P%2${'$'}s '%1${'$'}s' [FILE...]"""
 ) {
 
-    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexMatchCombiner.Options): String =
         pattern.replace("'", "'\"'\"'")
 
-    override fun generateOptionsCode(options: RegexCombiner.Options) =
+    override fun generateOptionsCode(options: RegexMatchCombiner.Options) =
         options.combine(valueForCaseInsensitive = "-i", separator = " ", prefix = " ")
 
-    override fun getWarnings(pattern: String, options: RegexCombiner.Options): List<String> {
+    override fun getWarnings(pattern: String, options: RegexMatchCombiner.Options): List<String> {
         val messages = mutableListOf<String>()
         if (options.dotMatchesLineBreaks)
             messages.add("The option 's' (dot matches line breaks) is not supported for grep.")

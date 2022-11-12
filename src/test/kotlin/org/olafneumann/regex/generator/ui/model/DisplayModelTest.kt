@@ -1,14 +1,14 @@
 package org.olafneumann.regex.generator.ui.model
 
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
-import org.olafneumann.regex.generator.regex.RegexCombiner
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class DisplayModelTest {
     @Test
     fun testRowDistribution() {
-        val patternModel = PatternRecognizerModel(input = "asdasd", options = RegexCombiner.Options())
+        val patternModel = PatternRecognizerModel(input = "asdasd", options = RegexMatchCombiner.Options())
         val displayModel = DisplayModel(
             showLoadingIndicator = true,
             showCookieBanner = true,

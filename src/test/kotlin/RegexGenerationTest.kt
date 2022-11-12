@@ -1,5 +1,5 @@
-import org.olafneumann.regex.generator.regex.RegexCombiner
-import org.olafneumann.regex.generator.regex.RegexCombiner.Options
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner.Options
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -7,7 +7,7 @@ class RegexGenerationTest {
     companion object {
         private fun assertRegexIsCorrect(given: String, expected: String, options: Options = Options()) {
             val actual =
-                RegexCombiner.combineMatches(inputText = given, selectedMatches = emptyList(), options = options)
+                RegexMatchCombiner.combineMatches(inputText = given, selectedMatches = emptyList(), options = options)
 
             assertEquals(expected = expected, actual = actual.pattern)
         }

@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.output.CodeGenerator.Companion.htmlIdCompatible
-import org.olafneumann.regex.generator.regex.RegexCombiner
-import org.olafneumann.regex.generator.regex.RegexCombiner.Options
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner.Options
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -13,7 +13,7 @@ class CodeGeneratorTest {
     }
 
     private fun generateRegex(input: String): String =
-        RegexCombiner.combineMatches(inputText = input, selectedMatches = emptyList(), options = Options()).pattern
+        RegexMatchCombiner.combineMatches(inputText = input, selectedMatches = emptyList(), options = Options()).pattern
 
     @Test
     fun testLanguageNameReplacement() {

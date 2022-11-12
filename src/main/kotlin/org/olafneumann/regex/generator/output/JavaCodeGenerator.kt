@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.regex.RegexCache
-import org.olafneumann.regex.generator.regex.RegexCombiner
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 
 internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Java",
@@ -21,10 +21,10 @@ internal class JavaCodeGenerator : SimpleReplacingCodeGenerator(
                 |}""".trimMargin()
 ) {
 
-    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexMatchCombiner.Options): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RegexCombiner.Options): String = options.combine(
+    override fun generateOptionsCode(options: RegexMatchCombiner.Options): String = options.combine(
         valueForCaseInsensitive = "Pattern.CASE_INSENSITIVE",
         valueForMultiline = "Pattern.MULTILINE",
         valueForDotAll = "Pattern.DOTALL",

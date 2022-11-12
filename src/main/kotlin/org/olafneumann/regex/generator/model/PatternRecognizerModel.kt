@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.differenceOf
-import org.olafneumann.regex.generator.regex.RegexCombiner
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.RecognizerRegistry
 import org.olafneumann.regex.generator.regex.RegularExpression
@@ -11,8 +11,8 @@ data class PatternRecognizerModel(
     val input: String,
     val recognizerMatches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
     val selectedRecognizerMatches: Collection<RecognizerMatch> = emptySet(),
-    val options: RegexCombiner.Options,
-    val regularExpression: RegularExpression = RegexCombiner
+    val options: RegexMatchCombiner.Options,
+    val regularExpression: RegularExpression = RegexMatchCombiner
         .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
 ) {
     fun setUserInput(newInput: String): PatternRecognizerModel {
@@ -38,7 +38,7 @@ data class PatternRecognizerModel(
             input = newInput,
             recognizerMatches = newMatches,
             selectedRecognizerMatches = newSelectedMatches,
-            regularExpression = RegexCombiner
+            regularExpression = RegexMatchCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }
@@ -60,7 +60,7 @@ data class PatternRecognizerModel(
 
         return copy(
             selectedRecognizerMatches = selectedRecognizerMatches + match,
-            regularExpression = RegexCombiner
+            regularExpression = RegexMatchCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }
@@ -68,15 +68,15 @@ data class PatternRecognizerModel(
     fun deselect(match: RecognizerMatch): PatternRecognizerModel {
         return copy(
             selectedRecognizerMatches = selectedRecognizerMatches - match,
-            regularExpression = RegexCombiner
+            regularExpression = RegexMatchCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }
 
-    fun setOptions(options: RegexCombiner.Options) : PatternRecognizerModel {
+    fun setOptions(options: RegexMatchCombiner.Options) : PatternRecognizerModel {
         return copy(
             options = options,
-            regularExpression = RegexCombiner
+            regularExpression = RegexMatchCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }

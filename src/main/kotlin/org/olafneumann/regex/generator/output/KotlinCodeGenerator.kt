@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.regex.RegexCache
-import org.olafneumann.regex.generator.regex.RegexCombiner
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 
 internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Kotlin",
@@ -12,10 +12,10 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
 }"""
 ) {
 
-    override fun transformPattern(pattern: String, options: RegexCombiner.Options): String =
+    override fun transformPattern(pattern: String, options: RegexMatchCombiner.Options): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: RegexCombiner.Options): String = options.combine(
+    override fun generateOptionsCode(options: RegexMatchCombiner.Options): String = options.combine(
         valueForCaseInsensitive = "RegexOption.IGNORE_CASE",
         valueForMultiline = "RegexOption.MULTILINE",
         valueForDotAll = "RegexOption.DOT_MATCHES_ALL",
@@ -24,7 +24,7 @@ internal class KotlinCodeGenerator : SimpleReplacingCodeGenerator(
         separator = ", "
     )
 
-    override fun getWarnings(pattern: String, options: RegexCombiner.Options): List<String> {
+    override fun getWarnings(pattern: String, options: RegexMatchCombiner.Options): List<String> {
         if (options.dotMatchesLineBreaks)
             return listOf("The option 'RegexOption.DOT_MATCHES_ALL' is only supported on JVM runtime.")
         return emptyList()

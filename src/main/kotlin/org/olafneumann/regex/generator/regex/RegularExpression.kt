@@ -1,11 +1,11 @@
 package org.olafneumann.regex.generator.regex
 
 data class RegularExpression(
-    val parts: Collection<RegexCombiner.RegularExpressionPart>
+    val parts: Collection<RegexMatchCombiner.RegularExpressionPart>
 ) {
     companion object {
         @Suppress("MaxLineLength")
-        private val patternPartitionerRegex = Regex(
+        private val patternSymbolRegex = Regex(
             """(?<complete>\(\?(?:[a-zA-Z]+|[+-]?[0-9]+|&\w+|P=\w+)\))|(?<open>\((?:\?(?::|!|>|=|\||<=|P?<[a-z][a-z0-9]*>|'[a-z][a-z0-9]*'|[-a-z]+:))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<alt>\|)""",
             options = setOf(RegexOption.IGNORE_CASE)
         )
@@ -24,7 +24,7 @@ data class RegularExpression(
                     ) }
                     .sortedBy { it.first }
 
-                val stringParts = patternPartitionerRegex.findAll(pattern)
+                val stringParts = patternSymbolRegex.findAll(pattern)
                     .map { pattern.substring(it.range) }
                     .toMutableList()
                 for (bp in bracketPositions) {
@@ -88,7 +88,7 @@ data class RegularExpression(
     }
 
     val patternParts: Sequence<MatchResult>
-        get() = patternPartitionerRegex.findAll(finalPattern)
+        get() = patternSymbolRegex.findAll(finalPattern)
 
     data class CapturingGroup internal constructor(
         var openingPosition: Int,
