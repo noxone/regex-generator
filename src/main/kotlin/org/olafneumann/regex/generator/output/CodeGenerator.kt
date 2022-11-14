@@ -28,7 +28,7 @@ interface CodeGenerator {
                 }
             }
 
-        internal val String.htmlIdCompatible: String
+        val String.htmlIdCompatible: String
             get() = this
                 .replace(" ", "__")
                 .replace("-", "_minus_")

@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.output
 import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.regex.Options
 
-internal open class UrlGenerator(
+open class UrlGenerator(
     linkName: String,
     urlTemplate: String,
     private val valueForCaseInsensitive: String? = "i",

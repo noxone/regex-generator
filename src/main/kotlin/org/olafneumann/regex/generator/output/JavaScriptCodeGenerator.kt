@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator.output;
 
 import org.olafneumann.regex.generator.regex.Options
 
-internal class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
+class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "JavaScript",
     highlightLanguage = "javascript",
     templateCode = """function useRegex(input) {

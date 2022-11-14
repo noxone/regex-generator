@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.output
 import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
 
-internal class SwiftCodeGenerator : SimpleReplacingCodeGenerator(
+class SwiftCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Swift",
     highlightLanguage = "swift",
     templateCode = """func useRegex(for text: String) -> Bool {

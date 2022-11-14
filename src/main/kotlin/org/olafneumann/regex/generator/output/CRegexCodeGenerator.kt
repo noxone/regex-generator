@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.output
 import org.olafneumann.regex.generator.regex.RegexCache
 import org.olafneumann.regex.generator.regex.Options
 
-internal class CRegexCodeGenerator : SimpleReplacingCodeGenerator(
+class CRegexCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "C (regex.h)",
     highlightLanguage = "c",
     templateCode = """#include <regex.h>

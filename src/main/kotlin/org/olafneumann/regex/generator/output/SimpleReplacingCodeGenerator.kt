@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.regex.Options
 
-internal abstract class SimpleReplacingCodeGenerator(
+abstract class SimpleReplacingCodeGenerator(
     override val languageName: String,
     override val highlightLanguage: String,
     private val templateCode: String

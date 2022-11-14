@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.output
 import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
 
-internal class PhpCodeGenerator : SimpleReplacingCodeGenerator(
+class PhpCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "PHP",
     highlightLanguage = "php",
     templateCode = """<?php

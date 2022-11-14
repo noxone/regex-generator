@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.output
 import org.olafneumann.regex.generator.regex.RegexCache
 import org.olafneumann.regex.generator.regex.Options
 
-internal class CSharpCodeGenerator : SimpleReplacingCodeGenerator(
+class CSharpCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "C#",
     highlightLanguage = "csharp",
     templateCode = """using System;

@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.output
 import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
 
-internal class RubyCodeGenerator : SimpleReplacingCodeGenerator(
+class RubyCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Ruby",
     highlightLanguage = "ruby",
     templateCode = """def use_regex(input)

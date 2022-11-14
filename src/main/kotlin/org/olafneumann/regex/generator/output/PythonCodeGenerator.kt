@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.output
 import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
 
-internal class PythonCodeGenerator : SimpleReplacingCodeGenerator(
+class PythonCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Python",
     highlightLanguage = "python",
     templateCode = """import re

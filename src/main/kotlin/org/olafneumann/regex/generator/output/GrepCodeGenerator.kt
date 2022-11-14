@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.regex.Options
 
-internal class GrepCodeGenerator : SimpleReplacingCodeGenerator(
+class GrepCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "grep",
     highlightLanguage = "bash",
     templateCode = """grep -P%2${'$'}s '%1${'$'}s' [FILE...]"""

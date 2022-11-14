@@ -61,18 +61,24 @@ data class PatternRecognizerModel(
             }
         }
 
+        val newSelection = selectedRecognizerMatches + match
+        val newRegex = RegexMatchCombiner
+            .combineMatches(inputText = input, selectedMatches = newSelection, options = options)
+
         return copy(
-            selectedRecognizerMatches = selectedRecognizerMatches + match,
-            regularExpression = RegexMatchCombiner
-                .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
+            selectedRecognizerMatches = newSelection,
+            regularExpression = newRegex
         )
     }
 
     fun deselect(match: RecognizerMatch): PatternRecognizerModel {
+        val newSelection = selectedRecognizerMatches - match
+        val newRegex = RegexMatchCombiner
+            .combineMatches(inputText = input, selectedMatches = newSelection, options = options)
+
         return copy(
-            selectedRecognizerMatches = selectedRecognizerMatches - match,
-            regularExpression = RegexMatchCombiner
-                .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
+            selectedRecognizerMatches = newSelection,
+            regularExpression = newRegex
         )
     }
 

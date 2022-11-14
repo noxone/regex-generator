@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.output
 import org.olafneumann.regex.generator.regex.RegexCache
 import org.olafneumann.regex.generator.regex.Options
 
-internal class GoCodeGenerator : SimpleReplacingCodeGenerator(
+class GoCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "Go",
     highlightLanguage = "go",
     templateCode = """package main
