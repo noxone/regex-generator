@@ -27,7 +27,7 @@ on:
 # based https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
 jobs:
   build-project:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Build with Java
     steps:
       - name: Checkout
