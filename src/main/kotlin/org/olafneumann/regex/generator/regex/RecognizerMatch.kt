@@ -16,12 +16,9 @@ class RecognizerMatch(
     override val length: Int
 
     init {
-        if (ranges.isEmpty()) {
-            throw IllegalArgumentException("RecognizerMatch without ranges is not allowed.")
-        }
-        if (ranges.size != patterns.size) {
-            throw IllegalArgumentException("You must provide an equal amount of ranges and patterns")
-        }
+        require(ranges.isNotEmpty()) { "RecognizerMatch without ranges is not allowed." }
+        require(ranges.size == patterns.size) { "You must provide an equal amount of ranges and patterns" }
+
         this.ranges = ranges.sortedWith(compareBy({ it.first }, { it.last }))
         this.first = this.ranges[0].first
         this.last = this.ranges.last().last
