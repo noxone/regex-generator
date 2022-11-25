@@ -28,7 +28,7 @@ class RGView(
         immediateUserInputAction = { matchPresenterPart.showText(it) }
     )
     private val matchPresenterPart = P2MatchPresenter(controller = controller)
-    private val capturingGroupPart = PZCapturingGroups()
+    // private val capturingGroupPart = PZCapturingGroups()
     private val regexDisplay = P3RegexDisplay(controller = controller)
     private val options = PXOptions(controller = controller)
     private val languageDisplay = P4LanguageDisplay()
@@ -48,7 +48,7 @@ class RGView(
         toolbar.applyModel(model)
         userInputPart.applyModel(model)
         matchPresenterPart.applyModel(model)
-        capturingGroupPart.setRegularExpression(model.patternRecognizerModel.regularExpression)
+        //capturingGroupPart.setRegularExpression(model.patternRecognizerModel.regularExpression)
         regexDisplay.applyModel(model)
         options.applyModel(model)
         languageDisplay.applyModel(model)
