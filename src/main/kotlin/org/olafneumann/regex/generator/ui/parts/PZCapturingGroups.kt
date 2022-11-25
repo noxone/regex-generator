@@ -22,6 +22,7 @@ import kotlinx.html.js.onMouseMoveFunction
 import kotlinx.html.js.onMouseOutFunction
 import kotlinx.html.js.span
 import kotlinx.html.span
+import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.regex.RegularExpression
@@ -490,7 +491,7 @@ internal class PZCapturingGroups {
         } else if (groups["complete"]?.value != null) {
             PatternSymbolType.COMPLETE
         } else {
-            throw IllegalArgumentException("Unable to recognize pattern part type from: $groups")
+            throw RegexGeneratorException("Unable to recognize pattern part type from: $groups")
         }
     }
 }
