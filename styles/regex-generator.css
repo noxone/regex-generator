@@ -7,8 +7,8 @@
 }
 
 h1, h2, h3, h4, h5, h6, label, small {
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 }
 
 .rg-banner-consent .btn {
@@ -129,6 +129,11 @@ h1, h2, h3, h4, h5, h6, label, small {
   margin-left: -1.5em;
 }
 
+#rg_cap_group_expander {
+  text-align: left;
+  outline: none;
+}
+
 .rg-code-accordion .accordion-button {
   padding: 0.6em;
 }
@@ -146,7 +151,7 @@ h1, h2, h3, h4, h5, h6, label, small {
   background-color: white;
 }
 
-#rg_result_display {
+#rg_result_display, #rg_cap_group_display {
   white-space: pre-wrap;
 }
 
