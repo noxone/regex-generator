@@ -37,7 +37,7 @@ object HtmlView {
 
     val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
     const val MAGIC_HEIGHT = 8
-    const val HIDE_DELAY = 5000
+    const val HIDE_DELAY = 7000
 
     private val URL_CURRENT = URL(window.location.toString())
     fun URL.toCurrentWindowLocation(): URL {
