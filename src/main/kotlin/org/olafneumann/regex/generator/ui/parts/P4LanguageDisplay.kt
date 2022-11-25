@@ -15,7 +15,7 @@ class P4LanguageDisplay {
         .associateWith { LanguageAccordionCard(it, containerLanguages) }
 
     fun applyModel(model: DisplayModel) {
-        val currentPattern = model.patternRecognizerModel.regularExpression.pattern
+        val currentPattern = model.patternRecognizerModel.regularExpression.finalPattern
         val options = model.patternRecognizerModel.options
 
         CodeGenerator.all

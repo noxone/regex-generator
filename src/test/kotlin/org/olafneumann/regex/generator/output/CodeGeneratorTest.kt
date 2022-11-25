@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.output.CodeGenerator.Companion.htmlIdCompatible
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.regex.RecognizerCombiner.Options
+import org.olafneumann.regex.generator.regex.Options
+import org.olafneumann.regex.generator.regex.RegexMatchCombiner
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -13,7 +13,11 @@ class CodeGeneratorTest {
     }
 
     private fun generateRegex(input: String): String =
-        RecognizerCombiner.combineMatches(inputText = input, selectedMatches = emptyList(), options = Options()).pattern
+        RegexMatchCombiner.combineMatches(
+            inputText = input,
+            selectedMatches = emptyList(),
+            options = Options()
+        ).finalPattern
 
     @Test
     fun testLanguageNameReplacement() {
@@ -122,7 +126,8 @@ public class Sample
     @Test
     @Suppress("MaxLineLength")
     fun testGenerator_Grep() = testLanguageGenerator(
-        codeGenerator = GrepCodeGenerator(), expected = """grep -P -i 'abc\.\\\${'$'}hier "und" / '"'"'da'"'"'\(\[\)\.' [FILE...]"""
+        codeGenerator = GrepCodeGenerator(),
+        expected = """grep -P -i 'abc\.\\\${'$'}hier "und" / '"'"'da'"'"'\(\[\)\.' [FILE...]"""
     )
 
     @Test
@@ -205,7 +210,9 @@ def use_regex(input_text):
     @Test
     @Suppress("MaxLineLength")
     fun testGenerator_Swift() = testLanguageGenerator(
-        codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = true), expected = """func useRegex(for text: String) -> Bool {
+        codeGenerator = SwiftCodeGenerator(),
+        options = Options(caseInsensitive = true),
+        expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.", options: [.caseInsensitive])
     let range = NSRange(location: 0, length: text.count)
     let matches = regex.matches(in: text, options: [], range: range)
@@ -216,7 +223,9 @@ def use_regex(input_text):
     @Test
     @Suppress("MaxLineLength")
     fun testGenerator_Swift_withoutOptions() = testLanguageGenerator(
-        codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = false), expected = """func useRegex(for text: String) -> Bool {
+        codeGenerator = SwiftCodeGenerator(),
+        options = Options(caseInsensitive = false),
+        expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.")
     let range = NSRange(location: 0, length: text.count)
     let matches = regex.matches(in: text, options: [], range: range)
@@ -227,7 +236,9 @@ def use_regex(input_text):
     @Suppress("MaxLineLength")
     @Test
     fun testGenerator_Swift_withAllOptions() = testLanguageGenerator(
-        codeGenerator = SwiftCodeGenerator(), options = Options(caseInsensitive = true, multiline = true, dotMatchesLineBreaks = true), expected = """func useRegex(for text: String) -> Bool {
+        codeGenerator = SwiftCodeGenerator(),
+        options = Options(caseInsensitive = true, multiline = true, dotMatchesLineBreaks = true),
+        expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.", options: [.caseInsensitive, .dotMatchesLineSeparators, .anchorsMatchLines])
     let range = NSRange(location: 0, length: text.count)
     let matches = regex.matches(in: text, options: [], range: range)
@@ -250,10 +261,10 @@ End Module"""
     @Suppress("MaxLineLength")
     @Test
     fun testGenerator_PatternUrlGenerator() = testLanguageGenerator(
-            codeGenerator = PatternUrlGenerator(
-                linkName = "Regex101",
-                urlTemplate = "https://regex101.com/?regex=%1\$s&flags=g%2\$s&delimiter=/"
-            ),
-            expected = "https://regex101.com/?regex=abc%5C.%5C%5C%5C%24hier%20%22und%22%20%2F%20'da'%5C(%5C%5B%5C)%5C.&flags=gi&delimiter=/"
+        codeGenerator = UrlGenerator(
+            linkName = "Regex101",
+            urlTemplate = "https://regex101.com/?regex=%1\$s&flags=g%2\$s&delimiter=/"
+        ),
+        expected = "https://regex101.com/?regex=abc%5C.%5C%5C%5C%24hier%20%22und%22%20%2F%20'da'%5C(%5C%5B%5C)%5C.&flags=gi&delimiter=/"
     )
 }

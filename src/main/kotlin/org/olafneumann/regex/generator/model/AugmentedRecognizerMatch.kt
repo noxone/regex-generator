@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.DiffOperation
 import org.olafneumann.regex.generator.RegexGeneratorException
-import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.util.HasRanges
 import org.olafneumann.regex.generator.util.rangeAction

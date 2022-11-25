@@ -1,8 +1,8 @@
 @file:Suppress("MaxLineLength")
-package org.olafneumann.regex.generator.regex
+package org.olafneumann.regex.generator.recognizer
 
 import org.olafneumann.regex.generator.util.HasRange
-import org.olafneumann.regex.generator.regex.BracketedRecognizer.CenterPattern
+import org.olafneumann.regex.generator.recognizer.BracketedRecognizer.CenterPattern
 
 object RecognizerRegistry {
     private val recognizers = listOf(

@@ -1,6 +1,6 @@
-package org.olafneumann.regex.generator.regex
+package org.olafneumann.regex.generator.recognizer
 
-import org.olafneumann.regex.generator.regex.RecognizersTestHelper.assertMatchesEqual
+import org.olafneumann.regex.generator.recognizer.RecognizersTestHelper.assertMatchesEqual
 import kotlin.test.Test
 
 class BracketedRecognizerTest {

@@ -6,10 +6,9 @@ import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.ui.model.DisplayModel
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.recognizer.RecognizerMatch
+import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.settings.ApplicationSettings
-import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
 
@@ -50,7 +49,7 @@ class RGController : MVCContract.Controller {
         model = model.setUserInput(input)
     }
 
-    override fun onOptionsChange(options: RecognizerCombiner.Options) {
+    override fun onOptionsChange(options: Options) {
         model = model.setOptions(options)
     }
 
@@ -63,7 +62,7 @@ class RGController : MVCContract.Controller {
     }
 
     override fun onCopyRegexButtonClick() {
-        copyToClipboard(text = model.patternRecognizerModel.regularExpression.pattern)
+        copyToClipboard(text = model.patternRecognizerModel.regularExpression.finalPattern)
     }
 
     override fun onShareButtonClick() {
@@ -93,7 +92,7 @@ class RGController : MVCContract.Controller {
         private fun createInitialModel(): DisplayModel {
             val params = URL(document.URL).searchParams
 
-            val options = RecognizerCombiner.Options.parseSearchParams(
+            val options = Options.parseSearchParams(
                 regexFlags = params.get(HtmlView.SEARCH_FLAGS)
             )
             val inputText = params.get(HtmlView.SEARCH_SAMPLE_REGEX)?.ifBlank { null } ?: VAL_EXAMPLE_INPUT
@@ -107,28 +106,45 @@ class RGController : MVCContract.Controller {
                 showLoadingIndicator = true,
                 showCookieBanner = !isUserConsentGiven,
                 showCopyButton = isClipboardAvailable,
-                patternRecognizerModels = listOf(applyInitialSelection(patternRecognizerModel, params)),
+                patternRecognizerModels = listOf(patternRecognizerModel.applyInitialSelection(params)),
                 modelPointer = 0
             )
         }
 
-        private fun applyInitialSelection(
-            model: PatternRecognizerModel,
+        private fun PatternRecognizerModel.applyInitialSelection(
             params: URLSearchParams
         ): PatternRecognizerModel {
-            var outModel = model
-            val selectionIndexToRecognizerName = params.get(HtmlView.SEARCH_SELECTION)
-                ?.ifBlank { null }
-                ?.split(",")
-                ?.map { it.split("|") }
-                ?.associate { it[0].toInt() to decodeURIComponent(it[1]) }
-                ?: emptyMap()
-            selectionIndexToRecognizerName.entries.forEach { (index, name) ->
-                model.recognizerMatches
-                    .firstOrNull { it.first == index && it.recognizer.name == name }
-                    ?.let { outModel = outModel.select(it) }
+            val selectionIndexToRecognizerName: Map<Int, String>
+            try {
+                selectionIndexToRecognizerName = params.get(HtmlView.SEARCH_SELECTION)
+                    ?.ifBlank { null }
+                    ?.split(",")
+                    ?.map { it.split("|") }
+                    ?.filter { it.size == 2 }
+                    ?.associate { it[0].tryParsingToInt() to decodeURIComponent(it[1]) }
+                    ?.filter { it.key >= 0 }
+                    ?: emptyMap()
+            } catch (e: IllegalArgumentException) {
+                console.warn("Unable to read state from URL", e)
+                return this
             }
+
+            var outModel = this
+            selectionIndexToRecognizerName
+                .mapNotNull { (index, name) -> recognizerMatches
+                    .firstOrNull { it.first == index && it.recognizer.name == name }
+                }
+                .forEach { outModel = outModel.select(it) }
             return outModel
+        }
+
+        private fun String.tryParsingToInt(): Int {
+            return try {
+                this.toInt()
+            } catch (e: IllegalArgumentException) {
+                console.warn("Unable to read state from URL", e)
+                -1
+            }
         }
 
         private val isClipboardAvailable: Boolean get() =

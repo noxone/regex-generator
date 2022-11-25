@@ -1,4 +1,6 @@
-package org.olafneumann.regex.generator.regex
+package org.olafneumann.regex.generator.recognizer
+
+import org.olafneumann.regex.generator.regex.RegexCache
 
 class EchoRecognizer(
     override val name: String,

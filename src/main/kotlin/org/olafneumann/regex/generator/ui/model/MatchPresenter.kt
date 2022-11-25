@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.ui.model
 
-import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.util.HasRange
 import org.olafneumann.regex.generator.util.HasRanges
 

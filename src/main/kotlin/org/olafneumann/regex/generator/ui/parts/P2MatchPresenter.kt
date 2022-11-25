@@ -14,7 +14,7 @@ import kotlinx.html.title
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.model.MatchPresenter
-import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper

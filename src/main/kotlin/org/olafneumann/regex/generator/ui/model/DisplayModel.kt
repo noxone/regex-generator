@@ -2,8 +2,8 @@ package org.olafneumann.regex.generator.ui.model
 
 import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
-import org.olafneumann.regex.generator.regex.RecognizerCombiner
-import org.olafneumann.regex.generator.regex.RecognizerMatch
+import org.olafneumann.regex.generator.recognizer.RecognizerMatch
+import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.w3c.dom.url.URL
@@ -97,7 +97,7 @@ data class DisplayModel(
     fun setUserInput(input: String): DisplayModel =
         pushNewPatternRecognizerModel(patternRecognizerModel.setUserInput(input))
 
-    fun setOptions(options: RecognizerCombiner.Options): DisplayModel =
+    fun setOptions(options: Options): DisplayModel =
         pushNewPatternRecognizerModel(patternRecognizerModel.setOptions(options))
 
     fun select(recognizerMatch: RecognizerMatch): DisplayModel =
