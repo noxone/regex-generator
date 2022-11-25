@@ -21,6 +21,8 @@ class P1UserInput(
 
     private val inputWarningTimerController = TimerController()
 
+    private val shortenTextRegex = Regex("^(.{0,$maxInputLength})")
+
     private var inputText: String
         get() = textInput.value
         set(value) {
@@ -50,7 +52,10 @@ class P1UserInput(
             rawInputText
         } else {
             showShortenWarning()
-            this.inputText.substring(0, maxInputLength)
+            shortenTextRegex.find(rawInputText)
+                ?.groupValues
+                ?.last()
+                ?: rawInputText
         }
         inputText = actualInputText
         action(actualInputText)
