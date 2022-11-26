@@ -56,7 +56,7 @@ jobs:
         ASSET_NAME=detekt-cli-$(echo $DETEKT_RELEASE_TAG)-all.jar
         echo $ASSET_NAME
         DETEKT_DOWNLOAD_URL=$( gh api graphql --field tagName=v$DETEKT_RELEASE_TAG --field assetName=$ASSET_NAME --raw-field query='
-          query getReleaseAssetDownloadUrl($tagName: String!) {
+          query getReleaseAssetDownloadUrl($tagName: String!, $assetName: String!) {
             repository(name: "detekt", owner: "detekt") {
               release(tagName: $tagName) {
                 releaseAssets(name: $assetName , first: 1) {
