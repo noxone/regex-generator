@@ -53,11 +53,13 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        ASSET_NAME=detekt-cli-$($DETEKT_RELEASE_TAG)-all.jar
+        echo $ASSET_NAME
         DETEKT_DOWNLOAD_URL=$( gh api graphql --field tagName=v$DETEKT_RELEASE_TAG --raw-field query='
           query getReleaseAssetDownloadUrl($tagName: String!) {
             repository(name: "detekt", owner: "detekt") {
               release(tagName: $tagName) {
-                releaseAssets(name: "detekt-cli-$DETEKT_RELEASE_TAG-all.jar", first: 1) {
+                releaseAssets(name: "$ASSET_NAME" , first: 1) {
                   nodes {
                     downloadUrl
                   }
