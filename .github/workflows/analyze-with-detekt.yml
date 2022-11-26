@@ -32,7 +32,7 @@ on:
 env:
   # Release tag associated with version of Detekt to be installed
   # SARIF support (required for this workflow) was introduced in Detekt v1.15.0
-  DETEKT_RELEASE_TAG: v1.15.0
+  DETEKT_RELEASE_TAG: "1.22.0"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -53,11 +53,12 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        DETEKT_DOWNLOAD_URL=$( gh api graphql --field tagName=$DETEKT_RELEASE_TAG --raw-field query='
-          query getReleaseAssetDownloadUrl($tagName: String!) {
+        ASSET_NAME=detekt-cli-$(echo $DETEKT_RELEASE_TAG)-all.jar
+        DETEKT_DOWNLOAD_URL=$( gh api graphql --field tagName=v$DETEKT_RELEASE_TAG --field assetName=$ASSET_NAME --raw-field query='
+          query getReleaseAssetDownloadUrl($tagName: String!, $assetName: String!) {
             repository(name: "detekt", owner: "detekt") {
               release(tagName: $tagName) {
-                releaseAssets(name: "detekt", first: 1) {
+                releaseAssets(name: $assetName , first: 1) {
                   nodes {
                     downloadUrl
                   }
@@ -71,22 +72,23 @@ jobs:
 
     # Sets up the detekt cli
     - name: Setup Detekt
+      id: detekt_download
       run: |
         dest=$( mktemp -d )
         curl --request GET \
           --url ${{ steps.detekt_info.outputs.download_url }} \
           --silent \
           --location \
-          --output $dest/detekt
-        chmod a+x $dest/detekt
+          --output $dest/detekt.jar
+        # chmod a+x $dest/detekt
         echo $dest >> $GITHUB_PATH
+        echo "detekt_jar_path=$dest/detekt.jar" >> $GITHUB_OUTPUT
 
     # Performs static analysis using Detekt
     - name: Run Detekt
       continue-on-error: true
       run: |
-        detekt --input ${{ github.workspace }} --report sarif:${{ github.workspace }}/detekt.sarif.json
-    #  --config ${{ github.workspace }}/.config/detekt.yml
+        java -Xmx512m -jar ${{ steps.detekt_download.outputs.detekt_jar_path }} --config ${{ github.workspace }}/.config/detekt.yml --input ${{ github.workspace }} --report sarif:${{ github.workspace }}/detekt.sarif.json
 
     # Modifies the SARIF output produced by Detekt so that absolute URIs are relative
     # This is so we can easily map results onto their source files
