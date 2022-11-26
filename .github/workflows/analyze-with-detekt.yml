@@ -79,10 +79,10 @@ jobs:
           --url ${{ steps.detekt_info.outputs.download_url }} \
           --silent \
           --location \
-          --output $dest/detekt
+          --output $dest/detekt.jar
         # chmod a+x $dest/detekt
         echo $dest >> $GITHUB_PATH
-        echo "detekt_jar_path=$dest/*.jar" >> $GITHUB_OUTPUT
+        echo "detekt_jar_path=$dest/detekt.jar" >> $GITHUB_OUTPUT
 
     # Performs static analysis using Detekt
     - name: Run Detekt
