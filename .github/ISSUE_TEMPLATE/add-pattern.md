@@ -15,7 +15,7 @@ e.g. numbers
 [0-9]+
 ````
 
-**Is there anything special we need to take of when recognizing this pattern?**
+**Is there anything special we need to take care of when recognizing this pattern?**
 Please describe what come to your mind.
 
 **Describe the pattern**
