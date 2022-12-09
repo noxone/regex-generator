@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.regex
 
 data class RegularExpression(
-    val parts: Collection<RegexMatchCombiner.RegularExpressionPart>
+    val parts: Collection<RecognizerMatchCombiner.RegularExpressionPart>
 ) {
     companion object {
         @Suppress("MaxLineLength")

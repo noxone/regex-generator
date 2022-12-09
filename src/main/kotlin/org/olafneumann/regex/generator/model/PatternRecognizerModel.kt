@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.differenceOf
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.RecognizerRegistry
 import org.olafneumann.regex.generator.regex.Options
@@ -13,7 +13,7 @@ data class PatternRecognizerModel(
     val recognizerMatches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
     val selectedRecognizerMatches: Collection<RecognizerMatch> = emptySet(),
     val options: Options,
-    val regularExpression: RegularExpression = RegexMatchCombiner
+    val regularExpression: RegularExpression = RecognizerMatchCombiner
         .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
 ) {
     fun setUserInput(newInput: String): PatternRecognizerModel {
@@ -35,7 +35,7 @@ data class PatternRecognizerModel(
             .filter { newMatches.contains(it) }
             .toSet()
 
-        val newRegex = RegexMatchCombiner
+        val newRegex = RecognizerMatchCombiner
             .combineMatches(inputText = newInput, selectedMatches = selectedRecognizerMatches, options = options)
 
         return copy(
@@ -62,7 +62,7 @@ data class PatternRecognizerModel(
         }
 
         val newSelection = selectedRecognizerMatches + match
-        val newRegex = RegexMatchCombiner
+        val newRegex = RecognizerMatchCombiner
             .combineMatches(inputText = input, selectedMatches = newSelection, options = options)
 
         return copy(
@@ -73,7 +73,7 @@ data class PatternRecognizerModel(
 
     fun deselect(match: RecognizerMatch): PatternRecognizerModel {
         val newSelection = selectedRecognizerMatches - match
-        val newRegex = RegexMatchCombiner
+        val newRegex = RecognizerMatchCombiner
             .combineMatches(inputText = input, selectedMatches = newSelection, options = options)
 
         return copy(
@@ -85,7 +85,7 @@ data class PatternRecognizerModel(
     fun setOptions(options: Options) : PatternRecognizerModel {
         return copy(
             options = options,
-            regularExpression = RegexMatchCombiner
+            regularExpression = RecognizerMatchCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )
     }

@@ -3,7 +3,7 @@ package org.olafneumann.regex.generator.regex
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.escapeForRegex
 
-object RegexMatchCombiner {
+object RecognizerMatchCombiner {
     fun combineMatches(
         inputText: String,
         selectedMatches: Collection<RecognizerMatch>,

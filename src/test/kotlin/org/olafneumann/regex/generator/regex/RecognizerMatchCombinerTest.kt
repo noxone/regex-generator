@@ -1,11 +1,13 @@
-package org.olafneumann.regex.generator.recognizer
+package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.recognizer.EchoRecognizer
+import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.regex.Options
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class RecognizerCombinerTest {
+class RecognizerMatchCombinerTest {
     companion object {
         private val recognizer = EchoRecognizer("dummy", "dummy")
         private const val inputText = "abc123abc"
@@ -30,7 +32,7 @@ class RecognizerCombinerTest {
     fun testMatchCombinationWithoutOnlyPatterns() {
         val expected = "[a-z]+123[a-z]+"
 
-        val actual = RegexMatchCombiner.combineMatches(
+        val actual = RecognizerMatchCombiner.combineMatches(
             inputText = inputText,
             selectedMatches = selectedMatches,
             options = Options(onlyPatterns = false)
@@ -43,7 +45,7 @@ class RecognizerCombinerTest {
     fun testMatchCombinationWithOnlyPatterns() {
         val expected = "[a-z]+.*[a-z]+"
 
-        val actual = RegexMatchCombiner.combineMatches(
+        val actual = RecognizerMatchCombiner.combineMatches(
             inputText = inputText,
             selectedMatches = selectedMatches,
             options = Options(onlyPatterns = true)
