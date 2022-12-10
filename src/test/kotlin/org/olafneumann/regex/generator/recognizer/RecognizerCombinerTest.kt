@@ -23,7 +23,6 @@ class RecognizerCombinerTest {
                 title = "dummy"
             )
         )
-
     }
 
     @Test
