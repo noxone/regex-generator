@@ -84,6 +84,8 @@ object RecognizerRegistry {
         )
     )
 
+    val allRecognizerNames: List<String> by lazy { recognizers.map { it.name } }
+
     fun findMatches(input: String): List<RecognizerMatch> {
         val matches = recognizers
             .flatMap { it.findMatches(input) }
