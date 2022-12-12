@@ -126,7 +126,7 @@ object RecognizerRegistry {
                 SimpleRecognizer(
                     name = "Combination [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
                     outputPattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)",
-                    isDynamic = true
+                    isDerived = true
                 )
             }
             .toSet()

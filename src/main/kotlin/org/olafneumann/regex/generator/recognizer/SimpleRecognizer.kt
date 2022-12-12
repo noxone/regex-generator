@@ -8,7 +8,7 @@ class SimpleRecognizer(
     override val description: String? = null,
     private val searchPattern: String? = null,
     private val mainGroupIndex: Int = 1,
-    override val isDynamic: Boolean = false,
+    override val isDerived: Boolean = false,
 ) : Recognizer {
     private val searchRegex = RegexCache.get(searchPattern?.replace("%s", outputPattern) ?: "(${outputPattern})")
 
