@@ -69,6 +69,10 @@ h1, h2, h3, h4, h5, h6, label, small {
   border: 1px solid #ffc107;
 }
 
+.rg-match-item-stripe/*, .rg-match-item-stripe .rg-recognizer*/ {
+  background: repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(200, 200, 200, 0.2) 6px, rgba(200, 200, 200, 0.2) 8px);
+}
+
 .rg-match-item-overlay {
   z-index: 2;
   display: none;
@@ -98,12 +102,14 @@ h1, h2, h3, h4, h5, h6, label, small {
 }
 
 .rg-item-selected {
+  background: none;
   background-color: white !important;
   border: 1px solid gray;
   cursor: url('../images/cursor-rg-match-selection-delete-32.png'), auto;
 }
 
 .rg-item-not-available {
+  background: none;
   background-color: lightgray !important;
   border: none;
   cursor: not-allowed;

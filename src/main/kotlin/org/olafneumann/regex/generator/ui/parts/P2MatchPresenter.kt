@@ -65,6 +65,9 @@ class P2MatchPresenter(
 
                 val cssClass = getColorClass(rowIndex, index)
                 matchPresenterElement.addClass(cssClass)
+                if (matchPresenter.recognizerMatches.all { it.recognizer.isDerived }) {
+                    matchPresenterElement.addClass("rg-match-item-stripe")
+                }
                 matchPresenterElement.style.left = matchPresenter.first.toCharacterUnits()
                 matchPresenterElement.style.width = matchPresenter.length.toCharacterUnits()
                 if (matchPresenter.ranges.size == 2) {
