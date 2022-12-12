@@ -16,7 +16,7 @@ object RecognizerRegistry {
         SimpleRecognizer("Digit", "\\d"),
         SimpleRecognizer("Number", "[0-9]+"),
         SimpleRecognizer("Decimal number", "[0-9]*\\.[0-9]+"),
-        SimpleRecognizer("Floating point number (with optional exponent)", "([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?"),
+        SimpleRecognizer("Floating point number (with optional exponent)", "([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?", searchPattern = "(%s)\\b"),
         SimpleRecognizer("Alphanumeric characters", "[A-Za-z0-9]+"),
         SimpleRecognizer("URL encoded character", "%[0-9A-Fa-f][0-9A-Fa-f]"),
         SimpleRecognizer("Day", "(0?[1-9]|[12][0-9]|3[01])", searchPattern = "(?:^|\\D)(%s)($|\\D)"),
@@ -125,7 +125,8 @@ object RecognizerRegistry {
                 val mainMatches = listOf(combination.element[0], combination.leftParent.rightParent)
                 SimpleRecognizer(
                     name = "Combination [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
-                    outputPattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)"
+                    outputPattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)",
+                    isDynamic = true
                 )
             }
             .toSet()
