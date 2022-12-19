@@ -4,7 +4,6 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.HtmlView
-import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLButtonElement
