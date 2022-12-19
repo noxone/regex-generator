@@ -25,7 +25,6 @@ class RecognizerMatchCombinerTest {
                 title = "dummy"
             )
         )
-
     }
 
     @Test

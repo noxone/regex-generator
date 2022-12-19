@@ -105,9 +105,11 @@ If you miss a language, just open a [new issue](https://github.com/noxone/regex-
 
 ### Patterns
 
-At the moment there are 30 patterns of different complexity integrated in ``Regex Generator``. It is able to recognize simple repetitions and combinations of multiple patterns.
+Currently, about 30 patterns of different complexity are integrated in ``Regex Generator``. It is able to recognize simple repetitions and combinations of multiple patterns.
 
-In the final stage this Regex Generator shall support a wide range of use cases. Feel free to suggest new patterns via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=add-pattern.md&title=).
+To know more about the patterns, it's probably best to have a look into the [code](https://github.com/noxone/regex-generator/blob/main/src/main/kotlin/org/olafneumann/regex/generator/recognizer/RecognizerRegistry.kt).
+
+The list of included patterns is certainly not exhaustive. Nevertheless, it should cover a good number of use cases for beginners to start their regex with. Suggestions for additional patterns are very welcome and will be gladly included in the list. This is easily done via the [issues](https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=add-pattern.md&title=).
 
 ## More ideas
 

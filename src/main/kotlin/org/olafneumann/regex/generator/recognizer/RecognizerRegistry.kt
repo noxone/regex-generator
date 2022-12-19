@@ -16,7 +16,7 @@ object RecognizerRegistry {
         SimpleRecognizer("Digit", "\\d"),
         SimpleRecognizer("Number", "[0-9]+"),
         SimpleRecognizer("Decimal number", "[0-9]*\\.[0-9]+"),
-        SimpleRecognizer("Floating point number (with optional exponent)", "([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?"),
+        SimpleRecognizer("Floating point number (with optional exponent)", "([+-]?(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*))(?:[eE]([+-]?\\d+))?", searchPattern = "(%s)\\b"),
         SimpleRecognizer("Alphanumeric characters", "[A-Za-z0-9]+"),
         SimpleRecognizer("URL encoded character", "%[0-9A-Fa-f][0-9A-Fa-f]"),
         SimpleRecognizer("Day", "(0?[1-9]|[12][0-9]|3[01])", searchPattern = "(?:^|\\D)(%s)($|\\D)"),
@@ -31,6 +31,10 @@ object RecognizerRegistry {
         ),
         SimpleRecognizer("RFC2822 e-mail", "[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"),
         SimpleRecognizer("IPv4 address","\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b"),
+        SimpleRecognizer(
+            "UUID",
+            "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+            searchPattern = "\\b(%s)\\b"),
         SimpleRecognizer("Hashtag", "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
         SimpleRecognizer("Simple CSS Color", "#(?:[a-f\\d]{3}){1,2}\\b"),
         SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|SEVERE|FATAL)"),
@@ -80,6 +84,8 @@ object RecognizerRegistry {
         )
     )
 
+    val allRecognizerNames: List<String> by lazy { recognizers.map { it.name } }
+
     fun findMatches(input: String): List<RecognizerMatch> {
         val matches = recognizers
             .flatMap { it.findMatches(input) }
@@ -119,7 +125,8 @@ object RecognizerRegistry {
                 val mainMatches = listOf(combination.element[0], combination.leftParent.rightParent)
                 SimpleRecognizer(
                     name = "Combination [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
-                    outputPattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)"
+                    outputPattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)",
+                    isDerived = true
                 )
             }
             .toSet()
