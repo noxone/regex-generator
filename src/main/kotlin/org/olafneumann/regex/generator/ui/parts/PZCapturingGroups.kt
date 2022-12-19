@@ -50,8 +50,7 @@ internal class PZCapturingGroups {
     private val container = HtmlHelper.getElementById<HTMLDivElement>("rg_capgroup_selection_container")
     private val number = container.getElementsByTagName("h3")[0] as HTMLHeadingElement
     private val expandButton = HtmlHelper.getElementById<HTMLElement>("rg_cap_group_expander")
-    private val expandImageOpen = expandButton.getElementsByTagName("i")[0] as HTMLElement
-    private val expandImageClose = expandButton.getElementsByTagName("i")[1] as HTMLElement
+    private val expandImage = expandButton.getElementsByTagName("i")[0] as HTMLElement
     private val content = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_content")
     private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_display")
     private val capGroupList = HtmlHelper.getElementById<HTMLUListElement>("rg_cap_group_list")
@@ -88,13 +87,11 @@ internal class PZCapturingGroups {
         val jContent = jQuery(content)
         if (open) {
             jContent.slideDown()
-            jQuery(expandImageOpen).fadeOut()
-            jQuery(expandImageClose).fadeIn()
+            expandImage.classList.toggle("rg-upside-down", false)
             jQuery(number).animate(json("margin-top" to 0, "margin-bottom" to 0))
         } else {
             jContent.slideUp()
-            jQuery(expandImageOpen).fadeIn()
-            jQuery(expandImageClose).fadeOut()
+            expandImage.classList.toggle("rg-upside-down", true)
             jQuery(number).animate(json("margin-top" to "-0.32em", "margin-bottom" to "-1em"))
         }
     }

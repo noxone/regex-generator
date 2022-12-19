@@ -11,6 +11,17 @@ h1, h2, h3, h4, h5, h6, label, small {
   user-select: none;
 }
 
+h5 i {
+  margin-left: 0.4em;
+  display: inline-block;
+  transition-property: transform;
+  transition-duration: 0.2s;
+}
+
+.rg-upside-down {
+  transform: rotate(180deg);
+}
+
 .rg-banner-consent .btn {
   height: 2.3em;
 }
