@@ -92,9 +92,9 @@ class RGController : MVCContract.Controller {
         private fun createInitialModel(): DisplayModel {
             val params = URL(document.URL).searchParams
 
-            val options = Options.parseSearchParams(
-                regexFlags = params.get(HtmlView.SEARCH_FLAGS)
-            )
+            val options = params.get(HtmlView.SEARCH_FLAGS)
+                ?.let { Options.parseSearchParams(regexFlags = it) }
+                ?: ApplicationSettings.regexCombinerOptions
             val inputText = params.get(HtmlView.SEARCH_SAMPLE_REGEX)?.ifBlank { null } ?: VAL_EXAMPLE_INPUT
 
             val patternRecognizerModel = PatternRecognizerModel(

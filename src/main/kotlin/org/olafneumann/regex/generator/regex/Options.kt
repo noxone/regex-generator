@@ -33,14 +33,12 @@ data class Options(
         private fun Boolean.ifTrue(char: Char): Char? =
             if (this) char else null
 
-        fun parseSearchParams(regexFlags: String?): Options {
-            val onlyPatterns = regexFlags.parseFlag(char = CHAR_ONLY_PATTERNS, default = DEFAULT_ONLY_PATTERN)
-            val matchWholeLine = regexFlags.parseFlag(char = CHAR_WHOLE_LINE, default = DEFAULT_MATCH_WHOLE_LINE)
-            val caseInsensitive =
-                regexFlags.parseFlag(char = CHAR_CASE_INSENSITIVE, default = DEFAULT_CASE_INSENSITIVE)
-            val dotMatchesLineBreaks =
-                regexFlags.parseFlag(char = CHAR_DOT_MATCHES_LINE_BREAKS, default = DEFAULT_DOT_MATCHES_LINE_BREAKS)
-            val multiline = regexFlags.parseFlag(char = CHAR_MULTILINE, default = DEFAULT_MULTILINE)
+        fun parseSearchParams(regexFlags: String): Options {
+            val onlyPatterns = regexFlags.parseFlag(char = CHAR_ONLY_PATTERNS)
+            val matchWholeLine = regexFlags.parseFlag(char = CHAR_WHOLE_LINE)
+            val caseInsensitive = regexFlags.parseFlag(char = CHAR_CASE_INSENSITIVE)
+            val dotMatchesLineBreaks = regexFlags.parseFlag(char = CHAR_DOT_MATCHES_LINE_BREAKS)
+            val multiline = regexFlags.parseFlag(char = CHAR_MULTILINE)
             return Options(
                 onlyPatterns = onlyPatterns,
                 matchWholeLine = matchWholeLine,
@@ -50,7 +48,7 @@ data class Options(
             )
         }
 
-        private fun String?.parseFlag(char: Char, default: Boolean): Boolean =
-            this?.contains(char = char, ignoreCase = false) ?: default
+        private fun String.parseFlag(char: Char): Boolean =
+            this.contains(char = char, ignoreCase = false)
     }
 }
