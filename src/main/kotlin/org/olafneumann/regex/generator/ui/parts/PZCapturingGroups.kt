@@ -41,7 +41,6 @@ import kotlin.properties.Delegates
 @Suppress("TooManyFunctions")
 internal class PZCapturingGroups : AbstractExpandablePart(
     elementId = "rg_capgroup_selection_container",
-    number = 4,
     caption = "Add Capturing Groups (optional)",
     initialStateOpen = false
 ) {

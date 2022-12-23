@@ -13,6 +13,7 @@ import kotlinx.html.injector.inject
 import kotlinx.html.js.div
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper.listChildElements
+import org.olafneumann.regex.generator.util.IdGenerator
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
@@ -20,7 +21,7 @@ import kotlin.properties.Delegates
 
 abstract class AbstractPart(
     elementId: String,
-    protected val number: Int,
+    protected val number: Int = numberGenerator.next,
     caption: String,
     leftCaptionElement: DIV.(caption: String) -> Unit = { caption -> h5 { +caption } },
     rightCaptionElement: DIV.() -> Unit = {}
@@ -64,5 +65,9 @@ abstract class AbstractPart(
         var number: HTMLHeadingElement by Delegates.notNull()
         var caption: HTMLElement by Delegates.notNull()
         var content: HTMLDivElement by Delegates.notNull()
+    }
+
+    companion object {
+        protected val numberGenerator = IdGenerator()
     }
 }

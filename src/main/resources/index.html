@@ -83,7 +83,7 @@
         </div>
 
         <!-- Input Part -->
-        <div id="rg_input_container">
+        <div id="rg_input_container" style="display:none">
             <input type="text" maxlength="1000" id="rg_raw_input_text" class="form-control rg-code"
                 aria-label="Example text" aria-describedby="rg_raw_text_input_help" placeholder="Text here..."
                 autofocus="autofocus" value="">
@@ -100,7 +100,7 @@
         </div>
 
         <!-- Pattern selection Part -->
-        <div id="rg_pattern_selection_container">
+        <div id="rg_pattern_selection_container" style="display:none">
             <div class="bg-white border rounded p-2" id="rg_result_container">
                 <div class="rg-match-container">
                     <div id="rg_text_display" class="rg-text-display"></div>
@@ -113,7 +113,7 @@
         </div>
 
         <!-- Options Part -->
-        <div id="rg_options">
+        <div id="rg_options" style="display:none">
             <div class="bg-white border rounded p-2">
                 <div class="form-group rg-check-row">
                     <div class="form-check">
@@ -143,7 +143,7 @@
         </div>
 
         <!-- cap group part -->
-        <div id="rg_capgroup_selection_container">
+        <div id="rg_capgroup_selection_container" style="display:none">
             <div class="bg-white border rounded p-2" id="rg_cap_group_container">
                 <div class="rg-match-container">
                     <div style="user-select: none;cursor: pointer;" id="rg_cap_group_display" class="rg-text-display">abcde</div>
@@ -160,100 +160,88 @@
         </div>
 
         <!-- Regex generation part -->
-        <div class="row bg-light mt-3 rounded" id="rg_regex_result_container">
-            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
-                <h3 class="display-3 text-secondary">5</h3>
-            </div>
-            <div class="col-12 col-md-11 py-3">
-                <h5>Regular expression</h5>
-                <div class="rg-match-container rounded border p-2 bg-white" id="rg_result_display_box">
-                    <div class="rg-match-container">
-                        <div id="rg_result_display"></div>
-                    </div>
+        <div class="row bg-light mt-3 rounded" id="rg_regex_result_container" style="display:none">
+            <div class="rg-match-container rounded border p-2 bg-white" id="rg_result_display_box">
+                <div class="rg-match-container">
+                    <div id="rg_result_display"></div>
                 </div>
-                <small class="form-text text-muted">Hover the generated regular expression to see more
-                    information.</small>
-                <div class="row mt-3">
-                    <div class="col-12 col-sm-4 col-md-3 col-lg-2">
-                        <button class="btn btn-primary" id="rg_button_copy">Copy regex</button>
-                    </div>
-                    <div id="rg_div_onlymatch_container"
-                        class="col-12 col-sm-8 col-md-9 col-lg-10 mt-3 mt-sm-0 form-group">
-                    </div>
+            </div>
+            <small class="form-text text-muted">Hover the generated regular expression to see more
+                information.</small>
+            <div class="row mt-3">
+                <div class="col-12 col-sm-4 col-md-3 col-lg-2">
+                    <button class="btn btn-primary" id="rg_button_copy">Copy regex</button>
+                </div>
+                <div id="rg_div_onlymatch_container"
+                    class="col-12 col-sm-8 col-md-9 col-lg-10 mt-3 mt-sm-0 form-group">
                 </div>
             </div>
         </div>
 
         <!-- Sample Code Part -->
-        <div class="row bg-light mt-3 rounded">
-            <div class="col-sm-1 p-4 d-none d-sm-none d-md-block text-center">
-                <h3 class="display-3 text-secondary">6</h3>
+        <div class="row bg-light mt-3 rounded" id="rg_display_programming_languages" style="display:none">
+            <div class="accordion rg-code-accordion" id="rg_language_accordion">
             </div>
-            <div class="col-12 col-md-11 py-3">
-                <h5>Usage in programming languages</h5>
-                <div class="accordion rg-code-accordion" id="rg_language_accordion">
-                </div>
-                <small class="text-muted">Please note that these code samples are automatically generated. They are not guaranteed to work.
-                    If you find a syntax error, please submit a <a
-                        href="https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=bug_report.md&title=Syntax%20Error">bug
-                        report</a>.</small>
-                <div class="card mt-2 p-3">
-                    <form>
-                        <div class="form-group col-sm-12 rg-check-row">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="rg_caseinsensitive"
-                                        aria-describedby="rg_caseinsensitive_help">
-                                    <label class="form-check-label" for="rg_caseinsensitive">Case
-                                        Insensitive</label>
-                                </div>
-                                <small id="rg_caseinsensitive_help" class="form-text text-muted mt-0">
-                                    By default, all major regex engines match in case-sensitive mode. If you want
-                                    patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
-                                    to match in
-                                    case-insensitive fashion, we need to turn that feature on.<a
-                                        class="text-decoration-none"
-                                        href="https://www.rexegg.com/regex-modifiers.html#i" target="_blank"
-                                        rel="noopener">*</a>
-                                </small>
-                        </div>
-                        <div class="form-group col-sm-12 rg-check-row">
+            <small class="text-muted">Please note that these code samples are automatically generated. They are not guaranteed to work.
+                If you find a syntax error, please submit a <a
+                    href="https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=bug_report.md&title=Syntax%20Error">bug
+                    report</a>.</small>
+            <div class="card mt-2 p-3">
+                <form>
+                    <div class="form-group col-sm-12 rg-check-row">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="rg_dotmatcheslinebreakes"
-                                    aria-describedby="rg_dotmatcheslinebreakes_help">
-                                <label class="form-check-label" for="rg_dotmatcheslinebreakes">Dot Matches
-                                    Line Breaks</label>
+                                <input type="checkbox" class="form-check-input" id="rg_caseinsensitive"
+                                    aria-describedby="rg_caseinsensitive_help">
+                                <label class="form-check-label" for="rg_caseinsensitive">Case
+                                    Insensitive</label>
                             </div>
-                            <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
-                                By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
-                                match line break characters such as line feeds and
-                                carriage returns. If you want patterns such as <span
-                                    class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
-                                lines, we need to turn that feature on.<a class="text-decoration-none"
-                                    href="https://www.rexegg.com/regex-modifiers.html#dotall" target="_blank"
-                                    rel="noopener">*</a></small>
+                            <small id="rg_caseinsensitive_help" class="form-text text-muted mt-0">
+                                By default, all major regex engines match in case-sensitive mode. If you want
+                                patterns such as <span class="border rg-code p-1 bg-white">Name: [a-z]+</span>
+                                to match in
+                                case-insensitive fashion, we need to turn that feature on.<a
+                                    class="text-decoration-none"
+                                    href="https://www.rexegg.com/regex-modifiers.html#i" target="_blank"
+                                    rel="noopener">*</a>
+                            </small>
+                    </div>
+                    <div class="form-group col-sm-12 rg-check-row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="rg_dotmatcheslinebreakes"
+                                aria-describedby="rg_dotmatcheslinebreakes_help">
+                            <label class="form-check-label" for="rg_dotmatcheslinebreakes">Dot Matches
+                                Line Breaks</label>
                         </div>
-                        <div class="form-group col-sm-12 rg-check-row">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="rg_multiline"
-                                    aria-describedby="rg_multiline_help">
-                                <label class="form-check-label" for="rg_multiline">Multiline</label>
-                            </div>
-                            <small id="rg_multiline_help" class="form-text text-muted mt-0">
-                                By default, most major engines (except Ruby), the anchors <span
-                                    class="border rg-code p-1 bg-white">^</span> and <span
-                                    class="border rg-code p-1 bg-white">$</span> only match
-                                (respectively) at the beginning and the end of the string.
+                        <small id="rg_dotmatcheslinebreakes_help" class="form-text text-muted mt-0">
+                            By default, the dot <span class="border rg-code p-1 bg-white">.</span> doesn't
+                            match line break characters such as line feeds and
+                            carriage returns. If you want patterns such as <span
+                                class="border rg-code p-1 bg-white">BEGIN .*? END</span> to match across
+                            lines, we need to turn that feature on.<a class="text-decoration-none"
+                                href="https://www.rexegg.com/regex-modifiers.html#dotall" target="_blank"
+                                rel="noopener">*</a></small>
+                    </div>
+                    <div class="form-group col-sm-12 rg-check-row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="rg_multiline"
+                                aria-describedby="rg_multiline_help">
+                            <label class="form-check-label" for="rg_multiline">Multiline</label>
+                        </div>
+                        <small id="rg_multiline_help" class="form-text text-muted mt-0">
+                            By default, most major engines (except Ruby), the anchors <span
+                                class="border rg-code p-1 bg-white">^</span> and <span
+                                class="border rg-code p-1 bg-white">$</span> only match
+                            (respectively) at the beginning and the end of the string.
 
-                                In other engines, if you want patterns such as <span
-                                    class="border rg-code p-1 bg-white">^Define</span> and <span
-                                    class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
-                                (respectively) at the beginning and the end of each line, we need to turn that
-                                feature on.<a class="text-decoration-none"
-                                    href="https://www.rexegg.com/regex-modifiers.html#multiline" target="_blank"
-                                    rel="noopener">*</a></small>
-                        </div>
-                    </form>
-                </div>
+                            In other engines, if you want patterns such as <span
+                                class="border rg-code p-1 bg-white">^Define</span> and <span
+                                class="border rg-code p-1 bg-white">&gt;&gt;&gt;$</span> to match
+                            (respectively) at the beginning and the end of each line, we need to turn that
+                            feature on.<a class="text-decoration-none"
+                                href="https://www.rexegg.com/regex-modifiers.html#multiline" target="_blank"
+                                rel="noopener">*</a></small>
+                    </div>
+                </form>
             </div>
         </div>
 

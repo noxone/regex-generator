@@ -21,7 +21,6 @@ class P1UserInput(
     immediateUserInputAction: (String) -> Unit
 ) : AbstractPart(
     elementId = "rg_input_container",
-    number = 1,
     caption = "Paste a sample text.",
     rightCaptionElement = {
         button(classes = "btn btn-link btn-sm", type = ButtonType.button) {

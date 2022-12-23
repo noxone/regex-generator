@@ -15,6 +15,9 @@ import org.w3c.dom.HTMLDivElement
 
 class P3RegexDisplay(
     private val controller: MVCContract.Controller
+) : AbstractPart(
+    elementId = "rg_regex_result_container",
+    caption = "Regular Expression"
 ) {
     private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_RESULT_DISPLAY)
     private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(HtmlView.ID_BUTTON_COPY)

@@ -8,7 +8,10 @@ import org.olafneumann.regex.generator.ui.components.LanguageAccordionCard
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLDivElement
 
-class P4LanguageDisplay {
+class P4LanguageDisplay : AbstractPart(
+    elementId = "rg_display_programming_languages",
+    caption = "Usage in Programming Languages"
+) {
     private val containerLanguages = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_DIV_LANGUAGES)
 
     private val languageDisplays = CodeGenerator.all

@@ -12,15 +12,15 @@ import kotlin.js.json
 
 abstract class AbstractExpandablePart(
     elementId: String,
-    number: Int,
+    number: Int = numberGenerator.next,
     caption: String,
-    initialStateOpen: Boolean = true,
+    initialStateOpen: Boolean = false,
 ) : AbstractPart(
     elementId = elementId,
     number = number,
     caption = caption,
     leftCaptionElement = { caption ->
-        a(classes = "btn p-0") {
+        a(classes = "btn p-0 text-start w-100") {
             id = getOpenLinkId(number)
             h5 {
                 +caption
