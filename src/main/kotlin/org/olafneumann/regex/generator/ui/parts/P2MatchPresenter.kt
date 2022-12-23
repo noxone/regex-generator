@@ -26,6 +26,10 @@ import kotlin.js.json
 
 class P2MatchPresenter(
     private val controller: MVCContract.Controller
+) : AbstractPart(
+    elementId = "rg_pattern_selection_container",
+    number = 2,
+    caption = "Which parts of the text are interesting for you?"
 ) {
     private val textDisplay = HtmlHelper.getElementById<HTMLElement>(HtmlView.ID_TEXT_DISPLAY)
     private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_ROW_CONTAINER)

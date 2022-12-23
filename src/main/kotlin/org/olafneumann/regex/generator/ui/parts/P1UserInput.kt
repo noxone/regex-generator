@@ -1,5 +1,9 @@
 package org.olafneumann.regex.generator.ui.parts
 
+import kotlinx.html.ButtonType
+import kotlinx.html.button
+import kotlinx.html.i
+import kotlinx.html.id
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
@@ -15,6 +19,16 @@ class P1UserInput(
     private val controller: MVCContract.Controller,
     private val maxInputLength: Int,
     immediateUserInputAction: (String) -> Unit
+) : AbstractPart(
+    elementId = "rg_input_container",
+    number = 1,
+    caption = "Paste a sample text.",
+    rightCaptionElement = {
+        button(classes = "btn btn-link btn-sm", type = ButtonType.button) {
+            id = "rg_button_show_help"
+            i(classes = "bi bi-question-circle")
+        }
+    }
 ) {
     private val textInput = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_INPUT_ELEMENT)
     private val divInputWarning = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_INPUT_MESSAGE_SHORTEN)

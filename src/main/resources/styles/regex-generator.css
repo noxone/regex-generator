@@ -18,7 +18,7 @@ h5 i {
   transition-duration: 0.2s;
 }
 
-.rg-upside-down {
+.rg-upside-down i {
   transform: rotate(180deg);
 }
 

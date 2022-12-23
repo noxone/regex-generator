@@ -5,6 +5,8 @@ import kotlinx.browser.document
 import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.js.JQuery
 import org.olafneumann.regex.generator.js.jQuery
+import org.w3c.dom.Element
+import org.w3c.dom.get
 import kotlin.math.max
 
 internal object HtmlHelper {
@@ -14,6 +16,11 @@ internal object HtmlHelper {
         } catch (e: ClassCastException) {
             throw RegexGeneratorException("Unable to find element with id '${id}'.", e)
         }
+    }
+
+    internal inline fun HTMLElement.listChildElements(): List<Element> {
+        val children = this.children
+        return (0 until this.childElementCount).mapNotNull { children[it] }
     }
 
     internal fun getHeight(elements: JQuery): Int {

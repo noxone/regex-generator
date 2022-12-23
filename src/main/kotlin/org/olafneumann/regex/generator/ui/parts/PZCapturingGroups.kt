@@ -39,7 +39,12 @@ import org.w3c.dom.get
 import kotlin.properties.Delegates
 
 @Suppress("TooManyFunctions")
-internal class PZCapturingGroups : ExpandablePart("rg_capgroup_selection_container") {
+internal class PZCapturingGroups : AbstractExpandablePart(
+    elementId = "rg_capgroup_selection_container",
+    number = 4,
+    caption = "Add Capturing Groups (optional)",
+    initialStateOpen = false
+) {
     companion object {
         private const val CLASS_SELECTION = "bg-warning"
         private const val CLASS_HIGHLIGHT = "bg-info"
@@ -55,7 +60,7 @@ internal class PZCapturingGroups : ExpandablePart("rg_capgroup_selection_contain
 
     init {
         // TODO move to DisplayModel
-        toggleVisibility(open = false)
+        //toggleVisibility(open = false)
 
         document.onmousedown = {
             // dispose any popover if the user click somewhere else
