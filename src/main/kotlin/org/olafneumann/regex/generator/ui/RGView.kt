@@ -14,6 +14,7 @@ import org.olafneumann.regex.generator.ui.parts.PXShare
 import org.olafneumann.regex.generator.ui.parts.PXToolbar
 import org.olafneumann.regex.generator.ui.parts.PXUserGuide
 import org.olafneumann.regex.generator.ui.parts.PZCapturingGroups
+import org.olafneumann.regex.generator.ui.parts.PZOptions
 
 class RGView(
     private val controller: MVCContract.Controller,
@@ -28,6 +29,7 @@ class RGView(
         immediateUserInputAction = { matchPresenterPart.showText(it) }
     )
     private val matchPresenterPart = P2MatchPresenter(controller = controller)
+    private val optionsPart = PZOptions()
     private val capturingGroupPart = PZCapturingGroups()
     private val regexDisplay = P3RegexDisplay(controller = controller)
     private val options = PXOptions(controller = controller)

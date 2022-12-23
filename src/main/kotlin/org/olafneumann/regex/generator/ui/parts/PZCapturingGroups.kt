@@ -30,28 +30,21 @@ import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.HTMLHeadingElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.HTMLUListElement
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
-import kotlin.js.json
 import kotlin.properties.Delegates
 
 @Suppress("TooManyFunctions")
-internal class PZCapturingGroups {
+internal class PZCapturingGroups : ExpandablePart("rg_capgroup_selection_container") {
     companion object {
         private const val CLASS_SELECTION = "bg-warning"
         private const val CLASS_HIGHLIGHT = "bg-info"
     }
 
-    private val container = HtmlHelper.getElementById<HTMLDivElement>("rg_capgroup_selection_container")
-    private val number = container.getElementsByTagName("h3")[0] as HTMLHeadingElement
-    private val expandButton = HtmlHelper.getElementById<HTMLElement>("rg_cap_group_expander")
-    private val expandImage = expandButton.getElementsByTagName("i")[0] as HTMLElement
-    private val content = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_content")
     private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_display")
     private val capGroupList = HtmlHelper.getElementById<HTMLUListElement>("rg_cap_group_list")
 
@@ -63,10 +56,6 @@ internal class PZCapturingGroups {
     init {
         // TODO move to DisplayModel
         toggleVisibility(open = false)
-        expandButton.onclick = {
-            it.preventDefault()
-            toggleVisibility(open = !isOpen)
-        }
 
         document.onmousedown = {
             // dispose any popover if the user click somewhere else
@@ -78,22 +67,6 @@ internal class PZCapturingGroups {
         popover?.dispose()
         popover = null
         clearMarks()
-    }
-
-    private val isOpen: Boolean
-        get() = jQuery(content).`is`(":visible")
-
-    private fun toggleVisibility(open: Boolean = false) {
-        val jContent = jQuery(content)
-        if (open) {
-            jContent.slideDown()
-            expandImage.classList.toggle("rg-upside-down", false)
-            jQuery(number).animate(json("margin-top" to 0, "margin-bottom" to 0))
-        } else {
-            jContent.slideUp()
-            expandImage.classList.toggle("rg-upside-down", true)
-            jQuery(number).animate(json("margin-top" to "-0.32em", "margin-bottom" to "-1em"))
-        }
     }
 
     fun setRegularExpression(regularExpression: RegularExpression) {
