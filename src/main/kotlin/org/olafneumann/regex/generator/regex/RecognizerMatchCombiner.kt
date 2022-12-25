@@ -7,7 +7,7 @@ object RecognizerMatchCombiner {
     fun combineMatches(
         inputText: String,
         selectedMatches: Collection<RecognizerMatch>,
-        options: Options
+        options: RecognizerMatchCombinerOptions
     ): RegularExpression {
         val rangesToMatches = selectedMatches.flatMap { match ->
             match.ranges
@@ -70,7 +70,7 @@ object RecognizerMatchCombiner {
         rangesToMatches: List<RegularExpressionPart>,
         lastPart: RegularExpressionPart?,
         inputText: String,
-        options: Options
+        options: RecognizerMatchCombinerOptions
     ): RegularExpression {
         val parts = mutableListOf<RegularExpressionPart>()
         if (options.matchWholeLine || firstPart?.fromInputText == true) {
@@ -96,7 +96,7 @@ object RecognizerMatchCombiner {
         inputText: String,
         first: RegularExpressionPart,
         second: RegularExpressionPart,
-        options: Options
+        options: RecognizerMatchCombinerOptions
     ): RegularExpressionPart? {
         val rangeBetween = IntRange(first.range.last + 1, second.range.first - 1)
         if (!rangeBetween.isEmpty()) {
@@ -110,7 +110,8 @@ object RecognizerMatchCombiner {
         return null
     }
 
-    private fun List<RegularExpressionPart>.addWholeLineMatchingStuff(options: Options): List<RegularExpressionPart> {
+    private fun List<RegularExpressionPart>.addWholeLineMatchingStuff(options: RecognizerMatchCombinerOptions):
+            List<RegularExpressionPart> {
         return if (options.matchWholeLine) {
             val list = mutableListOf<RegularExpressionPart>()
             list.add(RegularExpressionPart(IntRange.EMPTY, pattern = "^", title = "Start of input"))

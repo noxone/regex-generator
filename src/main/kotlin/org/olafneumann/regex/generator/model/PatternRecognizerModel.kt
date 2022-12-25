@@ -4,7 +4,7 @@ import dev.andrewbailey.diff.differenceOf
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.RecognizerRegistry
-import org.olafneumann.regex.generator.regex.Options
+import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.util.hasIntersectionWith
 
@@ -12,7 +12,7 @@ data class PatternRecognizerModel(
     val input: String,
     val recognizerMatches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
     val selectedRecognizerMatches: Collection<RecognizerMatch> = emptySet(),
-    val options: Options,
+    val options: RecognizerMatchCombinerOptions,
     val regularExpression: RegularExpression = RecognizerMatchCombiner
         .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
 ) {
@@ -82,7 +82,7 @@ data class PatternRecognizerModel(
         )
     }
 
-    fun setOptions(options: Options) : PatternRecognizerModel {
+    fun setOptions(options: RecognizerMatchCombinerOptions) : PatternRecognizerModel {
         return copy(
             options = options,
             regularExpression = RecognizerMatchCombiner

@@ -2,8 +2,9 @@ package org.olafneumann.regex.generator.ui.model
 
 import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
+import org.olafneumann.regex.generator.output.CodeGeneratorOptions
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
-import org.olafneumann.regex.generator.regex.Options
+import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.w3c.dom.url.URL
@@ -14,6 +15,7 @@ data class DisplayModel(
     val showLoadingIndicator: Boolean,
     val showCookieBanner: Boolean,
     val showCopyButton: Boolean,
+    val codeGeneratorOptions: CodeGeneratorOptions,
     private val patternRecognizerModels: List<PatternRecognizerModel>,
     private val modelPointer: Int,
 ) {
@@ -51,7 +53,10 @@ data class DisplayModel(
     val shareLink: URL
         get() {
             val sampleRegex = encodeURIComponent(patternRecognizerModel.input)
-            val flags = patternRecognizerModel.options.flagString
+            val flags = FlagHelper.getFlagString(
+                codeGeneratorOptions = codeGeneratorOptions,
+                recognizerMatchCombinerOptions = patternRecognizerModel.options
+            )
             val selection = patternRecognizerModel.selectedRecognizerMatches
                 .map { "${it.first}|${it.recognizer.name}" }
                 .joinToString(separator = ",") { encodeURIComponent(it) }
@@ -97,8 +102,11 @@ data class DisplayModel(
     fun setUserInput(input: String): DisplayModel =
         pushNewPatternRecognizerModel(patternRecognizerModel.setUserInput(input))
 
-    fun setOptions(options: Options): DisplayModel =
+    fun setRecognizerMatchCombinerOptions(options: RecognizerMatchCombinerOptions): DisplayModel =
         pushNewPatternRecognizerModel(patternRecognizerModel.setOptions(options))
+
+    fun setCodeGeneratorOptions(options: CodeGeneratorOptions): DisplayModel =
+        copy(codeGeneratorOptions = options)
 
     fun select(recognizerMatch: RecognizerMatch): DisplayModel =
         pushNewPatternRecognizerModel(patternRecognizerModel.select(recognizerMatch))

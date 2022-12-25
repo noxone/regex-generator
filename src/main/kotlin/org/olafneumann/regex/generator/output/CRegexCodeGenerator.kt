@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.regex.RegexCache
-import org.olafneumann.regex.generator.regex.Options
 
 class CRegexCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "C (regex.h)",
@@ -40,10 +39,10 @@ int useRegex(char* textToCheck) {
     return actualReturnValue;
 }"""
 ) {
-    override fun transformPattern(pattern: String, options: Options): String =
+    override fun transformPattern(pattern: String): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: Options) =
+    override fun generateOptionsCode(options: CodeGeneratorOptions) =
         options.combine(
             valueForCaseInsensitive = "REG_ICASE",
             valueForMultiline = "REG_NEWLINE",
@@ -51,7 +50,7 @@ int useRegex(char* textToCheck) {
             prefix = " | "
         )
 
-    override fun getWarnings(pattern: String, options: Options): List<String> {
+    override fun getWarnings(pattern: String, options: CodeGeneratorOptions): List<String> {
         if (options.dotMatchesLineBreaks)
             return listOf("DOT_ALL is not supported by regex.h")
 

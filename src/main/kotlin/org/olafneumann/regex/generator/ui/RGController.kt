@@ -5,10 +5,12 @@ import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
+import org.olafneumann.regex.generator.output.CodeGeneratorOptions
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
-import org.olafneumann.regex.generator.regex.Options
+import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 import org.olafneumann.regex.generator.settings.ApplicationSettings
+import org.olafneumann.regex.generator.ui.model.FlagHelper
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
 
@@ -49,8 +51,12 @@ class RGController : MVCContract.Controller {
         model = model.setUserInput(input)
     }
 
-    override fun onOptionsChange(options: Options) {
-        model = model.setOptions(options)
+    override fun onCodeGeneratorOptionsChange(options: CodeGeneratorOptions) {
+        model = model.setCodeGeneratorOptions(options)
+    }
+
+    override fun onRecognizerCombinerOptionsChange(options: RecognizerMatchCombinerOptions) {
+        model = model.setRecognizerMatchCombinerOptions(options)
     }
 
     override fun onRecognizerMatchClick(recognizerMatch: RecognizerMatch) {
@@ -92,20 +98,21 @@ class RGController : MVCContract.Controller {
         private fun createInitialModel(): DisplayModel {
             val params = URL(document.URL).searchParams
 
-            val options = Options.parseSearchParams(
-                regexFlags = params.get(HtmlView.SEARCH_FLAGS)
-            )
+            val regexFlags = params.get(HtmlView.SEARCH_FLAGS)
+            val codeGeneratorOptions = FlagHelper.parseCodeGeneratorOptions(regexFlags)
+            val recognizerMatchCombinerOptions = FlagHelper.parseRecognizerMatchCombinerOptions(regexFlags)
             val inputText = params.get(HtmlView.SEARCH_SAMPLE_REGEX)?.ifBlank { null } ?: VAL_EXAMPLE_INPUT
 
             val patternRecognizerModel = PatternRecognizerModel(
                 input = inputText,
-                options = options
+                options = recognizerMatchCombinerOptions
             )
 
             return DisplayModel(
                 showLoadingIndicator = true,
                 showCookieBanner = !isUserConsentGiven,
                 showCopyButton = isClipboardAvailable,
+                codeGeneratorOptions = codeGeneratorOptions,
                 patternRecognizerModels = listOf(patternRecognizerModel.applyInitialSelection(params)),
                 modelPointer = 0
             )

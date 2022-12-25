@@ -1,7 +1,5 @@
 package org.olafneumann.regex.generator.output;
 
-import org.olafneumann.regex.generator.regex.Options
-
 class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "JavaScript",
     highlightLanguage = "javascript",
@@ -11,13 +9,13 @@ class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
 }"""
 ) {
 
-    override fun transformPattern(pattern: String, options: Options): String =
+    override fun transformPattern(pattern: String): String =
         pattern.replace("/", "\\/").replace("\t", "\\t")
 
-    override fun generateOptionsCode(options: Options) =
+    override fun generateOptionsCode(options: CodeGeneratorOptions) =
         options.combine(valueForCaseInsensitive = "i", valueForMultiline = "m", valueForDotAll = "s")
 
-    override fun getWarnings(pattern: String, options: Options): List<String> {
+    override fun getWarnings(pattern: String, options: CodeGeneratorOptions): List<String> {
         if (options.dotMatchesLineBreaks)
             return listOf("The option 's' (dot matches line breaks) is not supported in Firefox and IE.")
         return emptyList()

@@ -1,20 +1,18 @@
 package org.olafneumann.regex.generator.output
 
-import org.olafneumann.regex.generator.regex.Options
-
 class GrepCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "grep",
     highlightLanguage = "bash",
     templateCode = """grep -P%2${'$'}s '%1${'$'}s' [FILE...]"""
 ) {
 
-    override fun transformPattern(pattern: String, options: Options): String =
+    override fun transformPattern(pattern: String): String =
         pattern.replace("'", "'\"'\"'")
 
-    override fun generateOptionsCode(options: Options) =
+    override fun generateOptionsCode(options: CodeGeneratorOptions) =
         options.combine(valueForCaseInsensitive = "-i", separator = " ", prefix = " ")
 
-    override fun getWarnings(pattern: String, options: Options): List<String> {
+    override fun getWarnings(pattern: String, options: CodeGeneratorOptions): List<String> {
         val messages = mutableListOf<String>()
         if (options.dotMatchesLineBreaks)
             messages.add("The option 's' (dot matches line breaks) is not supported for grep.")

@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.js.encodeURIComponent
-import org.olafneumann.regex.generator.regex.Options
 
 open class UrlGenerator(
     linkName: String,
@@ -10,10 +9,10 @@ open class UrlGenerator(
     private val valueForDotAll: String? = "s",
     private val valueForMultiline: String? = "m",
 ) : SimpleReplacingCodeGenerator(linkName, linkName, urlTemplate) {
-    override fun transformPattern(pattern: String, options: Options): String =
+    override fun transformPattern(pattern: String): String =
         encodeURIComponent(pattern)
 
-    override fun generateOptionsCode(options: Options): String =
+    override fun generateOptionsCode(options: CodeGeneratorOptions): String =
         options.combine(
             valueForCaseInsensitive = valueForCaseInsensitive,
             valueForMultiline = valueForMultiline,

@@ -1,6 +1,5 @@
 package org.olafneumann.regex.generator.output
 
-import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
 
 class JavaCodeGenerator : SimpleReplacingCodeGenerator(
@@ -21,10 +20,10 @@ class JavaCodeGenerator : SimpleReplacingCodeGenerator(
                 |}""".trimMargin()
 ) {
 
-    override fun transformPattern(pattern: String, options: Options): String =
+    override fun transformPattern(pattern: String): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: Options): String = options.combine(
+    override fun generateOptionsCode(options: CodeGeneratorOptions): String = options.combine(
         valueForCaseInsensitive = "Pattern.CASE_INSENSITIVE",
         valueForMultiline = "Pattern.MULTILINE",
         valueForDotAll = "Pattern.DOTALL",

@@ -9,12 +9,10 @@ import org.olafneumann.regex.generator.ui.parts.P2MatchPresenter
 import org.olafneumann.regex.generator.ui.parts.P3RegexDisplay
 import org.olafneumann.regex.generator.ui.parts.P4LanguageDisplay
 import org.olafneumann.regex.generator.ui.parts.PXFooter
-import org.olafneumann.regex.generator.ui.parts.PXOptions
 import org.olafneumann.regex.generator.ui.parts.PXShare
 import org.olafneumann.regex.generator.ui.parts.PXToolbar
 import org.olafneumann.regex.generator.ui.parts.PXUserGuide
-import org.olafneumann.regex.generator.ui.parts.PZCapturingGroups
-import org.olafneumann.regex.generator.ui.parts.PZOptions
+import org.olafneumann.regex.generator.ui.parts.PZRecognizerCombinerOptions
 
 class RGView(
     private val controller: MVCContract.Controller,
@@ -29,11 +27,10 @@ class RGView(
         immediateUserInputAction = { matchPresenterPart.showText(it) }
     )
     private val matchPresenterPart = P2MatchPresenter(controller = controller)
-    private val optionsPart = PZOptions()
+    private val optionsPart = PZRecognizerCombinerOptions(controller = controller)
     //private val capturingGroupPart = PZCapturingGroups()
     private val regexDisplay = P3RegexDisplay(controller = controller)
-    private val options = PXOptions(controller = controller)
-    private val languageDisplay = P4LanguageDisplay()
+    private val languageDisplay = P4LanguageDisplay(controller = controller)
     private val shareDisplay = PXShare(controller = controller)
     private val footerDisplay = PXFooter()
 
@@ -52,7 +49,6 @@ class RGView(
         matchPresenterPart.applyModel(model)
         //capturingGroupPart.setRegularExpression(model.patternRecognizerModel.regularExpression)
         regexDisplay.applyModel(model)
-        options.applyModel(model)
         languageDisplay.applyModel(model)
         shareDisplay.applyModel(model)
         footerDisplay.applyModel(model)
