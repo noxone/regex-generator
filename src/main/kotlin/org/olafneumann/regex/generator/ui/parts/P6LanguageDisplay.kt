@@ -11,7 +11,7 @@ import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
 
-class P4LanguageDisplay(
+class P6LanguageDisplay(
     private val controller: MVCContract.Controller
 ) : NumberedPart(
     elementId = "rg_display_programming_languages",

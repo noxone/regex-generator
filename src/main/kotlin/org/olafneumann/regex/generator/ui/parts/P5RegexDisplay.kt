@@ -13,7 +13,7 @@ import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 
-class P3RegexDisplay(
+class P5RegexDisplay(
     private val controller: MVCContract.Controller
 ) : NumberedPart(
     elementId = "rg_regex_result_container",

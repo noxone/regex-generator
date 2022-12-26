@@ -6,13 +6,13 @@ import org.olafneumann.regex.generator.ui.components.LoadingIndicator
 import org.olafneumann.regex.generator.ui.components.UserGuide
 import org.olafneumann.regex.generator.ui.parts.P1UserInput
 import org.olafneumann.regex.generator.ui.parts.P2MatchPresenter
-import org.olafneumann.regex.generator.ui.parts.P3RegexDisplay
-import org.olafneumann.regex.generator.ui.parts.P4LanguageDisplay
+import org.olafneumann.regex.generator.ui.parts.P5RegexDisplay
+import org.olafneumann.regex.generator.ui.parts.P6LanguageDisplay
 import org.olafneumann.regex.generator.ui.parts.PXFooter
 import org.olafneumann.regex.generator.ui.parts.PXShare
 import org.olafneumann.regex.generator.ui.parts.PXToolbar
 import org.olafneumann.regex.generator.ui.parts.PXUserGuide
-import org.olafneumann.regex.generator.ui.parts.PZRecognizerCombinerOptions
+import org.olafneumann.regex.generator.ui.parts.P3RecognizerCombinerOptions
 
 class RGView(
     private val controller: MVCContract.Controller,
@@ -27,10 +27,10 @@ class RGView(
         immediateUserInputAction = { matchPresenterPart.showText(it) }
     )
     private val matchPresenterPart = P2MatchPresenter(controller = controller)
-    private val optionsPart = PZRecognizerCombinerOptions(controller = controller)
+    private val optionsPart = P3RecognizerCombinerOptions(controller = controller)
     //private val capturingGroupPart = PZCapturingGroups()
-    private val regexDisplay = P3RegexDisplay(controller = controller)
-    private val languageDisplay = P4LanguageDisplay(controller = controller)
+    private val regexDisplay = P5RegexDisplay(controller = controller)
+    private val languageDisplay = P6LanguageDisplay(controller = controller)
     private val shareDisplay = PXShare(controller = controller)
     private val footerDisplay = PXFooter()
 

@@ -39,7 +39,7 @@ import org.w3c.dom.get
 import kotlin.properties.Delegates
 
 @Suppress("TooManyFunctions")
-internal class PZCapturingGroups : NumberedExpandablePart(
+internal class P4CapturingGroups : NumberedExpandablePart(
     elementId = "rg_capgroup_selection_container",
     caption = "Add Capturing Groups (optional)",
     initialStateOpen = false

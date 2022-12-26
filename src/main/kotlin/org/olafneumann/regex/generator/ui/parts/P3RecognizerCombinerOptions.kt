@@ -7,7 +7,7 @@ import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLInputElement
 
-class PZRecognizerCombinerOptions(
+class P3RecognizerCombinerOptions(
     private val controller: MVCContract.Controller
 ) : NumberedExpandablePart(
     "rg_options",
