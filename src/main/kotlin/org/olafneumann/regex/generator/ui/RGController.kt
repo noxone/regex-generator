@@ -71,8 +71,8 @@ class RGController : MVCContract.Controller {
         copyToClipboard(text = model.patternRecognizerModel.regularExpression.finalPattern)
     }
 
-    override fun onShareButtonClick() {
-        copyToClipboard(text = model.shareLink.toString())
+    override fun onShareButtonClick(success: () -> Unit) {
+        copyToClipboard(text = model.shareLink.toString(), success = success)
     }
 
     private fun isSelected(recognizerMatch: RecognizerMatch): Boolean =

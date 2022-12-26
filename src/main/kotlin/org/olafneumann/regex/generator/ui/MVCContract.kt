@@ -20,7 +20,7 @@ interface MVCContract {
         fun onRecognizerCombinerOptionsChange(options: RecognizerMatchCombinerOptions)
         fun onRecognizerMatchClick(recognizerMatch: RecognizerMatch)
         fun onCopyRegexButtonClick()
-        fun onShareButtonClick()
+        fun onShareButtonClick(success: () -> Unit = {})
 
         fun onUndo()
         fun onRedo()
