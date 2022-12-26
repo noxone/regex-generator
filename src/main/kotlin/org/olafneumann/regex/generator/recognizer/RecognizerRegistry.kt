@@ -1,7 +1,7 @@
 @file:Suppress("MaxLineLength")
 package org.olafneumann.regex.generator.recognizer
 
-import org.olafneumann.regex.generator.util.HasRange
+import org.olafneumann.regex.generator.utils.HasRange
 import org.olafneumann.regex.generator.recognizer.BracketedRecognizer.CenterPattern
 
 object RecognizerRegistry {

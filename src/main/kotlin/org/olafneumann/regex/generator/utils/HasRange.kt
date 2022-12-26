@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.util
+package org.olafneumann.regex.generator.utils
 
 interface HasRange {
     val first: Int

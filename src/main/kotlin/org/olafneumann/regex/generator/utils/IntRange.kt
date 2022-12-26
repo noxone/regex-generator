@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.util
+package org.olafneumann.regex.generator.utils
 
 fun IntRange.hasIntersectionWith(other: IntRange): Boolean {
     return (this.first <= other.first && this.last >= other.first)

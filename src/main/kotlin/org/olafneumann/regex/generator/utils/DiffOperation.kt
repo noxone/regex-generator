@@ -1,9 +1,9 @@
-package org.olafneumann.regex.generator.util
+package org.olafneumann.regex.generator.utils
 
 import dev.andrewbailey.diff.DiffOperation
 import org.olafneumann.regex.generator.RegexGeneratorException
-import org.olafneumann.regex.generator.util.RangeAction.Companion.add
-import org.olafneumann.regex.generator.util.RangeAction.Companion.remove
+import org.olafneumann.regex.generator.utils.RangeAction.Companion.add
+import org.olafneumann.regex.generator.utils.RangeAction.Companion.remove
 
 internal val <T> DiffOperation<T>.rangeAction: RangeAction
     get() =

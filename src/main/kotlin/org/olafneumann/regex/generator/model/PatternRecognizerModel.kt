@@ -6,7 +6,7 @@ import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.RecognizerRegistry
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 import org.olafneumann.regex.generator.regex.RegularExpression
-import org.olafneumann.regex.generator.util.hasIntersectionWith
+import org.olafneumann.regex.generator.utils.hasIntersectionWith
 
 data class PatternRecognizerModel(
     val input: String,

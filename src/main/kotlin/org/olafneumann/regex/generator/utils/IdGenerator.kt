@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.util
+package org.olafneumann.regex.generator.utils
 
 class IdGenerator(
     initialValue: Int = 0

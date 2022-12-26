@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.util
+package org.olafneumann.regex.generator.utils
 
 interface HasRanges {
     val ranges: List<IntRange>

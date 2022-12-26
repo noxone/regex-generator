@@ -12,7 +12,7 @@ import kotlinx.html.injector.inject
 import kotlinx.html.js.div
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper.listChildElements
-import org.olafneumann.regex.generator.util.IdGenerator
+import org.olafneumann.regex.generator.utils.IdGenerator
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
