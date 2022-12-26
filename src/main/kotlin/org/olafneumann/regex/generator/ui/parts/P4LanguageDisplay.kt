@@ -13,7 +13,7 @@ import org.w3c.dom.HTMLInputElement
 
 class P4LanguageDisplay(
     private val controller: MVCContract.Controller
-) : AbstractPart(
+) : NumberedPart(
     elementId = "rg_display_programming_languages",
     caption = "Usage in Programming Languages"
 ) {

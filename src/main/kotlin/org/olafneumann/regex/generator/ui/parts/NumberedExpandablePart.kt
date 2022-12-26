@@ -4,18 +4,18 @@ import kotlinx.html.a
 import kotlinx.html.h5
 import kotlinx.html.i
 import kotlinx.html.id
-import kotlinx.html.js.onClickFunction
+import org.olafneumann.regex.generator.js.asJQuery
 import org.olafneumann.regex.generator.js.jQuery
+import org.olafneumann.regex.generator.js.animate
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLElement
-import kotlin.js.json
 
-abstract class AbstractExpandablePart(
+abstract class NumberedExpandablePart(
     elementId: String,
     number: Int = numberGenerator.next,
     caption: String,
     initialStateOpen: Boolean = false,
-) : AbstractPart(
+) : NumberedPart(
     elementId = elementId,
     number = number,
     caption = caption,
@@ -35,27 +35,26 @@ abstract class AbstractExpandablePart(
         HtmlHelper.getElementById<HTMLElement>(openLinkId)
             .onclick = {
                 it.preventDefault()
-            toggleVisibility()
-        }
+                toggleVisibility()
+            }
 
         if (!initialStateOpen) {
             toggleVisibility(open = false)
         }
-
     }
 
     private val isOpen: Boolean
-        get() = jQuery(contentElement).`is`(":visible")
+        get() = contentElement.asJQuery().`is`(":visible")
 
     private fun toggleVisibility(open: Boolean = !isOpen) {
         if (open) {
-            jQuery(contentElement).slideDown()
+            contentElement.asJQuery().slideDown()
             headingElement.classList.toggle("rg-upside-down", false)
-            jQuery(numberElement).animate(json("margin-top" to 0, "margin-bottom" to 0))
+            numberElement.asJQuery().animate("margin-top" to 0, "margin-bottom" to 0)
         } else {
-            jQuery(contentElement).slideUp()
+            contentElement.asJQuery().slideUp()
             headingElement.classList.toggle("rg-upside-down", true)
-            jQuery(numberElement).animate(json("margin-top" to "-0.32em", "margin-bottom" to "-1em"))
+            numberElement.asJQuery().animate("margin-top" to "-0.32em", "margin-bottom" to "-1em")
         }
     }
 

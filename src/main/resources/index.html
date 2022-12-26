@@ -60,13 +60,13 @@
             </div>
         </div>
 
-        <div class="row rounded-top bg-warning px-4 pt-5 pb-2">
+        <div class="row bg-warning rounded-top px-4 pt-5 pb-2">
             <h1 class="display-3"><span id="rg-title">Regex Generator</span></h1>
             <h5 class="lead d-none d-sm-block">Creating <em>regular expressions</em> is easy again!</h5>
         </div>
         <div class="row bg-warning rounded-bottom px-4 py-3 d-block d-md-none">
         </div>
-        <div class="row bg-warning rounded-bottom px-4 py-2 sticky-top d-none d-md-block">
+        <div class="row bg-warning rounded-bottom px-4 py-2 d-none d-md-block sticky-top">
             <nav class="navbar navbar-expand p-0">
                 <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toolbarContent" aria-controls="toolbarContent" aria-expanded="false" aria-label="Toggle toolbar">
@@ -246,11 +246,9 @@
         </div>
 
         <!-- Share Box -->
-        <div class="row bg-secondary text-light mt-3 rounded">
+        <div class="row bg-secondary rounded text-light mt-3">
             <div class="col-12 p-3">
-                <div class="d-flex justify-content-between">
-                    <h5>Share</h5>
-                </div>
+                <h5>Share</h5>
                 <p class="user-select-none">To share the current page content and settings, use the following link:</p>
                 <div class="rounded border p-1">
                     <div class="rg-match-container">
@@ -263,49 +261,47 @@
         </div>
 
         <!-- Footer -->
-        <footer class="page-footer font-small row bg-dark text-muted border border-secondary mt-4 p-4 rounded">
+        <footer class="row bg-dark border border-secondary rounded font-small text-muted mt-4 p-4">
             <h5 class="text-uppercase text-md-start text-center">Regex Generator</h5>
-            <div class="text-center text-md-start collapse show" id="footerContent">
-                <div class="row">
-                    <div class="col-md-6 mt-md-0 mt-3">
-                        <p>The idea for this page comes from <a
-                                href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/"
-                                target="_blank" rel="noopener">txt2re</a>,
-                            which seems to be discontinued.</p>
-                        <p>The aim of this page is to give as many people as possible the opportunity to develop and
-                            use regular expressions. Hopefully nobody has to call <span
-                                class="rg-code">substring()</span> anymore.</p>
-                        <p>Find the project sources at <a href="https://github.com/noxone/regex-generator"
-                                target="_blank" rel="noopener">Github</a>.
-                        </p>
-                    </div>
-                    <hr class="clearfix w-100 d-md-none pb-3 border-secondary">
-                    <div class="col-md-3 mb-md-0 mb-3">
-                        <h5>Useful Regex Links</h5>
-                        <ul class="list-unstyled">
-                            <li><a class="rounded" href="https://regex101.com/" target="_blank" rel="noopener"
-                                    id="rg_anchor_regex101">Regular
-                                    Expressions 101</a></li>
-                            <li><a class="rounded" href="https://regexr.com/" target="_blank" rel="noopener"
-                                    id="rg_anchor_regexr">Regexr</a></li>
-                            <!-- ?expression=abc&text=def -->
-                            <li><a class="rounded" href="https://www.regexplanet.com" target="_blank" rel="noopener">RegexPlanet</a>
-                            </li>
-                            <!--?regex=abc&replacement=def-->
-                            <li><a class="rounded" href="https://www.rexegg.com" target="_blank" rel="noopener">RexEgg</a></li>
-                            <li><a class="rounded" href="https://rgxdb.com/" target="_blank" rel="noopener">Regex DB</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3 mb-md-0 mb-3">
-                        <h5>This project is built using</h5>
-                        <ul class="list-unstyled">
-                            <li><a class="rounded" href="https://kotlinlang.org/" target="_blank" rel="noopener">Kotlin</a></li>
-                            <li><a class="rounded" href="https://getbootstrap.com" target="_blank" rel="noopener">Bootstrap</a></li>
-                            <li><a class="rounded" href="https://prismjs.com/" target="_blank" rel="noopener">Prismjs</a></li>
-                            <li><a class="rounded" href="https://kamranahmed.info/driver.js/" target="_blank"
-                                    rel="noopener">Driver.js</a></li>
-                        </ul>
-                    </div>
+            <div class="row text-center text-md-start" id="footerContent">
+                <div class="col-md-6 mt-md-0 mt-3">
+                    <p>The idea for this page comes from <a
+                            href="https://churchm.ag/txt2re-a-regular-expression-generator-for-programmers/"
+                            target="_blank" rel="noopener">txt2re</a>,
+                        which seems to be discontinued.</p>
+                    <p>The aim of this page is to give as many people as possible the opportunity to develop and
+                        use regular expressions. Hopefully nobody has to call <span
+                            class="rg-code">substring()</span> anymore.</p>
+                    <p>Find the project sources at <a href="https://github.com/noxone/regex-generator"
+                            target="_blank" rel="noopener">Github</a>.
+                    </p>
+                </div>
+                <hr class="clearfix w-100 d-md-none pb-3 border-secondary">
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <h5>Useful Regex Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="rounded" href="https://regex101.com/" target="_blank" rel="noopener"
+                                id="rg_anchor_regex101">Regular
+                                Expressions 101</a></li>
+                        <li><a class="rounded" href="https://regexr.com/" target="_blank" rel="noopener"
+                                id="rg_anchor_regexr">Regexr</a></li>
+                        <!-- ?expression=abc&text=def -->
+                        <li><a class="rounded" href="https://www.regexplanet.com" target="_blank" rel="noopener">RegexPlanet</a>
+                        </li>
+                        <!--?regex=abc&replacement=def-->
+                        <li><a class="rounded" href="https://www.rexegg.com" target="_blank" rel="noopener">RexEgg</a></li>
+                        <li><a class="rounded" href="https://rgxdb.com/" target="_blank" rel="noopener">Regex DB</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <h5>This project is built using</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="rounded" href="https://kotlinlang.org/" target="_blank" rel="noopener">Kotlin</a></li>
+                        <li><a class="rounded" href="https://getbootstrap.com" target="_blank" rel="noopener">Bootstrap</a></li>
+                        <li><a class="rounded" href="https://prismjs.com/" target="_blank" rel="noopener">Prismjs</a></li>
+                        <li><a class="rounded" href="https://kamranahmed.info/driver.js/" target="_blank"
+                                rel="noopener">Driver.js</a></li>
+                    </ul>
                 </div>
             </div>
 

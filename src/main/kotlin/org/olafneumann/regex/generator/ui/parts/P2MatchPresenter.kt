@@ -26,7 +26,7 @@ import kotlin.js.json
 
 class P2MatchPresenter(
     private val controller: MVCContract.Controller
-) : AbstractPart(
+) : NumberedPart(
     elementId = "rg_pattern_selection_container",
     caption = "Which parts of the text are interesting for you?"
 ) {

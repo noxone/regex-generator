@@ -9,7 +9,7 @@ import org.w3c.dom.HTMLInputElement
 
 class PZRecognizerCombinerOptions(
     private val controller: MVCContract.Controller
-) : AbstractExpandablePart(
+) : NumberedExpandablePart(
     "rg_options",
     caption = "Options"
 ) {

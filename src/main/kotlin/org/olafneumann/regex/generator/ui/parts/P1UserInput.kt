@@ -19,7 +19,7 @@ class P1UserInput(
     private val controller: MVCContract.Controller,
     private val maxInputLength: Int,
     immediateUserInputAction: (String) -> Unit
-) : AbstractPart(
+) : NumberedPart(
     elementId = "rg_input_container",
     caption = "Paste a sample text.",
     rightCaptionElement = {

@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.html.DIV
-import kotlinx.html.a
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.h3
@@ -11,6 +11,8 @@ import kotlinx.html.id
 import kotlinx.html.injector.InjectByClassName
 import kotlinx.html.injector.inject
 import kotlinx.html.js.div
+import org.olafneumann.regex.generator.js.asJQuery
+import org.olafneumann.regex.generator.main
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper.listChildElements
 import org.olafneumann.regex.generator.util.IdGenerator
@@ -19,7 +21,7 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
 import kotlin.properties.Delegates
 
-abstract class AbstractPart(
+abstract class NumberedPart(
     elementId: String,
     protected val number: Int = numberGenerator.next,
     caption: String,
@@ -31,7 +33,7 @@ abstract class AbstractPart(
         InjectByClassName("rg-number") to Elements::number,
         InjectByClassName("rg-caption-holder") to Elements::caption,
         InjectByClassName("rg-content") to Elements::content,
-    )).div(classes = "row no-gutters bg-light mt-3 pr-4 rounded") {
+    )).div(classes = "row bg-light rounded mt-3 pr-4") {
         id = elementId
         div (classes = "col-sm-1 p-4 d-none d-sm-none d-md-block text-center") {
             h3(classes = "display-3 text-secondary rg-number") {

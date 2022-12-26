@@ -15,7 +15,7 @@ import org.w3c.dom.HTMLDivElement
 
 class P3RegexDisplay(
     private val controller: MVCContract.Controller
-) : AbstractPart(
+) : NumberedPart(
     elementId = "rg_regex_result_container",
     caption = "Regular Expression"
 ) {
