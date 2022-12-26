@@ -32,7 +32,8 @@ class PZRecognizerCombinerOptions(
         }
 
     fun applyModel(displayModel: DisplayModel) {
-        this.options = displayModel.patternRecognizerModel.options
+        console.log(displayModel.patternRecognizerModel.recognizerMatchCombinerOptions)
+        this.options = displayModel.patternRecognizerModel.recognizerMatchCombinerOptions
     }
 
     private fun propagateOptionsChange() {

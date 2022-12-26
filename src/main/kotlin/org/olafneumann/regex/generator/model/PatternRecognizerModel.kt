@@ -12,9 +12,13 @@ data class PatternRecognizerModel(
     val input: String,
     val recognizerMatches: List<RecognizerMatch> = RecognizerRegistry.findMatches(input),
     val selectedRecognizerMatches: Collection<RecognizerMatch> = emptySet(),
-    val options: RecognizerMatchCombinerOptions,
+    val recognizerMatchCombinerOptions: RecognizerMatchCombinerOptions,
     val regularExpression: RegularExpression = RecognizerMatchCombiner
-        .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
+        .combineMatches(
+            inputText = input,
+            selectedMatches = selectedRecognizerMatches,
+            options = recognizerMatchCombinerOptions
+        )
 ) {
     fun setUserInput(newInput: String): PatternRecognizerModel {
         val newMatches = RecognizerRegistry.findMatches(newInput)
@@ -36,7 +40,11 @@ data class PatternRecognizerModel(
             .toSet()
 
         val newRegex = RecognizerMatchCombiner
-            .combineMatches(inputText = newInput, selectedMatches = selectedRecognizerMatches, options = options)
+            .combineMatches(
+                inputText = newInput,
+                selectedMatches = selectedRecognizerMatches,
+                options = recognizerMatchCombinerOptions
+            )
 
         return copy(
             input = newInput,
@@ -63,7 +71,7 @@ data class PatternRecognizerModel(
 
         val newSelection = selectedRecognizerMatches + match
         val newRegex = RecognizerMatchCombiner
-            .combineMatches(inputText = input, selectedMatches = newSelection, options = options)
+            .combineMatches(inputText = input, selectedMatches = newSelection, options = recognizerMatchCombinerOptions)
 
         return copy(
             selectedRecognizerMatches = newSelection,
@@ -74,7 +82,7 @@ data class PatternRecognizerModel(
     fun deselect(match: RecognizerMatch): PatternRecognizerModel {
         val newSelection = selectedRecognizerMatches - match
         val newRegex = RecognizerMatchCombiner
-            .combineMatches(inputText = input, selectedMatches = newSelection, options = options)
+            .combineMatches(inputText = input, selectedMatches = newSelection, options = recognizerMatchCombinerOptions)
 
         return copy(
             selectedRecognizerMatches = newSelection,
@@ -82,9 +90,9 @@ data class PatternRecognizerModel(
         )
     }
 
-    fun setOptions(options: RecognizerMatchCombinerOptions) : PatternRecognizerModel {
+    fun setRecognizerMatchCombinerOptions(options: RecognizerMatchCombinerOptions): PatternRecognizerModel {
         return copy(
-            options = options,
+            recognizerMatchCombinerOptions = options,
             regularExpression = RecognizerMatchCombiner
                 .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         )

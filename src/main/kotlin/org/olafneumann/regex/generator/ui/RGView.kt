@@ -47,6 +47,7 @@ class RGView(
         toolbar.applyModel(model)
         userInputPart.applyModel(model)
         matchPresenterPart.applyModel(model)
+        optionsPart.applyModel(model)
         //capturingGroupPart.setRegularExpression(model.patternRecognizerModel.regularExpression)
         regexDisplay.applyModel(model)
         languageDisplay.applyModel(model)

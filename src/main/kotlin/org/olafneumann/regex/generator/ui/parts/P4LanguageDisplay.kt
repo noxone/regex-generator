@@ -33,10 +33,11 @@ class P4LanguageDisplay(
     }
 
     fun applyModel(model: DisplayModel) {
+        this.options = model.codeGeneratorOptions
         val currentPattern = model.patternRecognizerModel.regularExpression.finalPattern
 
         CodeGenerator.all
-            .forEach { languageDisplays[it]?.setSnippet(it.generateCode(currentPattern, options)) }
+            .forEach { languageDisplays[it]?.setSnippet(it.generateCode(currentPattern, model.codeGeneratorOptions)) }
         Prism.highlightAll()
     }
 

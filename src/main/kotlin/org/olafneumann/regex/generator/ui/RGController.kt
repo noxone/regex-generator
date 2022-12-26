@@ -105,7 +105,7 @@ class RGController : MVCContract.Controller {
 
             val patternRecognizerModel = PatternRecognizerModel(
                 input = inputText,
-                options = recognizerMatchCombinerOptions
+                recognizerMatchCombinerOptions = recognizerMatchCombinerOptions
             )
 
             return DisplayModel(

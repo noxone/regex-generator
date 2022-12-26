@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 class DisplayModelTest {
     @Test
     fun testRowDistribution() {
-        val patternModel = PatternRecognizerModel(input = "asdasd", options = Options())
+        val patternModel = PatternRecognizerModel(input = "asdasd", recognizerMatchCombinerOptions = Options())
         val displayModel = DisplayModel(
             showLoadingIndicator = true,
             showCookieBanner = true,

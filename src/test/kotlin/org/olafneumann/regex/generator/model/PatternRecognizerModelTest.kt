@@ -13,7 +13,7 @@ class PatternRecognizerModelTest {
         val input = "aaa"
 
         // when
-        val model = PatternRecognizerModel(input = input, options = Options())
+        val model = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = Options())
 
         //then
         assertEquals(expected = 9, actual = model.recognizerMatches.size)
@@ -25,7 +25,7 @@ class PatternRecognizerModelTest {
         val input = "TX_RESP_Q008"
 
         // when
-        val model = PatternRecognizerModel(input = input, options = Options())
+        val model = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = Options())
 
         //then
         assertEquals(expected = 33, actual = model.recognizerMatches.size)
@@ -34,7 +34,7 @@ class PatternRecognizerModelTest {
     @Test
     fun testPatterns_simpleRecognition() {
         val input = "abc123def"
-        val model = PatternRecognizerModel(input = input, options = Options())
+        val model = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = Options())
 
         val titles = model.recognizerMatches.map { it.title }
 
@@ -47,7 +47,7 @@ class PatternRecognizerModelTest {
     fun testPatterns_selectOneMatch() {
         // given
         val input = "abc123def"
-        val model1 = PatternRecognizerModel(input = input, options = Options())
+        val model1 = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = Options())
         val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
 
         // when
@@ -63,7 +63,7 @@ class PatternRecognizerModelTest {
     fun testPatterns_selectInvalidMatch() {
         // given
         val input = "abc123def"
-        val model1 = PatternRecognizerModel(input = input, options = Options())
+        val model1 = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = Options())
         val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
         val digitMatch = model1.recognizerMatches.first { it.title == "Digit" }
         val model2 = model1.select(numberMatch)
@@ -79,7 +79,7 @@ class PatternRecognizerModelTest {
     fun testPatterns_selectValidMatch() {
         // given
         val input = "abc123def"
-        val model1 = PatternRecognizerModel(input = input, options = Options())
+        val model1 = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = Options())
         val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
         val characterMatch = model1.recognizerMatches.first { it.title == "One character" }
         val model2 = model1.select(numberMatch)
@@ -95,7 +95,7 @@ class PatternRecognizerModelTest {
     fun testPatterns_deselectOneMatch() {
         // given
         val input = "abc123def"
-        val model1 = PatternRecognizerModel(input = input, options = Options())
+        val model1 = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = Options())
         val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
         val model2 = model1.select(numberMatch)
 
@@ -112,7 +112,7 @@ class PatternRecognizerModelTest {
 
         // given
         val input = "abc123def"
-        val model1 = PatternRecognizerModel(input = input, options = Options())
+        val model1 = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = Options())
         val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
 
         // when
@@ -185,7 +185,7 @@ class PatternRecognizerModelTest {
         expectedLast: Int
     ) {
         // given
-        val model1 = PatternRecognizerModel(input = firstInput, options = Options())
+        val model1 = PatternRecognizerModel(input = firstInput, recognizerMatchCombinerOptions = Options())
         val match = model1.recognizerMatches.first { it.title == recognizerName }
         val model2 = model1.select(match)
 

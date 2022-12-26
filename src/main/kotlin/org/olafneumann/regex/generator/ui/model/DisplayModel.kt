@@ -55,7 +55,7 @@ data class DisplayModel(
             val sampleRegex = encodeURIComponent(patternRecognizerModel.input)
             val flags = FlagHelper.getFlagString(
                 codeGeneratorOptions = codeGeneratorOptions,
-                recognizerMatchCombinerOptions = patternRecognizerModel.options
+                recognizerMatchCombinerOptions = patternRecognizerModel.recognizerMatchCombinerOptions
             )
             val selection = patternRecognizerModel.selectedRecognizerMatches
                 .map { "${it.first}|${it.recognizer.name}" }
@@ -103,7 +103,7 @@ data class DisplayModel(
         pushNewPatternRecognizerModel(patternRecognizerModel.setUserInput(input))
 
     fun setRecognizerMatchCombinerOptions(options: RecognizerMatchCombinerOptions): DisplayModel =
-        pushNewPatternRecognizerModel(patternRecognizerModel.setOptions(options))
+        pushNewPatternRecognizerModel(patternRecognizerModel.setRecognizerMatchCombinerOptions(options))
 
     fun setCodeGeneratorOptions(options: CodeGeneratorOptions): DisplayModel =
         copy(codeGeneratorOptions = options)
