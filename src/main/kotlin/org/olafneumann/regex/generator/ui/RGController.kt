@@ -68,7 +68,7 @@ class RGController : MVCContract.Controller {
     }
 
     override fun onCopyRegexButtonClick() {
-        copyToClipboard(text = model.patternRecognizerModel.regularExpression.finalPattern)
+        copyToClipboard(text = model.patternRecognizerModel.finalPattern)
     }
 
     override fun onShareButtonClick(success: () -> Unit) {

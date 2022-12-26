@@ -5,8 +5,8 @@ import kotlinx.dom.clear
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
 import kotlinx.html.title
+import org.olafneumann.regex.generator.regex.CombinedRegex
 import org.olafneumann.regex.generator.ui.model.DisplayModel
-import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
@@ -28,10 +28,10 @@ class P5RegexDisplay(
 
     fun applyModel(model: DisplayModel) {
         showOrHideCopyButton(model.showCopyButton)
-        showResultRegex(regex = model.patternRecognizerModel.regularExpression)
+        showResultRegex(regex = model.patternRecognizerModel.combinedRegex)
     }
 
-    private fun showResultRegex(regex: RegularExpression) {
+    private fun showResultRegex(regex: CombinedRegex) {
         resultDisplay.clear()
         for (part in regex.parts) {
             resultDisplay.append(

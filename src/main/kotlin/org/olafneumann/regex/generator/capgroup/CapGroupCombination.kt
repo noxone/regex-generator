@@ -1,7 +1,9 @@
-package org.olafneumann.regex.generator.regex
+package org.olafneumann.regex.generator.capgroup
 
-data class RegularExpression(
-    val parts: Collection<RecognizerMatchCombiner.RegularExpressionPart>
+import org.olafneumann.regex.generator.regex.CombinedRegex
+
+data class CapGroupCombination(
+    val regex: CombinedRegex
 ) {
     companion object {
         @Suppress("MaxLineLength")
@@ -11,7 +13,7 @@ data class RegularExpression(
         )
     }
 
-    private val patternAfterPartSelection: String by lazy { parts.joinToString(separator = "") { it.pattern } }
+    private val patternAfterPartSelection: String = regex.pattern
 
     val finalPattern: String by lazy {
             var pattern = patternAfterPartSelection
@@ -35,6 +37,9 @@ data class RegularExpression(
 
             pattern
         }
+
+    val patternParts: Sequence<MatchResult>
+        get() = patternSymbolRegex.findAll(finalPattern)
 
     private val _capturingGroups = mutableListOf<CapturingGroup>()
 
@@ -87,8 +92,7 @@ data class RegularExpression(
         }
     }
 
-    val patternParts: Sequence<MatchResult>
-        get() = patternSymbolRegex.findAll(finalPattern)
+
 
     data class CapturingGroup internal constructor(
         var openingPosition: Int,

@@ -8,7 +8,7 @@ object RecognizerMatchCombiner {
         inputText: String,
         selectedMatches: Collection<RecognizerMatch>,
         options: RecognizerMatchCombinerOptions
-    ): RegularExpression {
+    ): CombinedRegex {
         val rangesToMatches = selectedMatches.flatMap { match ->
             match.ranges
                 .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index], match = match) }
@@ -18,13 +18,13 @@ object RecognizerMatchCombiner {
 
         return if (rangesToMatches.isEmpty()) {
             if (options.onlyPatterns) {
-                RegularExpression(
+                CombinedRegex(
                     listOf(RegularExpressionPart(IntRange(0, 2), ".*", title = "anything"))
                         .addWholeLineMatchingStuff(options)
                 )
             } else {
                 val regex = inputText.escapeForRegex()
-                RegularExpression(
+                CombinedRegex(
                     listOf(RegularExpressionPart(IntRange(0, regex.length), regex, inputText))
                         .addWholeLineMatchingStuff(options)
                 )
@@ -71,7 +71,7 @@ object RecognizerMatchCombiner {
         lastPart: RegularExpressionPart?,
         inputText: String,
         options: RecognizerMatchCombinerOptions
-    ): RegularExpression {
+    ): CombinedRegex {
         val parts = mutableListOf<RegularExpressionPart>()
         if (options.matchWholeLine || firstPart?.fromInputText == true) {
             firstPart?.let { parts.add(it) }
@@ -89,7 +89,7 @@ object RecognizerMatchCombiner {
             lastPart?.let { parts.add(it) }
         }
 
-        return RegularExpression(parts.addWholeLineMatchingStuff(options))
+        return CombinedRegex(parts.addWholeLineMatchingStuff(options))
     }
 
     private fun getPartBetween(

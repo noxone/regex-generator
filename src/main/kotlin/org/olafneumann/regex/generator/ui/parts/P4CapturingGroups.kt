@@ -23,9 +23,9 @@ import kotlinx.html.js.onMouseOutFunction
 import kotlinx.html.js.span
 import kotlinx.html.span
 import org.olafneumann.regex.generator.RegexGeneratorException
+import org.olafneumann.regex.generator.capgroup.CapGroupCombination
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
 import org.w3c.dom.HTMLDivElement
@@ -52,7 +52,7 @@ internal class P4CapturingGroups : NumberedExpandablePart(
     private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_display")
     private val capGroupList = HtmlHelper.getElementById<HTMLUListElement>("rg_cap_group_list")
 
-    private var regularExpression: RegularExpression? = null
+    private var capGroupCombination: CapGroupCombination? = null
 
     private var popover: Popover? = null
     private var clearMarks: () -> Unit = {}
@@ -73,8 +73,8 @@ internal class P4CapturingGroups : NumberedExpandablePart(
         clearMarks()
     }
 
-    fun setRegularExpression(regularExpression: RegularExpression) {
-        this.regularExpression = regularExpression
+    fun setCapGroupCombination(capGroupCombination: CapGroupCombination) {
+        this.capGroupCombination = capGroupCombination
 
         textDisplay.clear()
         capGroupList.clear()
@@ -86,8 +86,8 @@ internal class P4CapturingGroups : NumberedExpandablePart(
         clearMarks = { spans.forEach { it.value.classList.toggle(CLASS_SELECTION, false) } }
 
         // display existing regular expressions
-        if (regularExpression.capturingGroups.isNotEmpty()) {
-            regularExpression.capturingGroups
+        if (capGroupCombination.capturingGroups.isNotEmpty()) {
+            capGroupCombination.capturingGroups
                 .map {
                     document.create.li(
                         classes = "list-group-item rg-cap-group-list-item d-flex justify-content-between"
@@ -108,8 +108,8 @@ internal class P4CapturingGroups : NumberedExpandablePart(
                             a(classes = "btn") {
                                 i (classes="bi bi-trash") {}
                                 onClickFunction = { _ ->
-                                    regularExpression.removeCapturingGroup(it.id)
-                                    setRegularExpression(regularExpression)
+                                    capGroupCombination.removeCapturingGroup(it.id)
+                                    setCapGroupCombination(capGroupCombination)
                                 }
                             }
                         }
@@ -197,13 +197,13 @@ internal class P4CapturingGroups : NumberedExpandablePart(
 
     private fun createCapturingGroup(name: String?, elementRange: IntRange) {
         disposePopover()
-        regularExpression?.let {
+        capGroupCombination?.let {
             it.addCapturingGroup(
                 start = elementRange.first,
                 endInclusive = elementRange.last,
                 name = name
             )
-            this.setRegularExpression(regularExpression = it)
+            this.setCapGroupCombination(capGroupCombination = it)
         }
     }
 
@@ -319,7 +319,7 @@ internal class P4CapturingGroups : NumberedExpandablePart(
     }
 
     private fun analyzeRegexGroups(): PatternPartGroup {
-        val rawParts = regularExpression!!.patternParts
+        val rawParts = capGroupCombination!!.patternParts
             .mapIndexed { index, matchResult ->
                 PatternSymbol(
                     index = index,

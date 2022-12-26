@@ -13,11 +13,18 @@ import org.olafneumann.regex.generator.ui.parts.PXShare
 import org.olafneumann.regex.generator.ui.parts.PXToolbar
 import org.olafneumann.regex.generator.ui.parts.PXUserGuide
 import org.olafneumann.regex.generator.ui.parts.P3RecognizerCombinerOptions
+import org.olafneumann.regex.generator.ui.parts.P4CapturingGroups
 
 class RGView(
     private val controller: MVCContract.Controller,
     maxInputLength: Int
 ) : MVCContract.View {
+    companion object {
+        private const val CAP_GROUPS_ENABLED = true
+
+        private const val LANG_EN = "en"
+    }
+
     private val loadingIndicator = LoadingIndicator()
     private val cookieBanner = CookieBanner { controller.onDoneAskingUserForCookies(hasGivenConsent = it) }
     private val toolbar  = PXToolbar(controller = controller)
@@ -28,13 +35,13 @@ class RGView(
     )
     private val matchPresenterPart = P2MatchPresenter(controller = controller)
     private val optionsPart = P3RecognizerCombinerOptions(controller = controller)
-    //private val capturingGroupPart = PZCapturingGroups()
+    private val capturingGroupPart = if (CAP_GROUPS_ENABLED) P4CapturingGroups() else null
     private val regexDisplay = P5RegexDisplay(controller = controller)
     private val languageDisplay = P6LanguageDisplay(controller = controller)
     private val shareDisplay = PXShare(controller = controller)
     private val footerDisplay = PXFooter()
 
-    private val userGuide = UserGuide.forLanguage("en")
+    private val userGuide = UserGuide.forLanguage(LANG_EN)
 
     init {
         // no reference required
@@ -48,7 +55,7 @@ class RGView(
         userInputPart.applyModel(model)
         matchPresenterPart.applyModel(model)
         optionsPart.applyModel(model)
-        //capturingGroupPart.setRegularExpression(model.patternRecognizerModel.regularExpression)
+        capturingGroupPart?.setCapGroupCombination(model.patternRecognizerModel.capGroupCombination)
         regexDisplay.applyModel(model)
         languageDisplay.applyModel(model)
         shareDisplay.applyModel(model)

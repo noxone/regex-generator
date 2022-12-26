@@ -34,7 +34,7 @@ class P6LanguageDisplay(
 
     fun applyModel(model: DisplayModel) {
         this.options = model.codeGeneratorOptions
-        val currentPattern = model.patternRecognizerModel.regularExpression.finalPattern
+        val currentPattern = model.patternRecognizerModel.finalPattern
 
         CodeGenerator.all
             .forEach { languageDisplays[it]?.setSnippet(it.generateCode(currentPattern, model.codeGeneratorOptions)) }
