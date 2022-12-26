@@ -4,7 +4,6 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.HtmlView
-import org.olafneumann.regex.generator.ui.HtmlView.toCurrentWindowLocation
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLButtonElement
@@ -15,13 +14,10 @@ class PXShare(
 ) {
     private val divShareLink = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_TEXT_SHARE_LINK)
     private val buttonShareLink = HtmlHelper.getElementById<HTMLButtonElement>(HtmlView.ID_BUTTON_SHARE_LINK)
-    private val imageShare = buttonShareLink.firstElementChild!!
+    private val imageShareElement = buttonShareLink.firstElementChild!!
 
     init {
-        buttonShareLink.onclick = { controller.onShareButtonClick {
-            showCheckMark(true)
-            window.setTimeout({showCheckMark(false)}, 2000)
-        } }
+        buttonShareLink.onclick = { controller.onShareButtonClick { showCheckMark() } }
     }
 
     fun applyModel(model: DisplayModel) {
@@ -36,9 +32,12 @@ class PXShare(
         window.history.replaceState(data = null, title = document.title, url = urlString)
     }
 
-    private fun showCheckMark(show: Boolean) {
-        imageShare.classList.toggle(class_copy, !show)
-        imageShare.classList.toggle(class_check, show)
+    private fun showCheckMark(show: Boolean = true) {
+        imageShareElement.classList.toggle(CLASS_ICON_COPY, !show)
+        imageShareElement.classList.toggle(CLASS_ICON_CHECK, show)
+        if (show) {
+            window.setTimeout({ showCheckMark(false) }, 2000)
+        }
     }
 
     private fun showOrHideCopyButton(show: Boolean) {
@@ -46,7 +45,7 @@ class PXShare(
     }
 
     companion object {
-        private const val class_copy = "bi-clipboard"
-        private const val class_check = "bi-check-lg"
+        private const val CLASS_ICON_COPY = "bi-clipboard"
+        private const val CLASS_ICON_CHECK = "bi-check-lg"
     }
 }
