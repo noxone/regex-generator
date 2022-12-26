@@ -18,7 +18,7 @@ external class JQuery {
     fun slideDown(): JQuery
     fun slideUp(): JQuery
     fun fadeIn(): JQuery
-    fun fadeOut(): JQuery
+    fun fadeOut(options: Json = definedExternally): JQuery
     fun show(): JQuery
     fun hide(): JQuery
     fun parent(): JQuery

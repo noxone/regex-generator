@@ -1,5 +1,11 @@
-#rg_loading + div {
-  filter: blur(5px);
+#rg_loading {
+  z-index: 9999;
+}
+
+#rg_loading > div {
+  background-color: var(--bs-gray-200)!important;
+  margin-left: auto!important;
+  margin-right: auto!important;
 }
 
 .rg-hidden {
