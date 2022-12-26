@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
-import kotlinx.browser.window
 import kotlinx.html.DIV
 import kotlinx.html.div
 import kotlinx.html.dom.create
@@ -11,8 +10,6 @@ import kotlinx.html.id
 import kotlinx.html.injector.InjectByClassName
 import kotlinx.html.injector.inject
 import kotlinx.html.js.div
-import org.olafneumann.regex.generator.js.asJQuery
-import org.olafneumann.regex.generator.main
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper.listChildElements
 import org.olafneumann.regex.generator.util.IdGenerator

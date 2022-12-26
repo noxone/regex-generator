@@ -4,9 +4,8 @@ import kotlinx.html.a
 import kotlinx.html.h5
 import kotlinx.html.i
 import kotlinx.html.id
-import org.olafneumann.regex.generator.js.asJQuery
-import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.js.animate
+import org.olafneumann.regex.generator.js.asJQuery
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLElement
 
