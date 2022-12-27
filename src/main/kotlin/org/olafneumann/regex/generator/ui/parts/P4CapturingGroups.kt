@@ -261,21 +261,27 @@ internal class P4CapturingGroups(
 
     private var lastRange: IntRange? = null
     private fun mark(items: List<MarkerItems>, from: Int, to: Int): IntRange? {
-        console.log("mark", from, to)
         val range = IntRange(min(from, to), max(from, to))
         if (lastRange != null && lastRange == range) {
             return markedRange
         }
         lastRange = range
-        return mark__(items, range)
+        return markInternal(items, range)
     }
 
-    private fun mark__(items: List<MarkerItems>, range: IntRange): IntRange? {
-        console.log("mark__", range)
-        val userStart = items[range.first].patternSymbol
-        val userEnd = items[range.last].patternSymbol
-        val realFrom = if (userStart.selectable) range.first else range.firstOrNull { items[it].patternSymbol.selectable }
-        val realTo = if (userEnd.selectable) range.last else (range.last downTo range.first).firstOrNull { items[it].patternSymbol.selectable }
+    private fun markInternal(items: List<MarkerItems>, originalRange: IntRange): IntRange? {
+        val userStart = items[originalRange.first].patternSymbol
+        val userEnd = items[originalRange.last].patternSymbol
+        val realFrom =
+            if (userStart.selectable)
+                originalRange.first
+            else
+                originalRange.firstOrNull { items[it].patternSymbol.selectable }
+        val realTo =
+            if (userEnd.selectable)
+                originalRange.last
+            else
+                (originalRange.last downTo originalRange.first).firstOrNull { items[it].patternSymbol.selectable }
 
         if (realFrom == null || realTo == null) {
             return null

@@ -102,7 +102,9 @@ data class CapturingGroupModel(
                 ) {
                     // new CG is AROUND old CG
                     oldCapturingGroup.move(1)
-                } else if (start > oldCapturingGroup.openingPosition && endInclusive < oldCapturingGroup.closingPosition) {
+                } else if (start > oldCapturingGroup.openingPosition
+                    && endInclusive < oldCapturingGroup.closingPosition
+                ) {
                     // new CG is INSIDE old CG
                     oldCapturingGroup.move(0, 2)
                 } else {

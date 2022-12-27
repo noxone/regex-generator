@@ -1,15 +1,17 @@
-import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class RegexGenerationTest {
     companion object {
-        private fun assertRegexIsCorrect(given: String, expected: String, options: Options = Options()) {
+        private fun assertRegexIsCorrect(given: String, expected: String) {
             val actual =
-                RecognizerMatchCombiner.combineMatches(inputText = given, selectedMatches = emptyList(), options = options)
+                RecognizerMatchCombiner.combineMatches(
+                    inputText = given,
+                    selectedMatches = emptyList()
+                )
 
-            assertEquals(expected = expected, actual = actual.finalPattern)
+            assertEquals(expected = expected, actual = actual.pattern)
         }
     }
 

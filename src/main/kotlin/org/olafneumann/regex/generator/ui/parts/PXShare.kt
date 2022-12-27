@@ -36,7 +36,7 @@ class PXShare(
         imageShareElement.classList.toggle(CLASS_ICON_COPY, !show)
         imageShareElement.classList.toggle(CLASS_ICON_CHECK, show)
         if (show) {
-            window.setTimeout({ showCheckMark(false) }, 2000)
+            window.setTimeout({ showCheckMark(false) }, ANIMATION_DURATION)
         }
     }
 
@@ -47,5 +47,7 @@ class PXShare(
     companion object {
         private const val CLASS_ICON_COPY = "bi-clipboard"
         private const val CLASS_ICON_CHECK = "bi-check-lg"
+
+        private const val ANIMATION_DURATION = 2000
     }
 }

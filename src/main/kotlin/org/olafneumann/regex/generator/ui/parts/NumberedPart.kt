@@ -18,11 +18,11 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
 import kotlin.properties.Delegates
 
-abstract class NumberedPart(
+open class NumberedPart(
     elementId: String,
     protected val number: Int = numberGenerator.next,
     caption: String,
-    leftCaptionElement: DIV.(caption: String) -> Unit = { caption -> h5 { +caption } },
+    leftCaptionElement: DIV.(caption: String) -> Unit = { cap -> h5 { +cap } },
     rightCaptionElement: DIV.() -> Unit = {}
 ) {
     private val elements = Elements()

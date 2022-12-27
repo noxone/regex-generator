@@ -16,7 +16,7 @@ private fun initRegexGenerator() {
     try {
         initRegexGeneratorUnsafe()
     } catch (exception: Exception) {
-        exception.printStackTrace()
+        console.error(exception.stackTraceToString())
         window.alert("Unable to initialize RegexGenerator: ${exception.message}")
     }
 }

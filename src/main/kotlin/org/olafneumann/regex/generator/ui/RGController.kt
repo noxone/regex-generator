@@ -15,6 +15,7 @@ import org.olafneumann.regex.generator.ui.model.FlagHelper
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams
 
+@Suppress("TooManyFunctions")
 class RGController : MVCContract.Controller {
     private val view: MVCContract.View = RGView(
         controller = this,

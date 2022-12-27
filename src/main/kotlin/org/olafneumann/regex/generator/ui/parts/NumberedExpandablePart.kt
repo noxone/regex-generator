@@ -18,11 +18,11 @@ abstract class NumberedExpandablePart(
     elementId = elementId,
     number = number,
     caption = caption,
-    leftCaptionElement = { caption ->
+    leftCaptionElement = { cap ->
         a(classes = "btn p-0 text-start w-100") {
             id = getOpenLinkId(number)
             h5 {
-                +caption
+                +cap
                 i(classes = "bi bi-chevron-up")
             }
         }

@@ -10,6 +10,7 @@ import kotlin.js.json
 class LoadingIndicator {
     companion object {
         private const val ID_DIV_LOADING = "rg_loading"
+        private const val ANIMATION_DURATION = 800
     }
 
     private val ctnLoading: HTMLDivElement = HtmlHelper.getElementById(ID_DIV_LOADING)
@@ -28,6 +29,7 @@ class LoadingIndicator {
     }
 
     private fun hideLoading() {
-        ctnLoading.asJQuery().fadeOut(json("duration" to 800, "complete" to { ctnLoading.asJQuery().remove() }))
+        ctnLoading.asJQuery()
+            .fadeOut(json("duration" to ANIMATION_DURATION, "complete" to { ctnLoading.asJQuery().remove() }))
     }
 }
