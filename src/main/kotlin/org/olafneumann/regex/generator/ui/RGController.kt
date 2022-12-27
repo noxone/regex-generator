@@ -2,6 +2,7 @@ package org.olafneumann.regex.generator.ui
 
 import kotlinx.browser.document
 import kotlinx.browser.window
+import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
@@ -88,6 +89,10 @@ class RGController : MVCContract.Controller {
 
     override fun onShowUserGuide(initialStep: Boolean) {
         view.showUserGuide(initialStep)
+    }
+
+    override fun onNewCapturingGroupModel(capturingGroupModel: CapturingGroupModel) {
+        model = model.setCapturingGroupModel(capturingGroupModel)
     }
 
     companion object {

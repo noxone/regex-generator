@@ -32,7 +32,6 @@ class P3RecognizerCombinerOptions(
         }
 
     fun applyModel(displayModel: DisplayModel) {
-        console.log(displayModel.patternRecognizerModel.recognizerMatchCombinerOptions)
         this.options = displayModel.patternRecognizerModel.recognizerMatchCombinerOptions
     }
 

@@ -35,7 +35,7 @@ class RGView(
     )
     private val matchPresenterPart = P2MatchPresenter(controller = controller)
     private val optionsPart = P3RecognizerCombinerOptions(controller = controller)
-    private val capturingGroupPart = if (CAP_GROUPS_ENABLED) P4CapturingGroups() else null
+    private val capturingGroupPart = if (CAP_GROUPS_ENABLED) P4CapturingGroups(controller = controller) else null
     private val regexDisplay = P5RegexDisplay(controller = controller)
     private val languageDisplay = P6LanguageDisplay(controller = controller)
     private val shareDisplay = PXShare(controller = controller)
@@ -55,7 +55,7 @@ class RGView(
         userInputPart.applyModel(model)
         matchPresenterPart.applyModel(model)
         optionsPart.applyModel(model)
-        capturingGroupPart?.setCapGroupCombination(model.patternRecognizerModel.capGroupCombination)
+        capturingGroupPart?.applyModel(model)
         regexDisplay.applyModel(model)
         languageDisplay.applyModel(model)
         shareDisplay.applyModel(model)

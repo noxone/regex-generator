@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.differenceOf
-import org.olafneumann.regex.generator.capgroup.CapGroupCombination
+import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.RecognizerRegistry
@@ -20,7 +20,7 @@ data class PatternRecognizerModel(
             selectedMatches = selectedRecognizerMatches,
             options = recognizerMatchCombinerOptions
         ),
-    val capGroupCombination: CapGroupCombination = CapGroupCombination(combinedRegex)
+    val capturingGroupModel: CapturingGroupModel = CapturingGroupModel(combinedRegex, emptyList())
 ) {
     fun setUserInput(newInput: String): PatternRecognizerModel {
         val newMatches = RecognizerRegistry.findMatches(newInput)
@@ -52,7 +52,8 @@ data class PatternRecognizerModel(
             input = newInput,
             recognizerMatches = newMatches,
             selectedRecognizerMatches = newSelectedMatches,
-            combinedRegex = newRegex
+            combinedRegex = newRegex,
+            capturingGroupModel = CapturingGroupModel(newRegex, emptyList()/* TODO keep cap groups */)
         )
     }
 
@@ -77,7 +78,8 @@ data class PatternRecognizerModel(
 
         return copy(
             selectedRecognizerMatches = newSelection,
-            combinedRegex = newRegex
+            combinedRegex = newRegex,
+            capturingGroupModel = CapturingGroupModel(newRegex, emptyList()/* TODO keep cap groups */)
         )
     }
 
@@ -88,20 +90,23 @@ data class PatternRecognizerModel(
 
         return copy(
             selectedRecognizerMatches = newSelection,
-            combinedRegex = newRegex
+            combinedRegex = newRegex,
+            capturingGroupModel = CapturingGroupModel(newRegex, emptyList()/* TODO keep cap groups */)
         )
     }
 
     fun setRecognizerMatchCombinerOptions(options: RecognizerMatchCombinerOptions): PatternRecognizerModel {
+        val newRegex = RecognizerMatchCombiner
+            .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
         return copy(
             recognizerMatchCombinerOptions = options,
-            combinedRegex = RecognizerMatchCombiner
-                .combineMatches(inputText = input, selectedMatches = selectedRecognizerMatches, options = options)
+            combinedRegex = newRegex,
+            capturingGroupModel = CapturingGroupModel(newRegex, emptyList()/* TODO keep cap groups */)
         )
     }
 
-    fun setCapGroupCombination(capGroupCombination: CapGroupCombination): PatternRecognizerModel {
-        return copy(capGroupCombination = capGroupCombination)
+    fun setCapturingGroupModel(capturingGroupModel: CapturingGroupModel): PatternRecognizerModel {
+        return copy(capturingGroupModel = capturingGroupModel)
     }
 
     val finalPattern: String get() = combinedRegex.pattern

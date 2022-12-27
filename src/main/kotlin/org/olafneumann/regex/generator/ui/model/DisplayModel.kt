@@ -1,5 +1,6 @@
 package org.olafneumann.regex.generator.ui.model
 
+import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
 import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.output.CodeGeneratorOptions
@@ -113,6 +114,9 @@ data class DisplayModel(
 
     fun deselect(recognizerMatch: RecognizerMatch): DisplayModel =
         pushNewPatternRecognizerModel(patternRecognizerModel.deselect(recognizerMatch))
+
+    fun setCapturingGroupModel(capturingGroupModel: CapturingGroupModel): DisplayModel =
+        pushNewPatternRecognizerModel(patternRecognizerModel.setCapturingGroupModel(capturingGroupModel))
 
     companion object {
         private const val NUMBER_OF_UNDO_SLOTS = 100
