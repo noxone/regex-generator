@@ -41,6 +41,8 @@ import org.w3c.dom.HTMLUListElement
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.properties.Delegates
 
 @Suppress("TooManyFunctions")
@@ -97,7 +99,6 @@ internal class P4CapturingGroups(
         clearMarks = {
             spans.forEach { it.span.classList.toggle(CLASS_SELECTION, false) }
             markedRange = null
-            selectedRange = null
         }
 
         // display existing regular expressions
@@ -256,23 +257,29 @@ internal class P4CapturingGroups(
         }
     }
 
-    private var selectedRange: IntRange? = null
     private var markedRange: IntRange? = null
 
+    private var lastRange: IntRange? = null
     private fun mark(items: List<MarkerItems>, from: Int, to: Int): IntRange? {
-        if (from > to) {
-            return mark(items = items, from = to, to = from)
-        }
-
-        if (selectedRange?.let { it == IntRange(from, to) } == true) {
+        console.log("mark", from, to)
+        val range = IntRange(min(from, to), max(from, to))
+        if (lastRange != null && lastRange == range) {
             return markedRange
         }
-        selectedRange = IntRange(from, to)
+        lastRange = range
+        return mark__(items, range)
+    }
 
-        val userStart = items[from].patternSymbol
-        val userEnd = items[to].patternSymbol
-        val realFrom = if (userStart.selectable) from else userStart.parent!!.firstIndex
-        val realTo = if (userEnd.selectable) to else userEnd.parent!!.lastIndex
+    private fun mark__(items: List<MarkerItems>, range: IntRange): IntRange? {
+        console.log("mark__", range)
+        val userStart = items[range.first].patternSymbol
+        val userEnd = items[range.last].patternSymbol
+        val realFrom = if (userStart.selectable) range.first else range.firstOrNull { items[it].patternSymbol.selectable }
+        val realTo = if (userEnd.selectable) range.last else (range.last downTo range.first).firstOrNull { items[it].patternSymbol.selectable }
+
+        if (realFrom == null || realTo == null) {
+            return null
+        }
 
         val compStart = items[realFrom].patternSymbol
         val compEnd = items[realTo].patternSymbol
