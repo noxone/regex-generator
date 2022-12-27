@@ -90,9 +90,15 @@ internal class P4CapturingGroups(
         // show text to select regular expressions
         val root = capturingGroupModel.rootPatternPartGroup
         val spans = createSpans(group = root)
-        spans.forEach { textDisplay.appendChild(it.value) }
+            .entries
+            .map { MarkerItems(it.key.index, it.key, it.value) }
+        spans.forEach { textDisplay.appendChild(it.span) }
         addMouseListenerToSpans(spans)
-        clearMarks = { spans.forEach { it.value.classList.toggle(CLASS_SELECTION, false) } }
+        clearMarks = {
+            spans.forEach { it.span.classList.toggle(CLASS_SELECTION, false) }
+            markedRange = null
+            selectedRange = null
+        }
 
         // display existing regular expressions
         createCapturingGroupList(spans)
@@ -113,7 +119,7 @@ internal class P4CapturingGroups(
         controller.onNewCapturingGroupModel(capturingGroupModel.removeCapturingGroup(capturingGroup.id))
     }
 
-    private fun createCapturingGroupList(spans: Map<PatternSymbol, HTMLSpanElement>) {
+    private fun createCapturingGroupList(items: List<MarkerItems>) {
         if (capturingGroupModel.capturingGroups.isEmpty()) {
             capGroupList.appendChild(document.create.li("list-group-item rg-cap-group-list-item rg-faded") {
                 em { +"No capturing groups defined yet." }
@@ -150,10 +156,10 @@ internal class P4CapturingGroups(
                     // highlight capturing group range in text
                     var isMarking = false
                     val markIt: (Boolean, IntRange?) -> Unit = { selected, range ->
-                        spans.forEach { symToSpan ->
-                            symToSpan.value.classList.toggle(
+                        items.forEach { item ->
+                            item.span.classList.toggle(
                                 token = CLASS_HIGHLIGHT,
-                                force = selected && (range == null || symToSpan.key.index in range)
+                                force = selected && (range == null || item.index in range)
                             )
                         }
                     }
@@ -180,10 +186,10 @@ internal class P4CapturingGroups(
         var nameText: HTMLInputElement by Delegates.notNull()
     }
 
-    private fun createSpans(group: PatternPartGroup): Map<PatternSymbol, HTMLSpanElement> {
+    private fun createSpans(group: PatternPartGroup): MutableMap<PatternSymbol, HTMLSpanElement> {
         return group.parts
             .map { createSpans(it) }
-            .fold(
+            .fold<Map<PatternSymbol, HTMLSpanElement>, MutableMap<PatternSymbol, HTMLSpanElement>>(
                 initial = mutableMapOf(),
                 operation = { acc, map ->
                     acc.putAll(map)
@@ -212,17 +218,14 @@ internal class P4CapturingGroups(
             attributes["data-index"] = patternSymbol.index.toString()
         }
 
-    private fun addMouseListenerToSpans(spans: Map<PatternSymbol, HTMLSpanElement>) {
-        spans.forEach { pair ->
-            val symbol = pair.key
-            val span = pair.value
-
+    private fun addMouseListenerToSpans(items: List<MarkerItems>) {
+        items.forEach { item ->
             var range: IntRange? = null
 
-            span.onmousedown = { mouseDownEvent ->
+            item.span.onmousedown = { mouseDownEvent ->
                 disposePopover()
 
-                val startIndex = symbol.index
+                val startIndex = item.patternSymbol.index
                 val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
                     MouseCapture.restoreGlobalMouseEvents()
                     val element = document.elementFromPoint(
@@ -232,7 +235,7 @@ internal class P4CapturingGroups(
                     MouseCapture.preventGlobalMouseEvents()
                     if (element != null && element is HTMLSpanElement) {
                         val currentIndex = element.attributes["data-index"]?.value?.toInt()
-                        currentIndex?.let { ci -> range = mark(spans, startIndex, ci) }
+                        currentIndex?.let { ci -> range = mark(items, startIndex, ci) }
                     }
                 }
                 MouseCapture.capture(
@@ -242,7 +245,7 @@ internal class P4CapturingGroups(
                         range?.let { range ->
                             onMarkedRegion(
                                 range = range,
-                                element = spans.entries.first { it.key.index == range.first }.value
+                                element = items[range.first].span
                             )
                         }
                     }
@@ -253,34 +256,48 @@ internal class P4CapturingGroups(
         }
     }
 
-    private fun mark(items: Map<PatternSymbol, HTMLSpanElement>, from: Int, to: Int): IntRange {
+    private var selectedRange: IntRange? = null
+    private var markedRange: IntRange? = null
+
+    private fun mark(items: List<MarkerItems>, from: Int, to: Int): IntRange? {
         if (from > to) {
             return mark(items = items, from = to, to = from)
         }
 
-        var realFrom = from
-        var realTo = to
+        if (selectedRange?.let { it == IntRange(from, to) } == true) {
+            return markedRange
+        }
+        selectedRange = IntRange(from, to)
 
-        val userStart = items.entries.first { it.key.index == from }.key
-        val userEnd = items.entries.first { it.key.index == to }.key
-        realFrom = if (userStart.selectable) realFrom else userStart.parent!!.firstIndex
-        realTo = if (userEnd.selectable) realTo else userEnd.parent!!.lastIndex
+        val userStart = items[from].patternSymbol
+        val userEnd = items[to].patternSymbol
+        val realFrom = if (userStart.selectable) from else userStart.parent!!.firstIndex
+        val realTo = if (userEnd.selectable) to else userEnd.parent!!.lastIndex
 
-        val compStart = items.entries.first { it.key.index == realFrom }.key
-        val compEnd = items.entries.first { it.key.index == realTo }.key
+        val compStart = items[realFrom].patternSymbol
+        val compEnd = items[realTo].patternSymbol
         val range = findIndicesInCommentParent(compStart, compEnd)
 
-        items.forEach {
-            it.value.classList.toggle(CLASS_SELECTION, it.key.index in range)
+        if (markedRange == null || markedRange != range) {
+            if (range != null) {
+                items.forEach {
+                    it.span.classList.toggle(CLASS_SELECTION, it.index in range)
+                }
+                markedRange = range
+            } else {
+                clearMarks()
+            }
+
         }
         return range
     }
 
-    private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange {
+    private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange? {
         return if (one.isRoot || other.isRoot) {
             console.warn("One of the symbols is the root node. This should not happen.", one, other)
-            val root = if (one.isRoot) one else other
-            IntRange(root.firstIndex, root.lastIndex)
+            //val root = if (one.isRoot) one else other
+            //IntRange(root.firstIndex, root.lastIndex)
+            null
         } else if (one.parent == other.parent && !one.parent!!.isAlternative && one.selectable && other.selectable) {
             IntRange(one.firstIndex, other.lastIndex)
         } else if (one.depth > other.depth) {
@@ -342,4 +359,10 @@ internal class P4CapturingGroups(
             it.stopPropagation()
         }
     }
+
+    private data class MarkerItems(
+        val index: Int,
+        val patternSymbol: PatternSymbol,
+        val span: HTMLSpanElement,
+    )
 }

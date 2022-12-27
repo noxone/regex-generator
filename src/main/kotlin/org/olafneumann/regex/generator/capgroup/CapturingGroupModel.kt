@@ -166,8 +166,8 @@ data class CapturingGroupModel(
     internal class PatternPartGroup(
         override var parent: PatternPartGroup? = null
     ) : PatternPart() {
-        override val isRoot: Boolean get() = parent == null
-        override val depth: Int by lazy { if (isRoot) 0 else 1 + parent!!.depth }
+        override val isRoot: Boolean = parent == null
+        override val depth: Int = if (isRoot) 0 else 1 + parent!!.depth
 
         override val firstIndex: Int
             get() = if (parts.isEmpty()) parent!!.firstIndex else parts.first().firstIndex
