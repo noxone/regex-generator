@@ -90,7 +90,8 @@ internal class P4CapturingGroups(
         // show text to select regular expressions
         val root = capturingGroupModel.rootPatternPartGroup
         val spans = createSpans(group = root)
-        enhanceSpans(spans)
+        spans.forEach { textDisplay.appendChild(it.value) }
+        addMouseListenerToSpans(spans)
         clearMarks = { spans.forEach { it.value.classList.toggle(CLASS_SELECTION, false) } }
 
         // display existing regular expressions
@@ -126,7 +127,7 @@ internal class P4CapturingGroups(
                 ) {
                     span {
                         if (capturingGroup.name != null) {
-                            span(classes = "rg_cap_group_named") { +capturingGroup.name!! }
+                            span(classes = "rg_cap_group_named") { +capturingGroup.name }
                         } else {
                             span(classes = "rg_cap_group_unnamed") { +"unnamed group" }
                         }
@@ -171,7 +172,125 @@ internal class P4CapturingGroups(
             .forEach { capGroupList.appendChild(it) }
     }
 
-    private fun markedRegion(range: IntRange, element: HTMLElement) {
+    private class InjectById(private val id: String) : CustomCapture {
+        override fun apply(element: HTMLElement): Boolean = element.id == id
+    }
+
+    private class Elements {
+        var nameText: HTMLInputElement by Delegates.notNull()
+    }
+
+    private fun createSpans(group: PatternPartGroup): Map<PatternSymbol, HTMLSpanElement> {
+        return group.parts
+            .map { createSpans(it) }
+            .fold(
+                initial = mutableMapOf(),
+                operation = { acc, map ->
+                    acc.putAll(map)
+                    acc
+                })
+    }
+
+    private fun createSpans(patternPart: PatternPart): Map<PatternSymbol, HTMLSpanElement> =
+        when (patternPart) {
+            is PatternPartGroup -> {
+                createSpans(group = patternPart)
+            }
+
+            is PatternSymbol -> {
+                mapOf(patternPart to createSpan(patternPart))
+            }
+
+            else -> {
+                error("Unknown part type $patternPart")
+            }
+        }
+
+    private fun createSpan(patternSymbol: PatternSymbol): HTMLSpanElement =
+        document.create.span(classes = "rg-result-part") {
+            +patternSymbol.text
+            attributes["data-index"] = patternSymbol.index.toString()
+        }
+
+    private fun addMouseListenerToSpans(spans: Map<PatternSymbol, HTMLSpanElement>) {
+        spans.forEach { pair ->
+            val symbol = pair.key
+            val span = pair.value
+
+            var range: IntRange? = null
+
+            span.onmousedown = { mouseDownEvent ->
+                disposePopover()
+
+                val startIndex = symbol.index
+                val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
+                    MouseCapture.restoreGlobalMouseEvents()
+                    val element = document.elementFromPoint(
+                        x = mouseMoveEvent.x,
+                        y = mouseMoveEvent.y
+                    )
+                    MouseCapture.preventGlobalMouseEvents()
+                    if (element != null && element is HTMLSpanElement) {
+                        val currentIndex = element.attributes["data-index"]?.value?.toInt()
+                        currentIndex?.let { ci -> range = mark(spans, startIndex, ci) }
+                    }
+                }
+                MouseCapture.capture(
+                    event = mouseDownEvent, // as MouseEvent,
+                    mouseMoveListener = mouseMoveListener,
+                    mouseUpListener = {
+                        range?.let { range ->
+                            onMarkedRegion(
+                                range = range,
+                                element = spans.entries.first { it.key.index == range.first }.value
+                            )
+                        }
+                    }
+                )
+                // run the first event now
+                mouseMoveListener(mouseDownEvent)
+            }
+        }
+    }
+
+    private fun mark(items: Map<PatternSymbol, HTMLSpanElement>, from: Int, to: Int): IntRange {
+        if (from > to) {
+            return mark(items = items, from = to, to = from)
+        }
+
+        var realFrom = from
+        var realTo = to
+
+        val userStart = items.entries.first { it.key.index == from }.key
+        val userEnd = items.entries.first { it.key.index == to }.key
+        realFrom = if (userStart.selectable) realFrom else userStart.parent!!.firstIndex
+        realTo = if (userEnd.selectable) realTo else userEnd.parent!!.lastIndex
+
+        val compStart = items.entries.first { it.key.index == realFrom }.key
+        val compEnd = items.entries.first { it.key.index == realTo }.key
+        val range = findIndicesInCommentParent(compStart, compEnd)
+
+        items.forEach {
+            it.value.classList.toggle(CLASS_SELECTION, it.key.index in range)
+        }
+        return range
+    }
+
+    private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange {
+        return if (one.isRoot || other.isRoot) {
+            console.warn("One of the symbols is the root node. This should not happen.", one, other)
+            val root = if (one.isRoot) one else other
+            IntRange(root.firstIndex, root.lastIndex)
+        } else if (one.parent == other.parent && !one.parent!!.isAlternative && one.selectable && other.selectable) {
+            IntRange(one.firstIndex, other.lastIndex)
+        } else if (one.depth > other.depth) {
+            findIndicesInCommentParent(one = one.parent!!, other = other)
+        } else {
+            findIndicesInCommentParent(one = one, other = other.parent!!)
+        }
+    }
+
+    private fun onMarkedRegion(range: IntRange, element: HTMLElement) {
         val elements = Elements()
         val idCapGroupName = "rg_name_of_capturing_group"
 
@@ -221,125 +340,6 @@ internal class P4CapturingGroups(
         jQuery(".popover").mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()
-        }
-    }
-
-    private class InjectById(private val id: String) : CustomCapture {
-        override fun apply(element: HTMLElement): Boolean = element.id == id
-    }
-
-    private class Elements {
-        var nameText: HTMLInputElement by Delegates.notNull()
-    }
-
-    private fun mark(items: Map<PatternSymbol, HTMLSpanElement>, from: Int, to: Int): IntRange {
-        if (from > to) {
-            return mark(items = items, from = to, to = from)
-        }
-
-        var realFrom = from
-        var realTo = to
-
-        val userStart = items.entries.first { it.key.index == from }.key
-        val userEnd = items.entries.first { it.key.index == to }.key
-        realFrom = if (userStart.selectable) realFrom else userStart.parent!!.firstIndex
-        realTo = if (userEnd.selectable) realTo else userEnd.parent!!.lastIndex
-
-        val compStart = items.entries.first { it.key.index == realFrom }.key
-        val compEnd = items.entries.first { it.key.index == realTo }.key
-        val range = findIndicesInCommentParent(compStart, compEnd)
-
-        items.forEach {
-            it.value.classList.toggle(CLASS_SELECTION, it.key.index in range)
-        }
-        return range
-    }
-
-    private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange {
-        return if (one.isRoot || other.isRoot) {
-            console.warn("One of the symbols is the root node. This should not happen.", one, other)
-            val root = if (one.isRoot) one else other
-            IntRange(root.firstIndex, root.lastIndex)
-        } else if (one.parent == other.parent && !one.parent!!.isAlternative && one.selectable && other.selectable) {
-            IntRange(one.firstIndex, other.lastIndex)
-        } else if (one.depth > other.depth) {
-            findIndicesInCommentParent(one = one.parent!!, other = other)
-        } else {
-            findIndicesInCommentParent(one = one, other = other.parent!!)
-        }
-    }
-
-    private fun createSpans(group: PatternPartGroup): Map<PatternSymbol, HTMLSpanElement> {
-        return group.parts
-            .map { createSpans(it) }
-            .fold(
-                initial = mutableMapOf(),
-                operation = { acc, map ->
-                    acc.putAll(map)
-                    acc
-                })
-    }
-
-    private fun createSpans(patternPart: PatternPart): Map<PatternSymbol, HTMLSpanElement> =
-        when (patternPart) {
-            is PatternPartGroup -> {
-                createSpans(group = patternPart)
-            }
-
-            is PatternSymbol -> {
-                mapOf(patternPart to createSpan(patternPart))
-            }
-
-            else -> {
-                error("Unknown part type $patternPart")
-            }
-        }
-
-    private fun createSpan(patternSymbol: PatternSymbol): HTMLSpanElement =
-        document.create.span(classes = "rg-result-part") {
-            +patternSymbol.text
-            attributes["data-index"] = patternSymbol.index.toString()
-        }
-
-    private fun enhanceSpans(spans: Map<PatternSymbol, HTMLSpanElement>) {
-        spans.forEach { pair ->
-            val symbol = pair.key
-            val span = pair.value
-
-            var range: IntRange? = null
-
-            span.onmousedown = { mouseDownEvent ->
-                disposePopover()
-
-                val startIndex = symbol.index
-                val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
-                    MouseCapture.restoreGlobalMouseEvents()
-                    val element = document.elementFromPoint(
-                        x = mouseMoveEvent.x,
-                        y = mouseMoveEvent.y
-                    )
-                    MouseCapture.preventGlobalMouseEvents()
-                    if (element != null && element is HTMLSpanElement) {
-                        val currentIndex = element.attributes["data-index"]?.value?.toInt()
-                        currentIndex?.let { ci -> range = mark(spans, startIndex, ci) }
-                    }
-                }
-                MouseCapture.capture(
-                    event = mouseDownEvent, // as MouseEvent,
-                    mouseMoveListener = mouseMoveListener,
-                    mouseUpListener = {
-                        range?.let { range ->
-                            markedRegion(
-                                range = range,
-                                element = spans.entries.first { it.key.index == range.first }.value
-                            )
-                        }
-                    }
-                )
-                // run the first event now
-                mouseMoveListener(mouseDownEvent)
-            }
-            textDisplay.appendChild(span)
         }
     }
 }
