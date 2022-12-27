@@ -3,7 +3,7 @@
 }
 
 #rg_loading > div {
-  background-color: var(--bs-gray-200)!important;
+  background-color: var(--bs-gray-800)!important;
   margin-left: auto!important;
   margin-right: auto!important;
 }
