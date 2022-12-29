@@ -227,7 +227,7 @@ internal class P4CapturingGroups(
 
                 var range: IntRange? = null
                 val indexCache = DoubleWorkPrevention<Int> { index ->
-                    index?.let { range = mark(items = items, from = item.patternSymbol.index, to = it) }
+                    index?.let { range = mark(items = items, originalFrom = item.patternSymbol.index, originalTo = it) }
                 }
                 val elementCache = DoubleWorkPrevention<HTMLSpanElement> { element ->
                     element?.attributes
@@ -263,50 +263,31 @@ internal class P4CapturingGroups(
 
     private var markedRange: IntRange? = null
 
-    private var lastRange: IntRange? = null
-    private fun mark(items: List<MarkerItem>, from: Int, to: Int): IntRange? {
-        val range = IntRange(min(from, to), max(from, to))
-        if (lastRange != null && lastRange == range) {
-            return markedRange
-        }
-        lastRange = range
-        return markInternal(items, range)
-    }
+    private fun mark(items: List<MarkerItem>, originalFrom: Int, originalTo: Int): IntRange? {
+        val originalRange = IntRange(min(originalFrom, originalTo), max(originalFrom, originalTo))
 
-    private fun markInternal(items: List<MarkerItem>, originalRange: IntRange): IntRange? {
-        val userStart = items[originalRange.first].patternSymbol
-        val userEnd = items[originalRange.last].patternSymbol
-        val realFrom =
-            if (userStart.selectable)
-                originalRange.first
-            else
-                originalRange.firstOrNull { items[it].patternSymbol.selectable }
-        val realTo =
-            if (userEnd.selectable)
-                originalRange.last
-            else
-                (originalRange.last downTo originalRange.first).firstOrNull { items[it].patternSymbol.selectable }
-
-        if (realFrom == null || realTo == null) {
+        val from = originalRange.firstOrNull { items[it].patternSymbol.selectable }
+        val to = originalRange.reversed().firstOrNull { items[it].patternSymbol.selectable }
+        if (from == null || to == null) {
             return null
         }
 
-        val compStart = items[realFrom].patternSymbol
-        val compEnd = items[realTo].patternSymbol
-        val range = findIndicesInCommentParent(compStart, compEnd)
-
-        if (markedRange == null || markedRange != range) {
-            if (range != null) {
-                items.forEach {
-                    it.span.classList.toggle(CLASS_SELECTION, it.index in range)
-                }
-                markedRange = range
-            } else {
-                clearMarks()
-            }
-
+        val range = findIndicesInCommentParent(items[from].patternSymbol, items[to].patternSymbol)
+        if (markedRange != range) {
+            markRange(items = items, range = range)
         }
         return range
+    }
+
+    private fun markRange(items: Collection<MarkerItem>, range: IntRange?) {
+        if (range != null) {
+            items.forEach {
+                it.span.classList.toggle(CLASS_SELECTION, it.index in range)
+            }
+        } else {
+            clearMarks()
+        }
+        markedRange = range
     }
 
     private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange? {
