@@ -12,6 +12,10 @@
   display: none;
 }
 
+.rg-faded {
+  opacity: 0.7;
+}
+
 h1, h2, h3, h4, h5, h6, label, small {
   -webkit-user-select: none;
   user-select: none;
