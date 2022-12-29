@@ -2,8 +2,6 @@ package org.olafneumann.regex.generator.regex
 
 import org.olafneumann.regex.generator.recognizer.EchoRecognizer
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
-import org.olafneumann.regex.generator.regex.Options
-import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -34,8 +32,8 @@ class RecognizerMatchCombinerTest {
         val actual = RecognizerMatchCombiner.combineMatches(
             inputText = inputText,
             selectedMatches = selectedMatches,
-            options = Options(onlyPatterns = false)
-        ).finalPattern
+            options = RecognizerMatchCombinerOptions(onlyPatterns = false)
+        ).pattern
 
         assertEquals(expected = expected, actual = actual)
     }
@@ -47,8 +45,8 @@ class RecognizerMatchCombinerTest {
         val actual = RecognizerMatchCombiner.combineMatches(
             inputText = inputText,
             selectedMatches = selectedMatches,
-            options = Options(onlyPatterns = true)
-        ).finalPattern
+            options = RecognizerMatchCombinerOptions(onlyPatterns = true)
+        ).pattern
 
         assertEquals(expected = expected, actual = actual)
     }

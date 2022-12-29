@@ -1,4 +1,5 @@
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -8,7 +9,8 @@ class RegexGenerationTest {
             val actual =
                 RecognizerMatchCombiner.combineMatches(
                     inputText = given,
-                    selectedMatches = emptyList()
+                    selectedMatches = emptyList(),
+                    options = RecognizerMatchCombinerOptions()
                 )
 
             assertEquals(expected = expected, actual = actual.pattern)
