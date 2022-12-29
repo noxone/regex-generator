@@ -53,21 +53,25 @@ detekt {
 
 
 kotlin {
-    js {
+    js(IR) {
         compileKotlinJs.kotlinOptions.moduleKind = "commonjs"
         browser {
             webpackTask {
-                cssSupport.enabled = true
+                cssSupport {
+                    enabled.set(true)
+                }
             }
 
             runTask {
-                cssSupport.enabled = true
+                cssSupport {
+                    enabled.set(true)
+                }
             }
 
             testTask {
                 useKarma {
                     useFirefoxHeadless()
-                    webpackConfig.cssSupport.enabled = true
+                    // webpackConfig.cssSupport.enabled = true
                 }
             }
         }
