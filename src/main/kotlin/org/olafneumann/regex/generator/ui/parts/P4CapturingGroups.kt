@@ -31,6 +31,7 @@ import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.model.DisplayModel
+import org.olafneumann.regex.generator.ui.utils.DoubleWorkPrevention
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
 import org.w3c.dom.HTMLDivElement
@@ -93,7 +94,7 @@ internal class P4CapturingGroups(
         val root = capturingGroupModel.rootPatternPartGroup
         val spans = createSpans(group = root)
             .entries
-            .map { MarkerItems(it.key.index, it.key, it.value) }
+            .map { MarkerItem(it.key.index, it.key, it.value) }
         spans.forEach { textDisplay.appendChild(it.span) }
         addMouseListenerToSpans(spans)
         clearMarks = {
@@ -120,7 +121,7 @@ internal class P4CapturingGroups(
         controller.onNewCapturingGroupModel(capturingGroupModel.removeCapturingGroup(capturingGroup.id))
     }
 
-    private fun createCapturingGroupList(items: List<MarkerItems>) {
+    private fun createCapturingGroupList(items: List<MarkerItem>) {
         if (capturingGroupModel.capturingGroups.isEmpty()) {
             capGroupList.appendChild(document.create.li("list-group-item rg-cap-group-list-item rg-faded") {
                 em { +"No capturing groups defined yet." }
@@ -219,37 +220,40 @@ internal class P4CapturingGroups(
             attributes["data-index"] = patternSymbol.index.toString()
         }
 
-    private fun addMouseListenerToSpans(items: List<MarkerItems>) {
+    private fun addMouseListenerToSpans(items: List<MarkerItem>) {
         items.forEach { item ->
-            var range: IntRange? = null
-
             item.span.onmousedown = { mouseDownEvent ->
                 disposePopover()
 
-                val startIndex = item.patternSymbol.index
+                var range: IntRange? = null
+                val indexCache = DoubleWorkPrevention<Int> { index ->
+                    index?.let { range = mark(items = items, from = item.patternSymbol.index, to = it) }
+                }
+                val elementCache = DoubleWorkPrevention<HTMLSpanElement> { element ->
+                    element?.attributes
+                        ?.get("data-index")
+                        ?.value
+                        ?.toIntOrNull()
+                        ?.let { index -> indexCache.set(index) }
+                }
+
                 val mouseMoveListener = { mouseMoveEvent: MouseEvent ->
-                    MouseCapture.restoreGlobalMouseEvents()
-                    val element = document.elementFromPoint(
-                        x = mouseMoveEvent.x,
-                        y = mouseMoveEvent.y
-                    )
-                    MouseCapture.preventGlobalMouseEvents()
+                    val element = MouseCapture.withGlobalMouseEvents {
+                        document.elementFromPoint(x = mouseMoveEvent.x, y = mouseMoveEvent.y)
+                    }
                     if (element != null && element is HTMLSpanElement) {
-                        val currentIndex = element.attributes["data-index"]?.value?.toInt()
-                        currentIndex?.let { ci -> range = mark(items, startIndex, ci) }
+                        elementCache.set(element)
+                    }
+                }
+                val mouseUpListener: (MouseEvent) -> Unit = { _ ->
+                    range?.let { range ->
+                        onMarkedRegion(range = range, element = items[range.first].span)
                     }
                 }
                 MouseCapture.capture(
                     event = mouseDownEvent, // as MouseEvent,
                     mouseMoveListener = mouseMoveListener,
-                    mouseUpListener = {
-                        range?.let { range ->
-                            onMarkedRegion(
-                                range = range,
-                                element = items[range.first].span
-                            )
-                        }
-                    }
+                    mouseUpListener = mouseUpListener
                 )
                 // run the first event now
                 mouseMoveListener(mouseDownEvent)
@@ -260,7 +264,7 @@ internal class P4CapturingGroups(
     private var markedRange: IntRange? = null
 
     private var lastRange: IntRange? = null
-    private fun mark(items: List<MarkerItems>, from: Int, to: Int): IntRange? {
+    private fun mark(items: List<MarkerItem>, from: Int, to: Int): IntRange? {
         val range = IntRange(min(from, to), max(from, to))
         if (lastRange != null && lastRange == range) {
             return markedRange
@@ -269,7 +273,7 @@ internal class P4CapturingGroups(
         return markInternal(items, range)
     }
 
-    private fun markInternal(items: List<MarkerItems>, originalRange: IntRange): IntRange? {
+    private fun markInternal(items: List<MarkerItem>, originalRange: IntRange): IntRange? {
         val userStart = items[originalRange.first].patternSymbol
         val userEnd = items[originalRange.last].patternSymbol
         val realFrom =
@@ -373,7 +377,7 @@ internal class P4CapturingGroups(
         }
     }
 
-    private data class MarkerItems(
+    private data class MarkerItem(
         val index: Int,
         val patternSymbol: PatternSymbol,
         val span: HTMLSpanElement,
