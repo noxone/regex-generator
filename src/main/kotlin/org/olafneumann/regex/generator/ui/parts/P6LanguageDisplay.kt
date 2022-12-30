@@ -13,9 +13,10 @@ import org.w3c.dom.HTMLInputElement
 
 class P6LanguageDisplay(
     private val controller: MVCContract.Controller
-) : NumberedPart(
+) : NumberedExpandablePart(
     elementId = "rg_display_programming_languages",
-    caption = "Usage in Programming Languages"
+    caption = "Usage in Programming Languages",
+    initialStateOpen = true
 ) {
     private val containerLanguages = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_DIV_LANGUAGES)
 
