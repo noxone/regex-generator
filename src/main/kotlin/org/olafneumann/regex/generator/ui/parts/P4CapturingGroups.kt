@@ -6,6 +6,7 @@ import kotlinx.html.ButtonType
 import kotlinx.html.InputType
 import kotlinx.html.a
 import kotlinx.html.button
+import kotlinx.html.classes
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.em
@@ -59,8 +60,8 @@ internal class P4CapturingGroups(
         private const val CLASS_HIGHLIGHT = "bg-info"
     }
 
-    private val textDisplay = HtmlHelper.getElementById<HTMLDivElement>("rg_cap_group_display")
-    private val capGroupList = HtmlHelper.getElementById<HTMLUListElement>("rg_cap_group_list")
+    private val textDisplay = HtmlHelper.getElementById<HTMLElement>("rg_cap_group_display")
+    private val capGroupList = HtmlHelper.getElementById<HTMLElement>("rg_cap_group_list")
 
     private var capturingGroupModel: CapturingGroupModel by Delegates.notNull()
 
@@ -123,57 +124,57 @@ internal class P4CapturingGroups(
 
     private fun createCapturingGroupList(items: List<MarkerItem>) {
         if (capturingGroupModel.capturingGroups.isEmpty()) {
-            capGroupList.appendChild(document.create.li("list-group-item rg-cap-group-list-item rg-faded") {
+            capGroupList.appendChild(document.create.div("col rg-cap-group-list-item rg-faded") {
                 em { +"No capturing groups defined yet." }
             })
         }
 
         capturingGroupModel.capturingGroups
             .map { capturingGroup ->
-                document.create.li(
-                    classes = "list-group-item rg-cap-group-list-item d-flex justify-content-between"
+                document.create.div (
+                    classes = "col-12 col-md-6 col-xl-4 col-xxl-3"
                 ) {
-                    span {
-                        if (capturingGroup.name != null) {
-                            span(classes = "rg_cap_group_named") { +capturingGroup.name }
-                        } else {
-                            span(classes = "rg_cap_group_unnamed") { +"unnamed group" }
-                        }
-
+                    div(classes = "border rounded p-1 d-flex justify-content-between align-items-center") {
                         span {
-                            +"(${capturingGroup.openingPosition} to ${capturingGroup.closingPosition})"
+                            if (capturingGroup.name != null) {
+                                span(classes = "rg_cap_group_named") { +capturingGroup.name }
+                            } else {
+                                span(classes = "rg_cap_group_unnamed") { +"unnamed group" }
+                            }
+                            +" "
+                            span {
+                                +"(${capturingGroup.openingPosition} to ${capturingGroup.closingPosition})"
+                            }
                         }
-                    }
 
-                    div {
-                        a(classes = "btn") {
+                        button(classes = "btn btn-sm", type = ButtonType.button) {
                             i(classes = "bi bi-trash") {}
                             onClickFunction = { _ ->
                                 removeCapturingGroup(capturingGroup)
                                 setCapturingGroupModel(capturingGroupModel)
                             }
                         }
-                    }
 
-                    // highlight capturing group range in text
-                    var isMarking = false
-                    val markIt: (Boolean, IntRange?) -> Unit = { selected, range ->
-                        items.forEach { item ->
-                            item.span.classList.toggle(
-                                token = CLASS_HIGHLIGHT,
-                                force = selected && (range == null || item.index in range)
-                            )
+                        // highlight capturing group range in text
+                        var isMarking = false
+                        val markIt: (Boolean, IntRange?) -> Unit = { selected, range ->
+                            items.forEach { item ->
+                                item.span.classList.toggle(
+                                    token = CLASS_HIGHLIGHT,
+                                    force = selected && (range == null || item.index in range)
+                                )
+                            }
                         }
-                    }
-                    onMouseMoveFunction = { _ ->
-                        if (!isMarking) {
-                            markIt(true, capturingGroup.range)
-                            isMarking = true
+                        onMouseMoveFunction = { _ ->
+                            if (!isMarking) {
+                                markIt(true, capturingGroup.range)
+                                isMarking = true
+                            }
                         }
-                    }
-                    onMouseOutFunction = {
-                        markIt(false, null)
-                        isMarking = false
+                        onMouseOutFunction = {
+                            markIt(false, null)
+                            isMarking = false
+                        }
                     }
                 }
             }

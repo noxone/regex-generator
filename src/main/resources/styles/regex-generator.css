@@ -156,9 +156,8 @@ h5 i {
   margin-left: -1.5em;
 }
 
-#rg_cap_group_expander {
-  text-align: left;
-  outline: none;
+.rg-cap-group-unnamed {
+  font-style: italic;
 }
 
 .rg-code-accordion .accordion-button {
