@@ -22,6 +22,7 @@ The page supports several search parameters to change the initial state of the o
   - ``P`` this controls the "Generate only patterns" check box
   - ``L`` this controls the "Match whole line" check box
 - ``selection`` controls the matches that have been selected by the user
+- ``capGroups`` controls the capturing groups that are created by the user
 
 Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=imL&selection=5%7CMultiple%20characters](https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=imL&selection=5%7CMultiple%20characters)
 

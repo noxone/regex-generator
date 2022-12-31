@@ -34,6 +34,7 @@ object HtmlView {
     const val SEARCH_SAMPLE_REGEX = "sampleText"
     const val SEARCH_FLAGS = "flags"
     const val SEARCH_SELECTION = "selection"
+    const val SEARCH_CAP_GROUP = "capGroups"
 
     val MATCH_PRESENTER_CSS_CLASS = listOf("bg-primary", "bg-success", "bg-danger", "bg-warning")
     const val MAGIC_HEIGHT = 8

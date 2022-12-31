@@ -264,13 +264,14 @@ data class CapturingGroupModel(
         }
     }
 
-
     data class CapturingGroup internal constructor(
         val openingPosition: Int,
         val closingPosition: Int,
         val name: String?
     ) {
         val id = idGenerator.next
+
+        val publishedClosingPosition = closingPosition - 2
 
         val openingString: String
             get() = "(${name?.let { "?<$it>" } ?: ""}"

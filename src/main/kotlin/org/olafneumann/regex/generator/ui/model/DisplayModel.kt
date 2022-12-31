@@ -62,17 +62,23 @@ data class DisplayModel(
                 .map { "${it.first}|${it.recognizer.name}" }
                 .joinToString(separator = ",") { encodeURIComponent(it) }
                 .ifEmpty { null }
+            val capGroups: String? = patternRecognizerModel.capturingGroupModel
+                .capturingGroups
+                .map { "${it.name ?: ""}|${it.openingPosition}-${it.publishedClosingPosition}" }
+                .joinToString(separator = ",") { encodeURIComponent(it) }
+                .ifEmpty { null }
 
-            val searchParameters = mapOf(
+            val localhostUrl = mapOf(
                 HtmlView.SEARCH_SAMPLE_REGEX to sampleRegex,
                 HtmlView.SEARCH_FLAGS to flags,
                 HtmlView.SEARCH_SELECTION to selection,
+                HtmlView.SEARCH_CAP_GROUP to capGroups,
             )
                 .filter { it.value != null }
                 .map { "${it.key}=${it.value}" }
                 .joinToString(prefix = "http://localhost/?", separator = "&")
 
-            return URL(searchParameters).toCurrentWindowLocation()
+            return URL(localhostUrl).toCurrentWindowLocation()
         }
 
     val isUndoAvailable: Boolean get() = modelPointer > 0
