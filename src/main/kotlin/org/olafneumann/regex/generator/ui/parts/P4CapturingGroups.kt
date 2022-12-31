@@ -4,9 +4,7 @@ import kotlinx.browser.document
 import kotlinx.dom.clear
 import kotlinx.html.ButtonType
 import kotlinx.html.InputType
-import kotlinx.html.a
 import kotlinx.html.button
-import kotlinx.html.classes
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.em
@@ -16,13 +14,14 @@ import kotlinx.html.injector.CustomCapture
 import kotlinx.html.injector.inject
 import kotlinx.html.input
 import kotlinx.html.js.form
-import kotlinx.html.js.li
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onKeyDownFunction
 import kotlinx.html.js.onMouseMoveFunction
 import kotlinx.html.js.onMouseOutFunction
 import kotlinx.html.js.span
+import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.span
+import kotlinx.html.title
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.CapturingGroup
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.PatternPart
@@ -35,11 +34,9 @@ import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.utils.DoubleWorkPrevention
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
-import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
-import org.w3c.dom.HTMLUListElement
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get
@@ -134,47 +131,27 @@ internal class P4CapturingGroups(
                 document.create.div (
                     classes = "col-12 col-md-6 col-xl-4 col-xxl-3"
                 ) {
+                    val highlighter = Highlighter(items, capturingGroup)
                     div(classes = "border rounded p-1 d-flex justify-content-between align-items-center") {
-                        span {
+                        div(classes = "ms-2") {
                             if (capturingGroup.name != null) {
-                                span(classes = "rg_cap_group_named") { +capturingGroup.name }
+                                span { +capturingGroup.name }
                             } else {
-                                span(classes = "rg_cap_group_unnamed") { +"unnamed group" }
-                            }
-                            +" "
-                            span {
-                                +"(${capturingGroup.openingPosition} to ${capturingGroup.closingPosition})"
+                                span(classes = "rg-cap-group-unnamed") { +"Unnamed group" }
                             }
                         }
 
                         button(classes = "btn btn-sm", type = ButtonType.button) {
                             i(classes = "bi bi-trash") {}
+                            title = "Delete capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
                             onClickFunction = { _ ->
                                 removeCapturingGroup(capturingGroup)
                                 setCapturingGroupModel(capturingGroupModel)
                             }
                         }
 
-                        // highlight capturing group range in text
-                        var isMarking = false
-                        val markIt: (Boolean, IntRange?) -> Unit = { selected, range ->
-                            items.forEach { item ->
-                                item.span.classList.toggle(
-                                    token = CLASS_HIGHLIGHT,
-                                    force = selected && (range == null || item.index in range)
-                                )
-                            }
-                        }
-                        onMouseMoveFunction = { _ ->
-                            if (!isMarking) {
-                                markIt(true, capturingGroup.range)
-                                isMarking = true
-                            }
-                        }
-                        onMouseOutFunction = {
-                            markIt(false, null)
-                            isMarking = false
-                        }
+                        onMouseMoveFunction = highlighter.onMouseMoveFunction
+                        onMouseOutFunction = highlighter.onMouseOutFunction
                     }
                 }
             }
@@ -364,4 +341,31 @@ internal class P4CapturingGroups(
         val patternSymbol: PatternSymbol,
         val span: HTMLSpanElement,
     )
+
+    private class Highlighter(
+        private val items: Collection<MarkerItem>,
+        private val capturingGroup: CapturingGroup
+    ) {
+
+        // highlight capturing group range in text
+        private var isMarking = false
+        val markIt: (Boolean, IntRange?) -> Unit = { selected, range ->
+            items.forEach { item ->
+                item.span.classList.toggle(
+                    token = CLASS_HIGHLIGHT,
+                    force = selected && (range == null || item.index in range)
+                )
+            }
+        }
+        val onMouseMoveFunction = { _: Event ->
+            if (!isMarking) {
+                markIt(true, capturingGroup.range)
+                isMarking = true
+            }
+        }
+        val onMouseOutFunction = { _: Event ->
+            markIt(false, null)
+            isMarking = false
+        }
+    }
 }
