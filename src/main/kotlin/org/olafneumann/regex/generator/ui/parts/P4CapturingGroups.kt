@@ -2,26 +2,13 @@ package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
-import kotlinx.html.ButtonType
-import kotlinx.html.InputType
-import kotlinx.html.button
+import kotlinx.html.*
 import kotlinx.html.div
 import kotlinx.html.dom.create
-import kotlinx.html.em
-import kotlinx.html.i
-import kotlinx.html.id
 import kotlinx.html.injector.CustomCapture
 import kotlinx.html.injector.inject
-import kotlinx.html.input
-import kotlinx.html.js.form
-import kotlinx.html.js.onClickFunction
-import kotlinx.html.js.onKeyDownFunction
-import kotlinx.html.js.onMouseMoveFunction
-import kotlinx.html.js.onMouseOutFunction
-import kotlinx.html.js.span
+import kotlinx.html.js.*
 import kotlinx.html.org.w3c.dom.events.Event
-import kotlinx.html.span
-import kotlinx.html.title
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.CapturingGroup
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.PatternPart
@@ -128,11 +115,11 @@ internal class P4CapturingGroups(
 
         capturingGroupModel.capturingGroups
             .map { capturingGroup ->
-                document.create.div (
+                document.create.div(
                     classes = "col-12 col-md-6 col-xl-4 col-xxl-3"
                 ) {
                     val highlighter = Highlighter(items, capturingGroup)
-                    div(classes = "border rounded p-1 d-flex justify-content-between align-items-center") {
+                    div(classes = "rg-capturing-group border rounded p-1 d-flex justify-content-between align-items-center") {
                         div(classes = "ms-2") {
                             if (capturingGroup.name != null) {
                                 span { +capturingGroup.name }
@@ -141,7 +128,7 @@ internal class P4CapturingGroups(
                             }
                         }
 
-                        button(classes = "btn btn-sm", type = ButtonType.button) {
+                        button(classes = "btn btn-light btn-sm", type = ButtonType.button) {
                             i(classes = "bi bi-trash") {}
                             title = "Delete capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
                             onClickFunction = { _ ->
@@ -287,8 +274,15 @@ internal class P4CapturingGroups(
         val elements = Elements()
         val idCapGroupName = "rg_name_of_capturing_group"
 
+        val pattern = Regex("^[A-Za-z]\\w*$")
+        val getNewCapturingGroupName: () -> String? = { elements.nameText.value.trim().ifBlank { null } }
+        val isNewCapturingGroupNameValid: () -> Boolean =
+            { CapturingGroupModel.isCapturingGroupNameValid(getNewCapturingGroupName()) }
         val createCapturingGroup: () -> Unit = {
-            createCapturingGroup(elements.nameText.value.ifBlank { null }, range)
+            if (isNewCapturingGroupNameValid()) {
+                disposePopover()
+                createCapturingGroup(getNewCapturingGroupName(), range)
+            }
         }
 
         popover = Popover(
@@ -298,11 +292,15 @@ internal class P4CapturingGroups(
                 elements, listOf(
                     InjectById(idCapGroupName) to Elements::nameText
                 )
-            ).form {
-                div(classes = "form-group") {
+            ).form(classes = "needs-validation") {
+                div(classes = "mb-3") {
                     input(type = InputType.text, classes = "form-control-sm") {
                         this.id = idCapGroupName
                         placeholder = "Name (optional)"
+                        onInputFunction = {
+                            elements.nameText.classList.toggle("is-invalid", !isNewCapturingGroupNameValid())
+                            elements.nameText.classList.toggle("is-valid", getNewCapturingGroupName() != null)
+                        }
                         onKeyDownFunction = { event ->
                             if (event is KeyboardEvent) {
                                 if (event.key == "Enter") {
@@ -313,18 +311,19 @@ internal class P4CapturingGroups(
                             }
                         }
                     }
+                    div(classes = "invalid-feedback") {
+                        +"The name is invalid. Ensure it is alpha numeric and does not begin with a digit."
+                    }
                 }
-                div(classes = "form-group") {
-                    button(classes = "btn btn-primary") {
-                        +"Create capturing group"
-                        type = ButtonType.button
-                        onClickFunction = { _ ->
-                            createCapturingGroup()
-                        }
+                button(classes = "btn btn-primary") {
+                    +"Create capturing group"
+                    type = ButtonType.button
+                    onClickFunction = {
+                        createCapturingGroup()
                     }
                 }
             },
-            placement = "left",
+            placement = "top",
             title = "Create capturing group",
             trigger = "manual",
             onShown = { elements.nameText.focus() }

@@ -10,11 +10,15 @@ data class CapturingGroupModel(
     val capturingGroups: List<CapturingGroup>
 ) {
     companion object {
+        private val VALID_NAME_REGEX = Regex("^[A-Za-z]\\w*$")
         @Suppress("MaxLineLength")
         private val patternSymbolRegex = Regex(
             """(?<complete>\(\?(?:[a-zA-Z]+|[+-]?[0-9]+|&\w+|P=\w+)\))|(?<open>\((?:\?(?::|!|>|=|\||<=|P?<[a-z][a-z0-9]*>|'[a-z][a-z0-9]*'|[-a-z]+:))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<alt>\|)""",
             options = setOf(RegexOption.IGNORE_CASE)
         )
+
+        fun isCapturingGroupNameValid(name: String?): Boolean =
+            name == null || VALID_NAME_REGEX.matches(name)
     }
 
     val pattern: String by lazy {
