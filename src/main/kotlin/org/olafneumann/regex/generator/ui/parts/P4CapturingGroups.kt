@@ -11,6 +11,7 @@ import kotlinx.html.em
 import kotlinx.html.i
 import kotlinx.html.id
 import kotlinx.html.injector.CustomCapture
+import kotlinx.html.injector.InjectByClassName
 import kotlinx.html.injector.inject
 import kotlinx.html.input
 import kotlinx.html.js.form
@@ -35,6 +36,7 @@ import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.utils.DoubleWorkPrevention
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
+import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
@@ -117,7 +119,11 @@ internal class P4CapturingGroups(
     }
 
     private fun removeCapturingGroup(capturingGroup: CapturingGroup) {
-        controller.onNewCapturingGroupModel(capturingGroupModel.removeCapturingGroup(capturingGroup.id))
+        controller.onNewCapturingGroupModel(capturingGroupModel.removeCapturingGroup(capturingGroup))
+    }
+
+    private fun renameCapturingGroup(capturingGroup: CapturingGroup, newName: String?) {
+        controller.onNewCapturingGroupModel(capturingGroupModel.renameCapturingGroup(capturingGroup, newName))
     }
 
     private fun createCapturingGroupList(items: List<MarkerItem>) {
@@ -129,7 +135,13 @@ internal class P4CapturingGroups(
 
         capturingGroupModel.capturingGroups
             .map { capturingGroup ->
-                document.create.div(
+                val elements = InlineElements()
+
+                document.create.inject(
+                    elements, listOf(
+                        InjectByClassName("rg-capturing-group") to InlineElements::mainDiv,
+                    )
+                ).div(
                     classes = "col-12 col-md-6 col-xl-4 col-xxl-3"
                 ) {
                     val highlighter = Highlighter(items, capturingGroup)
@@ -143,13 +155,16 @@ internal class P4CapturingGroups(
                         }
 
                         div(classes = "btn-group") {
+                            button(classes = "btn btn-light btn-sm text-secondary", type = ButtonType.button) {
+                                i(classes = "bi bi-pencil")
+                                title = "Rename capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
+                                onClickFunction = { onRenameCapturingGroup(capturingGroup, elements.mainDiv) }
+                            }
+
                             button(classes = "btn btn-light btn-sm text-danger", type = ButtonType.button) {
                                 i(classes = "bi bi-trash")
                                 title = "Delete capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
-                                onClickFunction = { _ ->
-                                    removeCapturingGroup(capturingGroup)
-                                    setCapturingGroupModel(capturingGroupModel)
-                                }
+                                onClickFunction = { removeCapturingGroup(capturingGroup) }
                             }
                         }
 
@@ -165,7 +180,11 @@ internal class P4CapturingGroups(
         override fun apply(element: HTMLElement): Boolean = element.id == id
     }
 
-    private class Elements {
+    private class InlineElements {
+        var mainDiv: HTMLDivElement by Delegates.notNull()
+    }
+
+    private class PopoverElements {
         var nameText: HTMLInputElement by Delegates.notNull()
     }
 
@@ -286,32 +305,42 @@ internal class P4CapturingGroups(
         }
     }
 
-    private fun onMarkedRegion(range: IntRange, element: HTMLElement) {
-        val elements = Elements()
+    private fun onMarkedRegion(range: IntRange, element: HTMLElement) =
+        showCapturingGroupNamePopover("Create", element) { capturingGroupName ->
+           disposePopover()
+           createCapturingGroup(capturingGroupName, range)
+       }
+
+    private fun onRenameCapturingGroup(capturingGroup: CapturingGroup, element: HTMLElement) {
+        showCapturingGroupNamePopover("Rename", element, prefilledValue = capturingGroup.name ?: "") { capturingGroupName ->
+            disposePopover()
+            if (capturingGroup.name != capturingGroupName) {
+                renameCapturingGroup(capturingGroup, capturingGroupName)
+            }
+        }
+    }
+
+    private fun showCapturingGroupNamePopover(title: String, element: HTMLElement, prefilledValue: String = "", action: (String?) -> Unit) {
+        val elements = PopoverElements()
         val idCapGroupName = "rg_name_of_capturing_group"
 
         val getNewCapturingGroupName: () -> String? = { elements.nameText.value.trim().ifBlank { null } }
         val isNewCapturingGroupNameValid: () -> Boolean =
             { CapturingGroupModel.isCapturingGroupNameValid(getNewCapturingGroupName()) }
-        val createCapturingGroup: () -> Unit = {
-            if (isNewCapturingGroupNameValid()) {
-                disposePopover()
-                createCapturingGroup(getNewCapturingGroupName(), range)
-            }
-        }
 
         popover = Popover(
             element = element,
             html = true,
             contentElement = document.create.inject(
                 elements, listOf(
-                    InjectById(idCapGroupName) to Elements::nameText
+                    InjectById(idCapGroupName) to PopoverElements::nameText
                 )
             ).form(classes = "needs-validation") {
                 div(classes = "mb-3") {
-                    input(type = InputType.text, classes = "form-control-sm") {
+                    input(type = InputType.text, classes = "form-control") {
                         this.id = idCapGroupName
                         placeholder = "Name (optional)"
+                        value = prefilledValue
                         onInputFunction = {
                             elements.nameText.classList.toggle("is-invalid", !isNewCapturingGroupNameValid())
                             elements.nameText.classList.toggle("is-valid", getNewCapturingGroupName() != null)
@@ -319,7 +348,7 @@ internal class P4CapturingGroups(
                         onKeyDownFunction = { event ->
                             if (event is KeyboardEvent) {
                                 if (event.key == "Enter") {
-                                    createCapturingGroup()
+                                    action(getNewCapturingGroupName())
                                 } else if (event.key == "Escape") {
                                     disposePopover()
                                 }
@@ -331,19 +360,20 @@ internal class P4CapturingGroups(
                     }
                 }
                 button(classes = "btn btn-primary") {
-                    +"Create capturing group"
+                    +"$title Capturing Group"
                     type = ButtonType.button
                     onClickFunction = {
-                        createCapturingGroup()
+                        action(getNewCapturingGroupName())
                     }
                 }
             },
             placement = "top",
-            title = "Create capturing group",
+            title = "$title Capturing Group",
             trigger = "manual",
             onShown = { elements.nameText.focus() }
         )
         popover!!.show()
+        elements.nameText.select()
         jQuery(".popover").mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()

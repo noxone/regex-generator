@@ -123,27 +123,25 @@ data class CapturingGroupModel(
     }
 
     @Suppress("MagicNumber")
-    fun removeCapturingGroup(id: Int): CapturingGroupModel {
-        val delCapturingGroup = capturingGroups.first { it.id == id }
-
+    fun removeCapturingGroup(capturingGroup: CapturingGroup): CapturingGroupModel {
         val newCapturingGroups = capturingGroups
             .mapNotNull { curCapturingGroup ->
-                if (delCapturingGroup.id == curCapturingGroup.id) {
+                if (capturingGroup.id == curCapturingGroup.id) {
                     null
-                } else if (delCapturingGroup.closingPosition < curCapturingGroup.openingPosition) {
+                } else if (capturingGroup.closingPosition < curCapturingGroup.openingPosition) {
                     // deleted CG was BEFORE current CG
                     curCapturingGroup.move(-2)
-                } else if (delCapturingGroup.openingPosition > curCapturingGroup.closingPosition) {
+                } else if (capturingGroup.openingPosition > curCapturingGroup.closingPosition) {
                     // deleted CG was BEHIND current CG
                     // do nothing
                     curCapturingGroup
-                } else if (delCapturingGroup.openingPosition > curCapturingGroup.openingPosition
-                    && delCapturingGroup.closingPosition < curCapturingGroup.closingPosition
+                } else if (capturingGroup.openingPosition > curCapturingGroup.openingPosition
+                    && capturingGroup.closingPosition < curCapturingGroup.closingPosition
                 ) {
                     // deleted CG was INSIDE current CG
                     curCapturingGroup.move(0, -2)
-                } else if (delCapturingGroup.openingPosition < curCapturingGroup.openingPosition
-                    && delCapturingGroup.closingPosition > curCapturingGroup.closingPosition
+                } else if (capturingGroup.openingPosition < curCapturingGroup.openingPosition
+                    && capturingGroup.closingPosition > curCapturingGroup.closingPosition
                 ) {
                     // deleted CG was AROUND current CG
                     curCapturingGroup.move(-1)
@@ -151,6 +149,15 @@ data class CapturingGroupModel(
                     curCapturingGroup
                 }
             }
+        return copy(capturingGroups = newCapturingGroups)
+    }
+
+    fun renameCapturingGroup(capturingGroup: CapturingGroup, newName: String?): CapturingGroupModel {
+        val newCapturingGroup = capturingGroup.rename(newName)
+        val newCapturingGroups = capturingGroups.toMutableList()
+        newCapturingGroups.remove(capturingGroup)
+        newCapturingGroups.add(newCapturingGroup)
+        newCapturingGroups.sortBy { it.openingPosition }
         return copy(capturingGroups = newCapturingGroups)
     }
 
@@ -294,7 +301,7 @@ data class CapturingGroupModel(
                 closingPosition = closingPosition + distanceClosing
             )
 
-        fun rename(newName: String): CapturingGroup =
+        fun rename(newName: String?): CapturingGroup =
             copy(name = newName)
 
         companion object {
