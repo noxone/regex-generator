@@ -21,6 +21,7 @@ import kotlinx.html.js.onKeyDownFunction
 import kotlinx.html.js.onMouseMoveFunction
 import kotlinx.html.js.onMouseOutFunction
 import kotlinx.html.js.span
+import kotlinx.html.label
 import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.span
 import kotlinx.html.title
@@ -327,7 +328,7 @@ internal class P4CapturingGroups(
     }
 
     private fun showCapturingGroupNamePopover(
-        title: String,
+        caption: String,
         element: HTMLElement,
         prefilledValue: String = "",
         action: (String?) -> Unit
@@ -349,9 +350,13 @@ internal class P4CapturingGroups(
             ).form(classes = "needs-validation") {
                 autoComplete = false
                 div(classes = "mb-3") {
+                    label(classes = "form-label") {
+                        htmlFor = idCapGroupName
+                        +"Name (optional)"
+                    }
                     input(type = InputType.text, classes = "form-control") {
                         this.id = idCapGroupName
-                        placeholder = "Name (optional)"
+                        //placeholder = "Name (optional)"
                         value = prefilledValue
                         autoComplete = false
                         onInputFunction = {
@@ -372,8 +377,58 @@ internal class P4CapturingGroups(
                         +"The name is invalid. Ensure it is alpha numeric and does not begin with a digit."
                     }
                 }
+
+                div(classes = "mb-3") {
+                    label(classes = "form-label") {
+                        +"Quantifier"
+                    }
+                    div(classes = "d-block") {
+                        div(classes = "btn-group") {
+                            button(classes = "btn btn-light text-secondary") { i(classes = "bi bi-x-square") }
+                            button(classes = "btn btn-light") { +"?" }
+                            button(classes = "btn btn-light") { +"*" }
+                            button(classes = "btn btn-light") { +"+" }
+                            button(classes = "btn btn-light") { +"{x,y}" }
+                        }
+                    }
+                }
+
+                div(classes = "mb-3") {
+                    label(classes = "form-label") {
+                        +"Flags"
+                    }
+                    div(classes = "d-block") {
+                        div(classes = "btn-group") {
+                            button(classes = "btn btn-light") {
+                                +"i"
+                                title = "Case Sensitive"
+                            }
+                            button(classes = "btn btn-light") {
+                                +"d"
+                                title = "Unix Lines"
+                            }
+                            button(classes = "btn btn-light") {
+                                +"m"
+                                title = "Multiline"
+                            }
+                            button(classes = "btn btn-light") {
+                                +"s"
+                                title = "DotAll"
+                            }
+                            button(classes = "btn btn-light") {
+                                +"u"
+                                title = "Unicode Case"
+                            }
+                            button(classes = "btn btn-light") {
+                                +"x"
+                                title = "Comments"
+                            }
+                        }
+                    }
+                }
+
                 button(classes = "btn btn-primary") {
-                    +"$title Capturing Group"
+                    +"$caption Capturing Group"
                     type = ButtonType.button
                     onClickFunction = {
                         action(getNewCapturingGroupName())
@@ -381,7 +436,7 @@ internal class P4CapturingGroups(
                 }
             },
             placement = "top",
-            title = "$title Capturing Group",
+            title = "$caption Capturing Group",
             trigger = "manual",
             onShown = { elements.nameText.focus() }
         )
