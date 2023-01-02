@@ -2,13 +2,27 @@ package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
-import kotlinx.html.*
+import kotlinx.html.ButtonType
+import kotlinx.html.InputType
+import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.dom.create
+import kotlinx.html.em
+import kotlinx.html.i
+import kotlinx.html.id
 import kotlinx.html.injector.CustomCapture
 import kotlinx.html.injector.inject
-import kotlinx.html.js.*
+import kotlinx.html.input
+import kotlinx.html.js.form
+import kotlinx.html.js.onClickFunction
+import kotlinx.html.js.onInputFunction
+import kotlinx.html.js.onKeyDownFunction
+import kotlinx.html.js.onMouseMoveFunction
+import kotlinx.html.js.onMouseOutFunction
+import kotlinx.html.js.span
 import kotlinx.html.org.w3c.dom.events.Event
+import kotlinx.html.span
+import kotlinx.html.title
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.CapturingGroup
 import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.PatternPart
@@ -120,7 +134,7 @@ internal class P4CapturingGroups(
                 ) {
                     val highlighter = Highlighter(items, capturingGroup)
                     div(classes = "rg-capturing-group border rounded p-1 d-flex justify-content-between align-items-center") {
-                        div(classes = "ms-2") {
+                        div(classes = "ms-2 text-truncate") {
                             if (capturingGroup.name != null) {
                                 span { +capturingGroup.name }
                             } else {
@@ -128,12 +142,14 @@ internal class P4CapturingGroups(
                             }
                         }
 
-                        button(classes = "btn btn-light btn-sm", type = ButtonType.button) {
-                            i(classes = "bi bi-trash") {}
-                            title = "Delete capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
-                            onClickFunction = { _ ->
-                                removeCapturingGroup(capturingGroup)
-                                setCapturingGroupModel(capturingGroupModel)
+                        div(classes = "btn-group") {
+                            button(classes = "btn btn-light btn-sm text-danger", type = ButtonType.button) {
+                                i(classes = "bi bi-trash")
+                                title = "Delete capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
+                                onClickFunction = { _ ->
+                                    removeCapturingGroup(capturingGroup)
+                                    setCapturingGroupModel(capturingGroupModel)
+                                }
                             }
                         }
 
@@ -274,7 +290,6 @@ internal class P4CapturingGroups(
         val elements = Elements()
         val idCapGroupName = "rg_name_of_capturing_group"
 
-        val pattern = Regex("^[A-Za-z]\\w*$")
         val getNewCapturingGroupName: () -> String? = { elements.nameText.value.trim().ifBlank { null } }
         val isNewCapturingGroupNameValid: () -> Boolean =
             { CapturingGroupModel.isCapturingGroupNameValid(getNewCapturingGroupName()) }
