@@ -7,6 +7,8 @@ fun IntRange.hasIntersectionWith(other: IntRange): Boolean {
 
 val IntRange.length: Int get() = endInclusive - first + 1
 
+val IntRange.center: Int get() = (first + last) / 2
+
 fun IntRange.containsAndNotOnEdges(value: Int): Boolean =
     value > this.first && value < this.last
 

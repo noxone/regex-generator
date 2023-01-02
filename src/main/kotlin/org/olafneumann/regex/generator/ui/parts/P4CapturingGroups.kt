@@ -36,6 +36,7 @@ import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.utils.DoubleWorkPrevention
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
+import org.olafneumann.regex.generator.utils.center
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
@@ -250,7 +251,7 @@ internal class P4CapturingGroups(
                 }
                 val mouseUpListener: (MouseEvent) -> Unit = { _ ->
                     range?.let { range ->
-                        onMarkedRegion(range = range, element = items[range.first].span)
+                        onMarkedRegion(range = range, element = items[range.center].span )
                     }
                 }
                 MouseCapture.capture(
@@ -296,8 +297,6 @@ internal class P4CapturingGroups(
     private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange? {
         return if (one.isRoot || other.isRoot) {
             console.warn("One of the symbols is the root node. This should not happen.", one, other)
-            //val root = if (one.isRoot) one else other
-            //IntRange(root.firstIndex, root.lastIndex)
             null
         } else if (one.parent == other.parent && !one.parent!!.isAlternative && one.selectable && other.selectable) {
             IntRange(one.firstIndex, other.lastIndex)
