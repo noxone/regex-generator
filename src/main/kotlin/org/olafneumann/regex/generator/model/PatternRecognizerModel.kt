@@ -109,5 +109,5 @@ data class PatternRecognizerModel(
         return copy(capturingGroupModel = capturingGroupModel)
     }
 
-    val finalPattern: String get() = combinedRegex.pattern
+    val finalPattern: String get() = capturingGroupModel.pattern
 }

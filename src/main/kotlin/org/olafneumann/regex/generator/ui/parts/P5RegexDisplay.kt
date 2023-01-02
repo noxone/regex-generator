@@ -2,6 +2,7 @@ package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
+import kotlinx.html.dom.append
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
 import kotlinx.html.title
@@ -28,12 +29,17 @@ class P5RegexDisplay(
 
     fun applyModel(model: DisplayModel) {
         showOrHideCopyButton(model.showCopyButton)
-        showResultRegex(regex = model.patternRecognizerModel.combinedRegex)
+        showResultRegex(model = model)
     }
 
-    private fun showResultRegex(regex: CombinedRegex) {
+    private fun showResultRegex(model: DisplayModel) {
         resultDisplay.clear()
-        for (part in regex.parts) {
+        resultDisplay.append(
+            document.create.span {
+                +model.patternRecognizerModel.finalPattern
+            }
+        )
+        /*for (part in model.patternRecognizerModel.combinedRegex.parts) {
             resultDisplay.append(
                 document.create.span(classes = "rg-result-part") {
                     title = when {
@@ -45,7 +51,7 @@ class P5RegexDisplay(
                     +part.pattern
                 }
             )
-        }
+        }*/
     }
 
     private fun showOrHideCopyButton(show: Boolean) {
