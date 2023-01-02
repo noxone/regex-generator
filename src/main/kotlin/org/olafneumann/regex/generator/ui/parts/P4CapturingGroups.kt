@@ -24,13 +24,13 @@ import kotlinx.html.js.span
 import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.span
 import kotlinx.html.title
+import org.olafneumann.regex.generator.js.Popover
+import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.model.CapturingGroupModel
 import org.olafneumann.regex.generator.model.CapturingGroupModel.CapturingGroup
 import org.olafneumann.regex.generator.model.CapturingGroupModel.PatternPart
 import org.olafneumann.regex.generator.model.CapturingGroupModel.PatternPartGroup
 import org.olafneumann.regex.generator.model.CapturingGroupModel.PatternSymbol
-import org.olafneumann.regex.generator.js.Popover
-import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.utils.DoubleWorkPrevention
@@ -348,11 +348,13 @@ internal class P4CapturingGroups(
                     InjectById(idCapGroupName) to PopoverElements::nameText
                 )
             ).form(classes = "needs-validation") {
+                autoComplete = false
                 div(classes = "mb-3") {
                     input(type = InputType.text, classes = "form-control") {
                         this.id = idCapGroupName
                         placeholder = "Name (optional)"
                         value = prefilledValue
+                        autoComplete = false
                         onInputFunction = {
                             elements.nameText.classList.toggle("is-invalid", !isNewCapturingGroupNameValid())
                             elements.nameText.classList.toggle("is-valid", getNewCapturingGroupName() != null)
