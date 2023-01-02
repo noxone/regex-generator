@@ -64,7 +64,7 @@ data class DisplayModel(
                 .ifEmpty { null }
             val capGroups: String? = patternRecognizerModel.capturingGroupModel
                 .capturingGroups
-                .map { "${it.name ?: ""}|${it.openingPosition}-${it.publishedClosingPosition}" }
+                .map { "${it.name ?: ""}|${it.openingPosition}-${it.getPublishedClosingPosition(patternRecognizerModel.capturingGroupModel)}" }
                 .joinToString(separator = ",") { encodeURIComponent(it) }
                 .ifEmpty { null }
 

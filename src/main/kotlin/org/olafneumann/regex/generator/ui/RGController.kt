@@ -179,6 +179,8 @@ class RGController : MVCContract.Controller {
 
             var outModel = this
             rangeToCapturingGroupName
+                .entries
+                .sortedBy { it.key.first }
                 .forEach { (range, name) ->
                     outModel = outModel.setCapturingGroupModel(
                         outModel.capturingGroupModel.addCapturingGroup(

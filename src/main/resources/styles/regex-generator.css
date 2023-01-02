@@ -156,6 +156,10 @@ h5 i {
   margin-left: -1.5em;
 }
 
+.rg-capturing-group {
+  background-color: var(--bs-white);
+}
+
 .rg-cap-group-unnamed {
   font-style: italic;
 }

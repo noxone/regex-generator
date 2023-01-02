@@ -3,6 +3,7 @@ package org.olafneumann.regex.generator.capgroup
 import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.regex.CombinedRegex
 import org.olafneumann.regex.generator.utils.IdGenerator
+import org.olafneumann.regex.generator.utils.containsAndNotOnEdges
 
 data class CapturingGroupModel(
     val regex: CombinedRegex,
@@ -271,7 +272,8 @@ data class CapturingGroupModel(
     ) {
         val id = idGenerator.next
 
-        val publishedClosingPosition = closingPosition - 2
+        fun getPublishedClosingPosition(model: CapturingGroupModel): Int =
+            closingPosition - 2 - 2 * model.capturingGroups.filter { range.containsAndNotOnEdges(it.range) }.size
 
         val openingString: String
             get() = "(${name?.let { "?<$it>" } ?: ""}"
