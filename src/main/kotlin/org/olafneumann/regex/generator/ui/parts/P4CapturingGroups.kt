@@ -24,11 +24,11 @@ import kotlinx.html.js.span
 import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.span
 import kotlinx.html.title
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.CapturingGroup
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.PatternPart
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.PatternPartGroup
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel.PatternSymbol
+import org.olafneumann.regex.generator.model.CapturingGroupModel
+import org.olafneumann.regex.generator.model.CapturingGroupModel.CapturingGroup
+import org.olafneumann.regex.generator.model.CapturingGroupModel.PatternPart
+import org.olafneumann.regex.generator.model.CapturingGroupModel.PatternPartGroup
+import org.olafneumann.regex.generator.model.CapturingGroupModel.PatternSymbol
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.MVCContract
@@ -145,7 +145,10 @@ internal class P4CapturingGroups(
                     classes = "col-12 col-md-6 col-xl-4 col-xxl-3"
                 ) {
                     val highlighter = Highlighter(items, capturingGroup)
-                    div(classes = "rg-capturing-group border rounded p-1 d-flex justify-content-between align-items-center") {
+                    div(
+                        classes = "rg-capturing-group border rounded p-1 d-flex " +
+                                "justify-content-between align-items-center"
+                    ) {
                         div(classes = "ms-2 text-truncate") {
                             if (capturingGroup.name != null) {
                                 span { +capturingGroup.name }
@@ -307,12 +310,16 @@ internal class P4CapturingGroups(
 
     private fun onMarkedRegion(range: IntRange, element: HTMLElement) =
         showCapturingGroupNamePopover("Create", element) { capturingGroupName ->
-           disposePopover()
-           createCapturingGroup(capturingGroupName, range)
-       }
+            disposePopover()
+            createCapturingGroup(capturingGroupName, range)
+        }
 
     private fun onRenameCapturingGroup(capturingGroup: CapturingGroup, element: HTMLElement) {
-        showCapturingGroupNamePopover("Rename", element, prefilledValue = capturingGroup.name ?: "") { capturingGroupName ->
+        showCapturingGroupNamePopover(
+            "Rename",
+            element,
+            prefilledValue = capturingGroup.name ?: ""
+        ) { capturingGroupName ->
             disposePopover()
             if (capturingGroup.name != capturingGroupName) {
                 renameCapturingGroup(capturingGroup, capturingGroupName)
@@ -320,7 +327,12 @@ internal class P4CapturingGroups(
         }
     }
 
-    private fun showCapturingGroupNamePopover(title: String, element: HTMLElement, prefilledValue: String = "", action: (String?) -> Unit) {
+    private fun showCapturingGroupNamePopover(
+        title: String,
+        element: HTMLElement,
+        prefilledValue: String = "",
+        action: (String?) -> Unit
+    ) {
         val elements = PopoverElements()
         val idCapGroupName = "rg_name_of_capturing_group"
 

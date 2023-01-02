@@ -2,7 +2,7 @@ package org.olafneumann.regex.generator.ui
 
 import kotlinx.browser.document
 import kotlinx.browser.window
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
+import org.olafneumann.regex.generator.model.CapturingGroupModel
 import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.js.decodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
@@ -11,7 +11,6 @@ import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 import org.olafneumann.regex.generator.settings.ApplicationSettings
-import org.olafneumann.regex.generator.ui.RGController.Companion.applyInitialSelection
 import org.olafneumann.regex.generator.ui.model.FlagHelper
 import org.w3c.dom.url.URL
 import org.w3c.dom.url.URLSearchParams

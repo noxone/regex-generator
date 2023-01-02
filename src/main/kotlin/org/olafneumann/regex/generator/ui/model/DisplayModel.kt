@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.ui.model
 
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
+import org.olafneumann.regex.generator.model.CapturingGroupModel
 import org.olafneumann.regex.generator.js.encodeURIComponent
 import org.olafneumann.regex.generator.model.PatternRecognizerModel
 import org.olafneumann.regex.generator.output.CodeGeneratorOptions
@@ -64,7 +64,11 @@ data class DisplayModel(
                 .ifEmpty { null }
             val capGroups: String? = patternRecognizerModel.capturingGroupModel
                 .capturingGroups
-                .map { "${it.name ?: ""}|${it.openingPosition}-${it.getPublishedClosingPosition(patternRecognizerModel.capturingGroupModel)}" }
+                .map {
+                    "${it.name ?: ""}|" +
+                            "${it.openingPosition}" +
+                            "-${it.getPublishedClosingPosition(patternRecognizerModel.capturingGroupModel)}"
+                }
                 .joinToString(separator = ",") { encodeURIComponent(it) }
                 .ifEmpty { null }
 

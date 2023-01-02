@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.model
 
 import dev.andrewbailey.diff.differenceOf
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.RecognizerRegistry

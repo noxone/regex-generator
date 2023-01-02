@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.ui
 
-import org.olafneumann.regex.generator.capgroup.CapturingGroupModel
+import org.olafneumann.regex.generator.model.CapturingGroupModel
 import org.olafneumann.regex.generator.output.CodeGeneratorOptions
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch

@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.capgroup
+package org.olafneumann.regex.generator.model
 
 import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.regex.CombinedRegex
