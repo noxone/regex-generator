@@ -16,6 +16,8 @@ import org.olafneumann.regex.generator.utils.IdGenerator
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
+import org.w3c.dom.asList
+import org.w3c.dom.get
 import kotlin.properties.Delegates
 
 open class NumberedPart(
@@ -58,6 +60,13 @@ open class NumberedPart(
         root.insertBefore(mainDiv, originalElement)
         root.removeChild(originalElement)
         originalElement.listChildElements().forEach { elements.content.appendChild(it) }
+
+        // bring classes from old element to new root
+        val classes = originalElement.classList.asList()
+        if (classes.find { it.startsWith("bg-") } != null) {
+            mainDiv.classList.toggle("bg-light", false)
+        }
+        classes.forEach { mainDiv.classList.toggle(it, true) }
     }
 
     private class Elements {

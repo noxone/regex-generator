@@ -1,3 +1,7 @@
+.bg-rg-result {
+  background-color: var(--bs-gray-200);
+}
+
 #rg_loading {
   z-index: 9999;
 }
