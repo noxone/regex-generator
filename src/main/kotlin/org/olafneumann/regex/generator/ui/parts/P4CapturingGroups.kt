@@ -3,8 +3,10 @@ package org.olafneumann.regex.generator.ui.parts
 import kotlinx.browser.document
 import kotlinx.dom.clear
 import kotlinx.html.ButtonType
+import kotlinx.html.DIV
 import kotlinx.html.InputType
 import kotlinx.html.button
+import kotlinx.html.classes
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.em
@@ -24,9 +26,12 @@ import kotlinx.html.js.span
 import kotlinx.html.label
 import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.span
+import kotlinx.html.style
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.Popover
+import org.olafneumann.regex.generator.js.asJQuery
 import org.olafneumann.regex.generator.js.jQuery
+import org.olafneumann.regex.generator.js.toggleVisibility
 import org.olafneumann.regex.generator.model.CapturingGroupModel
 import org.olafneumann.regex.generator.model.CapturingGroupModel.CapturingGroup
 import org.olafneumann.regex.generator.model.CapturingGroupModel.PatternPart
@@ -130,7 +135,12 @@ internal class P4CapturingGroups(
     }
 
     private fun setCapturingGroupQuantifier(capturingGroup: CapturingGroup, quantifier: String?) {
-        controller.onNewCapturingGroupModel(capturingGroupModel.setCapturingGroupQuantifiers(capturingGroup, quantifier))
+        controller.onNewCapturingGroupModel(
+            capturingGroupModel.setCapturingGroupQuantifiers(
+                capturingGroup,
+                quantifier
+            )
+        )
     }
 
     private fun createCapturingGroupList(items: List<MarkerItem>) {
@@ -171,18 +181,24 @@ internal class P4CapturingGroups(
                         }
 
                         div(classes = "btn-group") {
-                            button(classes = "btn btn-light btn-sm text-secondary rg-btn-rename", type = ButtonType.button) {
+                            button(
+                                classes = "btn btn-light btn-sm text-secondary rg-btn-rename",
+                                type = ButtonType.button
+                            ) {
                                 i(classes = "bi bi-input-cursor-text")
                                 title = "Rename Capturing Group${capturingGroup.name?.let { " '$it'" } ?: ""}"
                                 onClickFunction = { onRenameCapturingGroup(capturingGroup, elements.renameButton) }
                             }
-                            button(classes = "btn btn-light btn-sm text-secondary text-nowrap rg-btn-quantifiers", type = ButtonType.button) {
+                            button(
+                                classes = "btn btn-light btn-sm text-secondary text-nowrap rg-btn-quantifiers",
+                                type = ButtonType.button
+                            ) {
                                 +(capturingGroup.quantifier ?: "1")
                                 title = "Adjust quantifier"
-                                onClickFunction = { showQuantifierPopover(capturingGroup, elements.quantifiersButton) {} }
+                                onClickFunction = { showQuantifierPopover(capturingGroup, elements.quantifiersButton) }
                             }
                             /*button(classes = "btn btn-light btn-sm text-secondary text-nowrap rg-btn-flags", type = ButtonType.button) {
-                                +"?<>"
+                                i(classes = "bi bi-flag-fill")
                                 title = "Set flags"
                                 onClickFunction = { showFlagsPopover(element = elements.flagsButton) {} }
                             }*/
@@ -214,6 +230,7 @@ internal class P4CapturingGroups(
 
     private class PopoverElements {
         var nameText: HTMLInputElement by Delegates.notNull()
+        var quantifierDiv: HTMLDivElement by Delegates.notNull()
     }
 
     private fun createSpans(group: PatternPartGroup): MutableMap<PatternSymbol, HTMLSpanElement> {
@@ -275,7 +292,7 @@ internal class P4CapturingGroups(
                 }
                 val mouseUpListener: (MouseEvent) -> Unit = { _ ->
                     range?.let { range ->
-                        onMarkedRegion(range = range, element = items[range.center].span )
+                        onMarkedRegion(range = range, element = items[range.center].span)
                     }
                 }
                 MouseCapture.capture(
@@ -332,7 +349,7 @@ internal class P4CapturingGroups(
     }
 
     private fun onMarkedRegion(range: IntRange, element: HTMLElement) =
-        showCapturingGroupNamePopover("Create", element) { capturingGroupName ->
+        showCapturingGroupNamePopover("Create Capturing Group", element) { capturingGroupName ->
             disposePopover()
             createCapturingGroup(capturingGroupName, range)
         }
@@ -402,14 +419,14 @@ internal class P4CapturingGroups(
                 }
 
                 button(classes = "btn btn-primary", type = ButtonType.button) {
-                    +"$caption Capturing Group"
+                    +caption
                     onClickFunction = {
                         action(getNewCapturingGroupName())
                     }
                 }
             },
-            placement = "top",
-            title = "$caption Capturing Group",
+            placement = Popover.Placement.top,
+            title = caption,
             trigger = "manual",
             onShown = { elements.nameText.select() }
         )
@@ -423,7 +440,6 @@ internal class P4CapturingGroups(
     private fun showQuantifierPopover(
         capturingGroup: CapturingGroup,
         element: HTMLElement,
-        action: (String?) -> Unit
     ) {
         val activeClass: (String?) -> String = { quantifier ->
             if (capturingGroup.quantifier == quantifier) {
@@ -436,72 +452,74 @@ internal class P4CapturingGroups(
             setCapturingGroupQuantifier(capturingGroup, quantifier)
             disposePopover()
         }
+        val elements = PopoverElements()
         popover = Popover(
             element = element,
             html = true,
-            contentElement = document.create/*.inject(
+            contentElement = document.create.inject(
                 elements, listOf(
-                    InjectById(idCapGroupName) to PopoverElements::nameText
+                    InjectByClassName("rg-cg-quantifier-exact") to PopoverElements::quantifierDiv
                 )
-            )*/.form {
+            ).form {
                 autoComplete = false
                 div(classes = "mb-3") {
-                    label(classes = "form-label") {
-                        +"Quantifier"
+                    fun DIV.gButton(caption: String, description: String, quantifier: String?) {
+                        button(
+                            classes = "btn btn-light btn-toggle border ${activeClass(quantifier)}",
+                            type = ButtonType.button
+                        ) {
+                            +caption
+                            title = description
+                            onClickFunction = { setQuantifier(quantifier) }
+                        }
                     }
-                    div(classes = "d-block") {
-                        div(classes = "btn-group") {
-                            button(classes = "btn btn-light btn-toggle text-secondary ${activeClass(null)}", type = ButtonType.button) {
-                                i(classes = "bi bi-x-square")
-                                onClickFunction = {  setQuantifier(null) }
-                            }
-                            button(classes = "btn btn-light btn-toggle ${activeClass("?")}", type = ButtonType.button) {
-                                +"?"
-                                onClickFunction = {  setQuantifier("?") }
-                            }
-                            button(classes = "btn btn-light btn-toggle ${activeClass("*")}", type = ButtonType.button) {
-                                +"*"
-                                onClickFunction = {  setQuantifier("*") }
-                            }
-                            button(classes = "btn btn-light btn-toggle ${activeClass("+")}", type = ButtonType.button) {
-                                +"+"
-                                onClickFunction = {  setQuantifier("+") }
-                            }
-                            button(classes = "btn btn-light btn-toggle", type = ButtonType.button) {
+                    div(classes = "mb-3") {
+                        label(classes = "form-label") { +"Exact quantifiers" }
+                        div(classes = "input-group") {
+                            gButton("1", "Matches exactly once", null)
+                            /*button(classes = "btn btn-light btn-toggle border", type = ButtonType.button) {
                                 +"{x,y}"
-                                onClickFunction = {}
+                                title = "Matches between X and Y times"
+                                onClickFunction = {  }
                             }
+                            input(type = InputType.number, classes = "form-control") {
+                                autoComplete = false
+                                min = "0"
+                                value = "3"
+                                onInputFunction = {}
+                                onKeyDownFunction = {}
+                            }
+                            span(classes = "input-group-text") { +"-" }
+                            input(type = InputType.number, classes = "form-control") {
+                                autoComplete = false
+                                min = "0"
+                                value = "5"
+                                onInputFunction = {}
+                                onKeyDownFunction = {}
+                            }*/
+                        }
+                    }
+                    div(classes = "mb-3") {
+                        label(classes = "form-label") { +"Greedy quantifiers" }
+                        div(classes = "btn-group d-block") {
+                            gButton("?", "Matches zero or one time", "?")
+                            gButton("*", "Matches zero or more times", "*")
+                            gButton("+", "Matches one or more times", "+")
+                        }
+                    }
+                    div(classes = "mb-3") {
+                        label(classes = "form-label") { +"Lazy quantifiers" }
+                        div(classes = "btn-group d-block") {
+                            gButton("??", "Matches zero or one time, but as few times as possible", "??")
+                            gButton("*?", "Matches zero or more times, but as few times as possible", "*?")
+                            gButton("+?", "Matches one or more times, but as few times as possible", "+?")
                         }
                     }
                 }
-                div(classes = "input-group mb-3") {
-                    input(type = InputType.number, classes = "form-control") {
-                        autoComplete = false
-                        min = "0"
-                        value = "3"
-                        onInputFunction = {}
-                        onKeyDownFunction = {}
-                    }
-                    span(classes = "input-group-text") { +"-" }
-                    input(type = InputType.number, classes = "form-control") {
-                        autoComplete = false
-                        min = "0"
-                        value = "5"
-                        onInputFunction = {}
-                        onKeyDownFunction = {}
-                    }
-                }
-
-                button(classes = "btn btn-primary") {
-                    +"Save"
-                    type = ButtonType.button
-                    onClickFunction = {}
-                }
             },
-            placement = "top",
-            title = "Quantifiers",
+            placement = Popover.Placement.top,
+            title = "Quantifier",
             trigger = "manual",
-            onShown = {  }
         )
         popover!!.show()
         jQuery(".popover").mousedown {
@@ -559,10 +577,10 @@ internal class P4CapturingGroups(
                 button(classes = "btn btn-primary") {
                     +"Save"
                     type = ButtonType.button
-                    onClickFunction = {                    }
+                    onClickFunction = { }
                 }
             },
-            placement = "top",
+            placement = Popover.Placement.top,
             title = "Flags",
             trigger = "manual"
         )
