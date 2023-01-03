@@ -11,6 +11,7 @@ data class CapturingGroupModel(
 ) {
     companion object {
         private val VALID_NAME_REGEX = Regex("^[A-Za-z]\\w*$")
+
         @Suppress("MaxLineLength")
         private val patternSymbolRegex = Regex(
             """(?<complete>\(\?(?:[a-zA-Z]+|[+-]?[0-9]+|&\w+|P=\w+)\))|(?<open>\((?:\?(?::|!|>|=|\||<=|P?<[a-z][a-z0-9]*>|'[a-z][a-z0-9]*'|[-a-z]+:))?)|(?<part>(?:\\.|\[(?:[^\]\\]|\\.)+\]|[^|)])(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<close>\)(?:[+*?]+|\{\d+(?:,\d*)?\}|\{(?:\d*,)?\d+\})?)|(?<alt>\|)""",
@@ -92,7 +93,12 @@ data class CapturingGroupModel(
     }
 
     @Suppress("MagicNumber")
-    fun addCapturingGroup(start: Int, endInclusive: Int, name: String?, quantifier: String? = null): CapturingGroupModel {
+    fun addCapturingGroup(
+        start: Int,
+        endInclusive: Int,
+        name: String?,
+        quantifier: String? = null
+    ): CapturingGroupModel {
         val newCapturingGroups = capturingGroups
             .map { oldCapturingGroup ->
                 if (endInclusive < oldCapturingGroup.openingPosition) {
@@ -164,7 +170,10 @@ data class CapturingGroupModel(
         return changeCapturingGroup(capturingGroup) { it.copy(flags = flags) }
     }
 
-    private fun changeCapturingGroup(capturingGroup: CapturingGroup, action: (CapturingGroup) -> CapturingGroup): CapturingGroupModel {
+    private fun changeCapturingGroup(
+        capturingGroup: CapturingGroup,
+        action: (CapturingGroup) -> CapturingGroup
+    ): CapturingGroupModel {
         val newCapturingGroup = action(capturingGroup)
         val newCapturingGroups = capturingGroups.toMutableList()
         newCapturingGroups.remove(capturingGroup)

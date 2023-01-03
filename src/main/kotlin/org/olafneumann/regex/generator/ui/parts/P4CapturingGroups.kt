@@ -2,6 +2,7 @@ package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
+import kotlinx.html.BUTTON
 import kotlinx.html.ButtonType
 import kotlinx.html.DIV
 import kotlinx.html.InputType
@@ -38,6 +39,7 @@ import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.utils.DoubleWorkPrevention
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
+import org.olafneumann.regex.generator.ui.utils.gButton
 import org.olafneumann.regex.generator.utils.center
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
@@ -152,14 +154,11 @@ internal class P4CapturingGroups(
 
                 document.create.inject(
                     elements, listOf(
-                        InjectByClassName("rg-capturing-group") to InlineElements::mainDiv,
                         InjectByClassName("rg-btn-rename") to InlineElements::renameButton,
                         InjectByClassName("rg-btn-quantifiers") to InlineElements::quantifiersButton,
                         InjectByClassName("rg-btn-flags") to InlineElements::flagsButton,
                     )
-                ).div(
-                    classes = "col-12 col-md-6 col-xl-4 col-xxl-3"
-                ) {
+                ).div(classes = "col-12 col-md-6 col-xl-4 col-xxl-3") {
                     val highlighter = Highlighter(items, capturingGroup)
                     div(
                         classes = "rg-capturing-group border rounded p-1 d-flex " +
@@ -177,32 +176,26 @@ internal class P4CapturingGroups(
                         }
 
                         div(classes = "btn-group") {
-                            button(
-                                classes = "btn btn-light btn-sm text-secondary rg-btn-rename",
-                                type = ButtonType.button
-                            ) {
-                                i(classes = "bi bi-input-cursor-text")
-                                title = "Rename Capturing Group${capturingGroup.name?.let { " '$it'" } ?: ""}"
-                                onClickFunction = { onRenameCapturingGroup(capturingGroup, elements.renameButton) }
-                            }
-                            button(
-                                classes = "btn btn-light btn-sm text-secondary text-nowrap rg-btn-quantifiers",
-                                type = ButtonType.button
-                            ) {
-                                +(capturingGroup.quantifier ?: "1")
-                                title = "Adjust quantifier"
-                                onClickFunction = { showQuantifierPopover(capturingGroup, elements.quantifiersButton) }
-                            }
-                            /*button(classes = "btn btn-light btn-sm text-secondary text-nowrap rg-btn-flags", type = ButtonType.button) {
-                                i(classes = "bi bi-flag-fill")
-                                title = "Set flags"
-                                onClickFunction = { showFlagsPopover(element = elements.flagsButton) {} }
-                            }*/
-                            button(classes = "btn btn-light btn-sm text-danger", type = ButtonType.button) {
-                                i(classes = "bi bi-trash")
-                                title = "Delete capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
-                                onClickFunction = { removeCapturingGroup(capturingGroup) }
-                            }
+                            gButton(
+                                "text-secondary rg-btn-rename",
+                                "Rename Capturing Group${capturingGroup.name?.let { " '$it'" } ?: ""}",
+                                { onRenameCapturingGroup(capturingGroup, elements.renameButton) }
+                            ) { i(classes = "bi bi-input-cursor-text") }
+                            gButton(
+                                "text-secondary text-nowrap rg-btn-quantifiers",
+                                "Adjust quantifier",
+                                { showQuantifierPopover(capturingGroup, elements.quantifiersButton) }
+                            ) { +(capturingGroup.quantifier ?: "1") }
+                            gButton(
+                                "text-secondary text-nowrap rg-btn-flags d-none",
+                                "Set flags",
+                                { showFlagsPopover(element = elements.flagsButton) }
+                            ) { i(classes = "bi bi-flag-fill") }
+                            gButton(
+                                "text-danger",
+                                "Delete capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}",
+                                { removeCapturingGroup(capturingGroup) }
+                            ) { i(classes = "bi bi-trash") }
                         }
 
                         onMouseMoveFunction = highlighter.onMouseMoveFunction
@@ -218,7 +211,6 @@ internal class P4CapturingGroups(
     }
 
     private class InlineElements {
-        var mainDiv: HTMLDivElement by Delegates.notNull()
         var renameButton: HTMLButtonElement by Delegates.notNull()
         var quantifiersButton: HTMLButtonElement by Delegates.notNull()
         var flagsButton: HTMLButtonElement by Delegates.notNull()
@@ -420,7 +412,7 @@ internal class P4CapturingGroups(
                     }
                 }
             },
-            placement = Popover.Placement.top,
+            placement = Popover.Placement.Top,
             title = caption,
             trigger = "manual",
             onShown = { elements.nameText.select() }
@@ -447,7 +439,6 @@ internal class P4CapturingGroups(
             setCapturingGroupQuantifier(capturingGroup, quantifier)
             disposePopover()
         }
-        val elements = PopoverElements()
         popover = Popover(
             element = element,
             html = true,
@@ -458,7 +449,7 @@ internal class P4CapturingGroups(
             )*/.form {
                 autoComplete = false
                 div(classes = "mb-3") {
-                    fun DIV.gButton(caption: String, description: String, quantifier: String?) {
+                    fun DIV.qButton(caption: String, description: String, quantifier: String?) {
                         button(
                             classes = "btn btn-light btn-toggle border ${activeClass(quantifier)}",
                             type = ButtonType.button
@@ -471,7 +462,7 @@ internal class P4CapturingGroups(
                     div(classes = "mb-3") {
                         label(classes = "form-label") { +"Exact quantifiers" }
                         div(classes = "input-group") {
-                            gButton("1", "Matches exactly once", null)
+                            qButton("1", "Matches exactly once", null)
                             /*button(classes = "btn btn-light btn-toggle border", type = ButtonType.button) {
                                 +"{x,y}"
                                 title = "Matches between X and Y times"
@@ -497,22 +488,22 @@ internal class P4CapturingGroups(
                     div(classes = "mb-3") {
                         label(classes = "form-label") { +"Greedy quantifiers" }
                         div(classes = "btn-group d-block") {
-                            gButton("?", "Matches zero or one time", "?")
-                            gButton("*", "Matches zero or more times", "*")
-                            gButton("+", "Matches one or more times", "+")
+                            qButton("?", "Matches zero or one time", "?")
+                            qButton("*", "Matches zero or more times", "*")
+                            qButton("+", "Matches one or more times", "+")
                         }
                     }
                     div(classes = "mb-3") {
                         label(classes = "form-label") { +"Lazy quantifiers" }
                         div(classes = "btn-group d-block") {
-                            gButton("??", "Matches zero or one time, but as few times as possible", "??")
-                            gButton("*?", "Matches zero or more times, but as few times as possible", "*?")
-                            gButton("+?", "Matches one or more times, but as few times as possible", "+?")
+                            qButton("??", "Matches zero or one time, but as few times as possible", "??")
+                            qButton("*?", "Matches zero or more times, but as few times as possible", "*?")
+                            qButton("+?", "Matches one or more times, but as few times as possible", "+?")
                         }
                     }
                 }
             },
-            placement = Popover.Placement.top,
+            placement = Popover.Placement.Top,
             title = "Quantifier",
             trigger = "manual",
         )
@@ -525,7 +516,6 @@ internal class P4CapturingGroups(
 
     private fun showFlagsPopover(
         element: HTMLElement,
-        action: (String?) -> Unit
     ) {
         popover = Popover(
             element = element,
@@ -575,7 +565,7 @@ internal class P4CapturingGroups(
                     onClickFunction = { }
                 }
             },
-            placement = Popover.Placement.top,
+            placement = Popover.Placement.Top,
             title = "Flags",
             trigger = "manual"
         )

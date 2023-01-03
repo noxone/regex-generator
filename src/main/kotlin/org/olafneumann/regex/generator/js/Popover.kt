@@ -10,7 +10,7 @@ class Popover(
     private val contentString: String? = null,
     private val contentElement: HTMLElement? = null,
     private val html: Boolean = false,
-    private val placement: Placement = Placement.rigth,
+    private val placement: Placement = Placement.Right,
     private val title: String = "",
     private val trigger: String = "click",
     onShown: () -> Unit = {}
@@ -41,9 +41,9 @@ class Popover(
     enum class Placement(
         val value: String
     ) {
-        top("top"),
-        bottom("bottom"),
-        left("left"),
-        rigth("right")
+        Top("top"),
+        Bottom("bottom"),
+        Left("left"),
+        Right("right")
     }
 }

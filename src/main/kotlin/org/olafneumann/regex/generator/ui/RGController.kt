@@ -100,6 +100,8 @@ class RGController : MVCContract.Controller {
         private const val VAL_EXAMPLE_INPUT =
             "2020-03-12T13:34:56.123Z INFO  [org.example.Class]: This is a #simple #logline containing a 'value'."
         private const val MAX_INPUT_LENGTH = 1000
+        private const val SELECTION_ITEM_COUNT = 2
+        private const val CAP_GROUP_ITEM_COUNT = 3
 
         private fun createInitialModel(): DisplayModel {
             val params = URL(document.URL).searchParams
@@ -137,7 +139,7 @@ class RGController : MVCContract.Controller {
                     ?.ifBlank { null }
                     ?.split(",")
                     ?.map { it.split("|") }
-                    ?.filter { it.size == 2 }
+                    ?.filter { it.size == SELECTION_ITEM_COUNT }
                     ?.associate { it[0].tryParsingToInt() to decodeURIComponent(it[1]) }
                     ?.filter { it.key >= 0 }
                     ?: emptyMap()
@@ -172,7 +174,7 @@ class RGController : MVCContract.Controller {
                     ?.split(",")
                     ?.asSequence()
                     ?.map { it.split("|") }
-                    ?.filter { it.size == 3 }
+                    ?.filter { it.size == CAP_GROUP_ITEM_COUNT }
                     ?.map { CapGroupDetails(it[0].ifEmpty { null }, it[1].ifEmpty { null }, it[2].toIntRange()) }
                     ?.filter { it.range != null }
                     ?.toList()
@@ -189,7 +191,7 @@ class RGController : MVCContract.Controller {
                     outModel = outModel.setCapturingGroupModel(
                         outModel.capturingGroupModel.addCapturingGroup(
                             start = details.range!!.first,
-                            endInclusive = details.range!!.last,
+                            endInclusive = details.range.last,
                             name = details.name,
                             quantifier = details.quantifier,
                         )
