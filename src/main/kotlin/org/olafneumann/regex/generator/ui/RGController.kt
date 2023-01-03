@@ -156,21 +156,27 @@ class RGController : MVCContract.Controller {
             return outModel
         }
 
+        private data class CapGroupDetails(
+            val name: String?,
+            val quantifier: String?,
+            val range: IntRange?
+        )
+
         private fun PatternRecognizerModel.applyInitialCapturingGroups(
             params: URLSearchParams
         ): PatternRecognizerModel {
-            val rangeToCapturingGroupName: Map<IntRange, String?>
+            val rangeToCapturingGroupName: List<CapGroupDetails>
             try {
                 rangeToCapturingGroupName = params.get(HtmlView.SEARCH_CAP_GROUP)
                     ?.ifBlank { null }
                     ?.split(",")
                     ?.asSequence()
                     ?.map { it.split("|") }
-                    ?.filter { it.size == 2 }
-                    ?.map { it[1].toIntRange() to it[0].ifEmpty { null } }
-                    ?.filter { it.first != null }
-                    ?.associate { it.first!! to it.second }
-                    ?: emptyMap()
+                    ?.filter { it.size == 3 }
+                    ?.map { CapGroupDetails(it[0].ifEmpty { null }, it[1].ifEmpty { null }, it[2].toIntRange()) }
+                    ?.filter { it.range != null }
+                    ?.toList()
+                    ?: emptyList()
             } catch (e: IllegalArgumentException) {
                 console.warn("Unable to read state from URL", e)
                 return this
@@ -178,14 +184,14 @@ class RGController : MVCContract.Controller {
 
             var outModel = this
             rangeToCapturingGroupName
-                .entries
-                .sortedBy { it.key.first }
-                .forEach { (range, name) ->
+                .sortedBy { it.range!!.first }
+                .forEach { details ->
                     outModel = outModel.setCapturingGroupModel(
                         outModel.capturingGroupModel.addCapturingGroup(
-                            start = range.first,
-                            endInclusive = range.last,
-                            name = name
+                            start = details.range!!.first,
+                            endInclusive = details.range!!.last,
+                            name = details.name,
+                            quantifier = details.quantifier,
                         )
                     )
                 }

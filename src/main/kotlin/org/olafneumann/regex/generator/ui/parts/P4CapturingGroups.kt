@@ -6,7 +6,6 @@ import kotlinx.html.ButtonType
 import kotlinx.html.DIV
 import kotlinx.html.InputType
 import kotlinx.html.button
-import kotlinx.html.classes
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.em
@@ -26,12 +25,9 @@ import kotlinx.html.js.span
 import kotlinx.html.label
 import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.span
-import kotlinx.html.style
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.Popover
-import org.olafneumann.regex.generator.js.asJQuery
 import org.olafneumann.regex.generator.js.jQuery
-import org.olafneumann.regex.generator.js.toggleVisibility
 import org.olafneumann.regex.generator.model.CapturingGroupModel
 import org.olafneumann.regex.generator.model.CapturingGroupModel.CapturingGroup
 import org.olafneumann.regex.generator.model.CapturingGroupModel.PatternPart
@@ -230,13 +226,12 @@ internal class P4CapturingGroups(
 
     private class PopoverElements {
         var nameText: HTMLInputElement by Delegates.notNull()
-        var quantifierDiv: HTMLDivElement by Delegates.notNull()
     }
 
     private fun createSpans(group: PatternPartGroup): MutableMap<PatternSymbol, HTMLSpanElement> {
         return group.parts
             .map { createSpans(it) }
-            .fold<Map<PatternSymbol, HTMLSpanElement>, MutableMap<PatternSymbol, HTMLSpanElement>>(
+            .fold(
                 initial = mutableMapOf(),
                 operation = { acc, map ->
                     acc.putAll(map)
@@ -456,11 +451,11 @@ internal class P4CapturingGroups(
         popover = Popover(
             element = element,
             html = true,
-            contentElement = document.create.inject(
+            contentElement = document.create/*.inject(
                 elements, listOf(
                     InjectByClassName("rg-cg-quantifier-exact") to PopoverElements::quantifierDiv
                 )
-            ).form {
+            )*/.form {
                 autoComplete = false
                 div(classes = "mb-3") {
                     fun DIV.gButton(caption: String, description: String, quantifier: String?) {

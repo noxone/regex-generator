@@ -65,7 +65,7 @@ data class DisplayModel(
             val capGroups: String? = patternRecognizerModel.capturingGroupModel
                 .capturingGroups
                 .map {
-                    "${it.name ?: ""}|" +
+                    "${it.name ?: ""}|${it.quantifier ?: ""}|" +
                             "${it.openingPosition}" +
                             "-${it.getPublishedClosingPosition(patternRecognizerModel.capturingGroupModel)}"
                 }

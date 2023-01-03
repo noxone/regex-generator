@@ -92,7 +92,7 @@ data class CapturingGroupModel(
     }
 
     @Suppress("MagicNumber")
-    fun addCapturingGroup(start: Int, endInclusive: Int, name: String?): CapturingGroupModel {
+    fun addCapturingGroup(start: Int, endInclusive: Int, name: String?, quantifier: String? = null): CapturingGroupModel {
         val newCapturingGroups = capturingGroups
             .map { oldCapturingGroup ->
                 if (endInclusive < oldCapturingGroup.openingPosition) {
@@ -117,7 +117,7 @@ data class CapturingGroupModel(
                 }
             }
             .toMutableList()
-        newCapturingGroups.add(CapturingGroup(start, endInclusive + 2, name))
+        newCapturingGroups.add(CapturingGroup(start, endInclusive + 2, name, quantifier))
         newCapturingGroups.sortBy { it.openingPosition }
         return copy(capturingGroups = newCapturingGroups)
     }
