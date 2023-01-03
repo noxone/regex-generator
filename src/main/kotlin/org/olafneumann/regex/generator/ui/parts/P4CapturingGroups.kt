@@ -38,6 +38,7 @@ import org.olafneumann.regex.generator.ui.utils.DoubleWorkPrevention
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.olafneumann.regex.generator.ui.utils.MouseCapture
 import org.olafneumann.regex.generator.utils.center
+import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
@@ -128,6 +129,10 @@ internal class P4CapturingGroups(
         controller.onNewCapturingGroupModel(capturingGroupModel.renameCapturingGroup(capturingGroup, newName))
     }
 
+    private fun setCapturingGroupQuantifier(capturingGroup: CapturingGroup, quantifier: String?) {
+        controller.onNewCapturingGroupModel(capturingGroupModel.setCapturingGroupQuantifiers(capturingGroup, quantifier))
+    }
+
     private fun createCapturingGroupList(items: List<MarkerItem>) {
         if (capturingGroupModel.capturingGroups.isEmpty()) {
             capGroupList.appendChild(document.create.div("col rg-cap-group-list-item rg-faded") {
@@ -142,6 +147,9 @@ internal class P4CapturingGroups(
                 document.create.inject(
                     elements, listOf(
                         InjectByClassName("rg-capturing-group") to InlineElements::mainDiv,
+                        InjectByClassName("rg-btn-rename") to InlineElements::renameButton,
+                        InjectByClassName("rg-btn-quantifiers") to InlineElements::quantifiersButton,
+                        InjectByClassName("rg-btn-flags") to InlineElements::flagsButton,
                     )
                 ).div(
                     classes = "col-12 col-md-6 col-xl-4 col-xxl-3"
@@ -153,19 +161,31 @@ internal class P4CapturingGroups(
                     ) {
                         div(classes = "ms-2 text-truncate") {
                             if (capturingGroup.name != null) {
-                                span { +capturingGroup.name }
+                                span {
+                                    +capturingGroup.name
+                                    title = capturingGroup.name
+                                }
                             } else {
                                 span(classes = "rg-cap-group-unnamed") { +"Unnamed group" }
                             }
                         }
 
                         div(classes = "btn-group") {
-                            button(classes = "btn btn-light btn-sm text-secondary", type = ButtonType.button) {
-                                i(classes = "bi bi-pencil")
-                                title = "Rename capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
-                                onClickFunction = { onRenameCapturingGroup(capturingGroup, elements.mainDiv) }
+                            button(classes = "btn btn-light btn-sm text-secondary rg-btn-rename", type = ButtonType.button) {
+                                i(classes = "bi bi-input-cursor-text")
+                                title = "Rename Capturing Group${capturingGroup.name?.let { " '$it'" } ?: ""}"
+                                onClickFunction = { onRenameCapturingGroup(capturingGroup, elements.renameButton) }
                             }
-
+                            button(classes = "btn btn-light btn-sm text-secondary text-nowrap rg-btn-quantifiers", type = ButtonType.button) {
+                                +(capturingGroup.quantifier ?: "1")
+                                title = "Adjust quantifier"
+                                onClickFunction = { showQuantifierPopover(capturingGroup, elements.quantifiersButton) {} }
+                            }
+                            /*button(classes = "btn btn-light btn-sm text-secondary text-nowrap rg-btn-flags", type = ButtonType.button) {
+                                +"?<>"
+                                title = "Set flags"
+                                onClickFunction = { showFlagsPopover(element = elements.flagsButton) {} }
+                            }*/
                             button(classes = "btn btn-light btn-sm text-danger", type = ButtonType.button) {
                                 i(classes = "bi bi-trash")
                                 title = "Delete capturing group${capturingGroup.name?.let { " '$it'" } ?: ""}"
@@ -187,6 +207,9 @@ internal class P4CapturingGroups(
 
     private class InlineElements {
         var mainDiv: HTMLDivElement by Delegates.notNull()
+        var renameButton: HTMLButtonElement by Delegates.notNull()
+        var quantifiersButton: HTMLButtonElement by Delegates.notNull()
+        var flagsButton: HTMLButtonElement by Delegates.notNull()
     }
 
     private class PopoverElements {
@@ -378,21 +401,127 @@ internal class P4CapturingGroups(
                     }
                 }
 
+                button(classes = "btn btn-primary", type = ButtonType.button) {
+                    +"$caption Capturing Group"
+                    onClickFunction = {
+                        action(getNewCapturingGroupName())
+                    }
+                }
+            },
+            placement = "top",
+            title = "$caption Capturing Group",
+            trigger = "manual",
+            onShown = { elements.nameText.select() }
+        )
+        popover!!.show()
+        jQuery(".popover").mousedown {
+            // prevent popover from being disposed when clicking inside
+            it.stopPropagation()
+        }
+    }
+
+    private fun showQuantifierPopover(
+        capturingGroup: CapturingGroup,
+        element: HTMLElement,
+        action: (String?) -> Unit
+    ) {
+        val activeClass: (String?) -> String = { quantifier ->
+            if (capturingGroup.quantifier == quantifier) {
+                "active"
+            } else {
+                ""
+            }
+        }
+        val setQuantifier: (String?) -> Unit = { quantifier ->
+            setCapturingGroupQuantifier(capturingGroup, quantifier)
+            disposePopover()
+        }
+        popover = Popover(
+            element = element,
+            html = true,
+            contentElement = document.create/*.inject(
+                elements, listOf(
+                    InjectById(idCapGroupName) to PopoverElements::nameText
+                )
+            )*/.form {
+                autoComplete = false
                 div(classes = "mb-3") {
                     label(classes = "form-label") {
                         +"Quantifier"
                     }
                     div(classes = "d-block") {
                         div(classes = "btn-group") {
-                            button(classes = "btn btn-light text-secondary") { i(classes = "bi bi-x-square") }
-                            button(classes = "btn btn-light") { +"?" }
-                            button(classes = "btn btn-light") { +"*" }
-                            button(classes = "btn btn-light") { +"+" }
-                            button(classes = "btn btn-light") { +"{x,y}" }
+                            button(classes = "btn btn-light btn-toggle text-secondary ${activeClass(null)}", type = ButtonType.button) {
+                                i(classes = "bi bi-x-square")
+                                onClickFunction = {  setQuantifier(null) }
+                            }
+                            button(classes = "btn btn-light btn-toggle ${activeClass("?")}", type = ButtonType.button) {
+                                +"?"
+                                onClickFunction = {  setQuantifier("?") }
+                            }
+                            button(classes = "btn btn-light btn-toggle ${activeClass("*")}", type = ButtonType.button) {
+                                +"*"
+                                onClickFunction = {  setQuantifier("*") }
+                            }
+                            button(classes = "btn btn-light btn-toggle ${activeClass("+")}", type = ButtonType.button) {
+                                +"+"
+                                onClickFunction = {  setQuantifier("+") }
+                            }
+                            button(classes = "btn btn-light btn-toggle", type = ButtonType.button) {
+                                +"{x,y}"
+                                onClickFunction = {}
+                            }
                         }
                     }
                 }
+                div(classes = "input-group mb-3") {
+                    input(type = InputType.number, classes = "form-control") {
+                        autoComplete = false
+                        min = "0"
+                        value = "3"
+                        onInputFunction = {}
+                        onKeyDownFunction = {}
+                    }
+                    span(classes = "input-group-text") { +"-" }
+                    input(type = InputType.number, classes = "form-control") {
+                        autoComplete = false
+                        min = "0"
+                        value = "5"
+                        onInputFunction = {}
+                        onKeyDownFunction = {}
+                    }
+                }
 
+                button(classes = "btn btn-primary") {
+                    +"Save"
+                    type = ButtonType.button
+                    onClickFunction = {}
+                }
+            },
+            placement = "top",
+            title = "Quantifiers",
+            trigger = "manual",
+            onShown = {  }
+        )
+        popover!!.show()
+        jQuery(".popover").mousedown {
+            // prevent popover from being disposed when clicking inside
+            it.stopPropagation()
+        }
+    }
+
+    private fun showFlagsPopover(
+        element: HTMLElement,
+        action: (String?) -> Unit
+    ) {
+        popover = Popover(
+            element = element,
+            html = true,
+            contentElement = document.create/*.inject(
+                elements, listOf(
+                    InjectById(idCapGroupName) to PopoverElements::nameText
+                )
+            )*/.form {
                 div(classes = "mb-3") {
                     label(classes = "form-label") {
                         +"Flags"
@@ -428,20 +557,16 @@ internal class P4CapturingGroups(
                 }
 
                 button(classes = "btn btn-primary") {
-                    +"$caption Capturing Group"
+                    +"Save"
                     type = ButtonType.button
-                    onClickFunction = {
-                        action(getNewCapturingGroupName())
-                    }
+                    onClickFunction = {                    }
                 }
             },
             placement = "top",
-            title = "$caption Capturing Group",
-            trigger = "manual",
-            onShown = { elements.nameText.focus() }
+            title = "Flags",
+            trigger = "manual"
         )
         popover!!.show()
-        elements.nameText.select()
         jQuery(".popover").mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()

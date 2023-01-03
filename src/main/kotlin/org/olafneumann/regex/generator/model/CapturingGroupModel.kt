@@ -153,7 +153,19 @@ data class CapturingGroupModel(
     }
 
     fun renameCapturingGroup(capturingGroup: CapturingGroup, newName: String?): CapturingGroupModel {
-        val newCapturingGroup = capturingGroup.rename(newName)
+        return changeCapturingGroup(capturingGroup) { it.rename(newName) }
+    }
+
+    fun setCapturingGroupQuantifiers(capturingGroup: CapturingGroup, quantifier: String?): CapturingGroupModel {
+        return changeCapturingGroup(capturingGroup) { it.copy(quantifier = quantifier) }
+    }
+
+    fun setCapturingGroupFlags(capturingGroup: CapturingGroup, flags: Flags): CapturingGroupModel {
+        return changeCapturingGroup(capturingGroup) { it.copy(flags = flags) }
+    }
+
+    private fun changeCapturingGroup(capturingGroup: CapturingGroup, action: (CapturingGroup) -> CapturingGroup): CapturingGroupModel {
+        val newCapturingGroup = action(capturingGroup)
         val newCapturingGroups = capturingGroups.toMutableList()
         newCapturingGroups.remove(capturingGroup)
         newCapturingGroups.add(newCapturingGroup)
@@ -279,7 +291,9 @@ data class CapturingGroupModel(
     data class CapturingGroup internal constructor(
         val openingPosition: Int,
         val closingPosition: Int,
-        val name: String?
+        val name: String?,
+        val quantifier: String? = null,
+        val flags: Flags = Flags()
     ) {
         val id = idGenerator.next
 
@@ -289,7 +303,7 @@ data class CapturingGroupModel(
         val openingString: String
             get() = "(${name?.let { "?<$it>" } ?: ""}"
         val closingString: String
-            get() = ")"
+            get() = ")${quantifier ?: ""}"
 
         val range: IntRange
             get() = IntRange(openingPosition, closingPosition)
@@ -308,4 +322,13 @@ data class CapturingGroupModel(
             private val idGenerator = IdGenerator()
         }
     }
+
+    data class Flags(
+        val caseSensitive: Boolean? = null,
+        val unixLines: Boolean? = null,
+        val multiline: Boolean? = null,
+        val dotAll: Boolean? = null,
+        val unicodeCase: Boolean? = null,
+        val comments: Boolean? = null,
+    )
 }
