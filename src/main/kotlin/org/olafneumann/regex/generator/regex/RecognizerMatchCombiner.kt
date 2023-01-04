@@ -18,16 +18,14 @@ object RecognizerMatchCombiner {
 
         return if (rangesToMatches.isEmpty()) {
             if (options.onlyPatterns) {
-                CombinedRegex(
-                    listOf(RegularExpressionPart(IntRange(0, 2), ".*", title = "anything"))
-                        .addWholeLineMatchingStuff(options)
-                )
+                val parts = mutableListOf(RegularExpressionPart(IntRange(0, 2), ".*", title = "anything"))
+                addWholeLineMatchingStuff(parts = parts, options = options)
+                CombinedRegex(parts)
             } else {
                 val regex = inputText.escapeForRegex()
-                CombinedRegex(
-                    listOf(RegularExpressionPart(IntRange(0, regex.length), regex, inputText))
-                        .addWholeLineMatchingStuff(options)
-                )
+                val parts = mutableListOf(RegularExpressionPart(IntRange(0, regex.length), regex, inputText))
+                addWholeLineMatchingStuff(parts = parts, options = options)
+                CombinedRegex(parts)
             }
         } else {
             // at this point we know, that rangesToMatches is not empty!
@@ -89,7 +87,31 @@ object RecognizerMatchCombiner {
             lastPart?.let { parts.add(it) }
         }
 
-        return CombinedRegex(parts.addWholeLineMatchingStuff(options))
+        addWholeLineMatchingStuff(parts = parts, options = options)
+        adjustCharacterClassCases(parts = parts, options = options)
+
+        return CombinedRegex(parts)
+    }
+
+    private fun adjustCharacterClassCases(parts: MutableList<RegularExpressionPart>, options: RecognizerMatchCombinerOptions) {
+        if (!options.generateLowerCase) {
+            return
+        }
+
+        for (index in parts.indices) {
+            val newPart = createAdjustedCharacterClassCasePart(part = parts[index])
+            if (newPart != null) {
+                parts[index] = newPart
+            }
+        }
+    }
+
+    // private val classFinder = Regex("\\[((?:[^]]|\\\\])*?)]")
+    // private val classSplitter = Regex("([A-Za-z])(?:-([A-Za-z]))?")
+
+    private fun createAdjustedCharacterClassCasePart(part: RegularExpressionPart): RegularExpressionPart? {
+
+        return null
     }
 
     private fun getPartBetween(
@@ -110,17 +132,13 @@ object RecognizerMatchCombiner {
         return null
     }
 
-    private fun List<RegularExpressionPart>.addWholeLineMatchingStuff(options: RecognizerMatchCombinerOptions):
-            List<RegularExpressionPart> {
-        return if (options.matchWholeLine) {
-            val list = mutableListOf<RegularExpressionPart>()
-            list.add(RegularExpressionPart(IntRange.EMPTY, pattern = "^", title = "Start of input"))
-            list.addAll(this)
-            list.add(RegularExpressionPart(IntRange.EMPTY, pattern = "$", title = "End of input"))
-            list
-        } else {
-            this
+    private fun addWholeLineMatchingStuff(parts: MutableList<RegularExpressionPart>, options: RecognizerMatchCombinerOptions) {
+        if (!options.matchWholeLine) {
+            return
         }
+
+        parts.add(0, RegularExpressionPart(IntRange.EMPTY, pattern = "^", title = "Start of input"))
+        parts.add(RegularExpressionPart(IntRange.EMPTY, pattern = "$", title = "End of input"))
     }
 
     data class RegularExpressionPart(
