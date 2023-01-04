@@ -6,6 +6,7 @@ import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 object FlagHelper {
     private const val CHAR_COMBINER_ONLY_PATTERNS = 'P'
     private const val CHAR_COMBINER_WHOLE_LINE = 'L'
+    private const val CHAR_COMBINER_GENERATE_LOWER_CASE = 'O'
     private const val CHAR_CODE_CASE_INSENSITIVE = 'i'
     private const val CHAR_CODE_DOT_MATCHES_LINE_BREAKS = 's'
     private const val CHAR_CODE_MULTILINE = 'm'
@@ -40,10 +41,15 @@ object FlagHelper {
             char = CHAR_COMBINER_WHOLE_LINE,
             default = RecognizerMatchCombinerOptions.DEFAULT_MATCH_WHOLE_LINE
         )
+        val generateLowerCase = regexFlags.parseFlag(
+            char = CHAR_COMBINER_GENERATE_LOWER_CASE,
+            default = RecognizerMatchCombinerOptions.DEFAULT_GENERATE_LOWER_CASE
+        )
 
         return RecognizerMatchCombinerOptions(
             onlyPatterns = onlyPatterns,
-            matchWholeLine = matchWholeLine
+            matchWholeLine = matchWholeLine,
+            generateLowerCase = generateLowerCase
         )
     }
 
@@ -53,6 +59,7 @@ object FlagHelper {
     ): String = listOfNotNull(
         recognizerMatchCombinerOptions.onlyPatterns.ifTrue(CHAR_COMBINER_ONLY_PATTERNS),
         recognizerMatchCombinerOptions.matchWholeLine.ifTrue(CHAR_COMBINER_WHOLE_LINE),
+        recognizerMatchCombinerOptions.generateLowerCase.ifTrue(CHAR_COMBINER_GENERATE_LOWER_CASE),
         codeGeneratorOptions.caseInsensitive.ifTrue(CHAR_CODE_CASE_INSENSITIVE),
         codeGeneratorOptions.dotMatchesLineBreaks.ifTrue(CHAR_CODE_DOT_MATCHES_LINE_BREAKS),
         codeGeneratorOptions.multiline.ifTrue(CHAR_CODE_MULTILINE)

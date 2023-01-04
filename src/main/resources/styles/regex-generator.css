@@ -144,19 +144,15 @@ h5 i {
     background-color: lightgray;
 }
 
-.rg-check-row {
+.rg-check-box {
   padding-left: 1.5em;
 }
 
-.rg-check-row + .rg-check-row {
-  margin-top: 0.8em;
-}
-
-.rg-check-row .form-check {
+.rg-check-box .form-check {
   padding-left: 0;
 }
 
-.rg-check-row .form-check .form-check-input {
+.rg-check-box .form-check .form-check-input {
   margin-left: -1.5em;
 }
 

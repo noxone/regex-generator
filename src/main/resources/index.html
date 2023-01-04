@@ -114,30 +114,48 @@
 
         <!-- Options Part -->
         <div id="rg_options" style="display:none">
-            <div class="bg-white border rounded p-2">
-                <div class="form-group rg-check-row">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="rg_onlymatches"
-                            aria-describedby="rg_onlymatches_help">
-                        <label class="form-check-label" for="rg_onlymatches">Generate only
-                            patterns</label>
+            <div class="bg-white border rounded p-2 row g-0">
+                <div class="form-group col-12 col-lg-6 col-xxl-4">
+                    <div class="rg-check-box m-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="rg_onlymatches"
+                                aria-describedby="rg_onlymatches_help">
+                            <label class="form-check-label" for="rg_onlymatches">Generate Only
+                                Patterns</label>
+                        </div>
+                        <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
+                            When this option is checked, the generated regular expression will only contain
+                            the patterns that you selected in step 2. Otherwise, all characters between the
+                            patterns will be copied.
+                        </small>
                     </div>
-                    <small id="rg_onlymatches_help" class="form-text text-muted mt-0">
-                        When this option is checked, the generated regular expression will only contain
-                        the patterns that you selected in step 2. Otherwise, all characters between the
-                        patterns will be copied.
-                    </small>
                 </div>
-                <div class="form-group rg-check-row">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="rg_matchwholeline"
-                            aria-describedby="rg_matchwholeline_help">
-                        <label class="form-check-label" for="rg_matchwholeline">Match whole
-                            line</label>
+                <div class="form-group col-12 col-lg-6 col-xxl-4">
+                    <div class="rg-check-box m-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="rg_matchwholeline"
+                                   aria-describedby="rg_matchwholeline_help">
+                            <label class="form-check-label" for="rg_matchwholeline">Match Whole
+                                Line</label>
+                        </div>
+                        <small id="rg_matchwholeline_help" class="form-text text-muted mt-0">
+                            Would you like the generated regular expression to match all the input?
+                        </small>
                     </div>
-                    <small id="rg_matchwholeline_help" class="form-text text-muted mt-0">
-                        Would you like the generated regular expression to match all of the input?
-                    </small>
+                </div>
+                <div class="form-group col-12 col-lg-6 col-xxl-4">
+                    <div class="rg-check-box m-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="rg_generateLowerCase"
+                                   aria-describedby="rg_generateLowerCase_help">
+                            <label class="form-check-label" for="rg_generateLowerCase">Generate Lower Case</label>
+                        </div>
+                        <small id="rg_generateLowerCase_help" class="form-text text-muted mt-0">
+                            By default this page will generate character classes like <span
+                                class="border rg-code p-1 bg-white">[A-Za-z]</span> for upper and
+                            lower cases. Activating this box will only generate lower case character classes.
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,9 +199,9 @@
                 If you find a syntax error, please submit a <a
                     href="https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=bug_report.md&title=Syntax%20Error">bug
                     report</a>.</small>
-            <div class="card mt-2 p-3">
+            <div class="card mt-2 p-2">
                 <form>
-                    <div class="form-group col-sm-12 rg-check-row">
+                    <div class="form-group m-2 rg-check-box">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="rg_caseinsensitive"
                                     aria-describedby="rg_caseinsensitive_help">
@@ -200,7 +218,7 @@
                                     rel="noopener">*</a>
                             </small>
                     </div>
-                    <div class="form-group col-sm-12 rg-check-row">
+                    <div class="form-group m-2 rg-check-box">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="rg_dotmatcheslinebreakes"
                                 aria-describedby="rg_dotmatcheslinebreakes_help">
@@ -216,7 +234,7 @@
                                 href="https://www.rexegg.com/regex-modifiers.html#dotall" target="_blank"
                                 rel="noopener">*</a></small>
                     </div>
-                    <div class="form-group col-sm-12 rg-check-row">
+                    <div class="form-group m-2 rg-check-box">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="rg_multiline"
                                 aria-describedby="rg_multiline_help">

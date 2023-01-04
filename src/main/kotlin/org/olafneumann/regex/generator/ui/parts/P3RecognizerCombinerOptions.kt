@@ -11,24 +11,29 @@ class P3RecognizerCombinerOptions(
     private val controller: MVCContract.Controller
 ) : NumberedExpandablePart(
     "rg_options",
-    caption = "Options"
+    caption = "Options",
+    initialStateOpen = true,
 ) {
     private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_ONLY_MATCHES)
     private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_WHOLELINE)
+    private val checkGenerateLowerCase = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_GENERATE_LOWER_CASE)
 
     init {
         checkOnlyMatches.oninput = { propagateOptionsChange() }
         checkWholeLine.oninput = { propagateOptionsChange() }
+        checkGenerateLowerCase.oninput = { propagateOptionsChange() }
     }
 
     private var options: RecognizerMatchCombinerOptions
         get() = RecognizerMatchCombinerOptions(
             onlyPatterns = checkOnlyMatches.checked,
             matchWholeLine = checkWholeLine.checked,
+            generateLowerCase = checkGenerateLowerCase.checked,
         )
         set(value) {
             checkOnlyMatches.checked = value.onlyPatterns
             checkWholeLine.checked = value.matchWholeLine
+            checkGenerateLowerCase.checked = value.generateLowerCase
         }
 
     fun applyModel(displayModel: DisplayModel) {

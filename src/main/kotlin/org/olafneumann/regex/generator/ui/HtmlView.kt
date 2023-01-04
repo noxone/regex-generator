@@ -20,6 +20,7 @@ object HtmlView {
     const val ID_ROW_CONTAINER = "rg_row_container"
     const val ID_CHECK_ONLY_MATCHES = "rg_onlymatches"
     const val ID_CHECK_WHOLELINE = "rg_matchwholeline"
+    const val ID_CHECK_GENERATE_LOWER_CASE = "rg_generateLowerCase"
     const val ID_CHECK_CASE_INSENSITIVE = "rg_caseinsensitive"
     const val ID_CHECK_DOT_MATCHES_LINE_BRAKES = "rg_dotmatcheslinebreakes"
     const val ID_CHECK_MULTILINE = "rg_multiline"
