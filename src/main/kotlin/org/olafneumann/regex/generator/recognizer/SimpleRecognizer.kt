@@ -1,7 +1,8 @@
 package org.olafneumann.regex.generator.recognizer
 
+import org.olafneumann.regex.generator.regex.PatternCaseModifier
 import org.olafneumann.regex.generator.regex.RegexCache
-import org.olafneumann.regex.generator.recognizer.PatternCaseModifier.Case
+import org.olafneumann.regex.generator.regex.PatternCaseModifier.Case
 
 class SimpleRecognizer(
     override val name: String,

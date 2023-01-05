@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.regex
 
-import org.olafneumann.regex.generator.recognizer.PatternCaseModifier.Case
+import org.olafneumann.regex.generator.regex.PatternCaseModifier.Case
 
 data class RecognizerMatchCombinerOptions(
     val onlyPatterns: Boolean = DEFAULT_ONLY_PATTERN,

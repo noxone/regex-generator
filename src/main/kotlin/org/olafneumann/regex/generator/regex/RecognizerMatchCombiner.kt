@@ -1,6 +1,5 @@
 package org.olafneumann.regex.generator.regex
 
-import org.olafneumann.regex.generator.recognizer.PatternCaseModifier
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.escapeForRegex
 

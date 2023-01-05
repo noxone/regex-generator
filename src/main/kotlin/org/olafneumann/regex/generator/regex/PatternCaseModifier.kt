@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.recognizer
+package org.olafneumann.regex.generator.regex
 
 object PatternCaseModifier {
     private val CHARACTER_CLASS_REGEX = Regex("\\[(.*?)\\]")
