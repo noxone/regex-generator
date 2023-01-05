@@ -32,7 +32,7 @@ class RecognizerMatchCombinerTest {
         val actual = RecognizerMatchCombiner.combineMatches(
             inputText = inputText,
             selectedMatches = selectedMatches,
-            options = RecognizerMatchCombinerOptions(onlyPatterns = false)
+            options = RecognizerMatchCombinerOptions(onlyPatterns = false, generateLowerCase = true)
         ).pattern
 
         assertEquals(expected = expected, actual = actual)
@@ -40,12 +40,12 @@ class RecognizerMatchCombinerTest {
 
     @Test
     fun testMatchCombinationWithOnlyPatterns() {
-        val expected = "[a-z]+.*[a-z]+"
+        val expected = "[A-Za-z]+.*[A-Za-z]+"
 
         val actual = RecognizerMatchCombiner.combineMatches(
             inputText = inputText,
             selectedMatches = selectedMatches,
-            options = RecognizerMatchCombinerOptions(onlyPatterns = true)
+            options = RecognizerMatchCombinerOptions(onlyPatterns = true, generateLowerCase = false)
         ).pattern
 
         assertEquals(expected = expected, actual = actual)
