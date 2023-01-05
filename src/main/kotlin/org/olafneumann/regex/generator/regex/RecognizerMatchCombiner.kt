@@ -1,5 +1,6 @@
 package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.recognizer.PatternCaseModifier
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.escapeForRegex
 
@@ -11,7 +12,13 @@ object RecognizerMatchCombiner {
     ): CombinedRegex {
         val rangesToMatches = selectedMatches.flatMap { match ->
             match.ranges
-                .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index], match = match) }
+                .mapIndexed { index, range ->
+                    RegularExpressionPart(
+                        range,
+                        PatternCaseModifier.generateOutputPattern(match.patterns[index], options.case),
+                        match = match
+                    )
+                }
         }
             .sortedBy { it.range.first }
             .toList()
@@ -88,30 +95,8 @@ object RecognizerMatchCombiner {
         }
 
         addWholeLineMatchingStuff(parts = parts, options = options)
-        adjustCharacterClassCases(parts = parts, options = options)
 
         return CombinedRegex(parts)
-    }
-
-    private fun adjustCharacterClassCases(parts: MutableList<RegularExpressionPart>, options: RecognizerMatchCombinerOptions) {
-        if (!options.generateLowerCase) {
-            return
-        }
-
-        for (index in parts.indices) {
-            val newPart = createAdjustedCharacterClassCasePart(part = parts[index])
-            if (newPart != null) {
-                parts[index] = newPart
-            }
-        }
-    }
-
-    // private val classFinder = Regex("\\[((?:[^]]|\\\\])*?)]")
-    // private val classSplitter = Regex("([A-Za-z])(?:-([A-Za-z]))?")
-
-    private fun createAdjustedCharacterClassCasePart(part: RegularExpressionPart): RegularExpressionPart? {
-
-        return null
     }
 
     private fun getPartBetween(
@@ -132,7 +117,10 @@ object RecognizerMatchCombiner {
         return null
     }
 
-    private fun addWholeLineMatchingStuff(parts: MutableList<RegularExpressionPart>, options: RecognizerMatchCombinerOptions) {
+    private fun addWholeLineMatchingStuff(
+        parts: MutableList<RegularExpressionPart>,
+        options: RecognizerMatchCombinerOptions
+    ) {
         if (!options.matchWholeLine) {
             return
         }

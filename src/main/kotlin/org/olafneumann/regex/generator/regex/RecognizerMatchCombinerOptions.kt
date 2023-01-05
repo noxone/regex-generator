@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.recognizer.PatternCaseModifier.Case
+
 data class RecognizerMatchCombinerOptions(
     val onlyPatterns: Boolean = DEFAULT_ONLY_PATTERN,
     val matchWholeLine: Boolean = DEFAULT_MATCH_WHOLE_LINE,
@@ -10,4 +12,6 @@ data class RecognizerMatchCombinerOptions(
         const val DEFAULT_MATCH_WHOLE_LINE = false
         const val DEFAULT_GENERATE_LOWER_CASE = false
     }
+
+    val case: Case = if (generateLowerCase) { Case.Lower } else { Case.Both }
 }

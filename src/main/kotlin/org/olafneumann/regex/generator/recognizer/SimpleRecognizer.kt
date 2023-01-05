@@ -1,23 +1,26 @@
 package org.olafneumann.regex.generator.recognizer
 
 import org.olafneumann.regex.generator.regex.RegexCache
+import org.olafneumann.regex.generator.recognizer.PatternCaseModifier.Case
 
 class SimpleRecognizer(
     override val name: String,
-    private val outputPattern: String,
-    override val description: String? = null,
-    private val searchPattern: String? = null,
+    private val outputPrePattern: String,
+    private val searchPattern: String = "(${PatternCaseModifier.generateOutputPattern(outputPrePattern, Case.Both)})",
     private val mainGroupIndex: Int = 1,
+    override val description: String? = null,
     override val isDerived: Boolean = false,
 ) : Recognizer {
-    private val searchRegex = RegexCache.get(searchPattern?.replace("%s", outputPattern) ?: "(${outputPattern})")
+    private val searchRegex = RegexCache.get(searchPattern.replace("%s", getOutputPattern(Case.Both)))
 
+    private fun getOutputPattern(case: Case): String =
+        PatternCaseModifier.generateOutputPattern(outputPrePattern, case)
 
     override fun findMatches(input: String): List<RecognizerMatch> =
         searchRegex.findAll(input)
             .map { result ->
                 RecognizerMatch(
-                    patterns = listOf(outputPattern),
+                    patterns = listOf(getOutputPattern(Case.Both)),
                     ranges = listOf(getMainGroupRange(result)),
                     recognizer = this,
                     title = name
@@ -41,13 +44,13 @@ class SimpleRecognizer(
 
     override fun equals(other: Any?) = other is SimpleRecognizer
             && this.name == other.name
-            && this.outputPattern == other.outputPattern
+            && this.outputPrePattern == other.outputPrePattern
             && this.searchPattern == other.searchPattern
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + outputPattern.hashCode()
-        result = 31 * result + (searchPattern?.hashCode() ?: 0)
+        result = 31 * result + outputPrePattern.hashCode()
+        result = 31 * result + searchPattern.hashCode()
         return result
     }
 }

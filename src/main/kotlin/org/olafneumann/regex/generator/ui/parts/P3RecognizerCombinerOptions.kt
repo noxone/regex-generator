@@ -16,7 +16,8 @@ class P3RecognizerCombinerOptions(
 ) {
     private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_ONLY_MATCHES)
     private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_WHOLELINE)
-    private val checkGenerateLowerCase = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_GENERATE_LOWER_CASE)
+    private val checkGenerateLowerCase =
+        HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_GENERATE_LOWER_CASE)
 
     init {
         checkOnlyMatches.oninput = { propagateOptionsChange() }
