@@ -5,8 +5,8 @@ import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 
 object FlagHelper {
     private const val CHAR_COMBINER_ONLY_PATTERNS = 'P'
-    private const val CHAR_COMBINER_WHOLE_LINE = 'L'
-    private const val CHAR_COMBINER_GENERATE_LOWER_CASE = 'O'
+    private const val CHAR_COMBINER_WHOLE_LINE = 'W'
+    private const val CHAR_COMBINER_GENERATE_LOWER_CASE = 'L'
     private const val CHAR_CODE_CASE_INSENSITIVE = 'i'
     private const val CHAR_CODE_DOT_MATCHES_LINE_BREAKS = 's'
     private const val CHAR_CODE_MULTILINE = 'm'

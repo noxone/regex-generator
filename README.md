@@ -20,8 +20,8 @@ The page supports several search parameters to change the initial state of the o
   - ``s`` dot matches line breaks
   - ``m`` multiline
   - ``P`` this controls the "Generate Only Patterns" check box
-  - ``L`` this controls the "Match Whole Line" check box
-  - ``O`` this controls the "Generate Lower Case" check box
+  - ``W`` this controls the "Match Whole Line" check box
+  - ``L`` this controls the "Generate Lower Case" check box
 - ``selection`` controls the matches that have been selected by the user
 - ``capGroups`` controls the capturing groups that are created by the user
 
