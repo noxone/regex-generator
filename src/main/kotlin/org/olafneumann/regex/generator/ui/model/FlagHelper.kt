@@ -11,19 +11,10 @@ object FlagHelper {
     private const val CHAR_CODE_DOT_MATCHES_LINE_BREAKS = 's'
     private const val CHAR_CODE_MULTILINE = 'm'
 
-    fun parseCodeGeneratorOptions(regexFlags: String?): CodeGeneratorOptions {
-        val caseInsensitive =
-            regexFlags.parseFlag(
-                char = CHAR_CODE_CASE_INSENSITIVE,
-                default = CodeGeneratorOptions.DEFAULT_CASE_INSENSITIVE
-            )
-        val dotMatchesLineBreaks =
-            regexFlags.parseFlag(
-                char = CHAR_CODE_DOT_MATCHES_LINE_BREAKS,
-                default = CodeGeneratorOptions.DEFAULT_DOT_MATCHES_LINE_BREAKS
-            )
-        val multiline =
-            regexFlags.parseFlag(char = CHAR_CODE_MULTILINE, default = CodeGeneratorOptions.DEFAULT_MULTILINE)
+    fun parseCodeGeneratorOptions(regexFlags: String): CodeGeneratorOptions {
+        val caseInsensitive = regexFlags.parseFlag(char = CHAR_CODE_CASE_INSENSITIVE)
+        val dotMatchesLineBreaks = regexFlags.parseFlag(char = CHAR_CODE_DOT_MATCHES_LINE_BREAKS)
+        val multiline = regexFlags.parseFlag(char = CHAR_CODE_MULTILINE)
 
         return CodeGeneratorOptions(
             caseInsensitive = caseInsensitive,
@@ -32,19 +23,10 @@ object FlagHelper {
         )
     }
 
-    fun parseRecognizerMatchCombinerOptions(regexFlags: String?): RecognizerMatchCombinerOptions {
-        val onlyPatterns = regexFlags.parseFlag(
-            char = CHAR_COMBINER_ONLY_PATTERNS,
-            default = RecognizerMatchCombinerOptions.DEFAULT_ONLY_PATTERN
-        )
-        val matchWholeLine = regexFlags.parseFlag(
-            char = CHAR_COMBINER_WHOLE_LINE,
-            default = RecognizerMatchCombinerOptions.DEFAULT_MATCH_WHOLE_LINE
-        )
-        val generateLowerCase = regexFlags.parseFlag(
-            char = CHAR_COMBINER_GENERATE_LOWER_CASE,
-            default = RecognizerMatchCombinerOptions.DEFAULT_GENERATE_LOWER_CASE
-        )
+    fun parseRecognizerMatchCombinerOptions(regexFlags: String): RecognizerMatchCombinerOptions {
+        val onlyPatterns = regexFlags.parseFlag(char = CHAR_COMBINER_ONLY_PATTERNS)
+        val matchWholeLine = regexFlags.parseFlag(char = CHAR_COMBINER_WHOLE_LINE)
+        val generateLowerCase = regexFlags.parseFlag(char = CHAR_COMBINER_GENERATE_LOWER_CASE)
 
         return RecognizerMatchCombinerOptions(
             onlyPatterns = onlyPatterns,
@@ -71,6 +53,6 @@ object FlagHelper {
         if (this) char else null
 
 
-    private fun String?.parseFlag(char: Char, default: Boolean): Boolean =
-        this?.contains(char = char, ignoreCase = false) ?: default
+    private fun String.parseFlag(char: Char): Boolean =
+        this.contains(char = char, ignoreCase = false)
 }

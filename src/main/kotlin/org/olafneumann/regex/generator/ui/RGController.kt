@@ -107,8 +107,12 @@ class RGController : MVCContract.Controller {
             val params = URL(document.URL).searchParams
 
             val regexFlags = params.get(HtmlView.SEARCH_FLAGS)
-            val codeGeneratorOptions = FlagHelper.parseCodeGeneratorOptions(regexFlags)
-            val recognizerMatchCombinerOptions = FlagHelper.parseRecognizerMatchCombinerOptions(regexFlags)
+            val codeGeneratorOptions = regexFlags
+                ?.let { FlagHelper.parseCodeGeneratorOptions(it) }
+                ?: ApplicationSettings.codeGeneratorOptions
+            val recognizerMatchCombinerOptions = regexFlags
+                ?.let { FlagHelper.parseRecognizerMatchCombinerOptions(it) }
+                ?: ApplicationSettings.regexMatchCombinerOptions
             val inputText = params.get(HtmlView.SEARCH_SAMPLE_REGEX)?.ifBlank { null } ?: VAL_EXAMPLE_INPUT
 
             val patternRecognizerModel = PatternRecognizerModel(

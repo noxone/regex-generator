@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.output;
+package org.olafneumann.regex.generator.output
 
 class JavaScriptCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "JavaScript",

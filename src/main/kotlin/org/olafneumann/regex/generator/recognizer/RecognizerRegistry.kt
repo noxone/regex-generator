@@ -129,7 +129,6 @@ object RecognizerRegistry {
             left.element.findSameMatchesWith((right.element))
         }
 
-        //return emptyList()
         return possibleRepetitions
             .filter { it.element.isNotEmpty() }
             .map { combination ->
@@ -149,8 +148,8 @@ object RecognizerRegistry {
             return emptyList()
         }
         fun Collection<RecognizerMatch>.filterForRanges(count: Int) = filter { it.ranges.size == count }
-        fun Collection<RecognizerMatch>.mostLeft() = flatMap { it.ranges }.map { it.first }.minOrNull() ?: Int.MIN_VALUE
-        fun Collection<RecognizerMatch>.mostRight() = flatMap { it.ranges }.map { it.last }.maxOrNull() ?: Int.MAX_VALUE
+        fun Collection<RecognizerMatch>.mostLeft() = flatMap { it.ranges }.minOfOrNull { it.first } ?: Int.MIN_VALUE
+        fun Collection<RecognizerMatch>.mostRight() = flatMap { it.ranges }.maxOfOrNull { it.last } ?: Int.MAX_VALUE
         fun Collection<RecognizerMatch>.findFullMatch(first: Int, last: Int) =
             filter { it.ranges[0].first == first && it.ranges[0].last == last }
 
