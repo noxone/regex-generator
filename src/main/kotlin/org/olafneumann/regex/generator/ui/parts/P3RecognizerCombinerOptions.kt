@@ -12,7 +12,7 @@ class P3RecognizerCombinerOptions(
 ) : NumberedExpandablePart(
     "rg_options",
     caption = "Options",
-    initialStateOpen = true,
+    initialStateOpen = false,
 ) {
     private val checkOnlyMatches = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_ONLY_MATCHES)
     private val checkWholeLine = HtmlHelper.getElementById<HTMLInputElement>(HtmlView.ID_CHECK_WHOLELINE)

@@ -59,7 +59,7 @@ internal class P4CapturingGroups(
 ) : NumberedExpandablePart(
     elementId = "rg_capgroup_selection_container",
     caption = "Add Capturing Groups (optional)",
-    initialStateOpen = false,
+    initialStateOpen = true,
 ) {
     companion object {
         private const val CLASS_SELECTION = "bg-warning"
