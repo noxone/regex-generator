@@ -16,9 +16,9 @@ internal class AugmentedRecognizerMatch(
     override val last: Int
         get() = this.ranges.last().last
 
-    fun <T> applyAll(diffOperations: List<DiffOperation<T>>?): List<AugmentedRecognizerMatch> {
+    fun <T> applyAll(diffOperations: List<DiffOperation<T>>): List<AugmentedRecognizerMatch> {
         var out: List<AugmentedRecognizerMatch> = listOf(this)
-        diffOperations?.forEach { diffOp -> out = out.flatMap { it.apply(diffOp) } }
+        diffOperations.forEach { diffOp -> out = out.flatMap { it.apply(diffOp) } }
         return out
     }
 
