@@ -2,7 +2,6 @@ package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
-import kotlinx.html.BUTTON
 import kotlinx.html.ButtonType
 import kotlinx.html.DIV
 import kotlinx.html.InputType
@@ -42,7 +41,6 @@ import org.olafneumann.regex.generator.ui.utils.MouseCapture
 import org.olafneumann.regex.generator.ui.utils.gButton
 import org.olafneumann.regex.generator.utils.center
 import org.w3c.dom.HTMLButtonElement
-import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement

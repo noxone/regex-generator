@@ -52,7 +52,7 @@ data class PatternRecognizerModel(
             recognizerMatches = newMatches,
             selectedRecognizerMatches = newSelectedMatches,
             combinedRegex = newRegex,
-            capturingGroupModel = CapturingGroupModel(newRegex, emptyList()/* TODO keep cap groups */)
+            capturingGroupModel = capturingGroupModel.transferToNewRegex(newRegex = newRegex)
         )
     }
 
@@ -78,7 +78,7 @@ data class PatternRecognizerModel(
         return copy(
             selectedRecognizerMatches = newSelection,
             combinedRegex = newRegex,
-            capturingGroupModel = CapturingGroupModel(newRegex, emptyList()/* TODO keep cap groups */)
+            capturingGroupModel = capturingGroupModel.transferToNewRegex(newRegex = newRegex)
         )
     }
 
@@ -90,7 +90,7 @@ data class PatternRecognizerModel(
         return copy(
             selectedRecognizerMatches = newSelection,
             combinedRegex = newRegex,
-            capturingGroupModel = CapturingGroupModel(newRegex, emptyList()/* TODO keep cap groups */)
+            capturingGroupModel = capturingGroupModel.transferToNewRegex(newRegex = newRegex)
         )
     }
 
@@ -100,7 +100,7 @@ data class PatternRecognizerModel(
         return copy(
             recognizerMatchCombinerOptions = options,
             combinedRegex = newRegex,
-            capturingGroupModel = CapturingGroupModel(newRegex, emptyList()/* TODO keep cap groups */)
+            capturingGroupModel = capturingGroupModel.transferToNewRegex(newRegex = newRegex)
         )
     }
 

@@ -1,9 +1,14 @@
 package org.olafneumann.regex.generator.model
 
+import dev.andrewbailey.diff.differenceOf
 import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.regex.CombinedRegex
+import org.olafneumann.regex.generator.utils.DiffType
 import org.olafneumann.regex.generator.utils.IdGenerator
 import org.olafneumann.regex.generator.utils.containsAndNotOnEdges
+import org.olafneumann.regex.generator.utils.length
+import org.olafneumann.regex.generator.utils.simpleDiffOperation
+import org.olafneumann.regex.generator.utils.toIndexedString
 
 data class CapturingGroupModel(
     val regex: CombinedRegex,
@@ -22,7 +27,7 @@ data class CapturingGroupModel(
             name == null || VALID_NAME_REGEX.matches(name)
     }
 
-    val pattern: String by lazy {
+    val pattern: String get() {
         var pattern = regex.pattern
 
         if (capturingGroups.isNotEmpty()) {
@@ -44,15 +49,13 @@ data class CapturingGroupModel(
             pattern = stringParts.joinToString(separator = "")
         }
 
-        pattern
+        return pattern
     }
 
-    private val patternParts = patternSymbolRegex.findAll(pattern)
+    internal val rootPatternPartGroup get() = analyzeRegexGroups()
 
-    internal val rootPatternPartGroup = analyzeRegexGroups()
-
-    private fun analyzeRegexGroups(): PatternPartGroup {
-        val rawParts = patternParts
+    private fun getPatternSymbols(input: String): Sequence<PatternSymbol> =
+        patternSymbolRegex.findAll(input)
             .mapIndexed { index, matchResult ->
                 PatternSymbol(
                     index = index,
@@ -61,7 +64,9 @@ data class CapturingGroupModel(
                     type = getPatternPartType(matchResult.groups)
                 )
             }
-            .toList()
+
+    private fun analyzeRegexGroups(): PatternPartGroup {
+        val rawParts = getPatternSymbols(pattern)
         val root = PatternPartGroup()
         var currentLevel = root
         for (part in rawParts) {
@@ -156,6 +161,36 @@ data class CapturingGroupModel(
                 }
             }
         return copy(capturingGroups = newCapturingGroups)
+    }
+
+    fun transferToNewRegex(newRegex: CombinedRegex): CapturingGroupModel {
+        //val oldPatternParts = getPatternSymbols(this.regex.pattern).map { it.unindexed }.toList()
+        //val newPatternParts = getPatternSymbols(newRegex.pattern).map { it.unindexed }.toList()
+
+        /*val diffOperations = differenceOf(original = oldPatternParts, updated = newPatternParts, detectMoves = false)
+            .operations
+            .map { it.simpleDiffOperation }
+            .sortedBy { it.range.first }*/
+        val newCapturingGroups = capturingGroups.toMutableList()
+
+        /*diffOperations.forEach { operation ->
+            when (operation.type) {
+                DiffType.Add -> {
+                    newCapturingGroups.map { cg ->
+                        if (operation.range.first <= cg.openingPosition) {
+                            cg.move(operation.range.length)
+                        } else {
+                            cg
+                        }
+                    }.mapIndexed { index, capturingGroup ->
+                        newCapturingGroups.set(index, capturingGroup)
+                    }
+                }
+                DiffType.Remove -> {}
+            }
+        }*/
+
+        return copy(regex = newRegex, capturingGroups = newCapturingGroups)
     }
 
     fun renameCapturingGroup(capturingGroup: CapturingGroup, newName: String?): CapturingGroupModel {
@@ -275,6 +310,33 @@ data class CapturingGroupModel(
 
         override val firstIndex: Int = index
         override val lastIndex: Int = index
+
+        internal val unindexed = UnindexPatternSymbol(this)
+    }
+
+    internal class UnindexPatternSymbol(
+        private val symbol: PatternSymbol
+    ) {
+        val text = symbol.text
+        val type = symbol.type
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other == null || this::class.js != other::class.js) return false
+
+            other as UnindexPatternSymbol
+
+            if (text != other.text) return false
+            if (type != other.type) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = text.hashCode()
+            result = 31 * result + type.hashCode()
+            return result
+        }
     }
 
     internal enum class PatternSymbolType {
