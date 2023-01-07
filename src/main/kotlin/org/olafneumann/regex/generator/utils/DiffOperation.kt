@@ -20,7 +20,9 @@ internal enum class DiffType {
 internal data class SimpleDiffOperation(
     val type: DiffType,
     val range: IntRange,
-)
+) {
+    fun move(index: Int) = SimpleDiffOperation(type, range.addPosition(index))
+}
 
 internal val <T> DiffOperation<T>.simpleDiffOperation: SimpleDiffOperation
     get() =

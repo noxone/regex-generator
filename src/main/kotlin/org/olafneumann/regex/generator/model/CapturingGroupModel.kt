@@ -1,9 +1,14 @@
 package org.olafneumann.regex.generator.model
 
+import dev.andrewbailey.diff.differenceOf
 import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.regex.CombinedRegex
+import org.olafneumann.regex.generator.utils.DiffType
 import org.olafneumann.regex.generator.utils.IdGenerator
 import org.olafneumann.regex.generator.utils.containsAndNotOnEdges
+import org.olafneumann.regex.generator.utils.length
+import org.olafneumann.regex.generator.utils.simpleDiffOperation
+import org.olafneumann.regex.generator.utils.toIndexedString
 
 data class CapturingGroupModel(
     val regex: CombinedRegex,
@@ -122,9 +127,16 @@ data class CapturingGroupModel(
         return copy(capturingGroups = newCapturingGroups)
     }
 
-    @Suppress("MagicNumber")
     fun removeCapturingGroup(capturingGroup: CapturingGroup): CapturingGroupModel {
-        val newCapturingGroups = capturingGroups
+        return copy(capturingGroups = removeCapturingGroupInternal(capturingGroups, capturingGroup))
+    }
+
+    @Suppress("MagicNumber")
+    private fun removeCapturingGroupInternal(
+        capturingGroups: List<CapturingGroup>,
+        capturingGroup: CapturingGroup
+    ): List<CapturingGroup> {
+        return capturingGroups
             .mapNotNull { curCapturingGroup ->
                 if (capturingGroup.id == curCapturingGroup.id) {
                     null
@@ -149,35 +161,74 @@ data class CapturingGroupModel(
                     curCapturingGroup
                 }
             }
-        return copy(capturingGroups = newCapturingGroups)
     }
 
-    fun transferToNewRegex(newRegex: CombinedRegex): CapturingGroupModel {
-        //val oldPatternParts = getPatternSymbols(this.regex.pattern).map { it.unindexed }.toList()
-        //val newPatternParts = getPatternSymbols(newRegex.pattern).map { it.unindexed }.toList()
+    private fun getMovedPatternSymbols(input: String): List<IndexIgnoringPatternSymbol> =
+        getPatternSymbols(input)
+            .map { it.unindexed }
+            // .map { ups -> ups.move(positionedBrackets.filter { pb -> pb.position <= ups.index }.size) }
+            .toList()
 
-        /*val diffOperations = differenceOf(original = oldPatternParts, updated = newPatternParts, detectMoves = false)
+    fun transferToNewRegex(newRegex: CombinedRegex): CapturingGroupModel {
+        if (capturingGroups.isEmpty()) {
+            return CapturingGroupModel(regex = newRegex, emptyList())
+        }
+
+        val oldPatternParts = getMovedPatternSymbols(this.regex.pattern)
+        val newPatternParts = getMovedPatternSymbols(newRegex.pattern)
+
+        val diffOperations = differenceOf(original = oldPatternParts, updated = newPatternParts, detectMoves = false)
             .operations
             .map { it.simpleDiffOperation }
-            .sortedBy { it.range.first }*/
-        val newCapturingGroups = capturingGroups.toMutableList()
+            .map { it.move(positionedBrackets.filter { pb -> pb.position <= it.range.first }.size) }
+            .sortedBy { it.range.first }
+        console.log(diffOperations.toIndexedString())
+        var newCapturingGroups = capturingGroups.toMutableList()
 
-        /*diffOperations.forEach { operation ->
+        console.log(newCapturingGroups.toIndexedString("Start: "))
+        diffOperations.forEach { operation ->
             when (operation.type) {
                 DiffType.Add -> {
-                    newCapturingGroups.map { cg ->
-                        if (operation.range.first <= cg.openingPosition) {
-                            cg.move(operation.range.length)
-                        } else {
-                            cg
+                    newCapturingGroups
+                        .map { cg ->
+                            if (operation.range.first <= cg.openingPosition) {
+                                cg.move(operation.range.length)
+                            } else if (operation.range.first > cg.openingPosition && operation.range.first < cg.closingPosition) {
+                                cg.move(0, operation.range.length)
+                            } else {
+                                cg
+                            }
                         }
-                    }.mapIndexed { index, capturingGroup ->
-                        newCapturingGroups.set(index, capturingGroup)
-                    }
+                        .forEachIndexed { index, capturingGroup ->
+                            newCapturingGroups[index] = capturingGroup
+                        }
                 }
-                DiffType.Remove -> {}
+
+                DiffType.Remove -> {
+                    newCapturingGroups
+                        .map { cg ->
+                            if (operation.range.first < cg.openingPosition) {
+                                console.log("remove", 1)
+                                cg.move(-operation.range.length)
+                            } else if (operation.range.first >= cg.openingPosition && operation.range.first < cg.closingPosition) {
+                                console.log("remove", 2)
+                                cg.move(0, -operation.range.length)
+                            } else {
+                                cg
+                            }
+                        }
+                        .mapIndexed { index, capturingGroup ->
+                            newCapturingGroups[index] = capturingGroup
+                            capturingGroup
+                        }
+                        .filter { it.openingPosition >= it.closingPosition - 1 }
+                        .forEach {
+                            newCapturingGroups = removeCapturingGroupInternal(newCapturingGroups, it).toMutableList()
+                        }
+                    console.log(newCapturingGroups.toIndexedString("ende: "))
+                }
             }
-        }*/
+        }
 
         return copy(regex = newRegex, capturingGroups = newCapturingGroups)
     }
@@ -300,20 +351,24 @@ data class CapturingGroupModel(
         override val firstIndex: Int = index
         override val lastIndex: Int = index
 
-        internal val unindexed = UnindexPatternSymbol(this)
+        internal val unindexed = IndexIgnoringPatternSymbol(this)
     }
 
-    internal class UnindexPatternSymbol(
-        private val symbol: PatternSymbol
+    internal class IndexIgnoringPatternSymbol(
+        private val symbol: PatternSymbol,
+        private val move: Int = 0
     ) {
+        val index = symbol.index + move
         val text = symbol.text
         val type = symbol.type
+
+        fun move(amount: Int): IndexIgnoringPatternSymbol = IndexIgnoringPatternSymbol(symbol, move + amount)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other == null || this::class.js != other::class.js) return false
 
-            other as UnindexPatternSymbol
+            other as IndexIgnoringPatternSymbol
 
             if (text != other.text) return false
             if (type != other.type) return false

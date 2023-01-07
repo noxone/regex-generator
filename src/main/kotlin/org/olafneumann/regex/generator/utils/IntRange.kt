@@ -15,6 +15,16 @@ fun IntRange.containsAndNotOnEdges(value: Int): Boolean =
 fun IntRange.containsAndNotOnEdges(value: IntRange): Boolean =
     containsAndNotOnEdges(value.first) && containsAndNotOnEdges(value.last)
 
+fun IntRange.addPosition(index: Int): IntRange =
+    if (index <= first) {
+        IntRange(first + 1, last + 1)
+    } else if (index <= last) {
+        IntRange(first, last + 1)
+    } else {
+        this
+    }
+
+
 fun IntRange.add(rangeToAdd: IntRange): List<IntRange> {
     return if (rangeToAdd.first < this.first) {
         listOf(IntRange(this.first + rangeToAdd.length, this.last + rangeToAdd.length))
