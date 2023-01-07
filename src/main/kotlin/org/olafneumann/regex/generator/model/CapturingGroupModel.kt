@@ -22,30 +22,26 @@ data class CapturingGroupModel(
             name == null || VALID_NAME_REGEX.matches(name)
     }
 
-    private val positionedBrackets: List<PositionedBracket>
-        get() = capturingGroups
-            .flatMap { it.positionedBrackets }
-            .sortedBy { it.position }
+    private val positionedBrackets: List<PositionedBracket> = capturingGroups
+        .flatMap { it.positionedBrackets }
+        .sortedBy { it.position }
 
-    val pattern: String
-        get() {
-            var pattern = regex.pattern
+    val pattern: String = run {
+        var pattern = regex.pattern
+        if (capturingGroups.isNotEmpty()) {
 
-            if (capturingGroups.isNotEmpty()) {
-
-                val stringParts = patternSymbolRegex.findAll(pattern)
-                    .map { pattern.substring(it.range) }
-                    .toMutableList()
-                for (positionedBracket in positionedBrackets) {
-                    stringParts.add(positionedBracket.position, positionedBracket.content)
-                }
-                pattern = stringParts.joinToString(separator = "")
+            val stringParts = patternSymbolRegex.findAll(pattern)
+                .map { pattern.substring(it.range) }
+                .toMutableList()
+            for (positionedBracket in positionedBrackets) {
+                stringParts.add(positionedBracket.position, positionedBracket.content)
             }
-
-            return pattern
+            pattern = stringParts.joinToString(separator = "")
         }
+        pattern
+    }
 
-    internal val rootPatternPartGroup get() = analyzeRegexGroups()
+    internal val rootPatternPartGroup = analyzeRegexGroups()
 
     private fun getPatternSymbols(input: String): Sequence<PatternSymbol> =
         patternSymbolRegex.findAll(input)
@@ -364,20 +360,15 @@ data class CapturingGroupModel(
         fun getPublishedClosingPosition(model: CapturingGroupModel): Int =
             closingPosition - 2 - 2 * model.capturingGroups.filter { range.containsAndNotOnEdges(it.range) }.size
 
-        val openingString: String
-            get() = "(${name?.let { "?<$it>" } ?: ""}"
-        val closingString: String
-            get() = ")${quantifier ?: ""}"
+        private val openingString: String = "(${name?.let { "?<$it>" } ?: ""}"
+        private val closingString: String = ")${quantifier ?: ""}"
 
-        val positionedBrackets: List<PositionedBracket>
-            get() =
-                listOf(
-                    PositionedBracket(position = openingPosition, content = openingString),
-                    PositionedBracket(position = closingPosition, content = closingString)
-                )
+        val positionedBrackets: List<PositionedBracket> = listOf(
+            PositionedBracket(position = openingPosition, content = openingString),
+            PositionedBracket(position = closingPosition, content = closingString)
+        )
 
-        val range: IntRange
-            get() = IntRange(openingPosition, closingPosition)
+        val range: IntRange = IntRange(openingPosition, closingPosition)
 
         fun move(distance: Int) = move(distance, distance)
         fun move(distanceOpening: Int, distanceClosing: Int): CapturingGroup =
