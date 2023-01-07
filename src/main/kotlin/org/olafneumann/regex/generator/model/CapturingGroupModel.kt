@@ -1,14 +1,9 @@
 package org.olafneumann.regex.generator.model
 
-import dev.andrewbailey.diff.differenceOf
 import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.regex.CombinedRegex
-import org.olafneumann.regex.generator.utils.DiffType
 import org.olafneumann.regex.generator.utils.IdGenerator
 import org.olafneumann.regex.generator.utils.containsAndNotOnEdges
-import org.olafneumann.regex.generator.utils.length
-import org.olafneumann.regex.generator.utils.simpleDiffOperation
-import org.olafneumann.regex.generator.utils.toIndexedString
 
 data class CapturingGroupModel(
     val regex: CombinedRegex,
@@ -27,30 +22,28 @@ data class CapturingGroupModel(
             name == null || VALID_NAME_REGEX.matches(name)
     }
 
-    val pattern: String get() {
-        var pattern = regex.pattern
+    private val positionedBrackets: List<PositionedBracket>
+        get() = capturingGroups
+            .flatMap { it.positionedBrackets }
+            .sortedBy { it.position }
 
-        if (capturingGroups.isNotEmpty()) {
-            val bracketPositions = capturingGroups
-                .flatMap {
-                    listOf(
-                        it.openingPosition to it.openingString,
-                        it.closingPosition to it.closingString
-                    )
+    val pattern: String
+        get() {
+            var pattern = regex.pattern
+
+            if (capturingGroups.isNotEmpty()) {
+
+                val stringParts = patternSymbolRegex.findAll(pattern)
+                    .map { pattern.substring(it.range) }
+                    .toMutableList()
+                for (positionedBracket in positionedBrackets) {
+                    stringParts.add(positionedBracket.position, positionedBracket.content)
                 }
-                .sortedBy { it.first }
-
-            val stringParts = patternSymbolRegex.findAll(pattern)
-                .map { pattern.substring(it.range) }
-                .toMutableList()
-            for (bp in bracketPositions) {
-                stringParts.add(bp.first, bp.second)
+                pattern = stringParts.joinToString(separator = "")
             }
-            pattern = stringParts.joinToString(separator = "")
-        }
 
-        return pattern
-    }
+            return pattern
+        }
 
     internal val rootPatternPartGroup get() = analyzeRegexGroups()
 
@@ -376,6 +369,13 @@ data class CapturingGroupModel(
         val closingString: String
             get() = ")${quantifier ?: ""}"
 
+        val positionedBrackets: List<PositionedBracket>
+            get() =
+                listOf(
+                    PositionedBracket(position = openingPosition, content = openingString),
+                    PositionedBracket(position = closingPosition, content = closingString)
+                )
+
         val range: IntRange
             get() = IntRange(openingPosition, closingPosition)
 
@@ -393,6 +393,11 @@ data class CapturingGroupModel(
             private val idGenerator = IdGenerator()
         }
     }
+
+    data class PositionedBracket(
+        val position: Int,
+        val content: String,
+    )
 
     data class Flags(
         val caseSensitive: Boolean? = null,
