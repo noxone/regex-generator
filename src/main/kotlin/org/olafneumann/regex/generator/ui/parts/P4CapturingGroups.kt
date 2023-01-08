@@ -413,7 +413,8 @@ internal class P4CapturingGroups(
             placement = Popover.Placement.Top,
             title = caption,
             trigger = "manual",
-            onShown = { elements.nameText.select() }
+            onShown = { elements.nameText.select() },
+            onCloseButtonClick = { disposePopover() },
         )
         popover!!.show()
         jQuery(".popover").mousedown {
@@ -504,6 +505,7 @@ internal class P4CapturingGroups(
             placement = Popover.Placement.Top,
             title = "Quantifier",
             trigger = "manual",
+            onCloseButtonClick = { disposePopover() },
         )
         popover!!.show()
         jQuery(".popover").mousedown {
@@ -565,7 +567,8 @@ internal class P4CapturingGroups(
             },
             placement = Popover.Placement.Top,
             title = "Flags",
-            trigger = "manual"
+            trigger = "manual",
+            onCloseButtonClick = { disposePopover() },
         )
         popover!!.show()
         jQuery(".popover").mousedown {
