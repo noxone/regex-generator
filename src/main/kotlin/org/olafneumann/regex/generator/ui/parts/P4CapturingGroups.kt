@@ -183,7 +183,7 @@ internal class P4CapturingGroups(
                                 "text-secondary text-nowrap rg-btn-quantifiers",
                                 "Adjust quantifier",
                                 { showQuantifierPopover(capturingGroup, elements.quantifiersButton) }
-                            ) { +(capturingGroup.quantifier ?: "1") }
+                            ) { +(capturingGroup.quantifier ?: "{1}") }
                             gButton(
                                 "text-secondary text-nowrap rg-btn-flags d-none",
                                 "Set flags",
@@ -343,7 +343,8 @@ internal class P4CapturingGroups(
         showCapturingGroupNamePopover(
             "Rename",
             element,
-            prefilledValue = capturingGroup.name ?: ""
+            prefilledValue = capturingGroup.name ?: "",
+            Popover.Placement.Bottom
         ) { capturingGroupName ->
             disposePopover()
             if (capturingGroup.name != capturingGroupName) {
@@ -356,6 +357,7 @@ internal class P4CapturingGroups(
         caption: String,
         element: HTMLElement,
         prefilledValue: String = "",
+        popoverPlacement: Popover.Placement = Popover.Placement.Top,
         action: (String?) -> Unit
     ) {
         val elements = PopoverElements()
@@ -410,7 +412,7 @@ internal class P4CapturingGroups(
                     }
                 }
             },
-            placement = Popover.Placement.Top,
+            placement = popoverPlacement,
             title = caption,
             trigger = "manual",
             onShown = { elements.nameText.select() },
@@ -461,7 +463,7 @@ internal class P4CapturingGroups(
                     div(classes = "mb-3") {
                         label(classes = "form-label") { +"Exact quantifiers" }
                         div(classes = "input-group") {
-                            qButton("1", "Matches exactly once", null)
+                            qButton("{1}", "Matches exactly once", null)
                             /*button(classes = "btn btn-light btn-toggle border", type = ButtonType.button) {
                                 +"{x,y}"
                                 title = "Matches between X and Y times"
@@ -502,7 +504,7 @@ internal class P4CapturingGroups(
                     }
                 }
             },
-            placement = Popover.Placement.Top,
+            placement = Popover.Placement.Bottom,
             title = "Quantifier",
             trigger = "manual",
             onCloseButtonClick = { disposePopover() },
@@ -565,7 +567,7 @@ internal class P4CapturingGroups(
                     onClickFunction = { }
                 }
             },
-            placement = Popover.Placement.Top,
+            placement = Popover.Placement.Bottom,
             title = "Flags",
             trigger = "manual",
             onCloseButtonClick = { disposePopover() },

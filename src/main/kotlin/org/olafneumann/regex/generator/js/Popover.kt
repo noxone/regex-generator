@@ -6,6 +6,7 @@ import kotlinx.html.button
 import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import kotlinx.html.js.onClickFunction
+import kotlinx.html.title
 import org.w3c.dom.HTMLElement
 import kotlin.js.json
 
@@ -41,9 +42,10 @@ class Popover(
         "html" to html,
         "placement" to placement.value,
         "title" to document.create.div(classes = "d-flex justify-content-between align-items-center") {
-            +title
+            +this@Popover.title
             button(classes = "btn-close", type = ButtonType.button) {
                 attributes["aria-label"] = "Close"
+                title = "Cancel"
                 onClickFunction = { onCloseButtonClick() }
             }
         },
