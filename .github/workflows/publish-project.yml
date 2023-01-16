@@ -27,6 +27,12 @@ jobs:
         with:
           name: site
           path: build/distributions
+
+      # Remove some lines to active website tracking
+      - name: Prepare website for github pages
+        run: |
+          grep -v "REMOVE_LINE_FOR_PUBLISHING" index.html > temp && mv temp index.html
+
       # publish the generated page to github pages
       - name: Deploy Site
         uses: peaceiris/actions-gh-pages@v3
