@@ -7,7 +7,6 @@ import org.olafneumann.regex.generator.regex.CombinedRegex
 import org.olafneumann.regex.generator.utils.IdGenerator
 import org.olafneumann.regex.generator.utils.containsAndNotOnEdges
 import org.olafneumann.regex.generator.utils.length
-import org.olafneumann.regex.generator.utils.move
 import org.olafneumann.regex.generator.utils.toIndexedString
 
 data class CapturingGroupModel(

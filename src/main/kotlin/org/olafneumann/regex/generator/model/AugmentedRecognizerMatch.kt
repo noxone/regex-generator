@@ -5,7 +5,6 @@ import org.olafneumann.regex.generator.diff.Difference
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.utils.HasRange
 import org.olafneumann.regex.generator.utils.HasRanges
-import org.olafneumann.regex.generator.utils.rangeAction
 
 internal class AugmentedRecognizerMatch(
     val original: RecognizerMatch,
@@ -27,7 +26,7 @@ internal class AugmentedRecognizerMatch(
             return emptyList()
         }
 
-        val rangeAction = difference.rangeAction
+        val rangeAction = difference.action
         return if (ranges.size == 1) {
             val possibleRanges = rangeAction.applyTo(ranges[0])
             possibleRanges.map { AugmentedRecognizerMatch(original = original, ranges = listOf(it)) }
