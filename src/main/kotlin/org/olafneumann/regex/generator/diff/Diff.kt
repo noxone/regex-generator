@@ -41,7 +41,6 @@ private fun <T> findDifferencesPeterTrr(input1: List<T>, input2: List<T>): List<
         .flatMap { it.toDifference() }
 
 private fun <T> Delta<T>.toDifference(): List<Difference> {
-    console.log(this.toString())
     return when (type) {
         DeltaType.INSERT -> listOf(Difference(Difference.Type.Add, target.position..target.last()))
         DeltaType.DELETE -> listOf(Difference(Difference.Type.Remove, source.position..source.last()))
