@@ -1,13 +1,13 @@
 package org.olafneumann.regex.generator.model
 
-import dev.andrewbailey.diff.differenceOf
 import org.olafneumann.regex.generator.RegexGeneratorException
+import org.olafneumann.regex.generator.diff.Difference
+import org.olafneumann.regex.generator.diff.findDifferences
 import org.olafneumann.regex.generator.regex.CombinedRegex
-import org.olafneumann.regex.generator.utils.DiffType
 import org.olafneumann.regex.generator.utils.IdGenerator
 import org.olafneumann.regex.generator.utils.containsAndNotOnEdges
 import org.olafneumann.regex.generator.utils.length
-import org.olafneumann.regex.generator.utils.simpleDiffOperation
+import org.olafneumann.regex.generator.utils.move
 import org.olafneumann.regex.generator.utils.toIndexedString
 
 data class CapturingGroupModel(
@@ -177,24 +177,22 @@ data class CapturingGroupModel(
         val oldPatternParts = getMovedPatternSymbols(this.regex.pattern)
         val newPatternParts = getMovedPatternSymbols(newRegex.pattern)
 
-        val diffOperations = differenceOf(original = oldPatternParts, updated = newPatternParts, detectMoves = false)
-            .operations
-            .map { it.simpleDiffOperation }
+        val differences = findDifferences(input1 = oldPatternParts, input2 = newPatternParts)
             .map { it.move(positionedBrackets.filter { pb -> pb.position <= it.range.first }.size) }
             .sortedBy { it.range.first }
-        console.log(diffOperations.toIndexedString())
+        console.log(differences.toIndexedString())
         var newCapturingGroups = capturingGroups.toMutableList()
 
         console.log(newCapturingGroups.toIndexedString("Start: "))
-        diffOperations.forEach { operation ->
-            when (operation.type) {
-                DiffType.Add -> {
+        differences.forEach { difference ->
+            when (difference.type) {
+                Difference.Type.Add -> {
                     newCapturingGroups
                         .map { cg ->
-                            if (operation.range.first <= cg.openingPosition) {
-                                cg.move(operation.range.length)
-                            } else if (operation.range.first > cg.openingPosition && operation.range.first < cg.closingPosition) {
-                                cg.move(0, operation.range.length)
+                            if (difference.range.first <= cg.openingPosition) {
+                                cg.move(difference.range.length)
+                            } else if (difference.range.first > cg.openingPosition && difference.range.first < cg.closingPosition) {
+                                cg.move(0, difference.range.length)
                             } else {
                                 cg
                             }
@@ -204,15 +202,15 @@ data class CapturingGroupModel(
                         }
                 }
 
-                DiffType.Remove -> {
+                Difference.Type.Remove -> {
                     newCapturingGroups
                         .map { cg ->
-                            if (operation.range.first < cg.openingPosition) {
+                            if (difference.range.first < cg.openingPosition) {
                                 console.log("remove", 1)
-                                cg.move(-operation.range.length)
-                            } else if (operation.range.first >= cg.openingPosition && operation.range.first < cg.closingPosition) {
+                                cg.move(-difference.range.length)
+                            } else if (difference.range.first >= cg.openingPosition && difference.range.first < cg.closingPosition) {
                                 console.log("remove", 2)
-                                cg.move(0, -operation.range.length)
+                                cg.move(0, -difference.range.length)
                             } else {
                                 cg
                             }

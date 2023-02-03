@@ -1,6 +1,6 @@
 package org.olafneumann.regex.generator.model
 
-import dev.andrewbailey.diff.differenceOf
+import org.olafneumann.regex.generator.diff.findDifferences
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.RecognizerRegistry
@@ -25,16 +25,15 @@ data class PatternRecognizerModel(
         val newMatches = RecognizerRegistry.findMatches(newInput)
 
         // check how the input string has changed in regard to the old string
-        val inputDiffs = differenceOf(
-            original = this.input.toCharArray().toList(),
-            updated = newInput.toCharArray().toList(),
-            detectMoves = false
+        val differences = findDifferences(
+            input1 = this.input.toCharArray().toList(),
+            input2 = newInput.toCharArray().toList(),
         )
 
         // generate pseudo matches, that resemble possible matches after applying the changes
         val newSelectedMatches = this.selectedRecognizerMatches
             .map { AugmentedRecognizerMatch(original = it) }
-            .flatMap { it.applyAll(inputDiffs.operations) }
+            .flatMap { it.applyAll(differences) }
             // see if the augmented matches are still present in the new list of matches -> the new selection
             .mapNotNull { augmentedMatch -> newMatches.firstOrNull { newMatch -> augmentedMatch.equals(newMatch) } }
             .filter { newMatches.contains(it) }
