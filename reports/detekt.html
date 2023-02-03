@@ -157,11 +157,11 @@
 
 <div>
   <ul>
-    <li>477 number of properties</li>
-    <li>338 number of functions</li>
-    <li>91 number of classes</li>
-    <li>14 number of packages</li>
-    <li>83 number of kt files</li>
+    <li>536 number of properties</li>
+    <li>396 number of functions</li>
+    <li>119 number of classes</li>
+    <li>15 number of packages</li>
+    <li>91 number of kt files</li>
   </ul>
 </div>
 
@@ -170,25 +170,53 @@
 
 <div>
   <ul>
-    <li>4,796 lines of code (loc)</li>
-    <li>3,932 source lines of code (sloc)</li>
-    <li>3,072 logical lines of code (lloc)</li>
-    <li>113 comment lines of code (cloc)</li>
-    <li>598 cyclomatic complexity (mcc)</li>
-    <li>251 cognitive complexity</li>
-    <li>0 number of total code smells</li>
-    <li>2% comment source ratio</li>
-    <li>194 mcc per 1,000 lloc</li>
+    <li>5,909 lines of code (loc)</li>
+    <li>4,922 source lines of code (sloc)</li>
+    <li>3,642 logical lines of code (lloc)</li>
+    <li>178 comment lines of code (cloc)</li>
+    <li>701 cyclomatic complexity (mcc)</li>
+    <li>278 cognitive complexity</li>
+    <li>2 number of total code smells</li>
+    <li>3% comment source ratio</li>
+    <li>192 mcc per 1,000 lloc</li>
     <li>0 code smells per 1,000 lloc</li>
   </ul>
 </div>
 
 
 <h2>Findings</h2>
-<div>Total: 0</div>
+<div>Total: 2
+  <h3>style: 2</h3>
+  <details id="MaxLineLength" open="open">
+    <summary class="rule-container"><span class="rule">MaxLineLength: 2 </span><span class="description">Line detected, which is longer than the defined maximum line length in the code style.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#maxlinelength">Documentation</a>
+    <ul>
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/model/CapturingGroupModel.kt:193:29</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
+        <pre><code><span class="lineno"> 190 </span>                        .map { cg -&gt;
+<span class="lineno"> 191 </span>                            if (difference.range.first &lt;= cg.openingPosition) {
+<span class="lineno"> 192 </span>                                cg.move(difference.range.length)
+<span class="lineno"> 193 </span>                            <span class="error">}</span> else if (difference.range.first &gt; cg.openingPosition &amp;&amp; difference.range.first &lt; cg.closingPosition) {
+<span class="lineno"> 194 </span>                                cg.move(0, difference.range.length)
+<span class="lineno"> 195 </span>                            } else {
+<span class="lineno"> 196 </span>                                cg
+</code></pre>
+      </li>
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/model/CapturingGroupModel.kt:210:29</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
+        <pre><code><span class="lineno"> 207 </span>                            if (difference.range.first &lt; cg.openingPosition) {
+<span class="lineno"> 208 </span>                                console.log(&quot;remove&quot;, 1)
+<span class="lineno"> 209 </span>                                cg.move(-difference.range.length)
+<span class="lineno"> 210 </span>                            <span class="error">}</span> else if (difference.range.first &gt;= cg.openingPosition &amp;&amp; difference.range.first &lt; cg.closingPosition) {
+<span class="lineno"> 211 </span>                                console.log(&quot;remove&quot;, 2)
+<span class="lineno"> 212 </span>                                cg.move(0, -difference.range.length)
+<span class="lineno"> 213 </span>                            } else {
+</code></pre>
+      </li>
+    </ul>
+  </details>
+</div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-01 07:10:05 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-03 20:29:29 UTC.
 
 </body>
 </html>

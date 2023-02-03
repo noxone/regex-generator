@@ -1,14 +1,39 @@
-#rg_loading + div {
-  filter: blur(5px);
+.bg-rg-result {
+  background-color: var(--bs-gray-200);
+}
+
+#rg_loading {
+  z-index: 9999;
+}
+
+#rg_loading > div {
+  background-color: var(--bs-gray-800)!important;
+  margin-left: auto!important;
+  margin-right: auto!important;
 }
 
 .rg-hidden {
   display: none;
 }
 
+.rg-faded {
+  opacity: 0.7;
+}
+
 h1, h2, h3, h4, h5, h6, label, small {
   -webkit-user-select: none;
   user-select: none;
+}
+
+h5 i {
+  margin-left: 0.4em;
+  display: inline-block;
+  transition-property: transform;
+  transition-duration: 0.2s;
+}
+
+.rg-upside-down i {
+  transform: rotate(180deg);
 }
 
 .rg-banner-consent .btn {
@@ -119,25 +144,24 @@ h1, h2, h3, h4, h5, h6, label, small {
     background-color: lightgray;
 }
 
-.rg-check-row {
+.rg-check-box {
   padding-left: 1.5em;
 }
 
-.rg-check-row + .rg-check-row {
-  margin-top: 0.8em;
-}
-
-.rg-check-row .form-check {
+.rg-check-box .form-check {
   padding-left: 0;
 }
 
-.rg-check-row .form-check .form-check-input {
+.rg-check-box .form-check .form-check-input {
   margin-left: -1.5em;
 }
 
-#rg_cap_group_expander {
-  text-align: left;
-  outline: none;
+.rg-capturing-group {
+  background-color: var(--bs-white);
+}
+
+.rg-cap-group-unnamed {
+  font-style: italic;
 }
 
 .rg-code-accordion .accordion-button {
