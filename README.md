@@ -10,7 +10,7 @@ Hopefully nobody will need to use ``substring()`` anymore.
 
 ### Online
 
-Just go to [Regex Generator](https://regex-generator.olafneumann.org/) and try it online.
+Go to [Regex Generator](https://regex-generator.olafneumann.org/) and try it online.
 
 The page supports several search parameters to change the initial state of the options:
 

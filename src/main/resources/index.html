@@ -32,11 +32,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <!-- sources of regex generator -->
-    <script type="text/javascript" src="regex-generator.js"></script>
+    <script type="text/javascript" src="regex-generator.js?commitId=GIT_COMMIT_ID"></script>
 
     <!-- now for our page -->
-    <link rel="stylesheet" href="styles/regex-generator.css">
+    <link rel="stylesheet" href="styles/regex-generator.css?commitId=GIT_COMMIT_ID">
     <title>Regex Generator - Creating regex is easy again!</title>
+
+    <!-- Clarity analytics -->
+    <!-- REMOVE_LINE_FOR_PUBLISHING
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "ff4zsu2hxv");
+    </script>
+    REMOVE_LINE_FOR_PUBLISHING -->
+
+    <!-- Github button -->
+    <!-- REMOVE_LINE_FOR_PUBLISHING
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    REMOVE_LINE_FOR_PUBLISHING -->
 </head>
 
 <body class="bg-dark">
@@ -285,6 +301,9 @@
                             class="rg-code">substring()</span> anymore.</p>
                     <p>Find the project sources at <a href="https://github.com/noxone/regex-generator"
                             target="_blank" rel="noopener">Github</a>.
+                            <!-- REMOVE_LINE_FOR_PUBLISHING
+                            <a class="github-button" href="https://github.com/noxone/regex-generator" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star noxone/regex-generator on GitHub">Star</a>
+                            REMOVE_LINE_FOR_PUBLISHING -->
                     </p>
                 </div>
                 <hr class="clearfix w-100 d-md-none pb-3 border-secondary">
@@ -319,8 +338,10 @@
 
             <!-- Copyright -->
             <div class="text-center pt-3">
-                &copy; 2020-2023 Copyright <a href="https://github.com/noxone/" target="_blank" rel="noopener">Olaf
-                    Neumann</a>
+                <p>&copy; 2020-2023 Copyright <a href="https://github.com/noxone/" target="_blank" rel="noopener">Olaf Neumann</a></p>
+                <!-- REMOVE_LINE_FOR_PUBLISHING
+                <p class="m-0"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fregex-generator.olafneumann.org&amp;count_bg=%23373A3D&amp;title_bg=%236C757D&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=hits&amp;edge_flat=false"></p>
+                REMOVE_LINE_FOR_PUBLISHING -->
             </div>
         </footer>
     </div>
