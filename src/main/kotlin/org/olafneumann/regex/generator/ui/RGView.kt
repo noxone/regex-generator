@@ -20,7 +20,7 @@ class RGView(
     maxInputLength: Int
 ) : MVCContract.View {
     companion object {
-        private const val CAP_GROUPS_ENABLED = true
+        private const val CAP_GROUPS_ENABLED = false
 
         private const val LANG_EN = "en"
     }
