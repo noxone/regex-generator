@@ -3,31 +3,35 @@ package org.olafneumann.regex.generator.regex
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.recognizer.escapeForRegex
 
-object RegexMatchCombiner {
+object RecognizerMatchCombiner {
     fun combineMatches(
         inputText: String,
         selectedMatches: Collection<RecognizerMatch>,
-        options: Options
-    ): RegularExpression {
+        options: RecognizerMatchCombinerOptions
+    ): CombinedRegex {
         val rangesToMatches = selectedMatches.flatMap { match ->
             match.ranges
-                .mapIndexed { index, range -> RegularExpressionPart(range, match.patterns[index], match = match) }
+                .mapIndexed { index, range ->
+                    RegularExpressionPart(
+                        range,
+                        PatternCaseModifier.generateOutputPattern(match.patterns[index], options.case),
+                        match = match
+                    )
+                }
         }
             .sortedBy { it.range.first }
             .toList()
 
         return if (rangesToMatches.isEmpty()) {
             if (options.onlyPatterns) {
-                RegularExpression(
-                    listOf(RegularExpressionPart(IntRange(0, 2), ".*", title = "anything"))
-                        .addWholeLineMatchingStuff(options)
-                )
+                val parts = mutableListOf(RegularExpressionPart(IntRange(0, 2), ".*", title = "anything"))
+                addWholeLineMatchingStuff(parts = parts, options = options)
+                CombinedRegex(parts)
             } else {
                 val regex = inputText.escapeForRegex()
-                RegularExpression(
-                    listOf(RegularExpressionPart(IntRange(0, regex.length), regex, inputText))
-                        .addWholeLineMatchingStuff(options)
-                )
+                val parts = mutableListOf(RegularExpressionPart(IntRange(0, regex.length), regex, inputText))
+                addWholeLineMatchingStuff(parts = parts, options = options)
+                CombinedRegex(parts)
             }
         } else {
             // at this point we know, that rangesToMatches is not empty!
@@ -70,8 +74,8 @@ object RegexMatchCombiner {
         rangesToMatches: List<RegularExpressionPart>,
         lastPart: RegularExpressionPart?,
         inputText: String,
-        options: Options
-    ): RegularExpression {
+        options: RecognizerMatchCombinerOptions
+    ): CombinedRegex {
         val parts = mutableListOf<RegularExpressionPart>()
         if (options.matchWholeLine || firstPart?.fromInputText == true) {
             firstPart?.let { parts.add(it) }
@@ -89,14 +93,16 @@ object RegexMatchCombiner {
             lastPart?.let { parts.add(it) }
         }
 
-        return RegularExpression(parts.addWholeLineMatchingStuff(options))
+        addWholeLineMatchingStuff(parts = parts, options = options)
+
+        return CombinedRegex(parts)
     }
 
     private fun getPartBetween(
         inputText: String,
         first: RegularExpressionPart,
         second: RegularExpressionPart,
-        options: Options
+        options: RecognizerMatchCombinerOptions
     ): RegularExpressionPart? {
         val rangeBetween = IntRange(first.range.last + 1, second.range.first - 1)
         if (!rangeBetween.isEmpty()) {
@@ -110,16 +116,16 @@ object RegexMatchCombiner {
         return null
     }
 
-    private fun List<RegularExpressionPart>.addWholeLineMatchingStuff(options: Options): List<RegularExpressionPart> {
-        return if (options.matchWholeLine) {
-            val list = mutableListOf<RegularExpressionPart>()
-            list.add(RegularExpressionPart(IntRange.EMPTY, pattern = "^", title = "Start of input"))
-            list.addAll(this)
-            list.add(RegularExpressionPart(IntRange.EMPTY, pattern = "$", title = "End of input"))
-            list
-        } else {
-            this
+    private fun addWholeLineMatchingStuff(
+        parts: MutableList<RegularExpressionPart>,
+        options: RecognizerMatchCombinerOptions
+    ) {
+        if (!options.matchWholeLine) {
+            return
         }
+
+        parts.add(0, RegularExpressionPart(IntRange.EMPTY, pattern = "^", title = "Start of input"))
+        parts.add(RegularExpressionPart(IntRange.EMPTY, pattern = "$", title = "End of input"))
     }
 
     data class RegularExpressionPart(

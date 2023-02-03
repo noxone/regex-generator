@@ -1,6 +1,5 @@
 package org.olafneumann.regex.generator.output
 
-import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
 
 class RubyCodeGenerator : SimpleReplacingCodeGenerator(
@@ -12,10 +11,10 @@ class RubyCodeGenerator : SimpleReplacingCodeGenerator(
 end"""
 ) {
 
-    override fun transformPattern(pattern: String, options: Options): String =
+    override fun transformPattern(pattern: String): String =
         pattern.replace(RegexCache.get("([\\\\'])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: Options) =
+    override fun generateOptionsCode(options: CodeGeneratorOptions) =
         options.combine(
             valueForCaseInsensitive = "Regexp::IGNORECASE",
             valueForDotAll = "Regexp::MULTILINE",
@@ -23,7 +22,7 @@ end"""
             prefix = ", "
         )
 
-    override fun getWarnings(pattern: String, options: Options): List<String> {
+    override fun getWarnings(pattern: String, options: CodeGeneratorOptions): List<String> {
         val warnings = mutableListOf<String>()
         if (options.multiline)
             warnings += "The Ruby regex engine does not support the MULTILINE option. " +

@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.output.CodeGenerator.Companion.htmlIdCompatible
-import org.olafneumann.regex.generator.regex.Options
-import org.olafneumann.regex.generator.regex.RegexMatchCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatchCombiner
+import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -13,11 +13,11 @@ class CodeGeneratorTest {
     }
 
     private fun generateRegex(input: String): String =
-        RegexMatchCombiner.combineMatches(
+        RecognizerMatchCombiner.combineMatches(
             inputText = input,
             selectedMatches = emptyList(),
-            options = Options()
-        ).finalPattern
+            options = RecognizerMatchCombinerOptions()
+        ).pattern
 
     @Test
     fun testLanguageNameReplacement() {
@@ -38,7 +38,11 @@ class CodeGeneratorTest {
         assertEquals(expected, actual)
     }
 
-    private fun testLanguageGenerator(codeGenerator: CodeGenerator, options: Options = Options(), expected: String) {
+    private fun testLanguageGenerator(
+        codeGenerator: CodeGenerator,
+        options: CodeGeneratorOptions = CodeGeneratorOptions(),
+        expected: String
+    ) {
         val regex = generateRegex(given)
         val actual = codeGenerator.generateCode(pattern = regex, options = options).snippet
         assertEquals(expected, actual)
@@ -176,7 +180,10 @@ def use_regex(input_text):
         val expected = createPythonOutput(expectedString)
 
         val actual = PythonCodeGenerator()
-            .generateCode(pattern = regex, options = Options(caseInsensitive = false, dotMatchesLineBreaks = true))
+            .generateCode(
+                pattern = regex,
+                options = CodeGeneratorOptions(caseInsensitive = false, dotMatchesLineBreaks = true)
+            )
             .snippet
 
         assertEquals(expected, actual)
@@ -211,7 +218,7 @@ def use_regex(input_text):
     @Suppress("MaxLineLength")
     fun testGenerator_Swift() = testLanguageGenerator(
         codeGenerator = SwiftCodeGenerator(),
-        options = Options(caseInsensitive = true),
+        options = CodeGeneratorOptions(caseInsensitive = true),
         expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.", options: [.caseInsensitive])
     let range = NSRange(location: 0, length: text.count)
@@ -224,7 +231,7 @@ def use_regex(input_text):
     @Suppress("MaxLineLength")
     fun testGenerator_Swift_withoutOptions() = testLanguageGenerator(
         codeGenerator = SwiftCodeGenerator(),
-        options = Options(caseInsensitive = false),
+        options = CodeGeneratorOptions(caseInsensitive = false),
         expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.")
     let range = NSRange(location: 0, length: text.count)
@@ -237,7 +244,7 @@ def use_regex(input_text):
     @Test
     fun testGenerator_Swift_withAllOptions() = testLanguageGenerator(
         codeGenerator = SwiftCodeGenerator(),
-        options = Options(caseInsensitive = true, multiline = true, dotMatchesLineBreaks = true),
+        options = CodeGeneratorOptions(caseInsensitive = true, multiline = true, dotMatchesLineBreaks = true),
         expected = """func useRegex(for text: String) -> Bool {
     let regex = try! NSRegularExpression(pattern: "abc\\.\\\\\\${'$'}hier \"und\" / 'da'\\(\\[\\)\\.", options: [.caseInsensitive, .dotMatchesLineSeparators, .anchorsMatchLines])
     let range = NSRange(location: 0, length: text.count)

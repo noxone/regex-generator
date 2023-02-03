@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.util
+package org.olafneumann.regex.generator.utils
 
 fun IntRange.hasIntersectionWith(other: IntRange): Boolean {
     return (this.first <= other.first && this.last >= other.first)
@@ -7,11 +7,23 @@ fun IntRange.hasIntersectionWith(other: IntRange): Boolean {
 
 val IntRange.length: Int get() = endInclusive - first + 1
 
+val IntRange.center: Int get() = (first + last) / 2
+
 fun IntRange.containsAndNotOnEdges(value: Int): Boolean =
     value > this.first && value < this.last
 
 fun IntRange.containsAndNotOnEdges(value: IntRange): Boolean =
     containsAndNotOnEdges(value.first) && containsAndNotOnEdges(value.last)
+
+fun IntRange.addPosition(index: Int): IntRange =
+    if (index <= first) {
+        IntRange(first + 1, last + 1)
+    } else if (index <= last) {
+        IntRange(first, last + 1)
+    } else {
+        this
+    }
+
 
 fun IntRange.add(rangeToAdd: IntRange): List<IntRange> {
     return if (rangeToAdd.first < this.first) {

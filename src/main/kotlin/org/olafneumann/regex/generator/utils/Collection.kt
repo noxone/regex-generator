@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.util
+package org.olafneumann.regex.generator.utils
 
 fun Collection<Any>.toIndexedString(prefix: String = ""): String =
     this

@@ -5,7 +5,7 @@ import org.w3c.dom.events.Event
 import org.w3c.dom.events.MouseEvent
 import kotlin.js.json
 
-class MouseCapture(
+class MouseCapture private constructor(
     private val customMouseUpListener: (MouseEvent) -> Unit,
     private val customMouseMoveListener: (MouseEvent) -> Unit
 ) {
@@ -27,6 +27,13 @@ class MouseCapture(
 
         fun restoreGlobalMouseEvents() {
             js("document.body.style['pointer-events'] = 'auto';")
+        }
+
+        fun <T> withGlobalMouseEvents(action: () -> T): T {
+            restoreGlobalMouseEvents()
+            val result = action()
+            preventGlobalMouseEvents()
+            return result
         }
     }
 

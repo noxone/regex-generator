@@ -1,11 +1,10 @@
 package org.olafneumann.regex.generator.model
 
-import dev.andrewbailey.diff.DiffOperation
 import org.olafneumann.regex.generator.RegexGeneratorException
+import org.olafneumann.regex.generator.diff.Difference
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
-import org.olafneumann.regex.generator.util.HasRange
-import org.olafneumann.regex.generator.util.HasRanges
-import org.olafneumann.regex.generator.util.rangeAction
+import org.olafneumann.regex.generator.utils.HasRange
+import org.olafneumann.regex.generator.utils.HasRanges
 
 internal class AugmentedRecognizerMatch(
     val original: RecognizerMatch,
@@ -16,18 +15,18 @@ internal class AugmentedRecognizerMatch(
     override val last: Int
         get() = this.ranges.last().last
 
-    fun <T> applyAll(diffOperations: List<DiffOperation<T>>?): List<AugmentedRecognizerMatch> {
+    fun applyAll(differences: List<Difference>): List<AugmentedRecognizerMatch> {
         var out: List<AugmentedRecognizerMatch> = listOf(this)
-        diffOperations?.forEach { diffOp -> out = out.flatMap { it.apply(diffOp) } }
+        differences.forEach { difference -> out = out.flatMap { it.apply(difference) } }
         return out
     }
 
-    private fun <T> apply(diffOperation: DiffOperation<T>): List<AugmentedRecognizerMatch> {
+    private fun apply(difference: Difference): List<AugmentedRecognizerMatch> {
         if (ranges.isEmpty()) {
             return emptyList()
         }
 
-        val rangeAction = diffOperation.rangeAction
+        val rangeAction = difference.action
         return if (ranges.size == 1) {
             val possibleRanges = rangeAction.applyTo(ranges[0])
             possibleRanges.map { AugmentedRecognizerMatch(original = original, ranges = listOf(it)) }

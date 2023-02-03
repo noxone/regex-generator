@@ -2,19 +2,23 @@ package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
+import kotlinx.html.dom.append
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
 import kotlinx.html.title
+import org.olafneumann.regex.generator.regex.CombinedRegex
 import org.olafneumann.regex.generator.ui.model.DisplayModel
-import org.olafneumann.regex.generator.regex.RegularExpression
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 
-class P3RegexDisplay(
+class P5RegexDisplay(
     private val controller: MVCContract.Controller
+) : NumberedPart(
+    elementId = "rg_regex_result_container",
+    caption = "Regular Expression"
 ) {
     private val resultDisplay = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_RESULT_DISPLAY)
     private val buttonCopy = HtmlHelper.getElementById<HTMLButtonElement>(HtmlView.ID_BUTTON_COPY)
@@ -25,12 +29,17 @@ class P3RegexDisplay(
 
     fun applyModel(model: DisplayModel) {
         showOrHideCopyButton(model.showCopyButton)
-        showResultRegex(regex = model.patternRecognizerModel.regularExpression)
+        showResultRegex(model = model)
     }
 
-    private fun showResultRegex(regex: RegularExpression) {
+    private fun showResultRegex(model: DisplayModel) {
         resultDisplay.clear()
-        for (part in regex.parts) {
+        resultDisplay.append(
+            document.create.span {
+                +model.patternRecognizerModel.finalPattern
+            }
+        )
+        /*for (part in model.patternRecognizerModel.combinedRegex.parts) {
             resultDisplay.append(
                 document.create.span(classes = "rg-result-part") {
                     title = when {
@@ -42,7 +51,7 @@ class P3RegexDisplay(
                     +part.pattern
                 }
             )
-        }
+        }*/
     }
 
     private fun showOrHideCopyButton(show: Boolean) {

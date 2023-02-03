@@ -1,7 +1,7 @@
 package org.olafneumann.regex.generator.recognizer
 
-import org.olafneumann.regex.generator.util.HasRange
-import org.olafneumann.regex.generator.util.HasRanges
+import org.olafneumann.regex.generator.utils.HasRange
+import org.olafneumann.regex.generator.utils.HasRanges
 
 class RecognizerMatch(
     val patterns: List<String>,

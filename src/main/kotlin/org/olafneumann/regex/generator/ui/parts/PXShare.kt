@@ -14,9 +14,10 @@ class PXShare(
 ) {
     private val divShareLink = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_TEXT_SHARE_LINK)
     private val buttonShareLink = HtmlHelper.getElementById<HTMLButtonElement>(HtmlView.ID_BUTTON_SHARE_LINK)
+    private val imageShareElement = buttonShareLink.firstElementChild!!
 
     init {
-        buttonShareLink.onclick = { controller.onShareButtonClick() }
+        buttonShareLink.onclick = { controller.onShareButtonClick { showCheckMark() } }
     }
 
     fun applyModel(model: DisplayModel) {
@@ -31,7 +32,22 @@ class PXShare(
         window.history.replaceState(data = null, title = document.title, url = urlString)
     }
 
+    private fun showCheckMark(show: Boolean = true) {
+        imageShareElement.classList.toggle(CLASS_ICON_COPY, !show)
+        imageShareElement.classList.toggle(CLASS_ICON_CHECK, show)
+        if (show) {
+            window.setTimeout({ showCheckMark(false) }, ANIMATION_DURATION)
+        }
+    }
+
     private fun showOrHideCopyButton(show: Boolean) {
         buttonShareLink.classList.toggle("d-none", !show)
+    }
+
+    companion object {
+        private const val CLASS_ICON_COPY = "bi-clipboard"
+        private const val CLASS_ICON_CHECK = "bi-check-lg"
+
+        private const val ANIMATION_DURATION = 2000
     }
 }

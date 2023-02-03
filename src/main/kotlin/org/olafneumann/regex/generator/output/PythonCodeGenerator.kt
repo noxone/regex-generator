@@ -1,6 +1,5 @@
 package org.olafneumann.regex.generator.output
 
-import org.olafneumann.regex.generator.regex.Options
 import org.olafneumann.regex.generator.regex.RegexCache
 
 class PythonCodeGenerator : SimpleReplacingCodeGenerator(
@@ -12,7 +11,7 @@ def use_regex(input_text):
     pattern = re.compile(%1${'$'}s%2${'$'}s)
     return pattern.match(input_text)"""
 ) {
-    override fun transformPattern(pattern: String, options: Options): String =
+    override fun transformPattern(pattern: String): String =
         if (pattern.contains('"') && !pattern.contains('\'')) {
             transformPatternWithQuotationMarks(pattern, quotationMark = '\'', other = '"')
         } else {
@@ -37,7 +36,7 @@ def use_regex(input_text):
             .replace(RegexCache.get("^r${quotationMark}${quotationMark}|r${quotationMark}${quotationMark}$"), "")
     }
 
-    override fun generateOptionsCode(options: Options) =
+    override fun generateOptionsCode(options: CodeGeneratorOptions) =
         options.combine(
             valueForCaseInsensitive = "re.IGNORECASE",
             valueForDotAll = "re.DOTALL",

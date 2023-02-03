@@ -1,4 +1,4 @@
-package org.olafneumann.regex.generator.util
+package org.olafneumann.regex.generator.utils
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

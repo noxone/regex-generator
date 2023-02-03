@@ -1,7 +1,6 @@
 package org.olafneumann.regex.generator.output
 
 import org.olafneumann.regex.generator.regex.RegexCache
-import org.olafneumann.regex.generator.regex.Options
 
 class CSharpCodeGenerator : SimpleReplacingCodeGenerator(
     languageName = "C#",
@@ -20,10 +19,10 @@ public class Sample
 ) {
 
 
-    override fun transformPattern(pattern: String, options: Options): String =
+    override fun transformPattern(pattern: String): String =
         pattern.replace(RegexCache.get("([\\\\\"])"), "\\\\$1").replace(RegexCache.get("\t"), "\\t")
 
-    override fun generateOptionsCode(options: Options) =
+    override fun generateOptionsCode(options: CodeGeneratorOptions) =
         options.combine(
             valueForCaseInsensitive = "RegexOptions.IgnoreCase",
             valueForMultiline = "RegexOptions.Multiline",

@@ -3,6 +3,7 @@ package org.olafneumann.regex.generator.js
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import kotlin.js.Json
+import kotlin.js.json
 
 @JsName("$")
 external fun jQuery(id: String): JQuery
@@ -17,7 +18,7 @@ external class JQuery {
     fun slideDown(): JQuery
     fun slideUp(): JQuery
     fun fadeIn(): JQuery
-    fun fadeOut(): JQuery
+    fun fadeOut(options: Json = definedExternally): JQuery
     fun show(): JQuery
     fun hide(): JQuery
     fun parent(): JQuery
@@ -43,3 +44,6 @@ external class JQuery {
     fun popover(options: Json)
     fun popover(command: String)
 }
+
+fun HTMLElement.asJQuery(): JQuery = jQuery(this)
+fun JQuery.animate(vararg properties: Pair<String, Any?>) = this.animate(json(*properties))

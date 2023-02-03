@@ -1,8 +1,8 @@
 package org.olafneumann.regex.generator.ui.model
 
 import org.olafneumann.regex.generator.recognizer.RecognizerMatch
-import org.olafneumann.regex.generator.util.HasRange
-import org.olafneumann.regex.generator.util.HasRanges
+import org.olafneumann.regex.generator.utils.HasRange
+import org.olafneumann.regex.generator.utils.HasRanges
 
 class MatchPresenter private constructor(
     override val ranges: List<IntRange>,
