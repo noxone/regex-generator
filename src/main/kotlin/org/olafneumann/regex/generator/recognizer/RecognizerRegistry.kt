@@ -48,7 +48,7 @@ object RecognizerRegistry {
             searchPattern = "\\b(%s)\\b"
         ),
         SimpleRecognizer("Hashtag", "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
-        SimpleRecognizer("Simple CSS Color", "#(?:[a-f\\d]{3}){1,2}\\b"),
+        SimpleRecognizer("Simple CSS Color", "#(?:[a-f0-9]{3}){1,2}\\b"),
         SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|SEVERE|FATAL)"),
         BracketedRecognizer(
             name = "Parentheses",

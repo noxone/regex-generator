@@ -1,8 +1,9 @@
 package org.olafneumann.regex.generator.regex
 
 object PatternCaseModifier {
-    private val CHARACTER_CLASS_REGEX = Regex("\\[(.*?)\\]")
-    private val CHARACTER_SPAN_REGEX = Regex("((?<!\\\\)[A-Za-z])(?:-([A-Za-z]))?")
+    private val CHARACTER_CLASS_REGEX = RegexCache.get("\\[(.*?)\\]")
+    // private val CHARACTER_SPAN_REGEX = RegexCache.get("((?<!\\\\)[A-Za-z])(?:-([A-Za-z]))?")
+    private val CHARACTER_SPAN_REGEX = RegexCache.get("([A-Za-z])(?:-([A-Za-z]))?")
 
     fun generateOutputPattern(pattern: String, case: Case): String {
         var out = pattern
