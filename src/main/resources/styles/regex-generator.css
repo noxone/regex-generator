@@ -3,7 +3,7 @@
 }
 
 #rg_loading {
-  z-index: 9999;
+  z-index: 1035;
 }
 
 #rg_loading > div {
