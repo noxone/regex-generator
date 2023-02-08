@@ -1,5 +1,6 @@
 package org.olafneumann.regex.generator
 
+import kotlinx.browser.document
 import org.olafneumann.regex.generator.settings.ApplicationSettings
 import kotlinx.browser.window
 import kotlinx.html.js.a
@@ -27,9 +28,13 @@ private fun initRegexGenerator() {
     }
 }
 
+private val gitCommitId: String get() = document.body?.getAttribute("rg-commit-id") ?: ""
+
 private fun showErrorMessage(throwable: Throwable) {
     val textToCopy = """Exception: ${throwable.message}
+GIT Commit ID: $gitCommitId
 UserAgent: ${window.navigator.userAgent}
+Vendor: ${window.navigator.vendor}
 Language: ${window.navigator.language}
 Platform: ${window.navigator.platform}
 CPU: ${window.navigator.oscpu}
