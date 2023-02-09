@@ -55,8 +55,8 @@ ${throwable.stackTraceToString()}"""
         p {
             +"Please open an "
             a {
-                href =
-                    "https://github.com/noxone/regex-generator/issues/new?assignees=&labels=&template=bug_report.md&title="
+                href = "https://github.com/noxone/regex-generator/issues/new" +
+                        "?assignees=&labels=&template=bug_report.md&title="
                 target = "_blank"
                 rel = "noopener"
                 +"issue"
