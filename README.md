@@ -23,7 +23,7 @@ The page supports several search parameters to change the initial state of the o
   - ``W`` this controls the "Match Whole Line" check box
   - ``L`` this controls the "Generate Lower Case" check box
 - ``selection`` controls the matches that have been selected by the user
-- ``capGroups`` controls the capturing groups that are created by the user
+<!-- - ``capGroups`` controls the capturing groups that are created by the user -->
 
 Example: [https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=imL&selection=5%7CMultiple%20characters](https://regex-generator.olafneumann.org/?sampleText=Some%20text...&flags=imL&selection=5%7CMultiple%20characters)
 
