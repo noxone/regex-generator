@@ -79,7 +79,13 @@ external class Modal {
     fun hide()
 }
 
-var CommonAttributeGroupFacade.onModalHiddenFunction : (Event) -> Unit
-    get()  = throw UnsupportedOperationException("You can't read variable onInput")
-    set(newValue) {consumer.onTagEvent(this, "hidden.bs.modal", newValue.unsafeCast<(kotlinx.html.org.w3c.dom.events.Event) -> Unit>())}
+var CommonAttributeGroupFacade.onModalHiddenFunction: (Event) -> Unit
+    get() = throw UnsupportedOperationException("You can't read variable onInput")
+    set(newValue) {
+        consumer.onTagEvent(
+            this,
+            "hidden.bs.modal",
+            newValue.unsafeCast<(kotlinx.html.org.w3c.dom.events.Event) -> Unit>()
+        )
+    }
 

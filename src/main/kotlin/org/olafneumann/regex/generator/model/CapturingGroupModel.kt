@@ -190,7 +190,9 @@ data class CapturingGroupModel(
                         .map { cg ->
                             if (difference.range.first <= cg.openingPosition) {
                                 cg.move(difference.range.length)
-                            } else if (difference.range.first > cg.openingPosition && difference.range.first < cg.closingPosition) {
+                            } else if (difference.range.first > cg.openingPosition
+                                && difference.range.first < cg.closingPosition
+                            ) {
                                 cg.move(0, difference.range.length)
                             } else {
                                 cg
@@ -207,7 +209,9 @@ data class CapturingGroupModel(
                             if (difference.range.first < cg.openingPosition) {
                                 console.log("remove", 1)
                                 cg.move(-difference.range.length)
-                            } else if (difference.range.first >= cg.openingPosition && difference.range.first < cg.closingPosition) {
+                            } else if (difference.range.first >= cg.openingPosition
+                                && difference.range.first < cg.closingPosition
+                            ) {
                                 console.log("remove", 2)
                                 cg.move(0, -difference.range.length)
                             } else {
