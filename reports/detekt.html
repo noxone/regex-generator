@@ -170,72 +170,25 @@
 
 <div>
   <ul>
-    <li>6,152 lines of code (loc)</li>
-    <li>5,135 source lines of code (sloc)</li>
-    <li>3,787 logical lines of code (lloc)</li>
+    <li>6,162 lines of code (loc)</li>
+    <li>5,145 source lines of code (sloc)</li>
+    <li>3,795 logical lines of code (lloc)</li>
     <li>181 comment lines of code (cloc)</li>
     <li>723 cyclomatic complexity (mcc)</li>
     <li>281 cognitive complexity</li>
-    <li>4 number of total code smells</li>
+    <li>0 number of total code smells</li>
     <li>3% comment source ratio</li>
     <li>190 mcc per 1,000 lloc</li>
-    <li>1 code smells per 1,000 lloc</li>
+    <li>0 code smells per 1,000 lloc</li>
   </ul>
 </div>
 
 
 <h2>Findings</h2>
-<div>Total: 4
-  <h3>style: 4</h3>
-  <details id="MaxLineLength" open="open">
-    <summary class="rule-container"><span class="rule">MaxLineLength: 4 </span><span class="description">Line detected, which is longer than the defined maximum line length in the code style.</span></summary>
-<a href="https://detekt.dev/docs/rules/style#maxlinelength">Documentation</a>
-    <ul>
-      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/RegexGenerator.kt:59:21</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
-        <pre><code><span class="lineno">  56 </span>            +&quot;Please open an &quot;
-<span class="lineno">  57 </span>            a {
-<span class="lineno">  58 </span>                href =
-<span class="lineno">  59 </span>                    <span class="error">&quot;https://github.com/noxone/regex-generator/issues/new?assignees=&amp;labels=&amp;template=bug_report.md&amp;title=&quot;</span>
-<span class="lineno">  60 </span>                target = &quot;_blank&quot;
-<span class="lineno">  61 </span>                rel = &quot;noopener&quot;
-<span class="lineno">  62 </span>                +&quot;issue&quot;
-</code></pre>
-      </li>
-      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/model/CapturingGroupModel.kt:193:29</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
-        <pre><code><span class="lineno"> 190 </span>                        .map { cg -&gt;
-<span class="lineno"> 191 </span>                            if (difference.range.first &lt;= cg.openingPosition) {
-<span class="lineno"> 192 </span>                                cg.move(difference.range.length)
-<span class="lineno"> 193 </span>                            <span class="error">}</span> else if (difference.range.first &gt; cg.openingPosition &amp;&amp; difference.range.first &lt; cg.closingPosition) {
-<span class="lineno"> 194 </span>                                cg.move(0, difference.range.length)
-<span class="lineno"> 195 </span>                            } else {
-<span class="lineno"> 196 </span>                                cg
-</code></pre>
-      </li>
-      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/model/CapturingGroupModel.kt:210:29</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
-        <pre><code><span class="lineno"> 207 </span>                            if (difference.range.first &lt; cg.openingPosition) {
-<span class="lineno"> 208 </span>                                console.log(&quot;remove&quot;, 1)
-<span class="lineno"> 209 </span>                                cg.move(-difference.range.length)
-<span class="lineno"> 210 </span>                            <span class="error">}</span> else if (difference.range.first &gt;= cg.openingPosition &amp;&amp; difference.range.first &lt; cg.closingPosition) {
-<span class="lineno"> 211 </span>                                console.log(&quot;remove&quot;, 2)
-<span class="lineno"> 212 </span>                                cg.move(0, -difference.range.length)
-<span class="lineno"> 213 </span>                            } else {
-</code></pre>
-      </li>
-      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/ui/components/Modal.kt:84:5</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
-        <pre><code><span class="lineno">  81 </span>
-<span class="lineno">  82 </span>var CommonAttributeGroupFacade.onModalHiddenFunction : (Event) -&gt; Unit
-<span class="lineno">  83 </span>    get()  = throw UnsupportedOperationException(&quot;You can't read variable onInput&quot;)
-<span class="lineno">  84 </span>    <span class="error">set(newValue) {consumer.onTagEvent(this, &quot;hidden.bs.modal&quot;, newValue.unsafeCast&lt;(kotlinx.html.org.w3c.dom.events.Event) -&gt; Unit&gt;())}</span>
-<span class="lineno">  85 </span>
-<span class="lineno">  86 </span>
-</code></pre>
-      </li>
-    </ul>
-  </details>
-</div>
+<div>Total: 0</div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-08 17:57:53 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-09 14:36:13 UTC.
 
 </body>
 </html>
