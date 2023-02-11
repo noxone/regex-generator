@@ -11,6 +11,7 @@ import org.olafneumann.regex.generator.js.copyToClipboard
 import org.olafneumann.regex.generator.ui.components.Button
 import org.olafneumann.regex.generator.ui.components.createModal
 import org.w3c.dom.ErrorEvent
+import org.w3c.dom.asList
 
 
 fun registerErrorHandler() {
@@ -23,6 +24,8 @@ fun registerErrorHandler() {
 
 private val gitCommitId: String? get() = document.body?.getAttribute("rg-commit-id")
 
+private val plugins: List<String> get() = window.navigator.plugins.asList().map { it.name }
+
 private fun getErrorReportingText(throwable: Throwable): String = /*"""
 **Describe the bug**
 """ +*/ """An error occurred with these details:
@@ -34,6 +37,8 @@ private fun getErrorReportingText(throwable: Throwable): String = /*"""
 - Platform: ${window.navigator.platform}
 - CPU: ${window.navigator.oscpu}
 - TouchPoints: ${window.navigator.maxTouchPoints}
+- Plugins:
+${plugins.joinToString(separator = "\n") { "  - $it" }}
 - StackTrace: ${throwable.stackTraceToString().replace(Regex("\\r\\n"),"\\r\\n")}
 """ /*+ """
 **To Reproduce**

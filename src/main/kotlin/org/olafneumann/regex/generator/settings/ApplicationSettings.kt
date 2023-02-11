@@ -4,7 +4,7 @@ import org.olafneumann.regex.generator.output.CodeGeneratorOptions
 import org.olafneumann.regex.generator.regex.RecognizerMatchCombinerOptions
 
 internal object ApplicationSettings : LocalStorageSettings() {
-    private const val KEY_COMBINER_OPTIONS = "combiner.options"
+    private const val KEY_RECOGNIZER_COMBINER_OPTIONS = "recognizer.combiner.options"
     private const val KEY_CODE_GENERATOR_OPTIONS = "code.generator.options"
     private const val KEY_LAST_VERSION = "user.lastVersion"
     private const val VAL_VERSION = 3
@@ -19,10 +19,10 @@ internal object ApplicationSettings : LocalStorageSettings() {
         get() = get(KEY_CODE_GENERATOR_OPTIONS)?.let { JSON.parse<CodeGeneratorOptions>(it) } ?: CodeGeneratorOptions()
         set(value) = set(KEY_CODE_GENERATOR_OPTIONS, JSON.stringify(value))
 
-    var regexMatchCombinerOptions: RecognizerMatchCombinerOptions
-        get() = get(KEY_COMBINER_OPTIONS)?.let { JSON.parse<RecognizerMatchCombinerOptions>(it) }
+    var recognizerMatchCombinerOptions: RecognizerMatchCombinerOptions
+        get() = get(KEY_RECOGNIZER_COMBINER_OPTIONS)?.let { JSON.parse<RecognizerMatchCombinerOptions>(it) }
             ?: RecognizerMatchCombinerOptions()
-        set(value) = set(KEY_COMBINER_OPTIONS, JSON.stringify(value))
+        set(value) = set(KEY_RECOGNIZER_COMBINER_OPTIONS, JSON.stringify(value))
 
     private fun String.toLanguageExpandedProperty() = "language.${this}.expanded"
     fun isLanguageExpanded(language: String) = get(language.toLanguageExpandedProperty())?.toBoolean() ?: false
