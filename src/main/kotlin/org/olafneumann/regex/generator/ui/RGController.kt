@@ -26,6 +26,9 @@ class RGController : MVCContract.Controller {
         set(value) {
             field = value
             view.applyModel(value)
+            ApplicationSettings.recognizerMatchCombinerOptions =
+                model.patternRecognizerModel.recognizerMatchCombinerOptions
+            ApplicationSettings.codeGeneratorOptions = model.codeGeneratorOptions
         }
 
     init {
@@ -112,7 +115,7 @@ class RGController : MVCContract.Controller {
                 ?: ApplicationSettings.codeGeneratorOptions
             val recognizerMatchCombinerOptions = regexFlags
                 ?.let { FlagHelper.parseRecognizerMatchCombinerOptions(it) }
-                ?: ApplicationSettings.regexMatchCombinerOptions
+                ?: ApplicationSettings.recognizerMatchCombinerOptions
             val inputText = params.get(HtmlView.SEARCH_SAMPLE_REGEX)?.ifBlank { null } ?: VAL_EXAMPLE_INPUT
 
             val patternRecognizerModel = PatternRecognizerModel(
