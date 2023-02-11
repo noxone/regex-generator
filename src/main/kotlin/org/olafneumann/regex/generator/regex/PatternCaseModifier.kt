@@ -4,10 +4,12 @@ object PatternCaseModifier {
     private val CHARACTER_CLASS_REGEX = RegexCache.get("\\\\\\[|(\\[((?:[^\\\\]|\\\\.)*?)\\])")
     private val CHARACTER_SPAN_REGEX = RegexCache.get("\\\\[a-zA-Z]|([A-Za-z])(?:-([A-Za-z]))?")
 
+    private const val EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX = 3
+
     fun generateOutputPattern(pattern: String, case: Case): String {
         var out = pattern
         CHARACTER_CLASS_REGEX.findAll(pattern)
-            .filter { it.groups.size == 3 }
+            .filter { it.groups.size == EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX }
             .forEach { out = out.replace(it.groupValues[1], "[${convertClass(it.groupValues[2], case)}]") }
         return out
     }
