@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.regex
 
 import org.olafneumann.regex.generator.FEATURE_FLAG_PATTERN_CASE_MODIFIER
+import org.olafneumann.regex.generator.RegexGeneratorException
 
 object PatternCaseModifier {
     private val CHARACTER_CLASS_REGEX = RegexCache.get("\\\\\\[|(\\[((?:[^\\\\]|\\\\.)*?)\\])")
@@ -21,6 +22,10 @@ object PatternCaseModifier {
     }
 
     private fun convertClass(classString: String, case: Case): String {
+        if (classString.isBlank()) {
+            throw RegexGeneratorException("Empty regex class to be handled. This must not happen.")
+        }
+
         var out = classString
         val findings = CHARACTER_SPAN_REGEX.findAll(classString)
         findings
