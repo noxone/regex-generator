@@ -1,5 +1,7 @@
 package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.FEATURE_FLAG_PATTERN_CASE_MODIFIER
+
 object PatternCaseModifier {
     private val CHARACTER_CLASS_REGEX = RegexCache.get("\\\\\\[|(\\[((?:[^\\\\]|\\\\.)*?)\\])")
     private val CHARACTER_SPAN_REGEX = RegexCache.get("\\\\[a-zA-Z]|([A-Za-z])(?:-([A-Za-z]))?")
@@ -7,7 +9,9 @@ object PatternCaseModifier {
     private const val EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX = 3
 
     fun generateOutputPattern(pattern: String, case: Case): String {
-        return pattern
+        if (!FEATURE_FLAG_PATTERN_CASE_MODIFIER) {
+            return pattern
+        }
 
         var out = pattern
         CHARACTER_CLASS_REGEX.findAll(pattern)
