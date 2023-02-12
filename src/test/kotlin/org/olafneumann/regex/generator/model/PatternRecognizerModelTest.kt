@@ -214,4 +214,18 @@ class PatternRecognizerModelTest {
         assertEquals(expected = expectedFirst, actual = actualMatch.first, "First index of match")
         assertEquals(expected = expectedLast, actual = actualMatch.last, "Last index of match")
     }
+
+
+    @Test
+    fun testSquareBrackets() {
+        val given = "ab[cd]ef"
+        val expected = "ab\\[cd\\]ef"
+
+        val model1 = PatternRecognizerModel(input = given, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
+        val match = model1.recognizerMatches.first { it.title == "Square brackets" }
+        val model2 = model1.select(match)
+
+        val actual = model2.finalPattern
+        assertEquals(expected = expected, actual = actual)
+    }
 }
