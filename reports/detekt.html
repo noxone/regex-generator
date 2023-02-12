@@ -157,11 +157,11 @@
 
 <div>
   <ul>
-    <li>554 number of properties</li>
-    <li>415 number of functions</li>
-    <li>122 number of classes</li>
+    <li>564 number of properties</li>
+    <li>424 number of functions</li>
+    <li>127 number of classes</li>
     <li>15 number of packages</li>
-    <li>96 number of kt files</li>
+    <li>98 number of kt files</li>
   </ul>
 </div>
 
@@ -170,25 +170,40 @@
 
 <div>
   <ul>
-    <li>6,229 lines of code (loc)</li>
-    <li>5,193 source lines of code (sloc)</li>
-    <li>3,816 logical lines of code (lloc)</li>
-    <li>214 comment lines of code (cloc)</li>
-    <li>727 cyclomatic complexity (mcc)</li>
-    <li>283 cognitive complexity</li>
-    <li>0 number of total code smells</li>
-    <li>4% comment source ratio</li>
-    <li>190 mcc per 1,000 lloc</li>
+    <li>6,378 lines of code (loc)</li>
+    <li>5,320 source lines of code (sloc)</li>
+    <li>3,895 logical lines of code (lloc)</li>
+    <li>205 comment lines of code (cloc)</li>
+    <li>744 cyclomatic complexity (mcc)</li>
+    <li>292 cognitive complexity</li>
+    <li>1 number of total code smells</li>
+    <li>3% comment source ratio</li>
+    <li>191 mcc per 1,000 lloc</li>
     <li>0 code smells per 1,000 lloc</li>
   </ul>
 </div>
 
 
 <h2>Findings</h2>
-<div>Total: 0</div>
+<div>Total: 1
+  <h3>style: 1</h3>
+  <details id="NewLineAtEndOfFile" open="open">
+    <summary class="rule-container"><span class="rule">NewLineAtEndOfFile: 1 </span><span class="description">Checks whether files end with a line separator.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#newlineatendoffile">Documentation</a>
+    <ul>
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/ui/utils/RageClickDetector.kt:48:2</span><span class="message">The file /home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/ui/utils/RageClickDetector.kt is not ending with a new line.</span>
+        <pre><code><span class="lineno">  45 </span>            return { rageClickDetector.clickElement(it as Event) }
+<span class="lineno">  46 </span>        }
+<span class="lineno">  47 </span>    }
+<span class="lineno">  48 </span>}
+</code></pre>
+      </li>
+    </ul>
+  </details>
+</div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-11 19:02:20 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-12 07:32:54 UTC.
 
 </body>
 </html>
