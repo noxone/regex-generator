@@ -7,6 +7,8 @@ object PatternCaseModifier {
     private const val EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX = 3
 
     fun generateOutputPattern(pattern: String, case: Case): String {
+        return pattern
+
         var out = pattern
         CHARACTER_CLASS_REGEX.findAll(pattern)
             .filter { it.groups.size == EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX }
