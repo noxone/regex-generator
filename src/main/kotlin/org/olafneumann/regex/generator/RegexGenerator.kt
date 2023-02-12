@@ -6,6 +6,9 @@ import org.olafneumann.regex.generator.js.NPM
 import org.olafneumann.regex.generator.ui.RGController
 
 
+const val FEATURE_FLAG_CAPTURING_GROUPS = false
+const val FEATURE_FLAG_PATTERN_CASE_MODIFIER = true
+
 fun main() {
     window.onload = { initRegexGenerator() }
 }

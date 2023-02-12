@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.ui
 
 import kotlinx.browser.document
+import org.olafneumann.regex.generator.FEATURE_FLAG_CAPTURING_GROUPS
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.components.CookieBanner
 import org.olafneumann.regex.generator.ui.components.LoadingIndicator
@@ -22,14 +23,15 @@ class RGView(
     maxInputLength: Int
 ) : MVCContract.View {
     companion object {
-        private val CAP_GROUPS_ENABLED = URL(document.URL).searchParams.get("capturing-groups").toBoolean()
+        private val CAP_GROUPS_ENABLED =
+            FEATURE_FLAG_CAPTURING_GROUPS || URL(document.URL).searchParams.get("capturing-groups").toBoolean()
 
         private const val LANG_EN = "en"
     }
 
     private val loadingIndicator = LoadingIndicator()
     private val cookieBanner = CookieBanner { controller.onDoneAskingUserForCookies(hasGivenConsent = it) }
-    private val toolbar  = PXToolbar(controller = controller)
+    private val toolbar = PXToolbar(controller = controller)
     private val userInputPart = P1UserInput(
         controller = controller,
         maxInputLength = maxInputLength,

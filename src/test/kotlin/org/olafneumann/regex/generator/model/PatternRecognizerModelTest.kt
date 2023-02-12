@@ -214,4 +214,50 @@ class PatternRecognizerModelTest {
         assertEquals(expected = expectedFirst, actual = actualMatch.first, "First index of match")
         assertEquals(expected = expectedLast, actual = actualMatch.last, "Last index of match")
     }
+
+    @Test
+    fun testSquareBrackets() {
+        val given = "ab[cd]ef"
+        val expected = "ab\\[cd\\]ef"
+
+        val model1 =
+            PatternRecognizerModel(input = given, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
+        val match = model1.recognizerMatches.first { it.title == "Square brackets" }
+        val model2 = model1.select(match)
+
+        val actual = model2.finalPattern
+        assertEquals(expected = expected, actual = actual)
+    }
+
+    @Test
+    fun testRemainingCharactersIssue355() {
+        val input1 = "http:\\"
+        val input2 = ""
+        val expected = ""
+
+        val model1 =
+            PatternRecognizerModel(input = input1, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
+        val match = model1.recognizerMatches.first { it.title == "Character (:)" }
+        val model2 = model1.select(match)
+        val model3 = model2.setUserInput(input2)
+
+        val actual = model3.finalPattern
+        assertEquals(expected = expected, actual = actual)
+    }
+
+    @Test
+    fun testChangeBeforeSquareBracketsIssue357() {
+        val input1 = "ab[cd]ef"
+        val input2 = "abx[cd]ef"
+        val expected = "abx\\[cd\\]ef"
+
+        val model1 =
+            PatternRecognizerModel(input = input1, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
+        val match = model1.recognizerMatches.first { it.title == "Square brackets" }
+        val model2 = model1.select(match)
+        val model3 = model2.setUserInput(input2)
+
+        val actual = model3.finalPattern
+        assertEquals(expected = expected, actual = actual)
+    }
 }

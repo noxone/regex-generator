@@ -1,5 +1,8 @@
 package org.olafneumann.regex.generator.regex
 
+import org.olafneumann.regex.generator.FEATURE_FLAG_PATTERN_CASE_MODIFIER
+import org.olafneumann.regex.generator.RegexGeneratorException
+
 object PatternCaseModifier {
     private val CHARACTER_CLASS_REGEX = RegexCache.get("\\\\\\[|(\\[((?:[^\\\\]|\\\\.)*?)\\])")
     private val CHARACTER_SPAN_REGEX = RegexCache.get("\\\\[a-zA-Z]|([A-Za-z])(?:-([A-Za-z]))?")
@@ -7,16 +10,22 @@ object PatternCaseModifier {
     private const val EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX = 3
 
     fun generateOutputPattern(pattern: String, case: Case): String {
-        return pattern
+        if (!FEATURE_FLAG_PATTERN_CASE_MODIFIER) {
+            return pattern
+        }
 
         var out = pattern
         CHARACTER_CLASS_REGEX.findAll(pattern)
-            .filter { it.groups.size == EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX }
+            .filter { it.groups.size == EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX && it.groupValues[2].isNotBlank() }
             .forEach { out = out.replace(it.groupValues[1], "[${convertClass(it.groupValues[2], case)}]") }
         return out
     }
 
     private fun convertClass(classString: String, case: Case): String {
+        if (classString.isBlank()) {
+            throw RegexGeneratorException("Empty regex class to be handled. This must not happen.")
+        }
+
         var out = classString
         val findings = CHARACTER_SPAN_REGEX.findAll(classString)
         findings
