@@ -157,8 +157,8 @@
 
 <div>
   <ul>
-    <li>564 number of properties</li>
-    <li>424 number of functions</li>
+    <li>588 number of properties</li>
+    <li>427 number of functions</li>
     <li>127 number of classes</li>
     <li>15 number of packages</li>
     <li>98 number of kt files</li>
@@ -170,13 +170,13 @@
 
 <div>
   <ul>
-    <li>6,386 lines of code (loc)</li>
-    <li>5,324 source lines of code (sloc)</li>
-    <li>3,896 logical lines of code (lloc)</li>
+    <li>6,447 lines of code (loc)</li>
+    <li>5,373 source lines of code (sloc)</li>
+    <li>3,937 logical lines of code (lloc)</li>
     <li>207 comment lines of code (cloc)</li>
-    <li>745 cyclomatic complexity (mcc)</li>
-    <li>294 cognitive complexity</li>
-    <li>1 number of total code smells</li>
+    <li>752 cyclomatic complexity (mcc)</li>
+    <li>297 cognitive complexity</li>
+    <li>0 number of total code smells</li>
     <li>3% comment source ratio</li>
     <li>191 mcc per 1,000 lloc</li>
     <li>0 code smells per 1,000 lloc</li>
@@ -185,28 +185,10 @@
 
 
 <h2>Findings</h2>
-<div>Total: 1
-  <h3>exceptions: 1</h3>
-  <details id="TooGenericExceptionCaught" open="open">
-    <summary class="rule-container"><span class="rule">TooGenericExceptionCaught: 1 </span><span class="description">The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.</span></summary>
-<a href="https://detekt.dev/docs/rules/exceptions#toogenericexceptioncaught">Documentation</a>
-    <ul>
-      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/recognizer/RecognizerRegistry.kt:143:26</span><span class="message">The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.</span>
-        <pre><code><span class="lineno"> 140 </span>                        outputPrePattern = &quot;(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)&quot;,
-<span class="lineno"> 141 </span>                        isDerived = true
-<span class="lineno"> 142 </span>                    )
-<span class="lineno"> 143 </span>                } catch (<span class="error">throwable: Throwable</span>) {
-<span class="lineno"> 144 </span>                    console.warn(throwable)
-<span class="lineno"> 145 </span>                    null
-<span class="lineno"> 146 </span>                }
-</code></pre>
-      </li>
-    </ul>
-  </details>
-</div>
+<div>Total: 0</div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-12 09:00:31 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-12 13:44:05 UTC.
 
 </body>
 </html>
