@@ -42,7 +42,7 @@ data class PatternRecognizerModel(
         val newRegex = RecognizerMatchCombiner
             .combineMatches(
                 inputText = newInput,
-                selectedMatches = selectedRecognizerMatches,
+                selectedMatches = newSelectedMatches,
                 options = recognizerMatchCombinerOptions
             )
 
