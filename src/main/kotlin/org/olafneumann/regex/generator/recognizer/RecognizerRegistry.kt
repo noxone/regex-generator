@@ -131,14 +131,19 @@ object RecognizerRegistry {
 
         return possibleRepetitions
             .filter { it.element.isNotEmpty() }
-            .map { combination ->
-                val startMatch = combination.leftParent.leftParent
-                val mainMatches = listOf(combination.element[0], combination.leftParent.rightParent)
-                SimpleRecognizer(
-                    name = "Combination [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
-                    outputPrePattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)",
-                    isDerived = true
-                )
+            .mapNotNull { combination ->
+                try {
+                    val startMatch = combination.leftParent.leftParent
+                    val mainMatches = listOf(combination.element[0], combination.leftParent.rightParent)
+                    SimpleRecognizer(
+                        name = "Combination [${startMatch.recognizer.name} + ${mainMatches[0].recognizer.name}]",
+                        outputPrePattern = "(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)",
+                        isDerived = true
+                    )
+                } catch (throwable: Throwable) {
+                    console.warn(throwable)
+                    null
+                }
             }
             .toSet()
     }
