@@ -22,7 +22,10 @@ external class JQuery {
     fun show(): JQuery
     fun hide(): JQuery
     fun parent(): JQuery
+    fun parents(selector: String): JQuery
     fun remove(): JQuery
+
+    val length: Int
 
     @Suppress("UnusedPrivateMember")
     fun find(selector: String): JQuery

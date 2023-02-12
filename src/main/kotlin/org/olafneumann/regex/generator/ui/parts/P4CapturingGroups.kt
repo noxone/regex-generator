@@ -369,8 +369,13 @@ internal class P4CapturingGroups(
 
         popover = Popover(
             element = element,
-            html = true,
-            contentElement = document.create.inject(
+            placement = popoverPlacement,
+            title = caption,
+            trigger = Popover.Trigger.Manual,
+            onShown = { elements.nameText.select() },
+            onCloseButtonClick = { disposePopover() },
+        ) {
+            inject(
                 elements, listOf(
                     InjectById(idCapGroupName) to PopoverElements::nameText
                 )
@@ -411,13 +416,8 @@ internal class P4CapturingGroups(
                         action(getNewCapturingGroupName())
                     }
                 }
-            },
-            placement = popoverPlacement,
-            title = caption,
-            trigger = "manual",
-            onShown = { elements.nameText.select() },
-            onCloseButtonClick = { disposePopover() },
-        )
+            }
+        }
         popover!!.show()
         jQuery(".popover").mousedown {
             // prevent popover from being disposed when clicking inside
@@ -442,12 +442,12 @@ internal class P4CapturingGroups(
         }
         popover = Popover(
             element = element,
-            html = true,
-            contentElement = document.create/*.inject(
-                elements, listOf(
-                    InjectByClassName("rg-cg-quantifier-exact") to PopoverElements::quantifierDiv
-                )
-            )*/.form {
+            placement = Popover.Placement.Bottom,
+            title = "Quantifier",
+            trigger = Popover.Trigger.Manual,
+            onCloseButtonClick = { disposePopover() },
+        ) {
+            form {
                 autoComplete = false
                 div(classes = "mb-3") {
                     fun DIV.qButton(caption: String, description: String, quantifier: String?) {
@@ -503,12 +503,8 @@ internal class P4CapturingGroups(
                         }
                     }
                 }
-            },
-            placement = Popover.Placement.Bottom,
-            title = "Quantifier",
-            trigger = "manual",
-            onCloseButtonClick = { disposePopover() },
-        )
+            }
+        }
         popover!!.show()
         jQuery(".popover").mousedown {
             // prevent popover from being disposed when clicking inside
@@ -521,12 +517,12 @@ internal class P4CapturingGroups(
     ) {
         popover = Popover(
             element = element,
-            html = true,
-            contentElement = document.create/*.inject(
-                elements, listOf(
-                    InjectById(idCapGroupName) to PopoverElements::nameText
-                )
-            )*/.form {
+            placement = Popover.Placement.Bottom,
+            title = "Flags",
+            trigger = Popover.Trigger.Manual,
+            onCloseButtonClick = { disposePopover() },
+        ) {
+            form {
                 div(classes = "mb-3") {
                     label(classes = "form-label") {
                         +"Flags"
@@ -566,12 +562,8 @@ internal class P4CapturingGroups(
                     type = ButtonType.button
                     onClickFunction = { }
                 }
-            },
-            placement = Popover.Placement.Bottom,
-            title = "Flags",
-            trigger = "manual",
-            onCloseButtonClick = { disposePopover() },
-        )
+            }
+        }
         popover!!.show()
         jQuery(".popover").mousedown {
             // prevent popover from being disposed when clicking inside
