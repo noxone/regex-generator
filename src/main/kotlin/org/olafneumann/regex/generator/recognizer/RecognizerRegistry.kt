@@ -119,6 +119,7 @@ object RecognizerRegistry {
             .toSet()
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun findRepetitionsPerGroup(
         allMatches: List<RecognizerMatch>,
         groupedMatches: List<RecognizerMatch>
