@@ -45,8 +45,8 @@ class PXShare(
     }
 
     companion object {
-        private const val CLASS_ICON_COPY = "bi-clipboard"
-        private const val CLASS_ICON_CHECK = "bi-check-lg"
+        private const val CLASS_ICON_COPY = "bi-clipboard2"
+        private const val CLASS_ICON_CHECK = "bi-clipboard2-check"
 
         private const val ANIMATION_DURATION = 2000
     }
