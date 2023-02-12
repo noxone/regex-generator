@@ -60,6 +60,7 @@ h5 i {
 .rg-match-container {
   overflow-x: auto;
   width: 100%;
+  user-select: none;
 }
 
 .rg-match-row {
