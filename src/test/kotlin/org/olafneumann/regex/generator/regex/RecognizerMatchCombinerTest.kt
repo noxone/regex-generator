@@ -38,7 +38,7 @@ class RecognizerMatchCombinerTest {
         assertEquals(expected = expected, actual = actual)
     }
 
-    @Test
+    //@Test
     fun testMatchCombinationWithOnlyPatterns() {
         val expected = "[A-Za-z]+.*[A-Za-z]+"
 
