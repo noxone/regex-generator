@@ -170,12 +170,12 @@
 
 <div>
   <ul>
-    <li>6,378 lines of code (loc)</li>
-    <li>5,320 source lines of code (sloc)</li>
-    <li>3,895 logical lines of code (lloc)</li>
-    <li>205 comment lines of code (cloc)</li>
-    <li>744 cyclomatic complexity (mcc)</li>
-    <li>292 cognitive complexity</li>
+    <li>6,384 lines of code (loc)</li>
+    <li>5,324 source lines of code (sloc)</li>
+    <li>3,896 logical lines of code (lloc)</li>
+    <li>206 comment lines of code (cloc)</li>
+    <li>745 cyclomatic complexity (mcc)</li>
+    <li>294 cognitive complexity</li>
     <li>1 number of total code smells</li>
     <li>3% comment source ratio</li>
     <li>191 mcc per 1,000 lloc</li>
@@ -186,16 +186,19 @@
 
 <h2>Findings</h2>
 <div>Total: 1
-  <h3>style: 1</h3>
-  <details id="NewLineAtEndOfFile" open="open">
-    <summary class="rule-container"><span class="rule">NewLineAtEndOfFile: 1 </span><span class="description">Checks whether files end with a line separator.</span></summary>
-<a href="https://detekt.dev/docs/rules/style#newlineatendoffile">Documentation</a>
+  <h3>exceptions: 1</h3>
+  <details id="TooGenericExceptionCaught" open="open">
+    <summary class="rule-container"><span class="rule">TooGenericExceptionCaught: 1 </span><span class="description">The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.</span></summary>
+<a href="https://detekt.dev/docs/rules/exceptions#toogenericexceptioncaught">Documentation</a>
     <ul>
-      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/ui/utils/RageClickDetector.kt:48:2</span><span class="message">The file /home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/ui/utils/RageClickDetector.kt is not ending with a new line.</span>
-        <pre><code><span class="lineno">  45 </span>            return { rageClickDetector.clickElement(it as Event) }
-<span class="lineno">  46 </span>        }
-<span class="lineno">  47 </span>    }
-<span class="lineno">  48 </span>}
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/recognizer/RecognizerRegistry.kt:143:26</span><span class="message">The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.</span>
+        <pre><code><span class="lineno"> 140 </span>                        outputPrePattern = &quot;(${startMatch.patterns[0]}(${mainMatches[0].patterns[0]}${mainMatches[1].patterns[0]})+)&quot;,
+<span class="lineno"> 141 </span>                        isDerived = true
+<span class="lineno"> 142 </span>                    )
+<span class="lineno"> 143 </span>                } catch (<span class="error">throwable: Throwable</span>) {
+<span class="lineno"> 144 </span>                    console.warn(throwable)
+<span class="lineno"> 145 </span>                    null
+<span class="lineno"> 146 </span>                }
 </code></pre>
       </li>
     </ul>
@@ -203,7 +206,7 @@
 </div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-12 07:32:54 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-12 07:59:36 UTC.
 
 </body>
 </html>
