@@ -15,7 +15,7 @@ object PatternCaseModifier {
 
         var out = pattern
         CHARACTER_CLASS_REGEX.findAll(pattern)
-            .filter { it.groups.size == EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX }
+            .filter { it.groups.size == EXPECTED_GROUP_COUNT_FOR_CLASS_REGEX && it.groupValues[2].isNotBlank() }
             .forEach { out = out.replace(it.groupValues[1], "[${convertClass(it.groupValues[2], case)}]") }
         return out
     }
