@@ -9,8 +9,14 @@ import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import kotlinx.html.js.onClickFunction
+import kotlinx.html.js.onMouseDownFunction
 import kotlinx.html.js.span
+import kotlinx.html.li
+import kotlinx.html.p
+import kotlinx.html.style
 import kotlinx.html.title
+import kotlinx.html.ul
+import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.model.MatchPresenter
@@ -18,11 +24,14 @@ import org.olafneumann.regex.generator.recognizer.RecognizerMatch
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract
 import org.olafneumann.regex.generator.ui.utils.HtmlHelper
+import org.olafneumann.regex.generator.ui.utils.RageClickDetector
+import org.olafneumann.regex.generator.utils.enqueue
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.asList
 import kotlin.js.json
+import kotlin.properties.Delegates
 
 class P2MatchPresenter(
     private val controller: MVCContract.Controller
@@ -35,9 +44,13 @@ class P2MatchPresenter(
 
     private var inputCharacterSpans = listOf<HTMLSpanElement>()
 
+    private var helpPopover: Popover? = null
+
     fun applyModel(model: DisplayModel) {
         showText(model.patternRecognizerModel.input)
         showMatchPresenters(model.rowsOfMatchPresenters, model.patternRecognizerModel.selectedRecognizerMatches)
+        helpPopover?.hide()
+        enqueue { helpPopover = null }
     }
 
     fun showText(text: String) {
@@ -95,8 +108,10 @@ class P2MatchPresenter(
     private fun createPresenterElement(
         matchPresenter: MatchPresenter,
         isSelected: (RecognizerMatch) -> Boolean
-    ): HTMLDivElement =
-        document.create.div(classes = HtmlView.CLASS_MATCH_ITEM) {
+    ): HTMLDivElement {
+        var element: HTMLDivElement by Delegates.notNull()
+
+        element = document.create.div(classes = HtmlView.CLASS_MATCH_ITEM) {
             div(classes = "rg-match-item-overlay") {
                 matchPresenter.recognizerMatches.forEach { recognizerMatch ->
                     div(classes = "rg-recognizer") {
@@ -119,11 +134,53 @@ class P2MatchPresenter(
                 when {
                     matchPresenter.selected ->
                         controller.onRecognizerMatchClick(matchPresenter.recognizerMatches.first { isSelected(it) })
+
                     matchPresenter.recognizerMatches.size == 1 ->
                         controller.onRecognizerMatchClick(matchPresenter.recognizerMatches.first())
                 }
             }
+            if (!matchPresenter.selected && matchPresenter.recognizerMatches.size > 1) {
+                onMouseDownFunction = RageClickDetector.createEventListener {
+                    showPopoverOnRageClick(
+                        element,
+                        matchPresenter.recognizerMatches
+                    )
+                }
+            }
         }
+        return element
+    }
+
+    private fun showPopoverOnRageClick(element: HTMLElement, recognizerMatches: Collection<RecognizerMatch>) {
+        helpPopover = Popover(
+            element = element,
+            title = "Need help?",
+            customClass = "rg-help-popover",
+            placement = Popover.Placement.Top,
+            trigger = Popover.Trigger.Manual
+        ) {
+            div {
+                p { +"The element you're clicking contains several options from which you need to choose." }
+                p {
+                    +"Please select one of the alternatives we found for this section below:"
+                    ul {
+                        recognizerMatches.map { recognizerMatch ->
+                            li {
+                                a {
+                                    +recognizerMatch.title
+                                    onClickFunction = {
+                                        controller.onRecognizerMatchClick(recognizerMatch)
+                                    }
+                                    style = "cursor: pointer;"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        helpPopover?.show()
+    }
 
     private fun getColorClass(row: Int, index: Int): String {
         return HtmlView.MATCH_PRESENTER_CSS_CLASS[(row + index) % HtmlView.MATCH_PRESENTER_CSS_CLASS.size]

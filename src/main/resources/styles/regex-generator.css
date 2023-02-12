@@ -157,6 +157,27 @@ h5 i {
   margin-left: -1.5em;
 }
 
+.rg-help-popover {
+  border-color: var(--bs-purple);
+}
+
+.rg-help-popover .popover-header {
+  background-color: var(--bs-purple);
+  color: var(--bs-white);
+}
+
+.rg-help-popover p:last-of-type, .rg-help-popover ul {
+  margin-bottom: 0;
+}
+
+.rg-help-popover a {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-decoration: none;
+}
+
 .rg-capturing-group {
   background-color: var(--bs-white);
 }
