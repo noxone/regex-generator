@@ -166,7 +166,7 @@ h5 i {
   background: none;
   background-color: white !important;
   border: 1px solid gray;
-  cursor: url('../images/cursor-rg-match-selection-delete-32.png'), auto;
+  cursor: url('../images/cursor-rg-match-selection-delete-32.png'), auto !important;
 }
 
 .rg-item-not-available {
