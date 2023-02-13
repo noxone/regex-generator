@@ -158,7 +158,7 @@
 <div>
   <ul>
     <li>590 number of properties</li>
-    <li>428 number of functions</li>
+    <li>427 number of functions</li>
     <li>127 number of classes</li>
     <li>15 number of packages</li>
     <li>98 number of kt files</li>
@@ -170,25 +170,43 @@
 
 <div>
   <ul>
-    <li>6,476 lines of code (loc)</li>
-    <li>5,402 source lines of code (sloc)</li>
-    <li>3,963 logical lines of code (lloc)</li>
-    <li>207 comment lines of code (cloc)</li>
+    <li>6,488 lines of code (loc)</li>
+    <li>5,414 source lines of code (sloc)</li>
+    <li>3,919 logical lines of code (lloc)</li>
+    <li>213 comment lines of code (cloc)</li>
     <li>753 cyclomatic complexity (mcc)</li>
-    <li>297 cognitive complexity</li>
-    <li>0 number of total code smells</li>
+    <li>299 cognitive complexity</li>
+    <li>1 number of total code smells</li>
     <li>3% comment source ratio</li>
-    <li>190 mcc per 1,000 lloc</li>
+    <li>192 mcc per 1,000 lloc</li>
     <li>0 code smells per 1,000 lloc</li>
   </ul>
 </div>
 
 
 <h2>Findings</h2>
-<div>Total: 0</div>
+<div>Total: 1
+  <h3>style: 1</h3>
+  <details id="UnusedPrivateMember" open="open">
+    <summary class="rule-container"><span class="rule">UnusedPrivateMember: 1 </span><span class="description">Private member is unused and should be removed.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#unusedprivatemember">Documentation</a>
+    <ul>
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/main/kotlin/org/olafneumann/regex/generator/ui/parts/P2MatchPresenter.kt:163:17</span><span class="message">Private function `showPopoverOnRageClick` is unused.</span>
+        <pre><code><span class="lineno"> 160 </span>        return element
+<span class="lineno"> 161 </span>    }
+<span class="lineno"> 162 </span>
+<span class="lineno"> 163 </span>    private fun <span class="error">showPopoverOnRageClick</span>(element: HTMLElement, recognizerMatches: Collection&lt;RecognizerMatch&gt;) {
+<span class="lineno"> 164 </span>        helpPopover = Popover(
+<span class="lineno"> 165 </span>            element = element,
+<span class="lineno"> 166 </span>            title = &quot;Need help?&quot;,
+</code></pre>
+      </li>
+    </ul>
+  </details>
+</div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-13 09:44:49 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-02-13 13:17:05 UTC.
 
 </body>
 </html>
