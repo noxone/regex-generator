@@ -45,7 +45,8 @@ h5 i {
 }
 
 .rg-code,
-.rg-match-container {
+.rg-match-container,
+.rg-regex-container {
   font-family: Consolas, monospace;
 }
 
@@ -57,10 +58,18 @@ h5 i {
   display: none;
 }
 
-.rg-match-container {
+.rg-match-container,
+.rg-regex-container {
   overflow-x: auto;
   width: 100%;
+}
+
+.rg-match-container {
   user-select: none;
+}
+
+.rg-regex-container {
+  user-select: all;
 }
 
 .rg-match-row {
@@ -157,7 +166,7 @@ h5 i {
   background: none;
   background-color: white !important;
   border: 1px solid gray;
-  cursor: url('../images/cursor-rg-match-selection-delete-32.png'), auto;
+  cursor: url('../images/cursor-rg-match-selection-delete-32.png'), auto !important;
 }
 
 .rg-item-not-available {
