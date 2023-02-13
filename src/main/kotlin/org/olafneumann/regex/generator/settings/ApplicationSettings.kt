@@ -15,7 +15,7 @@ internal object ApplicationSettings : LocalStorageSettings() {
     fun isNewUser() = (get(KEY_LAST_VERSION)?.toIntOrNull() ?: 0) < VAL_VERSION
     fun storeUserLastInfo() = set(KEY_LAST_VERSION, VAL_VERSION)
 
-    var codeGeneratorxOptions: CodeGeneratorOptions
+    var codeGeneratorOptions: CodeGeneratorOptions
         @Suppress("TooGenericExceptionCaught")
         get() {
             val fromLocalStorage = get(KEY_CODE_GENERATOR_OPTIONS)?.let { JSON.parse<CodeGeneratorOptions>(it) }
