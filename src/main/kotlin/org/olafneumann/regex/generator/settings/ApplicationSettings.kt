@@ -15,7 +15,8 @@ internal object ApplicationSettings : LocalStorageSettings() {
     fun isNewUser() = (get(KEY_LAST_VERSION)?.toIntOrNull() ?: 0) < VAL_VERSION
     fun storeUserLastInfo() = set(KEY_LAST_VERSION, VAL_VERSION)
 
-    var codeGeneratorOptions: CodeGeneratorOptions
+    var codeGeneratorxOptions: CodeGeneratorOptions
+        @Suppress("TooGenericExceptionCaught")
         get() {
             val fromLocalStorage = get(KEY_CODE_GENERATOR_OPTIONS)?.let { JSON.parse<CodeGeneratorOptions>(it) }
             return try {
@@ -32,19 +33,21 @@ internal object ApplicationSettings : LocalStorageSettings() {
         set(value) = set(KEY_CODE_GENERATOR_OPTIONS, JSON.stringify(value))
 
     var recognizerMatchCombinerOptions: RecognizerMatchCombinerOptions
+        @Suppress("TooGenericExceptionCaught")
         get() {
-            val fromLocalStorage = get(KEY_RECOGNIZER_COMBINER_OPTIONS)?.let { JSON.parse<RecognizerMatchCombinerOptions>(it) }
-               return try {
-                   console.log("Case:", fromLocalStorage?.case)
-                   console.log("Generate lower case:", fromLocalStorage?.generateLowerCase)
-                   console.log("Match whole line:", fromLocalStorage?.matchWholeLine)
-                   console.log("Only patterns:", fromLocalStorage?.onlyPatterns)
-                   fromLocalStorage!!
-               } catch (throwable: Throwable) {
-                   console.warn(throwable)
-                   remove(KEY_RECOGNIZER_COMBINER_OPTIONS)
-                   RecognizerMatchCombinerOptions()
-               }
+            val fromLocalStorage =
+                get(KEY_RECOGNIZER_COMBINER_OPTIONS)?.let { JSON.parse<RecognizerMatchCombinerOptions>(it) }
+            return try {
+                console.log("Case:", fromLocalStorage?.case)
+                console.log("Generate lower case:", fromLocalStorage?.generateLowerCase)
+                console.log("Match whole line:", fromLocalStorage?.matchWholeLine)
+                console.log("Only patterns:", fromLocalStorage?.onlyPatterns)
+                fromLocalStorage!!
+            } catch (throwable: Throwable) {
+                console.warn(throwable)
+                remove(KEY_RECOGNIZER_COMBINER_OPTIONS)
+                RecognizerMatchCombinerOptions()
+            }
         }
         set(value) = set(KEY_RECOGNIZER_COMBINER_OPTIONS, JSON.stringify(value))
 
