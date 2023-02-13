@@ -2,6 +2,7 @@ package org.olafneumann.regex.generator.ui.utils
 
 import kotlinx.browser.window
 import org.w3c.dom.events.Event
+import org.w3c.dom.events.MouseEvent
 import kotlin.js.Date
 
 class RageClickDetector private constructor(
@@ -35,7 +36,20 @@ class RageClickDetector private constructor(
         private const val THRESHOLD_COUNT = 3
         private const val THRESHOLD_TIME_MS = 800
 
-        fun createEventListener(
+        fun createMouseEventListener(
+            thresholdCount: Int = THRESHOLD_COUNT,
+            thresholdTime: Int = THRESHOLD_TIME_MS,
+            onRageClick: (Event) -> Unit
+        ): (MouseEvent) -> Unit {
+            val rageClickDetector = RageClickDetector(
+                thresholdCount = thresholdCount,
+                thresholdTime = thresholdTime,
+                onRageClick = onRageClick
+            )
+            return { rageClickDetector.clickElement(it as Event) }
+        }
+
+        fun createEventFunction(
             thresholdCount: Int = THRESHOLD_COUNT,
             thresholdTime: Int = THRESHOLD_TIME_MS,
             onRageClick: (Event) -> Unit
