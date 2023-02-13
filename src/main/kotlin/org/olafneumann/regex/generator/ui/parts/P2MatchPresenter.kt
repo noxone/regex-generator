@@ -46,6 +46,28 @@ class P2MatchPresenter(
 
     private var helpPopover: Popover? = null
 
+    init {
+        textDisplay.onclick = RageClickDetector.createMouseEventListener(thresholdCount = 2) { event ->
+            console.log("rage")
+            helpPopover = Popover(
+                element = (event.target as HTMLElement?) ?: textDisplay,
+                title = "Need help?",
+                customClass = "rg-help-popover",
+                placement = Popover.Placement.Top,
+                trigger = Popover.Trigger.Manual
+            ) {
+                div {
+                    p { +"Hover and click the colored boxes below the text." }
+                    p {
+                        +"In this line of text you can then see, which parts of your input will be recognized by the "
+                        +"corresponding regex."
+                    }
+                }
+            }
+            helpPopover?.show()
+        }
+    }
+
     fun applyModel(model: DisplayModel) {
         showText(model.patternRecognizerModel.input)
         showMatchPresenters(model.rowsOfMatchPresenters, model.patternRecognizerModel.selectedRecognizerMatches)
@@ -57,7 +79,6 @@ class P2MatchPresenter(
         textDisplay.clear()
         inputCharacterSpans = text.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
-
     }
 
     private fun showMatchPresenters(
@@ -150,7 +171,7 @@ class P2MatchPresenter(
                             matchPresenter.recognizerMatches
                         )
                     }*/
-                    onMouseDownFunction = RageClickDetector.createEventListener(1) {
+                    onMouseDownFunction = RageClickDetector.createEventFunction(1) {
                         val child = element.firstElementChild!!
                         child.classList.toggle("rg-glow-alert", true)
                         enqueue(delay = 900) { child.classList.toggle("rg-glow-alert", false) }
