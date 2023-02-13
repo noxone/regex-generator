@@ -120,9 +120,20 @@ h5 i {
 }
 
 .rg-glow {
-  -webkit-box-shadow:0px 0px 40px 4px rgba(8,8,7,1);
-  -moz-box-shadow: 0px 0px 40px 4px rgba(8,8,7,1);
   box-shadow: 0px 0px 40px 4px rgba(8,8,7,1);
+}
+
+.rg-glow-alert {
+  box-shadow: inherit;
+
+  animation: blink 0.3s;
+  animation-iteration-count: 3;
+}
+
+@keyframes blink {
+  50% {
+    box-shadow: 0px 0px 40px 4px rgba(8,8,7,1);
+  }
 }
 
 .rg-match-item:hover .rg-match-item-overlay {

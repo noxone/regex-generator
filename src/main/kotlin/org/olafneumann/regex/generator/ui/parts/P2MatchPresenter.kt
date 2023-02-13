@@ -144,11 +144,16 @@ class P2MatchPresenter(
                     }
                 }
                 if (!matchPresenter.selected && matchPresenter.recognizerMatches.size > 1) {
-                    onMouseDownFunction = RageClickDetector.createEventListener {
+                    /*onMouseDownFunction = RageClickDetector.createEventListener {
                         showPopoverOnRageClick(
                             element,
                             matchPresenter.recognizerMatches
                         )
+                    }*/
+                    onMouseDownFunction = RageClickDetector.createEventListener(1) {
+                        val child = element.firstElementChild!!
+                        child.classList.toggle("rg-glow-alert", true)
+                        enqueue(delay = 900) { child.classList.toggle("rg-glow-alert", false) }
                     }
                 }
             }
