@@ -111,43 +111,47 @@ class P2MatchPresenter(
     ): HTMLDivElement {
         var element: HTMLDivElement by Delegates.notNull()
 
-        element = document.create.div(classes = HtmlView.CLASS_MATCH_ITEM) {
-            div(classes = "rg-match-item-overlay") {
-                matchPresenter.recognizerMatches.forEach { recognizerMatch ->
-                    div(classes = "rg-recognizer") {
-                        title = if (recognizerMatch.patterns.size == 1) {
-                            recognizerMatch.patterns[0]
-                        } else {
-                            "Match consisting of ${recognizerMatch.patterns.size} patterns."
-                        }
-                        a {
-                            +recognizerMatch.title
-                            onClickFunction = { event ->
-                                controller.onRecognizerMatchClick(recognizerMatch)
-                                event.stopPropagation()
+        element =
+            document.create.div(
+                classes = HtmlView.CLASS_MATCH_ITEM + " " +
+                        if (matchPresenter.recognizerMatches.size > 1) "rg-multi-match-item" else ""
+            ) {
+                div(classes = "rg-match-item-overlay") {
+                    matchPresenter.recognizerMatches.forEach { recognizerMatch ->
+                        div(classes = "rg-recognizer") {
+                            title = if (recognizerMatch.patterns.size == 1) {
+                                recognizerMatch.patterns[0]
+                            } else {
+                                "Match consisting of ${recognizerMatch.patterns.size} patterns."
+                            }
+                            a {
+                                +recognizerMatch.title
+                                onClickFunction = { event ->
+                                    controller.onRecognizerMatchClick(recognizerMatch)
+                                    event.stopPropagation()
+                                }
                             }
                         }
                     }
                 }
-            }
-            onClickFunction = {
-                when {
-                    matchPresenter.selected ->
-                        controller.onRecognizerMatchClick(matchPresenter.recognizerMatches.first { isSelected(it) })
+                onClickFunction = {
+                    when {
+                        matchPresenter.selected ->
+                            controller.onRecognizerMatchClick(matchPresenter.recognizerMatches.first { isSelected(it) })
 
-                    matchPresenter.recognizerMatches.size == 1 ->
-                        controller.onRecognizerMatchClick(matchPresenter.recognizerMatches.first())
+                        matchPresenter.recognizerMatches.size == 1 ->
+                            controller.onRecognizerMatchClick(matchPresenter.recognizerMatches.first())
+                    }
+                }
+                if (!matchPresenter.selected && matchPresenter.recognizerMatches.size > 1) {
+                    onMouseDownFunction = RageClickDetector.createEventListener {
+                        showPopoverOnRageClick(
+                            element,
+                            matchPresenter.recognizerMatches
+                        )
+                    }
                 }
             }
-            if (!matchPresenter.selected && matchPresenter.recognizerMatches.size > 1) {
-                onMouseDownFunction = RageClickDetector.createEventListener {
-                    showPopoverOnRageClick(
-                        element,
-                        matchPresenter.recognizerMatches
-                    )
-                }
-            }
-        }
         return element
     }
 

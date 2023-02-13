@@ -72,7 +72,11 @@ h5 i {
 .rg-match-item {
   position: absolute;
   height: 0.7rem;
-  cursor: url('../images/cursor-rg-match-item-16.png') 8 10, auto;
+  cursor: pointer;
+}
+
+.rg-multi-match-item {
+  cursor: url('../images/cursor-rg-match-item-16.png') 8 10, auto !important;
 }
 
 .rg-match-item-red {
@@ -95,6 +99,11 @@ h5 i {
   border: 1px solid #ffc107;
 }
 
+.rg-recognizer:hover {
+  text-decoration: underline;
+  background-color: rgba(255,255,255,0.2);
+}
+
 .rg-match-item-stripe/*, .rg-match-item-stripe .rg-recognizer*/ {
   background: repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(200, 200, 200, 0.2) 6px, rgba(200, 200, 200, 0.2) 8px);
 }
@@ -108,6 +117,12 @@ h5 i {
   padding: 0.2em;
   background-color: inherit;
   cursor: pointer;
+}
+
+.rg-glow {
+  -webkit-box-shadow:0px 0px 40px 4px rgba(8,8,7,1);
+  -moz-box-shadow: 0px 0px 40px 4px rgba(8,8,7,1);
+  box-shadow: 0px 0px 40px 4px rgba(8,8,7,1);
 }
 
 .rg-match-item:hover .rg-match-item-overlay {
