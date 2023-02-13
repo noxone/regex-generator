@@ -91,7 +91,7 @@ class PatternRecognizerModelTest {
         val model1 =
             PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
         val numberMatch = model1.recognizerMatches.first { it.title == "Number" }
-        val characterMatch = model1.recognizerMatches.first { it.title == "One character" }
+        val characterMatch = model1.recognizerMatches.first { it.title == "One arbitrary character" }
         val model2 = model1.select(numberMatch)
 
         // when

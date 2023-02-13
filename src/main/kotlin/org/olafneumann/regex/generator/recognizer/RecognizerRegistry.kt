@@ -12,7 +12,7 @@ object RecognizerRegistry {
         EchoRecognizer("Repeating character", "(.)\\1{2,}", outputRegexBuilder = "%1\$s+"),
         SimpleRecognizer("One whitespace", "\\s"),
         SimpleRecognizer("Whitespaces", "\\s+"),
-        SimpleRecognizer("One character", "[a-zA-Z]"),
+        SimpleRecognizer("One arbitrary character", "[a-zA-Z]"),
         SimpleRecognizer("Multiple characters", "[a-zA-Z]+"),
         SimpleRecognizer("Digit", "\\d"),
         SimpleRecognizer("Number", "[0-9]+"),
