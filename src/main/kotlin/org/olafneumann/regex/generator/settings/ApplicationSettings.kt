@@ -16,12 +16,39 @@ internal object ApplicationSettings : LocalStorageSettings() {
     fun storeUserLastInfo() = set(KEY_LAST_VERSION, VAL_VERSION)
 
     var codeGeneratorOptions: CodeGeneratorOptions
-        get() = get(KEY_CODE_GENERATOR_OPTIONS)?.let { JSON.parse<CodeGeneratorOptions>(it) } ?: CodeGeneratorOptions()
+        @Suppress("TooGenericExceptionCaught")
+        get() {
+            val fromLocalStorage = get(KEY_CODE_GENERATOR_OPTIONS)?.let { JSON.parse<CodeGeneratorOptions>(it) }
+            return try {
+                console.log("Case insensitive:", fromLocalStorage?.caseInsensitive)
+                console.log("Multiline:", fromLocalStorage?.multiline)
+                console.log("Dot matches lines breaks:", fromLocalStorage?.dotMatchesLineBreaks)
+                fromLocalStorage!!
+            } catch (throwable: Throwable) {
+                console.warn(throwable)
+                remove(KEY_CODE_GENERATOR_OPTIONS)
+                CodeGeneratorOptions()
+            }
+        }
         set(value) = set(KEY_CODE_GENERATOR_OPTIONS, JSON.stringify(value))
 
     var recognizerMatchCombinerOptions: RecognizerMatchCombinerOptions
-        get() = get(KEY_RECOGNIZER_COMBINER_OPTIONS)?.let { JSON.parse<RecognizerMatchCombinerOptions>(it) }
-            ?: RecognizerMatchCombinerOptions()
+        @Suppress("TooGenericExceptionCaught")
+        get() {
+            val fromLocalStorage =
+                get(KEY_RECOGNIZER_COMBINER_OPTIONS)?.let { JSON.parse<RecognizerMatchCombinerOptions>(it) }
+            return try {
+                console.log("Case:", fromLocalStorage?.case)
+                console.log("Generate lower case:", fromLocalStorage?.generateLowerCase)
+                console.log("Match whole line:", fromLocalStorage?.matchWholeLine)
+                console.log("Only patterns:", fromLocalStorage?.onlyPatterns)
+                fromLocalStorage!!
+            } catch (throwable: Throwable) {
+                console.warn(throwable)
+                remove(KEY_RECOGNIZER_COMBINER_OPTIONS)
+                RecognizerMatchCombinerOptions()
+            }
+        }
         set(value) = set(KEY_RECOGNIZER_COMBINER_OPTIONS, JSON.stringify(value))
 
     private fun String.toLanguageExpandedProperty() = "language.${this}.expanded"

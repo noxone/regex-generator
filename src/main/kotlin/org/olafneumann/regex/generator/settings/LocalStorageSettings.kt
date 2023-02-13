@@ -37,6 +37,13 @@ internal open class LocalStorageSettings {
             intermediate[key] = value
         }
     }
+    protected fun remove(key: String) {
+        if (hasUserConsent) {
+            localStorage.removeItem(key = key)
+        } else {
+            intermediate.remove(key = key)
+        }
+    }
 
     // convenience
     protected fun set(key: String, value: Int) = set(key, value.toString())
