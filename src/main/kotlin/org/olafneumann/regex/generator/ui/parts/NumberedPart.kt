@@ -50,6 +50,8 @@ open class NumberedPart(
         }
     }
 
+    protected val mainElement: HTMLElement by lazy { numberElement.parentElement!!.parentElement!! as HTMLElement }
+
     protected val numberElement: HTMLElement get() = elements.number
     protected val headingElement: HTMLElement get() = elements.caption
     protected val contentElement: HTMLElement get() = elements.content
