@@ -157,8 +157,8 @@
 
 <div>
   <ul>
-    <li>591 number of properties</li>
-    <li>428 number of functions</li>
+    <li>596 number of properties</li>
+    <li>429 number of functions</li>
     <li>127 number of classes</li>
     <li>15 number of packages</li>
     <li>98 number of kt files</li>
@@ -170,13 +170,13 @@
 
 <div>
   <ul>
-    <li>6,523 lines of code (loc)</li>
-    <li>5,448 source lines of code (sloc)</li>
-    <li>3,939 logical lines of code (lloc)</li>
-    <li>213 comment lines of code (cloc)</li>
-    <li>755 cyclomatic complexity (mcc)</li>
+    <li>6,539 lines of code (loc)</li>
+    <li>5,459 source lines of code (sloc)</li>
+    <li>3,949 logical lines of code (lloc)</li>
+    <li>212 comment lines of code (cloc)</li>
+    <li>756 cyclomatic complexity (mcc)</li>
     <li>299 cognitive complexity</li>
-    <li>1 number of total code smells</li>
+    <li>2 number of total code smells</li>
     <li>3% comment source ratio</li>
     <li>191 mcc per 1,000 lloc</li>
     <li>0 code smells per 1,000 lloc</li>
@@ -185,8 +185,24 @@
 
 
 <h2>Findings</h2>
-<div>Total: 1
-  <h3>style: 1</h3>
+<div>Total: 2
+  <h3>style: 2</h3>
+  <details id="MaxLineLength" open="open">
+    <summary class="rule-container"><span class="rule">MaxLineLength: 1 </span><span class="description">Line detected, which is longer than the defined maximum line length in the code style.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#maxlinelength">Documentation</a>
+    <ul>
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/test/kotlin/org/olafneumann/regex/generator/model/PatternRecognizerModelTest.kt:43:9</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
+        <pre><code><span class="lineno">  40 </span>
+<span class="lineno">  41 </span>        val input = &quot;[id]=[6]&quot;
+<span class="lineno">  42 </span>
+<span class="lineno">  43 </span>        <span class="error">val model1 = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())</span>
+<span class="lineno">  44 </span>        val match = model1.recognizerMatches
+<span class="lineno">  45 </span>            .last { it.title == &quot;Square brackets content (no square bracket)&quot; }
+<span class="lineno">  46 </span>
+</code></pre>
+      </li>
+    </ul>
+  </details>
   <details id="UnusedPrivateMember" open="open">
     <summary class="rule-container"><span class="rule">UnusedPrivateMember: 1 </span><span class="description">Private member is unused and should be removed.</span></summary>
 <a href="https://detekt.dev/docs/rules/style#unusedprivatemember">Documentation</a>
@@ -206,7 +222,7 @@
 </div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-03-06 18:05:19 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.22.0</a> on 2023-03-15 21:37:58 UTC.
 
 </body>
 </html>
