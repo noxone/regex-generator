@@ -14,6 +14,7 @@ import org.olafneumann.regex.generator.ui.utils.UserInputDelayer
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
+import org.w3c.dom.events.MouseEvent
 
 class P1UserInput(
     private val controller: MVCContract.Controller,
@@ -53,6 +54,14 @@ class P1UserInput(
         textInput.maxLength = maxInputLength + 1
         HtmlHelper.getElementById<HTMLSpanElement>(HtmlView.ID_INPUT_MESSAGE_SHORTEN_NUMBER)
             .innerHTML = maxInputLength.toString()
+
+        mainElement.onclick = {
+            textInput.focus()
+        }
+        val propagationStoppingEventHandler: (MouseEvent) -> Unit = { it.stopPropagation() }
+        textInput.onclick = propagationStoppingEventHandler
+        textInput.onmousedown = propagationStoppingEventHandler
+        textInput.onmouseup = propagationStoppingEventHandler
     }
 
     fun applyModel(model: DisplayModel) {
