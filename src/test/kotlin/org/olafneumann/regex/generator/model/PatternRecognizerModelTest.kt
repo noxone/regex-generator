@@ -33,6 +33,22 @@ class PatternRecognizerModelTest {
         assertEquals(expected = 33, actual = model.recognizerMatches.size)
     }
 
+
+    @Test
+    fun testBracketGeneration1() {
+        val expected = "\\[id\\]=\\[[^\\]]*\\]"
+
+        val input = "[id]=[6]"
+
+        val model1 = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
+        val match = model1.recognizerMatches
+            .last { it.title == "Square brackets content (no square bracket)" }
+
+        val model2 = model1.select(match)
+
+        assertEquals(expected = expected, actual = model2.finalPattern)
+    }
+
     @Test
     fun testPatterns_simpleRecognition() {
         val input = "abc123def"
