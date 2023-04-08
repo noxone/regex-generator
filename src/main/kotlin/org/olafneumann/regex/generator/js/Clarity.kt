@@ -7,6 +7,7 @@ import org.w3c.dom.Window
 private inline fun Window.clarity(action: String): Unit = asDynamic().clarity(action)
 
 object Clarity {
+    @Suppress("TooGenericExceptionCaught")
     fun consent() {
         try {
             // https://learn.microsoft.com/en-us/clarity/setup-and-installation/cookie-consent
