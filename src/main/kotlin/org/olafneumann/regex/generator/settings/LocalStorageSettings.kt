@@ -1,6 +1,7 @@
 package org.olafneumann.regex.generator.settings
 
 import kotlinx.browser.localStorage
+import org.olafneumann.regex.generator.js.Clarity
 
 internal open class LocalStorageSettings {
     companion object {
@@ -22,7 +23,9 @@ internal open class LocalStorageSettings {
     }
 
     init {
-        if (!hasUserConsent) {
+        if (hasUserConsent) {
+            onConsentGiven()
+        } else {
             loadIntermediateFromLocalStorage()
             localStorage.clear()
         }
@@ -55,8 +58,13 @@ internal open class LocalStorageSettings {
             set(KEY_CONSENT, value)
             if (value) {
                 persistIntermediate()
+                onConsentGiven()
             } else {
                 loadIntermediateFromLocalStorage()
             }
         }
+
+    private fun onConsentGiven() {
+        Clarity.consent()
+    }
 }
