@@ -42,8 +42,6 @@ class P2MatchPresenter(
     private val textDisplay = HtmlHelper.getElementById<HTMLElement>(HtmlView.ID_TEXT_DISPLAY)
     private val rowContainer = HtmlHelper.getElementById<HTMLDivElement>(HtmlView.ID_ROW_CONTAINER)
 
-    private var inputCharacterSpans = listOf<HTMLSpanElement>()
-
     private var helpPopover: Popover? = null
 
     init {
@@ -69,21 +67,28 @@ class P2MatchPresenter(
     }
 
     fun applyModel(model: DisplayModel) {
-        showText(model.patternRecognizerModel.input)
-        showMatchPresenters(model.rowsOfMatchPresenters, model.patternRecognizerModel.selectedRecognizerMatches)
+        val spanList = showText(model.patternRecognizerModel.input)
+        showMatchPresenters(
+            model.rowsOfMatchPresenters,
+            model.patternRecognizerModel.selectedRecognizerMatches,
+            spanList
+        )
         helpPopover?.hide()
         enqueue { helpPopover = null }
     }
 
-    fun showText(text: String) {
+    fun showText(text: String): SpanList {
         textDisplay.clear()
-        inputCharacterSpans = text.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList()
+        val inputCharacterSpans =
+            SpanList(text.map { document.create.span(classes = "rg-char") { +it.toString() } }.toList())
         inputCharacterSpans.forEach { textDisplay.appendChild(it) }
+        return inputCharacterSpans
     }
 
     private fun showMatchPresenters(
         presenters: List<List<MatchPresenter>>,
-        selectedRecognizerMatches: Collection<RecognizerMatch>
+        selectedRecognizerMatches: Collection<RecognizerMatch>,
+        inputCharacterSpans: SpanList
     ) {
         val isSelected: (RecognizerMatch) -> Boolean = { selectedRecognizerMatches.contains(it) }
         inputCharacterSpans.forEachIndexed { index, htmlSpanElement ->
@@ -116,7 +121,7 @@ class P2MatchPresenter(
                 matchPresenterElement.classList.toggle(HtmlView.CLASS_ITEM_SELECTED, matchPresenter.selected)
                 matchPresenterElement.classList.toggle(HtmlView.CLASS_ITEM_NOT_AVAILABLE, matchPresenter.deactivated)
 
-                applyListenersForUserInput(matchPresenter, matchPresenterElement, cssClass)
+                applyListenersForUserInput(matchPresenter, matchPresenterElement, cssClass, inputCharacterSpans)
             }
         }
 
@@ -181,7 +186,7 @@ class P2MatchPresenter(
         return element
     }
 
-    private fun showPopoverOnRageClick(element: HTMLElement, recognizerMatches: Collection<RecognizerMatch>) {
+    /*private fun showPopoverOnRageClick(element: HTMLElement, recognizerMatches: Collection<RecognizerMatch>) {
         helpPopover = Popover(
             element = element,
             title = "Need help?",
@@ -210,21 +215,26 @@ class P2MatchPresenter(
             }
         }
         helpPopover?.show()
-    }
+    }*/
 
     private fun getColorClass(row: Int, index: Int): String {
         return HtmlView.MATCH_PRESENTER_CSS_CLASS[(row + index) % HtmlView.MATCH_PRESENTER_CSS_CLASS.size]
     }
 
-    private fun applyListenersForUserInput(matchPresenter: MatchPresenter, element: HTMLDivElement, cssClass: String) {
+    private fun applyListenersForUserInput(
+        matchPresenter: MatchPresenter,
+        element: HTMLDivElement,
+        cssClass: String,
+        spanList: SpanList
+    ) {
         element.onmouseenter = {
             if (matchPresenter.availableForHighlight) {
-                matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].addClass(cssClass) }
+                matchPresenter.forEachIndexInRanges { index -> spanList[index].addClass(cssClass) }
             }
         }
         element.onmouseleave = {
             if (matchPresenter.availableForHighlight) {
-                matchPresenter.forEachIndexInRanges { index -> inputCharacterSpans[index].removeClass(cssClass) }
+                matchPresenter.forEachIndexInRanges { index -> spanList[index].removeClass(cssClass) }
             }
         }
     }
@@ -251,4 +261,12 @@ class P2MatchPresenter(
     }
 
     private fun Int.toCharacterUnits() = "${this}ch"
+
+    data class SpanList(
+        val spans: List<HTMLSpanElement> = emptyList()
+    ) {
+        fun forEach(action: (HTMLSpanElement) -> Unit) = spans.forEach(action)
+        fun forEachIndexed(action: (Int, HTMLSpanElement) -> Unit) = spans.forEachIndexed(action)
+        operator fun get(index: Int) = spans[index]
+    }
 }
