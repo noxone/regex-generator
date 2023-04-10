@@ -1,7 +1,9 @@
 package org.olafneumann.regex.generator
 
+import kotlinx.browser.document
 import org.olafneumann.regex.generator.settings.ApplicationSettings
 import kotlinx.browser.window
+import org.olafneumann.regex.generator.js.Clarity
 import org.olafneumann.regex.generator.js.NPM
 import org.olafneumann.regex.generator.ui.RGController
 
@@ -36,4 +38,14 @@ private fun initRegexGeneratorUnsafe() {
     if (showGuide) {
         controller.onShowUserGuide(initialStep = true)
     }
+
+    // report commit ID
+    window.setTimeout({
+        document.body
+            ?.getAttribute("rg-commit-id")
+            ?.let {
+                console.info("Commit ID", it)
+                Clarity.event("Commit ID", it)
+            }
+    }, 2000)
 }

@@ -6,6 +6,10 @@ import org.w3c.dom.Window
 @Suppress("NOTHING_TO_INLINE")
 private inline fun Window.clarity(action: String): Unit = asDynamic().clarity(action)
 
+@Suppress("NOTHING_TO_INLINE")
+private inline fun Window.clarity(action: String, name: String, value: String): Unit =
+    asDynamic().clarity(action, name, value)
+
 object Clarity {
     @Suppress("TooGenericExceptionCaught")
     fun consent() {
@@ -14,6 +18,15 @@ object Clarity {
             window.clarity("consent")
         } catch (e: Throwable) {
             console.warn("Unable to activate Clarity consent", e)
+        }
+    }
+
+    fun event(name: String, value: String) {
+        @Suppress("TooGenericExceptionCaught")
+        try {
+            window.clarity("event", name, value)
+        } catch (e: Throwable) {
+            console.warn("Unable to report event to Clarity", e)
         }
     }
 }
