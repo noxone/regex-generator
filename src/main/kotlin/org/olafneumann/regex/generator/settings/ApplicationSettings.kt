@@ -20,7 +20,7 @@ internal object ApplicationSettings : LocalStorageSettings() {
     // ----------------------------------
     // actual function to access settings
 
-    fun isNewUser() = (get(KEY_LAST_VERSION)?.toIntOrNull() ?: 0) < VAL_VERSION
+    fun isNewUser() = get(KEY_LAST_VERSION, 0) < VAL_VERSION
     fun storeUserLastInfo() = set(KEY_LAST_VERSION, VAL_VERSION)
 
     var codeGeneratorOptions: CodeGeneratorOptions
@@ -59,6 +59,6 @@ internal object ApplicationSettings : LocalStorageSettings() {
         }
 
     private fun String.toLanguageExpandedProperty() = "language.${this}.expanded"
-    fun isLanguageExpanded(language: String) = get(language.toLanguageExpandedProperty())?.toBoolean() ?: false
+    fun isLanguageExpanded(language: String) = get(language.toLanguageExpandedProperty(), false)
     fun setLanguageExpanded(language: String, expanded: Boolean) = set(language.toLanguageExpandedProperty(), expanded)
 }

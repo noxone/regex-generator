@@ -34,6 +34,7 @@ internal open class LocalStorageSettings {
     // Hiding local storage behind functions, so we can disable storage if user does not consent
     protected fun get(key: String) = intermediate[key] ?: localStorage.getItem(key)
     protected fun get(key: String, default: Boolean): Boolean = get(key)?.toBoolean() ?: default
+    protected fun get(key: String, default: Int): Int = get(key)?.toIntOrNull() ?: default
     protected fun set(key: String, value: String) {
         if (hasUserConsent) {
             localStorage.setItem(key, value)
@@ -54,7 +55,7 @@ internal open class LocalStorageSettings {
     protected fun set(key: String, value: Boolean) = set(key, value.toString())
 
     var hasUserConsent: Boolean
-        get() = get(KEY_CONSENT)?.toBoolean() ?: false
+        get() = get(KEY_CONSENT, false)
         set(value) {
             set(KEY_CONSENT, value)
             if (value) {
