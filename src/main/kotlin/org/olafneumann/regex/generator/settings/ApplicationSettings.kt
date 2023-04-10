@@ -26,7 +26,8 @@ internal object ApplicationSettings : LocalStorageSettings() {
     var codeGeneratorOptions: CodeGeneratorOptions
         get() {
             val caseInsensitive = get(KEY_CGO_CASE_INSENSITIVE, CodeGeneratorOptions.DEFAULT_CASE_INSENSITIVE)
-            val dotMatchesLineBreaks = get(KEY_CGO_DOT_MATCHES_LINE_BREAKS, CodeGeneratorOptions.DEFAULT_DOT_MATCHES_LINE_BREAKS)
+            val dotMatchesLineBreaks =
+                get(KEY_CGO_DOT_MATCHES_LINE_BREAKS, CodeGeneratorOptions.DEFAULT_DOT_MATCHES_LINE_BREAKS)
             val multiline = get(KEY_CGO_MULTILINE, CodeGeneratorOptions.DEFAULT_MULTILINE)
             return CodeGeneratorOptions(
                 caseInsensitive = caseInsensitive,
@@ -45,7 +46,8 @@ internal object ApplicationSettings : LocalStorageSettings() {
         get() {
             val onlyPatterns = get(KEY_RCO_ONLY_PATTERNS, RecognizerMatchCombinerOptions.DEFAULT_ONLY_PATTERN)
             val matchWholeLine = get(KEY_RCO_MATCH_WHOLE_LINE, RecognizerMatchCombinerOptions.DEFAULT_MATCH_WHOLE_LINE)
-            val generateLowerCase = get(KEY_RCO_GENERATE_LOWER_CASE, RecognizerMatchCombinerOptions.DEFAULT_GENERATE_LOWER_CASE)
+            val generateLowerCase =
+                get(KEY_RCO_GENERATE_LOWER_CASE, RecognizerMatchCombinerOptions.DEFAULT_GENERATE_LOWER_CASE)
             return RecognizerMatchCombinerOptions(
                 onlyPatterns = onlyPatterns,
                 matchWholeLine = matchWholeLine,
