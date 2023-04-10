@@ -40,7 +40,8 @@ class PatternRecognizerModelTest {
 
         val input = "[id]=[6]"
 
-        val model1 = PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
+        val model1 =
+            PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
         val match = model1.recognizerMatches
             .last { it.title == "Square brackets content (no square bracket)" }
 
