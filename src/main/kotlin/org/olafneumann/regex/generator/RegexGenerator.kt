@@ -40,12 +40,12 @@ private fun initRegexGeneratorUnsafe() {
     }
 
     // report commit ID
-    window.setTimeout({
-        document.body
-            ?.getAttribute("rg-commit-id")
-            ?.let {
-                console.info("Commit ID", it)
-                Clarity.event("Commit ID", it)
-            }
-    }, 2000)
+    document.body
+        ?.getAttribute("rg-commit-id")
+        ?.let {
+            console.info("commit-id", it)
+            window.setTimeout({
+                Clarity.set("commit-id", it)
+            }, 2000)
+        }
 }

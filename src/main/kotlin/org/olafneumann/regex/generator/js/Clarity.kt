@@ -21,10 +21,10 @@ object Clarity {
         }
     }
 
-    fun event(name: String, value: String) {
+    fun set(name: String, value: String) {
         @Suppress("TooGenericExceptionCaught")
         try {
-            window.clarity("event", name, value)
+            window.clarity("set", name, value)
         } catch (e: Throwable) {
             console.warn("Unable to report event to Clarity", e)
         }
