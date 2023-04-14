@@ -31,11 +31,15 @@
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
     <!-- sources of regex generator -->
-    <script type="text/javascript" src="regex-generator.js?commitId=8e7a0161f9747fe31d7ad29c816ceef712c3798c"></script>
+    <script type="text/javascript" src="regex-generator.js?commitId=5e88b52629cb0005684870e4bdc41f3258f620b5"></script>
 
     <!-- now for our page -->
-    <link rel="stylesheet" href="styles/regex-generator.css?commitId=8e7a0161f9747fe31d7ad29c816ceef712c3798c">
+    <link rel="stylesheet" href="styles/regex-generator.css?commitId=5e88b52629cb0005684870e4bdc41f3258f620b5">
     <title>Regex Generator - Creating regex is easy again!</title>
 
     <!-- Clarity analytics -->
@@ -51,7 +55,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 
-<body class="bg-dark" rg-commit-id="8e7a0161f9747fe31d7ad29c816ceef712c3798c">
+<body class="bg-dark" rg-commit-id="5e88b52629cb0005684870e4bdc41f3258f620b5">
     <div id="rg_loading" class="fixed-top fixed-bottom bg-dark d-flex align-items-center">
         <div class="text-light shadow rounded p-5 row display-5">
             <div class="spinner-grow inline-block m-2" role="status">
@@ -275,9 +279,9 @@
             <div class="col-12 p-3">
                 <h5>Share</h5>
                 <p class="user-select-none">To share the current page content and settings, use the following link:</p>
-                <div class="rounded border p-1 d-flex align-items-center rg-match-container">
+                <div class="rounded border p-1 d-flex align-items-center justify-content-between rg-match-container">
                         <div id="rg_result_link" class="rg-share-link m-1 user-select-all"></div>
-                        <button class="btn btn-primary btn-sm float-end m-1" id="rg_button_copy_share_link"
+                        <button class="btn btn-primary btn-sm m-1" id="rg_button_copy_share_link"
                                 title="Copy link to share"><i class="bi bi-clipboard2"></i></button>
                 </div>
             </div>
@@ -340,8 +344,6 @@
         </footer>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
         crossorigin="anonymous"></script>
