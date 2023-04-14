@@ -10,6 +10,7 @@ import org.olafneumann.regex.generator.ui.RGController
 
 const val FEATURE_FLAG_CAPTURING_GROUPS = false
 const val FEATURE_FLAG_PATTERN_CASE_MODIFIER = true
+private const val CLARITY_DELAY = 2000
 
 fun main() {
     window.onload = { initRegexGenerator() }
@@ -46,6 +47,6 @@ private fun initRegexGeneratorUnsafe() {
             console.info("commit-id", it)
             window.setTimeout({
                 Clarity.set("commit-id", it)
-            }, 2000)
+            }, CLARITY_DELAY)
         }
 }
