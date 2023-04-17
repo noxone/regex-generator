@@ -4,6 +4,7 @@ import kotlinx.browser.document
 import org.olafneumann.regex.generator.settings.ApplicationSettings
 import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.Clarity
+import org.olafneumann.regex.generator.js.GoogleAds
 import org.olafneumann.regex.generator.js.NPM
 import org.olafneumann.regex.generator.ui.RGController
 
@@ -20,6 +21,7 @@ fun main() {
 @Suppress("TooGenericExceptionCaught")
 private fun initRegexGenerator() {
     registerErrorHandler()
+    GoogleAds.install()
     initRegexGeneratorUnsafe()
 }
 
