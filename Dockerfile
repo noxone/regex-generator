@@ -31,7 +31,7 @@ RUN rm /app/build/distributions/regex-generator.js.map
 #**************************************
 
 # local build only
-FROM alpine:3.17.3 AS local-postinstall
+FROM alpine:3.18.0 AS local-postinstall
 WORKDIR /app
 RUN apk update \
  && apk add lighttpd \
@@ -39,7 +39,7 @@ RUN apk update \
 COPY --from=TEMP_BUILD_IMAGE /app/build/distributions /var/www/localhost/htdocs
 
 # github action only
-FROM alpine:3.17.3 AS github-postinstall
+FROM alpine:3.18.0 AS github-postinstall
 WORKDIR /app
 RUN apk update \
  && apk add lighttpd \
