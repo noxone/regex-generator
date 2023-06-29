@@ -19,7 +19,7 @@ fun main() {
 /* the caught exception is generic to really catch all exceptions */
 @Suppress("TooGenericExceptionCaught")
 private fun initRegexGenerator() {
-    registerErrorHandler()
+    // registerErrorHandler()
     initRegexGeneratorUnsafe()
 }
 
