@@ -53,13 +53,13 @@ class RageClickDetector private constructor(
             thresholdCount: Int = THRESHOLD_COUNT,
             thresholdTime: Int = THRESHOLD_TIME_MS,
             onRageClick: (Event) -> Unit
-        ): (kotlinx.html.org.w3c.dom.events.Event) -> Unit {
+        ): (Event) -> Unit {
             val rageClickDetector = RageClickDetector(
                 thresholdCount = thresholdCount,
                 thresholdTime = thresholdTime,
                 onRageClick = onRageClick
             )
-            return { rageClickDetector.clickElement(it as Event) }
+            return { rageClickDetector.clickElement(it) }
         }
     }
 }

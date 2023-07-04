@@ -2,11 +2,8 @@ package org.olafneumann.regex.generator.ui.parts
 
 import kotlinx.browser.document
 import kotlinx.dom.clear
-import kotlinx.html.dom.append
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
-import kotlinx.html.title
-import org.olafneumann.regex.generator.regex.CombinedRegex
 import org.olafneumann.regex.generator.ui.model.DisplayModel
 import org.olafneumann.regex.generator.ui.HtmlView
 import org.olafneumann.regex.generator.ui.MVCContract

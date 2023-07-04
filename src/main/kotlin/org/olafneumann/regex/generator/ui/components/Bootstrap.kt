@@ -5,10 +5,10 @@ import kotlinx.html.TagConsumer
 import kotlinx.html.button
 import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
-import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.title
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 
 fun TagConsumer<HTMLElement>.bsButton(
     label: String,

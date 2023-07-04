@@ -5,8 +5,8 @@ import kotlinx.html.ButtonType
 import kotlinx.html.DIV
 import kotlinx.html.button
 import kotlinx.html.js.onClickFunction
-import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.title
+import org.w3c.dom.events.Event
 
 fun DIV.gButton(
     classes: String,
