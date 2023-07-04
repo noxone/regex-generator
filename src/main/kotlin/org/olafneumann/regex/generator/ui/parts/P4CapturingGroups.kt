@@ -23,7 +23,6 @@ import kotlinx.html.js.onMouseMoveFunction
 import kotlinx.html.js.onMouseOutFunction
 import kotlinx.html.js.span
 import kotlinx.html.label
-import kotlinx.html.org.w3c.dom.events.Event
 import kotlinx.html.span
 import kotlinx.html.title
 import org.olafneumann.regex.generator.js.Popover
@@ -44,6 +43,7 @@ import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
+import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.events.MouseEvent
 import org.w3c.dom.get

@@ -11,11 +11,8 @@ import kotlinx.html.js.div
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onMouseDownFunction
 import kotlinx.html.js.span
-import kotlinx.html.li
 import kotlinx.html.p
-import kotlinx.html.style
 import kotlinx.html.title
-import kotlinx.html.ul
 import org.olafneumann.regex.generator.js.Popover
 import org.olafneumann.regex.generator.js.jQuery
 import org.olafneumann.regex.generator.ui.model.DisplayModel

@@ -17,7 +17,6 @@ import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLHeadingElement
 import org.w3c.dom.asList
-import org.w3c.dom.get
 import kotlin.properties.Delegates
 
 open class NumberedPart(
