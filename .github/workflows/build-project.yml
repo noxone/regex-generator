@@ -50,6 +50,7 @@ jobs:
         run: ./gradlew clean build
       - name: Replace placeholders
         run: |
+          cp -R -v ./build/dist/js/productionExecutable ./build/distributions
           sed "s/GIT_COMMIT_ID/$(git rev-parse HEAD)/" ./build/distributions/index.html > temp && mv temp ./build/distributions/index.html
           sed "s/SHORT_COMMIT_ID/$(git rev-parse --short HEAD)/" ./build/distributions/index.html > temp && mv temp ./build/distributions/index.html
       - name: Cleanup Gradle Cache
