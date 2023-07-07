@@ -25,6 +25,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
 # Build the web application
 RUN ./gradlew clean build
+RUN cp -R -v ./build/dist/js/productionExecutable ./build/distributions
 RUN rm /app/build/distributions/regex-generator.js.map
 #**************************************
 # end of local build stages 
