@@ -68,7 +68,7 @@ jobs:
       # set up QEMU to enable build of images for multiple architectures
       - name: Set up QEMU
         if: ${{ inputs.appEnvironment == 'github' }}
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       # generate and publish docker image containing the generated page
       - name: Set up Docker Buildx
