@@ -131,7 +131,7 @@ jobs:
           tail -n +$endLine README.md >> $filename
       - name: Publish docker description
         if: ${{ inputs.pushImages }}
-        uses: peter-evans/dockerhub-description@v3
+        uses: peter-evans/dockerhub-description@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
