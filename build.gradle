@@ -26,7 +26,7 @@ dependencies {
     
     implementation 'io.ktor:ktor-client-core:2.3.8'
     
-    implementation 'io.ktor:ktor-client-js:2.3.8'
+    implementation 'io.ktor:ktor-client-js:2.3.9'
     
     // implementation 'dev.andrewbailey.difference:difference:1.0.0'
     
