@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 plugins {
     id 'org.jetbrains.kotlin.js' version '1.9.23'
-    id 'io.gitlab.arturbosch.detekt' version '1.23.5'
+    id 'io.gitlab.arturbosch.detekt' version '1.23.6'
 }
 
 group 'org.olafneumann'
