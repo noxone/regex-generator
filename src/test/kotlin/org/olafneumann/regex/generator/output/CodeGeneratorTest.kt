@@ -41,9 +41,10 @@ class CodeGeneratorTest {
     private fun testLanguageGenerator(
         codeGenerator: CodeGenerator,
         options: CodeGeneratorOptions = CodeGeneratorOptions(),
+        input: String = given,
         expected: String
     ) {
-        val regex = generateRegex(given)
+        val regex = generateRegex(input)
         val actual = codeGenerator.generateCode(pattern = regex, options = options).snippet
         assertEquals(expected, actual)
     }
@@ -132,6 +133,14 @@ public class Sample
     fun testGenerator_Grep() = testLanguageGenerator(
         codeGenerator = GrepCodeGenerator(),
         expected = """grep -P -i 'abc\.\\\${'$'}hier "und" / '"'"'da'"'"'\(\[\)\.' [FILE...]"""
+    )
+
+    @Test
+    @Suppress("MaxLineLength")
+    fun testGenerator_Grep_with_hyphen_at_start() = testLanguageGenerator(
+        codeGenerator = GrepCodeGenerator(),
+        input = "-abc",
+        expected = """grep -P -i '\-abc' [FILE...]"""
     )
 
     @Test
