@@ -7,8 +7,9 @@ class GrepCodeGenerator : SimpleReplacingCodeGenerator(
 ) {
 
     override fun transformPattern(pattern: String): String =
-        pattern.replace("'", "'\"'\"'")
-            .replace(regex = Regex("^-"), "\\-")
+        pattern
+            .replace("'", "'\"'\"'")
+            .replace(regex = Regex("^-"), "\\\\-")
 
     override fun generateOptionsCode(options: CodeGeneratorOptions) =
         options.combine(valueForCaseInsensitive = "-i", separator = " ", prefix = " ")
