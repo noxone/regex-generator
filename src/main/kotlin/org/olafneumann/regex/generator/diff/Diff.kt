@@ -36,7 +36,7 @@ private fun <T> DiffOperation<T>.toDifference(): Difference = when (this) {
 }*/
 
 private fun <T> findDifferencesPeterTrr(input1: List<T>, input2: List<T>): List<Difference> =
-    diff(original = input1, revised = input2)
+    diff(source = input1, target = input2)
         .deltas
         .flatMap { it.toDifference() }
 
