@@ -222,6 +222,7 @@ class RGController : MVCContract.Controller {
             }
         }
 
+        @Suppress("SENSELESS_COMPARISON")
         private val isClipboardAvailable: Boolean
             get() =
                 window.navigator.clipboard != undefined

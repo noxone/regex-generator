@@ -18,7 +18,7 @@ internal object HtmlHelper {
         }
     }
 
-    internal inline fun HTMLElement.listChildElements(): List<Element> {
+    internal fun HTMLElement.listChildElements(): List<Element> {
         val children = this.children
         return (0 until this.childElementCount).mapNotNull { children[it] }
     }
