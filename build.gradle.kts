@@ -8,7 +8,7 @@ version = "1.0-SNAPSHOT"
 
 plugins {
     kotlin("multiplatform") version "2.0.0"
-    id("io.gitlab.arturbosch.detekt").version("1.22.0")
+    id("io.gitlab.arturbosch.detekt").version("1.23.6")
 }
 
 
@@ -85,7 +85,8 @@ plugins.withType<DetektPlugin> {
 
 detekt {
     // Define the detekt configuration(s) you want to use.
-    config = files("$projectDir/.config/detekt.yml")
+    config.from(file("$projectDir/.config/detekt.yml"))
+
 
     // Applies the config files on top of detekt's default config file. `false` by default.
     buildUponDefaultConfig = true
