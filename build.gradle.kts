@@ -74,12 +74,12 @@ kotlin {
     }
 }
 
-plugins.withType<DetektPlugin> {
-    tasks.withType<Detekt> detekt@{
-        reports.html.required.set(true)
-        reports.xml.required.set(true)
-        reports.txt.required.set(false)
-        reports.sarif.required.set(true)
+tasks.withType<Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+        txt.required.set(true)
+        sarif.required.set(true)
+        md.required.set(true)
     }
 }
 

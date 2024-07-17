@@ -45,7 +45,7 @@ class P2MatchPresenter(
         textDisplay.onclick = RageClickDetector.createMouseEventListener(thresholdCount = 2) { event ->
             console.log("rage")
             helpPopover = Popover(
-                element = (event.target as HTMLElement?) ?: textDisplay,
+                element = (event.target as? HTMLElement) ?: textDisplay,
                 title = "Need help?",
                 customClass = "rg-help-popover",
                 placement = Popover.Placement.Top,
