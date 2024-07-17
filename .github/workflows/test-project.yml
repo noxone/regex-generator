@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/build-project.yml
     with:
       uploadArtifacts: true
-      includeReports: false
+      includeReports: true
 
   build-docker:
     needs: build-project-directly
