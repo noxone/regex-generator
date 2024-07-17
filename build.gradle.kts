@@ -86,7 +86,7 @@ tasks.withType<Detekt>().configureEach {
 detekt {
     // Define the detekt configuration(s) you want to use.
     config.from(file("$projectDir/.config/detekt.yml"))
-
+    source.from(file("$projectDir/src/"))
 
     // Applies the config files on top of detekt's default config file. `false` by default.
     buildUponDefaultConfig = true
