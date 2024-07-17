@@ -70,7 +70,7 @@ Using this command the page will reload automatically for every source file chan
 
 #### Unit Tests
 
-Well, we don't have enough unit tests. But there are a few. See the [results](https://regex-generator.olafneumann.org/reports/test).
+Well, we don't have enough unit tests. But there are a few. See the [results](https://regex-generator.olafneumann.org/reports/allTests).
 
 #### Detekt
 
