@@ -6,7 +6,7 @@ ARG APP_ENV=local
 #**************************************
 # build stages used by local build only
 #**************************************
-FROM gradle:8.10.0-jdk11 AS TEMP_BUILD_IMAGE
+FROM gradle:8.10.0-jdk11 AS temp-build-image
 WORKDIR /app
 COPY . .
 
@@ -37,7 +37,7 @@ WORKDIR /app
 RUN apk update \
  && apk add lighttpd \
  && rm -rf /var/cache/apk/*
-COPY --from=TEMP_BUILD_IMAGE /app/build/distributions /var/www/localhost/htdocs
+COPY --from=temp-build-image /app/build/distributions /var/www/localhost/htdocs
 
 # github action only
 FROM alpine:3.20.3 AS github-postinstall
@@ -48,6 +48,6 @@ RUN apk update \
 COPY build/distributions /var/www/localhost/htdocs
 
 # final stage (maybe empty)
-FROM ${APP_ENV}-postinstall as final
+FROM ${APP_ENV}-postinstall AS final
 EXPOSE 80
 CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
