@@ -30,7 +30,7 @@ kotlin {
 
             implementation("io.ktor:ktor-client-core:2.3.12")
 
-            implementation("io.ktor:ktor-client-js:2.3.12")
+            implementation("io.ktor:ktor-client-js:3.0.1")
 
             implementation("io.github.petertrr:kotlin-multiplatform-diff:0.7.0")
 
