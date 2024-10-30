@@ -28,7 +28,7 @@ kotlin {
 
             implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.156-kotlin-1.5.0")
 
-            implementation("io.ktor:ktor-client-core:2.3.12")
+            implementation("io.ktor:ktor-client-core:3.0.1")
 
             implementation("io.ktor:ktor-client-js:2.3.12")
 
