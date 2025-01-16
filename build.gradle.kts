@@ -22,7 +22,7 @@ repositories {
 kotlin {
     sourceSets {
         jsMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-html:0.11.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-html:0.12.0")
 
             implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
 
