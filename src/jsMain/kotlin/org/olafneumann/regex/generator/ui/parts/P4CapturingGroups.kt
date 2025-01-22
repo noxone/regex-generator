@@ -390,7 +390,7 @@ internal class P4CapturingGroups(
                         this.id = idCapGroupName
                         //placeholder = "Name (optional)"
                         value = prefilledValue
-                        autoComplete = false
+                        autoComplete = "false"
                         onInputFunction = {
                             elements.nameText.classList.toggle("is-invalid", !isNewCapturingGroupNameValid())
                             elements.nameText.classList.toggle("is-valid", getNewCapturingGroupName() != null)
