@@ -404,6 +404,7 @@ data class CapturingGroupModel(
         }
     }
 
+    @ConsistentCopyVisibility
     data class CapturingGroup internal constructor(
         val openingPosition: Int,
         val closingPosition: Int,
