@@ -7,7 +7,7 @@ group = "org.olafneumann.regexgenerator"
 version = "1.0-SNAPSHOT"
 
 plugins {
-    kotlin("multiplatform") version "2.1.0"
+    kotlin("multiplatform") version "2.1.10"
     id("io.gitlab.arturbosch.detekt").version("1.23.6")
 }
 
