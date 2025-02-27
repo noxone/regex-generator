@@ -28,9 +28,9 @@ kotlin {
 
             implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.156-kotlin-1.5.0")
 
-            implementation("io.ktor:ktor-client-core:3.1.0")
+            implementation("io.ktor:ktor-client-core:3.1.1")
 
-            implementation("io.ktor:ktor-client-js:3.1.0")
+            implementation("io.ktor:ktor-client-js:3.1.1")
 
             implementation("io.github.petertrr:kotlin-multiplatform-diff:1.0.0")
 
