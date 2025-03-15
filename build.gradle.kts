@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.detekt)
     alias(libs.plugins.sonarqube)
+    jacoco
 }
 
 
@@ -91,12 +92,21 @@ detekt {
     ignoreFailures = true
 }
 
+tasks.withType(Detekt::class.java).configureEach {
+    jvmTarget = "17"
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "regex-generator")
         property("sonar.organization", "noxone")
         property("sonar.host.url", "https://sonarcloud.io")
     }
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+    reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
 }
 
 // https://kotlinlang.org/docs/js-project-setup.html#installing-npm-dependencies-with-ignore-scripts-by-default
