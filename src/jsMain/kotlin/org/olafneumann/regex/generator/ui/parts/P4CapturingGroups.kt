@@ -529,27 +529,28 @@ internal class P4CapturingGroups(
                     }
                     div(classes = "d-block") {
                         div(classes = "btn-group") {
-                            button(classes = "btn btn-light") {
+                            val buttonClasses = "btn btn-light"
+                            button(classes = buttonClasses) {
                                 +"i"
                                 title = "Case Sensitive"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"d"
                                 title = "Unix Lines"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"m"
                                 title = "Multiline"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"s"
                                 title = "DotAll"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"u"
                                 title = "Unicode Case"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"x"
                                 title = "Comments"
                             }
