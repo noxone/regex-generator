@@ -61,7 +61,11 @@ jobs:
           rm -f ~/.gradle/caches/modules-2/gc.properties
       - name: Copy reports
         if: ${{ inputs.uploadArtifacts && inputs.includeReports }}
-        run: mkdir build/distributions/reports && cp -R -v build/reports/tests/allTests build/distributions/reports && cp -v build/reports/detekt/detekt.html build/distributions/reports/
+        run: |
+          mkdir build/distributions/reports
+          cp -R -v build/reports/tests/allTests build/distributions/reports
+          cp -v build/reports/detekt/detekt.html build/distributions/reports/
+          cp -R -v build/reports/jacoco build/distributions/reports/ || true
       - name: Upload artifacts
         if: ${{ inputs.uploadArtifacts }}
         uses: actions/upload-artifact@v4

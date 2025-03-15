@@ -62,6 +62,8 @@ internal class P4CapturingGroups(
     companion object {
         private const val CLASS_SELECTION = "bg-warning"
         private const val CLASS_HIGHLIGHT = "bg-info"
+
+        private const val FORM_LABEL = "form-label"
     }
 
     private val textDisplay = HtmlHelper.getElementById<HTMLElement>("rg_cap_group_display")
@@ -382,7 +384,7 @@ internal class P4CapturingGroups(
             ).form(classes = "needs-validation") {
                 autoComplete = false
                 div(classes = "mb-3") {
-                    label(classes = "form-label") {
+                    label(classes = FORM_LABEL) {
                         htmlFor = idCapGroupName
                         +"Name (optional)"
                     }
@@ -419,7 +421,7 @@ internal class P4CapturingGroups(
             }
         }
         popover!!.show()
-        jQuery(".popover").mousedown {
+        popoverElement().mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()
         }
@@ -461,7 +463,7 @@ internal class P4CapturingGroups(
                         }
                     }
                     div(classes = "mb-3") {
-                        label(classes = "form-label") { +"Exact quantifiers" }
+                        label(classes = FORM_LABEL) { +"Exact quantifiers" }
                         div(classes = "input-group") {
                             qButton("{1}", "Matches exactly once", null)
                             /*button(classes = "btn btn-light btn-toggle border", type = ButtonType.button) {
@@ -487,7 +489,7 @@ internal class P4CapturingGroups(
                         }
                     }
                     div(classes = "mb-3") {
-                        label(classes = "form-label") { +"Greedy quantifiers" }
+                        label(classes = FORM_LABEL) { +"Greedy quantifiers" }
                         div(classes = "btn-group d-block") {
                             qButton("?", "Matches zero or one time", "?")
                             qButton("*", "Matches zero or more times", "*")
@@ -495,7 +497,7 @@ internal class P4CapturingGroups(
                         }
                     }
                     div(classes = "mb-3") {
-                        label(classes = "form-label") { +"Lazy quantifiers" }
+                        label(classes = FORM_LABEL) { +"Lazy quantifiers" }
                         div(classes = "btn-group d-block") {
                             qButton("??", "Matches zero or one time, but as few times as possible", "??")
                             qButton("*?", "Matches zero or more times, but as few times as possible", "*?")
@@ -506,7 +508,7 @@ internal class P4CapturingGroups(
             }
         }
         popover!!.show()
-        jQuery(".popover").mousedown {
+        popoverElement().mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()
         }
@@ -524,32 +526,33 @@ internal class P4CapturingGroups(
         ) {
             form {
                 div(classes = "mb-3") {
-                    label(classes = "form-label") {
+                    label(classes = FORM_LABEL) {
                         +"Flags"
                     }
                     div(classes = "d-block") {
                         div(classes = "btn-group") {
-                            button(classes = "btn btn-light") {
+                            val buttonClasses = "btn btn-light"
+                            button(classes = buttonClasses) {
                                 +"i"
                                 title = "Case Sensitive"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"d"
                                 title = "Unix Lines"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"m"
                                 title = "Multiline"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"s"
                                 title = "DotAll"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"u"
                                 title = "Unicode Case"
                             }
-                            button(classes = "btn btn-light") {
+                            button(classes = buttonClasses) {
                                 +"x"
                                 title = "Comments"
                             }
@@ -565,11 +568,13 @@ internal class P4CapturingGroups(
             }
         }
         popover!!.show()
-        jQuery(".popover").mousedown {
+        popoverElement().mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()
         }
     }
+
+    private fun popoverElement() = jQuery(".popover")
 
     private data class MarkerItem(
         val index: Int,

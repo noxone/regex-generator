@@ -151,7 +151,7 @@ class RGController : MVCContract.Controller {
                     ?.filter { it.key >= 0 }
                     ?: emptyMap()
             } catch (e: IllegalArgumentException) {
-                console.warn("Unable to read state from URL", e)
+                console.warn("Unable to read application state from URL", e)
                 return this
             }
 
@@ -187,7 +187,7 @@ class RGController : MVCContract.Controller {
                     ?.toList()
                     ?: emptyList()
             } catch (e: IllegalArgumentException) {
-                console.warn("Unable to read state from URL", e)
+                console.warn("Unable to read state of capturing groups from URL", e)
                 return this
             }
 
@@ -217,7 +217,7 @@ class RGController : MVCContract.Controller {
             return try {
                 this.toInt()
             } catch (e: IllegalArgumentException) {
-                console.warn("Unable to read state from URL", e)
+                console.warn("Invalid number", e)
                 -1
             }
         }

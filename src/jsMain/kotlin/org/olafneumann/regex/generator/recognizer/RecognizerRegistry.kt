@@ -6,6 +6,7 @@ import org.olafneumann.regex.generator.utils.HasRange
 import org.olafneumann.regex.generator.recognizer.BracketedRecognizer.CenterPattern
 
 object RecognizerRegistry {
+    @Suppress("kotlin:S1192")
     private val recognizers = listOf(
         EchoRecognizer("Character", ".", priority = 10),
         EchoRecognizer("Exact number", "[0-9]{2,}"),

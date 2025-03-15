@@ -6,9 +6,10 @@ group = "org.olafneumann.regexgenerator"
 version = "1.0-SNAPSHOT"
 
 plugins {
-    kotlin("multiplatform") version "2.1.10"
-    id("io.gitlab.arturbosch.detekt").version("1.23.6")
-    id("org.sonarqube") version "6.0.1.5171"
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.sonarqube)
+    jacoco
 }
 
 
@@ -22,18 +23,12 @@ repositories {
 kotlin {
     sourceSets {
         jsMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-html:0.12.0")
-
-            implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-
-            implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.156-kotlin-1.5.0")
-
-            implementation("io.ktor:ktor-client-core:3.1.1")
-
-            implementation("io.ktor:ktor-client-js:3.1.1")
-
-            implementation("io.github.petertrr:kotlin-multiplatform-diff:1.0.0")
-
+            implementation(libs.kotlinx.html)
+            implementation(kotlin("stdlib-js"))
+            implementation(libs.kotlin.extension)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.js)
+            implementation(libs.kotlin.multiplatform.diff)
             implementation(npm("driver.js", "0.9.8"))
         }
         jsTest.dependencies {
@@ -97,12 +92,21 @@ detekt {
     ignoreFailures = true
 }
 
+tasks.withType(Detekt::class.java).configureEach {
+    jvmTarget = "17"
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "regex-generator")
         property("sonar.organization", "noxone")
         property("sonar.host.url", "https://sonarcloud.io")
     }
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+    reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
 }
 
 // https://kotlinlang.org/docs/js-project-setup.html#installing-npm-dependencies-with-ignore-scripts-by-default

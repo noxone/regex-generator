@@ -1,0 +1,19 @@
+[versions]
+kotlin = "2.1.10"
+detekt = "1.23.8"
+sonar = "6.0.1.5171"
+ktor = "3.1.1"
+
+[libraries]
+driver-js = { group = "npm", name = "driver.js", version = "0.9.8" }
+kotlinx-html = { group = "org.jetbrains.kotlinx", name = "kotlinx-html", version = "0.12.0" }
+kotlin-extension = { group = "org.jetbrains", name = "kotlin-extensions", version = "1.0.1-pre.156-kotlin-1.5.0" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-js = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
+kotlin-multiplatform-diff = { group = "io.github.petertrr", name = "kotlin-multiplatform-diff", version = "1.0.0" }
+
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonar" }
