@@ -1,5 +1,4 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.DetektPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
@@ -9,6 +8,7 @@ version = "1.0-SNAPSHOT"
 plugins {
     kotlin("multiplatform") version "2.1.10"
     id("io.gitlab.arturbosch.detekt").version("1.23.6")
+    id("org.sonarqube") version "6.0.1.5171"
 }
 
 
@@ -95,6 +95,14 @@ detekt {
     allRules = false
 
     ignoreFailures = true
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "regex-generator")
+        property("sonar.organization", "noxone")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
 
 // https://kotlinlang.org/docs/js-project-setup.html#installing-npm-dependencies-with-ignore-scripts-by-default
