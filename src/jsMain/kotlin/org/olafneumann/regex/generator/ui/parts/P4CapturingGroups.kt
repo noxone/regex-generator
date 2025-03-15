@@ -419,7 +419,7 @@ internal class P4CapturingGroups(
             }
         }
         popover!!.show()
-        jQuery(".popover").mousedown {
+        popoverElement().mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()
         }
@@ -506,7 +506,7 @@ internal class P4CapturingGroups(
             }
         }
         popover!!.show()
-        jQuery(".popover").mousedown {
+        popoverElement().mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()
         }
@@ -566,11 +566,13 @@ internal class P4CapturingGroups(
             }
         }
         popover!!.show()
-        jQuery(".popover").mousedown {
+        popoverElement().mousedown {
             // prevent popover from being disposed when clicking inside
             it.stopPropagation()
         }
     }
+
+    private fun popoverElement() = jQuery(".popover")
 
     private data class MarkerItem(
         val index: Int,
