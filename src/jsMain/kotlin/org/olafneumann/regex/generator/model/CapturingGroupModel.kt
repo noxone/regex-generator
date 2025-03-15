@@ -99,25 +99,28 @@ data class CapturingGroupModel(
     ): CapturingGroupModel {
         val newCapturingGroups = capturingGroups
             .map { oldCapturingGroup ->
-                if (endInclusive < oldCapturingGroup.openingPosition) {
-                    // new CG is BEFORE old CG
-                    oldCapturingGroup.move(2)
-                } else if (start > oldCapturingGroup.closingPosition) {
-                    // new CG is BEHIND old CG
-                    // do nothing
-                    oldCapturingGroup
-                } else if (start <= oldCapturingGroup.openingPosition
-                    && endInclusive >= oldCapturingGroup.closingPosition
-                ) {
-                    // new CG is AROUND old CG
-                    oldCapturingGroup.move(1)
-                } else if (start > oldCapturingGroup.openingPosition
-                    && endInclusive < oldCapturingGroup.closingPosition
-                ) {
-                    // new CG is INSIDE old CG
-                    oldCapturingGroup.move(0, 2)
-                } else {
-                    oldCapturingGroup
+                when {
+                    endInclusive < oldCapturingGroup.openingPosition ->
+                        // new CG is BEFORE old CG
+                        oldCapturingGroup.move(2)
+
+                    start > oldCapturingGroup.closingPosition ->
+                        // new CG is BEHIND old CG
+                        // do nothing
+                        oldCapturingGroup
+
+                    start <= oldCapturingGroup.openingPosition
+                            && endInclusive >= oldCapturingGroup.closingPosition ->
+                        // new CG is AROUND old CG
+                        oldCapturingGroup.move(1)
+
+                    start > oldCapturingGroup.openingPosition
+                            && endInclusive < oldCapturingGroup.closingPosition ->
+                        // new CG is INSIDE old CG
+                        oldCapturingGroup.move(0, 2)
+
+                    else ->
+                        oldCapturingGroup
                 }
             }
             .toMutableList()
@@ -137,27 +140,31 @@ data class CapturingGroupModel(
     ): List<CapturingGroup> {
         return capturingGroups
             .mapNotNull { curCapturingGroup ->
-                if (capturingGroup.id == curCapturingGroup.id) {
-                    null
-                } else if (capturingGroup.closingPosition < curCapturingGroup.openingPosition) {
-                    // deleted CG was BEFORE current CG
-                    curCapturingGroup.move(-2)
-                } else if (capturingGroup.openingPosition > curCapturingGroup.closingPosition) {
-                    // deleted CG was BEHIND current CG
-                    // do nothing
-                    curCapturingGroup
-                } else if (capturingGroup.openingPosition > curCapturingGroup.openingPosition
-                    && capturingGroup.closingPosition < curCapturingGroup.closingPosition
-                ) {
-                    // deleted CG was INSIDE current CG
-                    curCapturingGroup.move(0, -2)
-                } else if (capturingGroup.openingPosition < curCapturingGroup.openingPosition
-                    && capturingGroup.closingPosition > curCapturingGroup.closingPosition
-                ) {
-                    // deleted CG was AROUND current CG
-                    curCapturingGroup.move(-1)
-                } else {
-                    curCapturingGroup
+                when {
+                    capturingGroup.id == curCapturingGroup.id ->
+                        null
+
+                    capturingGroup.closingPosition < curCapturingGroup.openingPosition ->
+                        // deleted CG was BEFORE current CG
+                        curCapturingGroup.move(-2)
+
+                    capturingGroup.openingPosition > curCapturingGroup.closingPosition ->
+                        // deleted CG was BEHIND current CG
+                        // do nothing
+                        curCapturingGroup
+
+                    capturingGroup.openingPosition > curCapturingGroup.openingPosition
+                            && capturingGroup.closingPosition < curCapturingGroup.closingPosition ->
+                        // deleted CG was INSIDE current CG
+                        curCapturingGroup.move(0, -2)
+
+                    capturingGroup.openingPosition < curCapturingGroup.openingPosition
+                            && capturingGroup.closingPosition > curCapturingGroup.closingPosition ->
+                        // deleted CG was AROUND current CG
+                        curCapturingGroup.move(-1)
+
+                    else ->
+                        curCapturingGroup
                 }
             }
     }
@@ -188,14 +195,15 @@ data class CapturingGroupModel(
                 Difference.Type.Add -> {
                     newCapturingGroups
                         .map { cg ->
-                            if (difference.range.first <= cg.openingPosition) {
-                                cg.move(difference.range.length)
-                            } else if (difference.range.first > cg.openingPosition
-                                && difference.range.first < cg.closingPosition
-                            ) {
-                                cg.move(0, difference.range.length)
-                            } else {
-                                cg
+                            when {
+                                difference.range.first <= cg.openingPosition -> cg.move(difference.range.length)
+                                difference.range.first > cg.openingPosition
+                                        && difference.range.first < cg.closingPosition -> cg.move(
+                                    0,
+                                    difference.range.length
+                                )
+
+                                else -> cg
                             }
                         }
                         .forEachIndexed { index, capturingGroup ->
@@ -389,18 +397,13 @@ data class CapturingGroupModel(
     }
 
     private fun getPatternPartType(groups: MatchGroupCollection): PatternSymbolType {
-        return if (groups["part"]?.value != null) {
-            PatternSymbolType.CHARACTER
-        } else if (groups["open"]?.value != null) {
-            PatternSymbolType.GROUP_START
-        } else if (groups["close"]?.value != null) {
-            PatternSymbolType.GROUP_END
-        } else if (groups["alt"]?.value != null) {
-            PatternSymbolType.ALTERNATIVE
-        } else if (groups["complete"]?.value != null) {
-            PatternSymbolType.COMPLETE
-        } else {
-            throw RegexGeneratorException("Unable to recognize pattern part type from: $groups")
+        return when {
+            groups["part"]?.value != null -> PatternSymbolType.CHARACTER
+            groups["open"]?.value != null -> PatternSymbolType.GROUP_START
+            groups["close"]?.value != null -> PatternSymbolType.GROUP_END
+            groups["alt"]?.value != null -> PatternSymbolType.ALTERNATIVE
+            groups["complete"]?.value != null -> PatternSymbolType.COMPLETE
+            else -> throw RegexGeneratorException("Unable to recognize pattern part type from: $groups")
         }
     }
 
