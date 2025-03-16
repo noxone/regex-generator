@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
+<coverage lines-valid="0" lines-covered="0" line-rate="NaN" branches-valid="0" branches-covered="0" branch-rate="NaN" timestamp="1742155481994" complexity="0" version="0.1">
+  <sources>
+    <source>/home/runner/work/regex-generator/regex-generator/build/js/packages/regex-generator-test</source>
+  </sources>
+  <packages>
+  </packages>
+</coverage>
