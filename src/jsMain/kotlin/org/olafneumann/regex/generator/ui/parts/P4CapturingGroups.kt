@@ -323,15 +323,20 @@ internal class P4CapturingGroups(
     }
 
     private fun findIndicesInCommentParent(one: PatternPart, other: PatternPart): IntRange? {
-        return if (one.isRoot || other.isRoot) {
-            console.warn("One of the symbols is the root node. This should not happen.", one, other)
-            null
-        } else if (one.parent == other.parent && !one.parent!!.isAlternative && one.selectable && other.selectable) {
-            IntRange(one.firstIndex, other.lastIndex)
-        } else if (one.depth > other.depth) {
-            findIndicesInCommentParent(one = one.parent!!, other = other)
-        } else {
-            findIndicesInCommentParent(one = one, other = other.parent!!)
+        return when {
+            one.isRoot || other.isRoot -> {
+                console.warn("One of the symbols is the root node. This should not happen.", one, other)
+                null
+            }
+
+            one.parent == other.parent && !one.parent!!.isAlternative && one.selectable && other.selectable ->
+                IntRange(one.firstIndex, other.lastIndex)
+
+            one.depth > other.depth ->
+                findIndicesInCommentParent(one = one.parent!!, other = other)
+
+            else ->
+                findIndicesInCommentParent(one = one, other = other.parent!!)
         }
     }
 

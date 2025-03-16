@@ -33,6 +33,9 @@ kotlin {
         }
         jsTest.dependencies {
             implementation(kotlin("test"))
+
+            implementation(devNpm("istanbul-instrumenter-loader", "3.0.1"))
+            implementation(devNpm("karma-coverage-istanbul-reporter", "3.0.3"))
         }
     }
     js {

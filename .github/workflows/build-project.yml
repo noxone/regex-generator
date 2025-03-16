@@ -65,7 +65,7 @@ jobs:
           mkdir build/distributions/reports
           cp -R -v build/reports/tests/allTests build/distributions/reports
           cp -v build/reports/detekt/detekt.html build/distributions/reports/
-          cp -R -v build/reports/jacoco build/distributions/reports/ || true
+          cp -R -v build/js/packages/regex-generator-test/coverage/ build/distributions/reports/ || true
       - name: Upload artifacts
         if: ${{ inputs.uploadArtifacts }}
         uses: actions/upload-artifact@v4

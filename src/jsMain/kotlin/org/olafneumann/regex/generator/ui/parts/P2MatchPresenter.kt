@@ -167,12 +167,6 @@ class P2MatchPresenter(
                     }
                 }
                 if (!matchPresenter.selected && matchPresenter.recognizerMatches.size > 1) {
-                    /*onMouseDownFunction = RageClickDetector.createEventListener {
-                        showPopoverOnRageClick(
-                            element,
-                            matchPresenter.recognizerMatches
-                        )
-                    }*/
                     onMouseDownFunction = RageClickDetector.createEventFunction(1) {
                         val child = element.firstElementChild!!
                         child.classList.toggle("rg-glow-alert", true)
@@ -182,37 +176,6 @@ class P2MatchPresenter(
             }
         return element
     }
-
-    /*private fun showPopoverOnRageClick(element: HTMLElement, recognizerMatches: Collection<RecognizerMatch>) {
-        helpPopover = Popover(
-            element = element,
-            title = "Need help?",
-            customClass = "rg-help-popover",
-            placement = Popover.Placement.Top,
-            trigger = Popover.Trigger.Manual
-        ) {
-            div {
-                p { +"The element you're clicking contains several options from which you need to choose." }
-                p {
-                    +"Please select one of the alternatives we found for this section below:"
-                    ul {
-                        recognizerMatches.map { recognizerMatch ->
-                            li {
-                                a {
-                                    +recognizerMatch.title
-                                    onClickFunction = {
-                                        controller.onRecognizerMatchClick(recognizerMatch)
-                                    }
-                                    style = "cursor: pointer;"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        helpPopover?.show()
-    }*/
 
     private fun getColorClass(row: Int, index: Int): String {
         return HtmlView.MATCH_PRESENTER_CSS_CLASS[(row + index) % HtmlView.MATCH_PRESENTER_CSS_CLASS.size]
