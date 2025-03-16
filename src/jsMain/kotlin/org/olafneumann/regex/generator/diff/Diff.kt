@@ -7,7 +7,6 @@ import org.olafneumann.regex.generator.RegexGeneratorException
 import org.olafneumann.regex.generator.utils.add
 import org.olafneumann.regex.generator.utils.addPosition
 import org.olafneumann.regex.generator.utils.remove
-import org.olafneumann.regex.generator.utils.toIndexedString
 
 internal fun <T> findDifferences(input1: List<T>, input2: List<T>): List<Difference> =
     findDifferencesPeterTrr(input1, input2)
