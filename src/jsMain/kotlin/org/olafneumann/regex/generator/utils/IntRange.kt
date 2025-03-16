@@ -26,34 +26,46 @@ fun IntRange.addPosition(index: Int): IntRange =
 
 
 fun IntRange.add(rangeToAdd: IntRange): List<IntRange> {
-    return if (rangeToAdd.first < this.first) {
-        listOf(IntRange(this.first + rangeToAdd.length, this.last + rangeToAdd.length))
-    } else if (rangeToAdd.first == this.first) {
-        (rangeToAdd.first..(rangeToAdd.last + 1))
-            .map { it..(this.last + rangeToAdd.length) }
-    } else if (rangeToAdd.first > this.first && rangeToAdd.first <= this.last) {
-        listOf(IntRange(this.first, this.last + rangeToAdd.length))
-    } else if (rangeToAdd.first == this.last + 1) {
-        (0..rangeToAdd.length).map { this.first..(this.last + it) }
-    } else {
-        listOf(this)
+    return when {
+        rangeToAdd.first < this.first ->
+            listOf(IntRange(this.first + rangeToAdd.length, this.last + rangeToAdd.length))
+
+        rangeToAdd.first == this.first ->
+            (rangeToAdd.first..(rangeToAdd.last + 1))
+                .map { it..(this.last + rangeToAdd.length) }
+
+        rangeToAdd.first > this.first && rangeToAdd.first <= this.last ->
+            listOf(IntRange(this.first, this.last + rangeToAdd.length))
+
+        rangeToAdd.first == this.last + 1 ->
+                (0..rangeToAdd.length).map { this.first..(this.last + it) }
+
+        else ->
+            listOf(this)
     }
 }
 
 fun IntRange.remove(rangeToRemove: IntRange): List<IntRange> {
-    return if (rangeToRemove.last < this.first) {
-        listOf(IntRange(this.first - rangeToRemove.length, this.last - rangeToRemove.length))
-    } else if (rangeToRemove.first > this.last) {
-        listOf(this)
-    } else if (rangeToRemove.first <= this.first && rangeToRemove.last >= this.last) {
-        emptyList()
-    } else if (rangeToRemove.first >= this.first && rangeToRemove.last <= this.last) {
-        listOf(IntRange(this.first, this.last - rangeToRemove.length))
-    } else if (rangeToRemove.first <= this.first && rangeToRemove.last > this.first) {
-        listOf(IntRange(rangeToRemove.first, this.last - rangeToRemove.length))
-    } else if (rangeToRemove.first <= this.last && rangeToRemove.last > this.last) {
-        listOf(IntRange(this.first, rangeToRemove.first - 1))
-    } else {
-        listOf(this)
+    return when {
+        rangeToRemove.last < this.first ->
+            listOf(IntRange(this.first - rangeToRemove.length, this.last - rangeToRemove.length))
+
+        rangeToRemove.first > this.last ->
+            listOf(this)
+
+        rangeToRemove.first <= this.first && rangeToRemove.last >= this.last ->
+            emptyList()
+
+        rangeToRemove.first >= this.first && rangeToRemove.last <= this.last ->
+            listOf(IntRange(this.first, this.last - rangeToRemove.length))
+
+        rangeToRemove.first <= this.first && rangeToRemove.last > this.first ->
+            listOf(IntRange(rangeToRemove.first, this.last - rangeToRemove.length))
+
+        rangeToRemove.first <= this.last && rangeToRemove.last > this.last ->
+            listOf(IntRange(this.first, rangeToRemove.first - 1))
+
+        else ->
+            listOf(this)
     }
 }

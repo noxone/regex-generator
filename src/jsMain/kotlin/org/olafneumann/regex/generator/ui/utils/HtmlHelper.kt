@@ -10,6 +10,7 @@ import org.w3c.dom.get
 import kotlin.math.max
 
 internal object HtmlHelper {
+    @Suppress("kotlin:S6531" /* false positive */)
     internal inline fun <reified T : HTMLElement> getElementById(id: String): T {
         try {
             return document.getElementById(id) as T
