@@ -28,6 +28,7 @@ fun TagConsumer<HTMLElement>.injecting(
     action: (HTMLElement) -> Unit
 ): TagConsumer<HTMLElement> = InjectorConsumerRoot(this, action)
 
+@Suppress("kotlin:S6531" /* false positive */)
 inline fun <reified T : HTMLElement> TagConsumer<HTMLElement>.returningRoot(
     block: TagConsumer<HTMLElement>.() -> Unit
 ): T {
