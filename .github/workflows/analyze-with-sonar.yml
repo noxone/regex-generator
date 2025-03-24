@@ -9,6 +9,7 @@ jobs:
   build:
     name: Analyze
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,6 +32,13 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Analyze
+        id: analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonar --info
+      - name: Upload artifacts
+        if: ${{ failure() && steps.analyze.outcome == 'failure'}}
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: build/reports
