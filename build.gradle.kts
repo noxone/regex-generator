@@ -19,7 +19,6 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers/")
 }
 
-
 kotlin {
     sourceSets {
         jsMain.dependencies {
@@ -33,9 +32,10 @@ kotlin {
         }
         jsTest.dependencies {
             implementation(kotlin("test"))
+            // https://stackoverflow.com/questions/62826599/what-code-coverage-tool-to-use-for-the-javascript-code-in-a-kotlin-multiplatform/62994382#62994382
+            implementation(npm("istanbul-instrumenter-loader", "3.0.1"))
+            implementation(npm("karma-coverage-istanbul-reporter", "3.0.3"))
 
-            implementation(devNpm("istanbul-instrumenter-loader", "3.0.1"))
-            implementation(devNpm("karma-coverage-istanbul-reporter", "3.0.3"))
         }
     }
     js {

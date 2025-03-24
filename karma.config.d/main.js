@@ -6,7 +6,7 @@
         {
             test: /\.js$/,
             use: {loader: 'istanbul-instrumenter-loader'},
-            include: [path.resolve(__dirname, '../module-name/kotlin/')] // here is necessary to use module-name in `build/js/packages`
+            include: [path.resolve(__dirname, '../regex-generator/kotlin/')] // here is necessary to use module-name in `build/js/packages`
         }
     )
     config.coverageIstanbulReporter = {
