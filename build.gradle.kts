@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.detekt)
     alias(libs.plugins.sonarqube)
-    jacoco
 }
 
 
@@ -33,9 +32,6 @@ kotlin {
         }
         jsTest.dependencies {
             implementation(kotlin("test"))
-
-            implementation(devNpm("istanbul-instrumenter-loader", "3.0.1"))
-            implementation(devNpm("karma-coverage-istanbul-reporter", "3.0.3"))
         }
     }
     js {
@@ -105,11 +101,6 @@ sonar {
         property("sonar.organization", "noxone")
         property("sonar.host.url", "https://sonarcloud.io")
     }
-}
-
-jacoco {
-    toolVersion = "0.8.12"
-    reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
 }
 
 // https://kotlinlang.org/docs/js-project-setup.html#installing-npm-dependencies-with-ignore-scripts-by-default
