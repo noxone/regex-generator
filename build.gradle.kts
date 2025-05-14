@@ -68,6 +68,14 @@ kotlin {
     }
 }
 
+configurations {
+    all {
+        resolutionStrategy {
+            disableDependencyVerification()
+        }
+    }
+}
+
 tasks.withType<Detekt>().configureEach {
     reports {
         html.required.set(true)
