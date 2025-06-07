@@ -24,7 +24,6 @@ kotlin {
         jsMain.dependencies {
             implementation(libs.kotlinx.html)
             implementation(kotlin("stdlib-js"))
-            implementation(libs.kotlin.extension)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.js)
             implementation(libs.kotlin.multiplatform.diff)

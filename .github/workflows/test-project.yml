@@ -2,9 +2,6 @@
 name: Build and test project
 
 on:
-  push:
-    branches-ignore:
-    - "main"
   pull_request:
 
 jobs:
@@ -28,7 +25,6 @@ jobs:
 
   build-project-in-docker:
     name: Build Docker images for local
-    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/build-docker.yml
     with:
       appEnvironment: "local"

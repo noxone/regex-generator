@@ -15,7 +15,7 @@ interface MVCContract {
 
     interface Controller {
         fun onFinishedLoading()
-        fun onDoneAskingUserForCookies(hasGivenConsent: Boolean)
+        fun onDoneAskingUserForTracking(hasGivenConsent: Boolean)
         fun onUserInputChange(input: String)
         fun onCodeGeneratorOptionsChange(options: CodeGeneratorOptions)
         fun onRecognizerCombinerOptionsChange(options: RecognizerMatchCombinerOptions)
