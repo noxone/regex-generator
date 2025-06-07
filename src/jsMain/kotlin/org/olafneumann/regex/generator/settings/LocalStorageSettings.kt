@@ -8,47 +8,18 @@ internal open class LocalStorageSettings {
         private const val KEY_CONSENT = "consent"
     }
 
-    // map to store settings while the user did not consent
-    private val intermediate = mutableMapOf<String, String>()
-    private fun persistIntermediate() {
-        // a simple set will do, because now set() will actually write to localStorage
-        intermediate.forEach { set(it.key, it.value) }
-        intermediate.clear()
-    }
-
-    private fun loadIntermediateFromLocalStorage() {
-        for (i in 0 until localStorage.length) {
-            localStorage.key(i)?.let { key -> localStorage.getItem(key)?.let { intermediate[key] = it } }
-        }
-    }
-
     init {
         if (hasUserConsent) {
             onConsentGiven()
-        } else {
-            loadIntermediateFromLocalStorage()
-            localStorage.clear()
         }
     }
 
     // Hiding local storage behind functions, so we can disable storage if user does not consent
-    protected fun get(key: String) = intermediate[key] ?: localStorage.getItem(key)
+    protected fun get(key: String) = localStorage.getItem(key)
     protected fun get(key: String, default: Boolean): Boolean = get(key)?.toBoolean() ?: default
     protected fun get(key: String, default: Int): Int = get(key)?.toIntOrNull() ?: default
-    protected fun set(key: String, value: String) {
-        if (hasUserConsent) {
-            localStorage.setItem(key, value)
-        } else {
-            intermediate[key] = value
-        }
-    }
-    protected fun remove(key: String) {
-        if (hasUserConsent) {
-            localStorage.removeItem(key = key)
-        } else {
-            intermediate.remove(key = key)
-        }
-    }
+    protected fun set(key: String, value: String) = localStorage.setItem(key, value)
+    protected fun remove(key: String) = localStorage.removeItem(key = key)
 
     // convenience
     protected fun set(key: String, value: Int) = set(key, value.toString())
@@ -59,10 +30,7 @@ internal open class LocalStorageSettings {
         set(value) {
             set(KEY_CONSENT, value)
             if (value) {
-                persistIntermediate()
                 onConsentGiven()
-            } else {
-                loadIntermediateFromLocalStorage()
             }
         }
 
