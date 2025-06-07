@@ -158,10 +158,10 @@
 <div>
   <ul>
     <li>610 number of properties</li>
-    <li>440 number of functions</li>
+    <li>436 number of functions</li>
     <li>128 number of classes</li>
     <li>15 number of packages</li>
-    <li>99 number of kt files</li>
+    <li>98 number of kt files</li>
   </ul>
 </div>
 
@@ -170,25 +170,59 @@
 
 <div>
   <ul>
-    <li>6,595 lines of code (loc)</li>
-    <li>5,486 source lines of code (sloc)</li>
-    <li>4,053 logical lines of code (lloc)</li>
-    <li>189 comment lines of code (cloc)</li>
-    <li>772 cyclomatic complexity (mcc)</li>
-    <li>272 cognitive complexity</li>
-    <li>0 number of total code smells</li>
+    <li>6,553 lines of code (loc)</li>
+    <li>5,452 source lines of code (sloc)</li>
+    <li>4,028 logical lines of code (lloc)</li>
+    <li>187 comment lines of code (cloc)</li>
+    <li>761 cyclomatic complexity (mcc)</li>
+    <li>267 cognitive complexity</li>
+    <li>2 number of total code smells</li>
     <li>3% comment source ratio</li>
-    <li>190 mcc per 1,000 lloc</li>
+    <li>188 mcc per 1,000 lloc</li>
     <li>0 code smells per 1,000 lloc</li>
   </ul>
 </div>
 
 
 <h2>Findings</h2>
-<div>Total: 0</div>
+<div>Total: 2
+  <h3>style: 2</h3>
+  <details id="MaxLineLength" open="open">
+    <summary class="rule-container"><span class="rule">MaxLineLength: 1 </span><span class="description">Line detected, which is longer than the defined maximum line length in the code style.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#maxlinelength">Documentation</a>
+    <ul>
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/jsMain/kotlin/org/olafneumann/regex/generator/ui/components/UserGuide.kt:47:1</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
+        <pre><code><span class="lineno">  44 </span>    private val userGuideSourceUrl: Url
+<span class="lineno">  45 </span>        get() {
+<span class="lineno">  46 </span>            val builder = URLBuilder(window.location.href)
+<span class="lineno">  47 </span><span class="error">            return URLBuilder(pathSegments = builder.pathSegments.toMutableList() + listOf(&quot;text&quot;, &quot;user-guide.$language.json&quot;)).build()</span>
+<span class="lineno">  48 </span>        }
+<span class="lineno">  49 </span>    private val userGuideSourceFilename: String
+<span class="lineno">  50 </span>        get() = &quot;text/user-guide.${language}.json&quot;
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <details id="UnusedPrivateProperty" open="open">
+    <summary class="rule-container"><span class="rule">UnusedPrivateProperty: 1 </span><span class="description">Property is unused and should be removed.</span></summary>
+<a href="https://detekt.dev/docs/rules/style#unusedprivateproperty">Documentation</a>
+    <ul>
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/jsMain/kotlin/org/olafneumann/regex/generator/ui/components/UserGuide.kt:49:17</span><span class="message">Private property `userGuideSourceFilename` is unused.</span>
+        <pre><code><span class="lineno">  46 </span>            val builder = URLBuilder(window.location.href)
+<span class="lineno">  47 </span>            return URLBuilder(pathSegments = builder.pathSegments.toMutableList() + listOf(&quot;text&quot;, &quot;user-guide.$language.json&quot;)).build()
+<span class="lineno">  48 </span>        }
+<span class="lineno">  49 </span>    private val <span class="error">userGuideSourceFilename</span>: String
+<span class="lineno">  50 </span>        get() = &quot;text/user-guide.${language}.json&quot;
+<span class="lineno">  51 </span>
+<span class="lineno">  52 </span>    private fun displayUserGuide(initialStep: Boolean) {
+</code></pre>
+      </li>
+    </ul>
+  </details>
+</div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2025-05-29 19:28:04 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2025-06-07 12:25:37 UTC.
 
 </body>
 </html>
