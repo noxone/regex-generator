@@ -47,7 +47,7 @@ class RGController : MVCContract.Controller {
         model = model.setLoadingIndicatorVisible(false)
     }
 
-    override fun onDoneAskingUserForCookies(hasGivenConsent: Boolean) {
+    override fun onDoneAskingUserForTracking(hasGivenConsent: Boolean) {
         ApplicationSettings.hasUserConsent = hasGivenConsent
         model = model.setCookieBannerVisible(false)
     }

@@ -30,7 +30,7 @@ class RGView(
     }
 
     private val loadingIndicator = LoadingIndicator()
-    private val cookieBanner = CookieBanner { controller.onDoneAskingUserForCookies(hasGivenConsent = it) }
+    private val cookieBanner = CookieBanner { controller.onDoneAskingUserForTracking(hasGivenConsent = it) }
     private val toolbar = PXToolbar(controller = controller)
     private val userInputPart = P1UserInput(
         controller = controller,
