@@ -4,10 +4,12 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.js.Js
 import io.ktor.client.request.get
+import io.ktor.http.URLBuilder
 import io.ktor.http.Url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.browser.window
 import org.olafneumann.regex.generator.js.Driver
 import org.olafneumann.regex.generator.js.StepDefinition
 
@@ -40,7 +42,10 @@ class UserGuide private constructor(
     }
 
     private val userGuideSourceUrl: Url
-        get() = Url(userGuideSourceFilename)
+        get() {
+            val builder = URLBuilder(window.location.href)
+            return URLBuilder(pathSegments = builder.pathSegments.toMutableList() + listOf("text", "user-guide.$language.json")).build()
+        }
     private val userGuideSourceFilename: String
         get() = "text/user-guide.${language}.json"
 
