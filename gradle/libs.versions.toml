@@ -2,7 +2,7 @@
 kotlin = "2.2.0"
 detekt = "1.23.8"
 sonar = "6.2.0.5505"
-ktor = "3.2.2"
+ktor = "3.2.3"
 
 [libraries]
 driver-js = { group = "npm", name = "driver.js", version = "0.9.8" }
