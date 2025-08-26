@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.2.10"
 detekt = "1.23.8"
-sonar = "6.2.0.5505"
+sonar = "6.3.0.5676"
 ktor = "3.2.3"
 
 [libraries]
