@@ -1,7 +1,6 @@
 [versions]
 kotlin = "2.2.10"
 detekt = "1.23.8"
-sonar = "6.2.0.5505"
 ktor = "3.2.3"
 
 [libraries]
@@ -16,4 +15,3 @@ kotlin-multiplatform-diff = { group = "io.github.petertrr", name = "kotlin-multi
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-sonarqube = { id = "org.sonarqube", version.ref = "sonar" }

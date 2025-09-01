@@ -8,7 +8,6 @@ version = "1.0-SNAPSHOT"
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.sonarqube)
 }
 
 
@@ -100,14 +99,6 @@ detekt {
 
 tasks.withType(Detekt::class.java).configureEach {
     jvmTarget = "17"
-}
-
-sonar {
-    properties {
-        property("sonar.projectKey", "regex-generator")
-        property("sonar.organization", "noxone")
-        property("sonar.host.url", "https://sonarcloud.io")
-    }
 }
 
 // https://kotlinlang.org/docs/js-project-setup.html#installing-npm-dependencies-with-ignore-scripts-by-default
