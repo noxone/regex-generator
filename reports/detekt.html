@@ -170,13 +170,13 @@
 
 <div>
   <ul>
-    <li>6,553 lines of code (loc)</li>
-    <li>5,452 source lines of code (sloc)</li>
-    <li>4,028 logical lines of code (lloc)</li>
+    <li>6,561 lines of code (loc)</li>
+    <li>5,460 source lines of code (sloc)</li>
+    <li>4,032 logical lines of code (lloc)</li>
     <li>187 comment lines of code (cloc)</li>
     <li>761 cyclomatic complexity (mcc)</li>
     <li>267 cognitive complexity</li>
-    <li>2 number of total code smells</li>
+    <li>1 number of total code smells</li>
     <li>3% comment source ratio</li>
     <li>188 mcc per 1,000 lloc</li>
     <li>0 code smells per 1,000 lloc</li>
@@ -185,36 +185,20 @@
 
 
 <h2>Findings</h2>
-<div>Total: 2
-  <h3>style: 2</h3>
-  <details id="MaxLineLength" open="open">
-    <summary class="rule-container"><span class="rule">MaxLineLength: 1 </span><span class="description">Line detected, which is longer than the defined maximum line length in the code style.</span></summary>
-<a href="https://detekt.dev/docs/rules/style#maxlinelength">Documentation</a>
-    <ul>
-      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/jsMain/kotlin/org/olafneumann/regex/generator/ui/components/UserGuide.kt:47:1</span><span class="message">Line detected, which is longer than the defined maximum line length in the code style.</span>
-        <pre><code><span class="lineno">  44 </span>    private val userGuideSourceUrl: Url
-<span class="lineno">  45 </span>        get() {
-<span class="lineno">  46 </span>            val builder = URLBuilder(window.location.href)
-<span class="lineno">  47 </span><span class="error">            return URLBuilder(pathSegments = builder.pathSegments.toMutableList() + listOf(&quot;text&quot;, &quot;user-guide.$language.json&quot;)).build()</span>
-<span class="lineno">  48 </span>        }
-<span class="lineno">  49 </span>    private val userGuideSourceFilename: String
-<span class="lineno">  50 </span>        get() = &quot;text/user-guide.${language}.json&quot;
-</code></pre>
-      </li>
-    </ul>
-  </details>
+<div>Total: 1
+  <h3>style: 1</h3>
   <details id="UnusedPrivateProperty" open="open">
     <summary class="rule-container"><span class="rule">UnusedPrivateProperty: 1 </span><span class="description">Property is unused and should be removed.</span></summary>
 <a href="https://detekt.dev/docs/rules/style#unusedprivateproperty">Documentation</a>
     <ul>
-      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/jsMain/kotlin/org/olafneumann/regex/generator/ui/components/UserGuide.kt:49:17</span><span class="message">Private property `userGuideSourceFilename` is unused.</span>
-        <pre><code><span class="lineno">  46 </span>            val builder = URLBuilder(window.location.href)
-<span class="lineno">  47 </span>            return URLBuilder(pathSegments = builder.pathSegments.toMutableList() + listOf(&quot;text&quot;, &quot;user-guide.$language.json&quot;)).build()
-<span class="lineno">  48 </span>        }
-<span class="lineno">  49 </span>    private val <span class="error">userGuideSourceFilename</span>: String
-<span class="lineno">  50 </span>        get() = &quot;text/user-guide.${language}.json&quot;
-<span class="lineno">  51 </span>
-<span class="lineno">  52 </span>    private fun displayUserGuide(initialStep: Boolean) {
+      <li><span class="location">/home/runner/work/regex-generator/regex-generator/src/jsMain/kotlin/org/olafneumann/regex/generator/ui/components/UserGuide.kt:54:17</span><span class="message">Private property `userGuideSourceFilename` is unused.</span>
+        <pre><code><span class="lineno">  51 </span>                )
+<span class="lineno">  52 </span>            ).build()
+<span class="lineno">  53 </span>        }
+<span class="lineno">  54 </span>    private val <span class="error">userGuideSourceFilename</span>: String
+<span class="lineno">  55 </span>        get() = &quot;text/user-guide.${language}.json&quot;
+<span class="lineno">  56 </span>
+<span class="lineno">  57 </span>    private fun displayUserGuide(initialStep: Boolean) {
 </code></pre>
       </li>
     </ul>
@@ -222,7 +206,7 @@
 </div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2025-09-24 11:49:02 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2025-09-24 11:58:10 UTC.
 
 </body>
 </html>
