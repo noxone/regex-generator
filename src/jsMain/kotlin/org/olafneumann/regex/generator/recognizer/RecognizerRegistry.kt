@@ -50,6 +50,9 @@ object RecognizerRegistry {
         ),
         SimpleRecognizer("Hashtag", "\\B#([a-z0-9]{2,})(?![~!@#$%^&*()=+_`\\-\\|\\/'\\[\\]\\{\\}]|[?.,]*\\w)"),
         SimpleRecognizer("Simple CSS Color", "#(?:[a-f0-9]{3}){1,2}\\b"),
+        SimpleRecognizer("US ZIP code", "\\d{5}(?:-\\d{4})?"),
+        SimpleRecognizer("Postleitzahl", "\\d{5}"),
+        SimpleRecognizer("US phone number", "[+]?(?:\\(\\d+(?:\\.\\d+)?\\)|\\d+(?:\\.\\d+)?)(?:[ -]?(?:\\(\\d+(?:\\.\\d+)?\\)|\\d+(?:\\.\\d+)?))*(?:[ ]?(?:x|ext)\\.?[ ]?\\d{1,5})?"),
         SimpleRecognizer("Log level", "(TRACE|DEBUG|INFO|NOTICE|WARN|WARNING|ERROR|SEVERE|FATAL)"),
         BracketedRecognizer(
             name = "Parentheses",

@@ -30,7 +30,7 @@ class PatternRecognizerModelTest {
             PatternRecognizerModel(input = input, recognizerMatchCombinerOptions = RecognizerMatchCombinerOptions())
 
         //then
-        assertEquals(expected = 33, actual = model.recognizerMatches.size)
+        assertEquals(expected = 34, actual = model.recognizerMatches.size)
     }
 
 
