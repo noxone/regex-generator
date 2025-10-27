@@ -68,7 +68,7 @@ jobs:
           cp -R -v build/js/packages/regex-generator-test/coverage/ build/distributions/reports/ || true
       - name: Upload artifacts
         if: ${{ inputs.uploadArtifacts }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: site
           path: build/distributions
