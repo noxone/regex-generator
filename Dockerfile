@@ -6,7 +6,7 @@ ARG APP_ENV=local
 #**************************************
 # build stages used by local build only
 #**************************************
-FROM gradle:9.2.1-jdk21 AS temp-build-image
+FROM gradle:9.3.1-jdk21 AS temp-build-image
 WORKDIR /app
 COPY . .
 
