@@ -3,15 +3,33 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="x-ua-compatible" content="IE=edge"/>
-<title>Test results - Test Summary</title>
+<title>Test results - All Results</title>
 <link href="css/base-style.css" rel="stylesheet" type="text/css"/>
 <link href="css/style.css" rel="stylesheet" type="text/css"/>
 <script src="js/report.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="content">
-<h1>Test Summary</h1>
-<div id="summary">
+<h1>All Results</h1>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="successGroup" href="#">jsBrowserTest</a>
+</li>
+</ul>
+<div class="tab">
+<h2>jsBrowserTest</h2>
+<h1>jsBrowserTest</h1>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="" href="#">summary</a>
+</li>
+</ul>
+<div class="tab">
+<h2>summary</h2>
+<div>
+<div class="summary">
 <table>
 <tr>
 <td>
@@ -19,26 +37,26 @@
 <table>
 <tr>
 <td>
-<div class="infoBox" id="tests">
+<div class="infoBox">
 <div class="counter">58</div>
 <p>tests</p>
 </div>
 </td>
 <td>
-<div class="infoBox" id="failures">
+<div class="infoBox">
 <div class="counter">0</div>
 <p>failures</p>
 </div>
 </td>
 <td>
-<div class="infoBox" id="ignored">
+<div class="infoBox">
 <div class="counter">0</div>
-<p>ignored</p>
+<p>skipped</p>
 </div>
 </td>
 <td>
-<div class="infoBox" id="duration">
-<div class="counter">0.008s</div>
+<div class="infoBox duration">
+<div class="counter">27.663s</div>
 <p>duration</p>
 </div>
 </td>
@@ -47,7 +65,7 @@
 </div>
 </td>
 <td>
-<div class="infoBox success" id="successRate">
+<div class="infoBox success successRate">
 <div class="percent">100%</div>
 <p>successful</p>
 </div>
@@ -55,43 +73,23 @@
 </tr>
 </table>
 </div>
-<div class="tab-container">
-<ul class="tabLinks">
-<li>
-<a href="#">Packages</a>
-</li>
-<li>
-<a href="#">Classes</a>
-</li>
-</ul>
-<div class="tab">
-<h2>Packages</h2>
-<table>
+<table class="test-results">
 <thead>
 <tr>
-<th>Package</th>
+<th>Child</th>
+<th>Name</th>
 <th>Tests</th>
 <th>Failures</th>
-<th>Ignored</th>
+<th>Skipped</th>
 <th>Duration</th>
 <th>Success rate</th>
 </tr>
 </thead>
-<tbody>
 <tr>
 <td class="success">
-<a href="packages/default-package.html">default-package</a>
+<a href="jsBrowserTest.org.olafneumann.regex.generator.model.PatternRecognizerModelTest/index.html">org.olafneumann.regex.generator.model.PatternRecognizerModelTest</a>
 </td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0.002s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="packages/org.olafneumann.regex.generator.model.html">org.olafneumann.regex.generator.model</a>
-</td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.model.PatternRecognizerModelTest</td>
 <td>17</td>
 <td>0</td>
 <td>0</td>
@@ -100,19 +98,21 @@
 </tr>
 <tr>
 <td class="success">
-<a href="packages/org.olafneumann.regex.generator.output.html">org.olafneumann.regex.generator.output</a>
+<a href="jsBrowserTest.org.olafneumann.regex.generator.output.CodeGeneratorTest/index.html">org.olafneumann.regex.generator.output.CodeGeneratorTest</a>
 </td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.output.CodeGeneratorTest</td>
 <td>23</td>
 <td>0</td>
 <td>0</td>
-<td>0.002s</td>
+<td>0.005s</td>
 <td class="success">100%</td>
 </tr>
 <tr>
 <td class="success">
-<a href="packages/org.olafneumann.regex.generator.recognizer.html">org.olafneumann.regex.generator.recognizer</a>
+<a href="jsBrowserTest.org.olafneumann.regex.generator.recognizer.BracketedRecognizerTest/index.html">org.olafneumann.regex.generator.recognizer.BracketedRecognizerTest</a>
 </td>
-<td>6</td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.recognizer.BracketedRecognizerTest</td>
+<td>2</td>
 <td>0</td>
 <td>0</td>
 <td>0s</td>
@@ -120,9 +120,10 @@
 </tr>
 <tr>
 <td class="success">
-<a href="packages/org.olafneumann.regex.generator.regex.html">org.olafneumann.regex.generator.regex</a>
+<a href="jsBrowserTest.org.olafneumann.regex.generator.recognizer.EchoRecognizerTest/index.html">org.olafneumann.regex.generator.recognizer.EchoRecognizerTest</a>
 </td>
-<td>2</td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.recognizer.EchoRecognizerTest</td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0.001s</td>
@@ -130,8 +131,9 @@
 </tr>
 <tr>
 <td class="success">
-<a href="packages/org.olafneumann.regex.generator.ui.model.html">org.olafneumann.regex.generator.ui.model</a>
+<a href="jsBrowserTest.org.olafneumann.regex.generator.recognizer.PatternHelperTest/index.html">org.olafneumann.regex.generator.recognizer.PatternHelperTest</a>
 </td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.recognizer.PatternHelperTest</td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
@@ -140,143 +142,74 @@
 </tr>
 <tr>
 <td class="success">
-<a href="packages/org.olafneumann.regex.generator.utils.html">org.olafneumann.regex.generator.utils</a>
+<a href="jsBrowserTest.org.olafneumann.regex.generator.recognizer.RecognizerTest/index.html">org.olafneumann.regex.generator.recognizer.RecognizerTest</a>
 </td>
-<td>7</td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.recognizer.RecognizerTest</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.001s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="jsBrowserTest.org.olafneumann.regex.generator.recognizer.SimpleRecognizerTest/index.html">org.olafneumann.regex.generator.recognizer.SimpleRecognizerTest</a>
+</td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.recognizer.SimpleRecognizerTest</td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0s</td>
 <td class="success">100%</td>
 </tr>
-</tbody>
+<tr>
+<td class="success">
+<a href="jsBrowserTest.org.olafneumann.regex.generator.regex.RecognizerMatchCombinerTest/index.html">org.olafneumann.regex.generator.regex.RecognizerMatchCombinerTest</a>
+</td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.regex.RecognizerMatchCombinerTest</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0.001s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="jsBrowserTest.org.olafneumann.regex.generator.ui.model.DisplayModelTest/index.html">org.olafneumann.regex.generator.ui.model.DisplayModelTest</a>
+</td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.ui.model.DisplayModelTest</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="jsBrowserTest.org.olafneumann.regex.generator.utils.IntRangeTest/index.html">org.olafneumann.regex.generator.utils.IntRangeTest</a>
+</td>
+<td class="path">jsBrowserTest.org.olafneumann.regex.generator.utils.IntRangeTest</td>
+<td>7</td>
+<td>0</td>
+<td>0</td>
+<td>0.002s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="jsBrowserTest.RegexGenerationTest/index.html">RegexGenerationTest</a>
+</td>
+<td class="path">jsBrowserTest.RegexGenerationTest</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0.006s</td>
+<td class="success">100%</td>
+</tr>
 </table>
 </div>
-<div class="tab">
-<h2>Classes</h2>
-<table>
-<thead>
-<tr>
-<th>Class</th>
-<th>Tests</th>
-<th>Failures</th>
-<th>Ignored</th>
-<th>Duration</th>
-<th>Success rate</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="success">
-<a href="classes/RegexGenerationTest.html">RegexGenerationTest</a>
-</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0.002s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.model.PatternRecognizerModelTest.html">org.olafneumann.regex.generator.model.PatternRecognizerModelTest</a>
-</td>
-<td>17</td>
-<td>0</td>
-<td>0</td>
-<td>0.003s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.output.CodeGeneratorTest.html">org.olafneumann.regex.generator.output.CodeGeneratorTest</a>
-</td>
-<td>23</td>
-<td>0</td>
-<td>0</td>
-<td>0.002s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.recognizer.BracketedRecognizerTest.html">org.olafneumann.regex.generator.recognizer.BracketedRecognizerTest</a>
-</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.recognizer.EchoRecognizerTest.html">org.olafneumann.regex.generator.recognizer.EchoRecognizerTest</a>
-</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.recognizer.PatternHelperTest.html">org.olafneumann.regex.generator.recognizer.PatternHelperTest</a>
-</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.recognizer.RecognizerTest.html">org.olafneumann.regex.generator.recognizer.RecognizerTest</a>
-</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.recognizer.SimpleRecognizerTest.html">org.olafneumann.regex.generator.recognizer.SimpleRecognizerTest</a>
-</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.regex.RecognizerMatchCombinerTest.html">org.olafneumann.regex.generator.regex.RecognizerMatchCombinerTest</a>
-</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0.001s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.ui.model.DisplayModelTest.html">org.olafneumann.regex.generator.ui.model.DisplayModelTest</a>
-</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0s</td>
-<td class="success">100%</td>
-</tr>
-<tr>
-<td class="success">
-<a href="classes/org.olafneumann.regex.generator.utils.IntRangeTest.html">org.olafneumann.regex.generator.utils.IntRangeTest</a>
-</td>
-<td>7</td>
-<td>0</td>
-<td>0</td>
-<td>0s</td>
-<td class="success">100%</td>
-</tr>
-</tbody>
-</table>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
@@ -286,7 +219,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="https://www.gradle.org">Gradle 9.2.1</a> at Feb 3, 2026, 5:51:49 AM</p>
+<a href="https://www.gradle.org">Gradle 9.3.1</a> at Feb 9, 2026, 2:49:00 PM</p>
 </div>
 </div>
 </body>

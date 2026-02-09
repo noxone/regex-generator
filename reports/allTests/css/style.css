@@ -1,15 +1,23 @@
-
-#summary {
+.summary {
     margin-top: 30px;
     margin-bottom: 40px;
 }
 
-#summary table {
+.summary table {
     border-collapse: collapse;
 }
 
-#summary td {
+.summary td {
     vertical-align: top;
+}
+
+div.tab table.test-results td {
+    padding-left: 1em;
+}
+
+div.tab table.test-results th {
+    padding-top: 0.5em;
+    padding-left: 1em;
 }
 
 .breadcrumbs, .breadcrumbs a {
@@ -33,22 +41,22 @@
     margin-bottom: 8px;
 }
 
-#duration {
+.duration {
     width: 125px;
 }
 
-#successRate, .summaryGroup {
+.successRate, .summaryGroup {
     border: solid 2px #d0d0d0;
     -moz-border-radius: 10px;
     border-radius: 10px;
 }
 
-#successRate {
+.successRate {
     width: 140px;
     margin-left: 35px;
 }
 
-#successRate .percent {
+.successRate .percent {
     font-size: 180%;
 }
 
@@ -56,7 +64,7 @@
     color: #008000;
 }
 
-div.success, #successRate.success {
+div.success, .successRate.success {
     background-color: #bbd9bb;
     border-color: #008000;
 }
@@ -69,7 +77,7 @@ div.success, #successRate.success {
     color: #c09853;
 }
 
-div.failures, #successRate.failures {
+div.failures, .successRate.failures {
     background-color: #ecdada;
     border-color: #b60808;
 }
@@ -83,6 +91,36 @@ ul.linkList li {
     margin-bottom: 5px;
 }
 
+div.metadata td:first-child {
+    padding-left: 5px;
+}
+
+div.metadata td {
+    padding-left: 5px;
+}
+
+.metadata tr.odd {
+    background-color: #f7f7f7;
+    border: solid 1px #d0d0d0;
+}
+
+.metadata tr.even {
+    border: solid 1px #d0d0d0;
+}
+
+.metadata th, .metadata td {
+    padding: 5px;
+    text-align: left;
+}
+
+.metadata a {
+    color: blue;
+}
+
+.metadata .unrenderable {
+    color: darkred;
+}
+
 .code {
     position: relative;
 }
@@ -94,4 +132,23 @@ ul.linkList li {
     padding: 4px 8px;
     font-size: 0.9em;
     cursor: pointer;
+}
+
+.successGroup::before {
+    content: "\23FA";
+    margin-right: 8px;
+    color: #008000;
+    display: inline-block;
+}
+.failureGroup::before {
+    content: "\2297";
+    margin-right: 8px;
+    color: #b60808;
+    display: inline-block;
+}
+.skippedGroup::before {
+    content: "\2296";
+    margin-right: 8px;
+    color: #c09853;
+    display: inline-block;
 }
