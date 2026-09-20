@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.4.20"
 detekt = "1.23.8"
-ktor = "3.5.2"
+ktor = "3.6.0"
 
 [libraries]
 driver-js = { group = "npm", name = "driver.js", version = "0.9.8" }
